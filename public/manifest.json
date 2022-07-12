@@ -20,5 +20,16 @@
     },
     "default_popup": "popup.html"
   },
-  "permissions": ["storage"]
+  "permissions": ["storage"],
+  "web_accessible_resources": [{
+    "resources": ["injectInterceptor.js"],
+    "matches": ["<all_urls>"]
+  }],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentScript.js"],
+      "run_at": "document_start"
+    }
+  ]
 }

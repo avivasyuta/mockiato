@@ -4,7 +4,8 @@
   "private": true,
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "xhook": "^1.4.9"
   },
   "devDependencies": {
     "@types/jest": "^27.5.2",

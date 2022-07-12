@@ -7,7 +7,9 @@ const srcDir = "../../src/";
 module.exports = {
   entry: {
     app: path.join(__dirname, srcDir + "index.tsx"),
-    devtools: path.join(__dirname, srcDir + "devtools.ts"),
+    devtools: path.join(__dirname, srcDir + "scripts/devtools.ts"),
+    injectInterceptor: path.join(__dirname, srcDir + "scripts/injectInterceptor.ts"),
+    contentScript: path.join(__dirname, srcDir + "scripts/contentScript.ts"),
   },
   module: {
     rules: [
@@ -29,7 +31,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../../public/index.html'),
       filename: 'index.html',
-      skipAssets: ['devtools.js']
+      skipAssets: ['devtools.js', 'contentScript.js', 'injectInterceptor.js']
     }),
     new HtmlWebpackSkipAssetsPlugin(),
   ],
