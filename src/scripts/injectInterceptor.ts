@@ -62,15 +62,21 @@ xhook.before(async (request: TXhookRequest, callback: TXhookCallback) => {
 
     const mock = mocks[0]
 
-    console.log('intercepted mock', mock)
+    console.warn(`Mockiato intercepted request ${request.url} and replaced it with mock\n`, mock)
 
     const response = {
-        status: mock.httpStatus,
+        status: mock.httpStatusCode,
         text: mock.response,
-        type: "json",
+        type: mock.responseType,
     };
 
-    callback(response);
+    if (mock.delay) {
+        setTimeout(() => {
+            callback(response);
+        }, mock.delay)
+    } else {
+        callback(response);
+    }
 });
 
 export {};

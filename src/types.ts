@@ -3,24 +3,36 @@ export enum HttpMethod {
     POST = 'POST',
     PATCH = 'PATCH',
     PUT = 'PUT',
-    DELETE = 'DELETE'
-}
-
-export enum MockStatus {
-    ACTIVE = 'ACTIVE',
-    INACTIVE = 'INACTIVE',
+    DELETE = 'DELETE',
+    OPTIONS = 'OPTIONS',
+    HEAD = 'HEAD',
+    LINK = 'LINK',
+    UNLINK = 'UNLINK',
+    LOCK = 'LOCK',
+    UNLOCK = 'UNLOCK',
+    PURGE = 'PURGE',
 }
 
 export type MessageType = 'intercepted' | 'mockChecked'
 
+export type TResponseType = 'text' | 'json' | 'none'
+
+export type THeader = {
+    key: string
+    value: string
+}
+
 export type TMock = {
-    id: number
+    id?: number
     url: string
     httpMethod: HttpMethod
-    httpStatus: number
+    httpStatusCode: number
+    delay: number
     response?: string
-    responseHeaders?: Record<string, string>
-    status: MockStatus
+    responseType: TResponseType
+    responseHeaders: THeader[]
+    comment?: string
+    isActive: boolean
 }
 
 export type TRequest = {
@@ -33,4 +45,14 @@ export type TRequest = {
 export type TMockResponseDTO = {
     messageId: string
     mocks: TMock[]
+}
+
+export type TMockFormState = {
+    isOpened: boolean
+    mock?: TMock
+}
+
+export type TMockFormAction = {
+    type: 'open' | 'close'
+    payload?: TMock
 }

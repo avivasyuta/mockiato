@@ -1,0 +1,24 @@
+.jsoneditor {
+    border: none;
+}
+
+.ace-jsoneditor .ace_scroller {
+    background-color: #2C2E33;
+}
+
+.ace-jsoneditor .ace_gutter {
+    background: #1A1B1E;
+    color: #C1C2C5;
+}
+
+.ace-jsoneditor .ace_gutter-active-line {
+    background-color: #25262B;
+}
+
+.ace-jsoneditor .ace_marker-layer .ace_active-line {
+    background: #373A40;
+}
+
+.ace-jsoneditor .ace_variable {
+    color: #5C5F66;
+}

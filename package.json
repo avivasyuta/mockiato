@@ -1,11 +1,17 @@
 {
   "name": "mockiato",
-  "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "antd": "^4.21.6",
+    "@mantine/core": "^4.2.12",
+    "@mantine/form": "^4.2.12",
+    "@mantine/hooks": "^4.2.12",
+    "@mantine/next": "^4.2.12",
+    "@mantine/notifications": "^4.2.12",
+    "@tabler/icons": "^1.78.1",
+    "classnames": "^2.3.1",
     "dexie": "^3.2.2",
     "dexie-react-hooks": "^1.1.1",
+    "jsoneditor": "^9.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "xhook": "^1.4.9"
@@ -13,6 +19,7 @@
   "devDependencies": {
     "@types/chrome": "^0.0.193",
     "@types/jest": "^27.5.2",
+    "@types/jsoneditor": "^9.5.1",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "copy-webpack-plugin": "^11.0.0",
