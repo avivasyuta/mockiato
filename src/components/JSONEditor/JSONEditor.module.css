@@ -1,0 +1,14 @@
+.editor {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    overflow: hidden;
+    flex: 1;
+}
+
+.editor:focus-within {
+    border-color: #339af0;
+}
+
+.editor-error {
+    border-color: #fa5252 !important;
+}
