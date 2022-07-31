@@ -6,14 +6,14 @@ export const sendMessage = <T>(type: MessageType, message: T): void => {
         {
             message,
             type,
-            extensionName: EXTENSION_NAME
+            extensionName: EXTENSION_NAME,
         },
-        "*"
-    )
-}
+        '*',
+    );
+};
 
 export const listenMessage = <T>(messageType: MessageType, callback: (payload: T) => void): void => {
-    window.addEventListener("message", (event) => {
+    window.addEventListener('message', (event) => {
         const { data, source } = event;
 
         if (source !== window || typeof data !== 'object') return;
@@ -21,4 +21,4 @@ export const listenMessage = <T>(messageType: MessageType, callback: (payload: T
 
         callback(data.message);
     });
-}
+};

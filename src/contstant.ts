@@ -1,1 +1,1 @@
-export const EXTENSION_NAME = 'Mockiato'
+export const EXTENSION_NAME = 'Mockiato';

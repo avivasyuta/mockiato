@@ -18,6 +18,7 @@ export type MessageType = 'intercepted' | 'mockChecked'
 export type TResponseType = 'text' | 'json' | 'none'
 
 export type THeader = {
+    id: string
     key: string
     value: string
 }

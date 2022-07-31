@@ -1,42 +1,38 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { App } from './App'
-import { initDB, db } from './database'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { App } from './App';
+import { initDB, db } from './database';
 import { TRequest } from './types';
 
-initDB()
+initDB();
 
+// eslint-disable-next-line no-undef
 if (chrome.runtime) {
     // get message with intercepted request from content script
-    chrome.runtime.onMessage.addListener(function (request: TRequest, sender, sendResponse) {
+    // eslint-disable-next-line no-undef
+    chrome.runtime.onMessage.addListener((request: TRequest, sender, sendResponse) => {
         // find mocks for intercepted request
         db.mocks
             .where('url').equalsIgnoreCase(request.url)
             .filter((mock) => mock.isActive)
             .toArray()
-            .then(mocks => {
-                console.log('in ext',{
-                    messageId: request.messageId,
-                    mocks
-                } )
-
+            .then((mocks) => {
                 sendResponse({
                     messageId: request.messageId,
-                    mocks
-                })
-            })
+                    mocks,
+                });
+            });
 
-        return true
+        return true;
     });
 }
 
-
 const root = ReactDOM.createRoot(
-    document.getElementById('root') as HTMLElement
+    document.getElementById('root') as HTMLElement,
 );
 
 root.render(
     <React.StrictMode>
-        <App/>
-    </React.StrictMode>
+        <App />
+    </React.StrictMode>,
 );

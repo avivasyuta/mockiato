@@ -2,23 +2,23 @@ import { TMock } from '../types';
 
 // TODO remove any type
 export class MessageBus {
-    private readonly collector: Record<string, any>
+    private readonly collector: Record<string, any>;
 
     constructor() {
-        this.collector = {}
+        this.collector = {};
     }
 
     addListener(messageId: string, callback: any) {
-        this.collector[messageId] = callback
+        this.collector[messageId] = callback;
     }
 
     dispatch(messageId: string, payload: TMock[]) {
-        const callback = this.collector[messageId]
+        const callback = this.collector[messageId];
 
         if (!callback) {
             return;
         }
 
-        callback(payload)
+        callback(payload);
     }
 }

@@ -1,81 +1,92 @@
-import React, { Fragment, SyntheticEvent, useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
-import { Badge, Box, Group, Paper, Text, Tooltip, useMantineTheme } from '@mantine/core';
-import { ActionIcon } from '@mantine/core';
-import { IconTrash, IconEdit, IconCopy, IconCheck, IconInfoCircle } from '@tabler/icons';
+import {
+    ActionIcon,
+    Badge,
+    Group,
+    Paper,
+    Text,
+    Tooltip,
+    useMantineTheme,
+} from '@mantine/core';
+import {
+    IconCheck,
+    IconCopy,
+    IconInfoCircle,
+    IconTrash,
+} from '@tabler/icons';
 import { showNotification } from '@mantine/notifications';
 import { db } from '../../database';
 import { HttpMethod, TMock } from '../../types';
 import { MockFormContext } from '../../context/MockFormContext';
-import styles from './Mocks.module.css'
+import styles from './Mocks.module.css';
 import { NotFound } from '../NotFound';
 
 export const Mocks = () => {
     const dispatch = useContext(MockFormContext);
-    const theme = useMantineTheme()
+    const theme = useMantineTheme();
 
     const mocks = useLiveQuery(
-        () => db.mocks.toArray()
+        () => db.mocks.toArray(),
     );
 
-    const handleDeleteMock = (mockId?: number, ) => async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation()
+    const handleDeleteMock = (mockId?: number) => async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
         if (e.detail < 2) {
-            return
+            return;
         }
-        await db.mocks.delete(mockId as number)
+        await db.mocks.delete(mockId as number);
         showNotification({
             message: 'Mock was deleted',
             icon: <IconCheck size={18} />,
-            color: 'green'
-        })
-    }
+            color: 'green',
+        });
+    };
 
     const handleCopyMock = (mock: TMock) => (e: React.MouseEvent<HTMLButtonElement>): void => {
-        e.stopPropagation()
+        e.stopPropagation();
         dispatch({
             type: 'open',
             payload: {
                 ...mock,
-                id: undefined
-            }
-        })
-    }
+                id: undefined,
+            },
+        });
+    };
 
     const handleEditMock = (mock: TMock) => (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault()
+        e.preventDefault();
         dispatch({
             type: 'open',
             payload: mock,
-        })
-    }
+        });
+    };
 
     const getStatusCodeColor = useCallback((code: number): string => {
         if (code >= 100 && code < 200) {
-            return 'cyan'
-        } else if (code >= 200 && code < 300) {
-            return 'green'
-        } else if (code >= 300 && code < 400) {
-            return 'gray'
-        } else if (code >= 400 && code < 500) {
-            return 'yellow'
-        } else {
-            return 'red'
+            return 'cyan';
+        } if (code >= 200 && code < 300) {
+            return 'green';
+        } if (code >= 300 && code < 400) {
+            return 'gray';
+        } if (code >= 400 && code < 500) {
+            return 'yellow';
         }
-    }, [])
+        return 'red';
+    }, []);
 
     const getMethodColor = useCallback((method: HttpMethod): string => {
         switch (method) {
-            case HttpMethod.GET: return 'green'
-            case HttpMethod.DELETE: return 'red'
-            case HttpMethod.PUT: return 'blue'
-            case HttpMethod.POST: return 'yellow'
-            default: return 'gray'
+        case HttpMethod.GET: return 'green';
+        case HttpMethod.DELETE: return 'red';
+        case HttpMethod.PUT: return 'blue';
+        case HttpMethod.POST: return 'yellow';
+        default: return 'gray';
         }
-    }, [])
+    }, []);
 
     if (!mocks || mocks.length === 0) {
-       return <NotFound />
+        return <NotFound />;
     }
 
     return (
@@ -83,11 +94,11 @@ export const Mocks = () => {
             {mocks.map((mock: TMock) => (
                 <Paper
                     component="a"
-                    href='#'
+                    href="#"
                     shadow="sm"
                     radius="md"
                     py="xs"
-                    px='md'
+                    px="md"
                     key={mock.id}
                     onClick={handleEditMock(mock)}
                 >
@@ -95,18 +106,17 @@ export const Mocks = () => {
                         <div className={styles.method}>
                             <Badge
                                 variant="light"
-                                size='xs'
+                                size="xs"
                                 color={getMethodColor(mock.httpMethod)}
                                 radius="sm"
-                                title='HTTP method'
+                                title="HTTP method"
                             >
                                 {mock.httpMethod}
                             </Badge>
                         </div>
 
-
-                        <Group align='center' className={styles.url}>
-                            <Text size="xs" title='URL'>{mock.url}</Text>
+                        <Group align="center" className={styles.url}>
+                            <Text size="xs" title="URL">{mock.url}</Text>
                             {mock.comment && (
                                 <Tooltip
                                     label={mock.comment}
@@ -120,24 +130,24 @@ export const Mocks = () => {
 
                         <Group className={styles.code}>
                             <Text
-                                size='xs'
+                                size="xs"
                                 color={theme.colors.gray[6]}
                             >
                                 Status code
                             </Text>
                             <Badge
-                                size='xs'
-                                variant='outline'
+                                size="xs"
+                                variant="outline"
                                 color={getStatusCodeColor(mock.httpStatusCode)}
                                 radius="sm"
-                                title='HTTP status code'
+                                title="HTTP status code"
                             >
                                 {mock.httpStatusCode}
                             </Badge>
                         </Group>
 
                         <Tooltip
-                            label='Double click to delete'
+                            label="Double click to delete"
                             position="bottom"
                             placement="center"
                             transition="scale-y"
@@ -149,7 +159,7 @@ export const Mocks = () => {
                                 color="red"
                                 size="xs"
                                 radius="sm"
-                                title='Delete mock'
+                                title="Delete mock"
                                 onClick={handleDeleteMock(mock.id)}
                             >
                                 <IconTrash />
@@ -161,7 +171,7 @@ export const Mocks = () => {
                             color="cyan"
                             size="xs"
                             radius="sm"
-                            title='Clone mock'
+                            title="Clone mock"
                             onClick={handleCopyMock(mock)}
                         >
                             <IconCopy />
@@ -170,5 +180,5 @@ export const Mocks = () => {
                 </Paper>
             ))}
         </div>
-    )
-}
+    );
+};

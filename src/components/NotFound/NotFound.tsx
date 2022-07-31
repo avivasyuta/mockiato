@@ -1,7 +1,5 @@
-import styles from './NotFound.module.css'
+import styles from './NotFound.module.css';
 
-export const NotFound = () => {
-    return (
-        <div className={styles.container}>You haven't added any mock yet.</div>
-    )
-}
+export const NotFound = () => (
+    <div className={styles.container}>You haven&apos;t added any mock yet.</div>
+);
