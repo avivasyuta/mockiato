@@ -1,24 +1,25 @@
-import { FC, useEffect } from 'react'
+import { FC, useEffect } from 'react';
 import {
-    Box,
-    Button, Chip,
+    Button,
     Drawer,
     Grid,
     Group,
-    NumberInput, SegmentedControl,
+    NumberInput,
+    SegmentedControl,
     Select,
-    Switch, Tabs, Textarea,
+    Tabs,
+    Textarea,
     TextInput,
-    useMantineTheme
-} from '@mantine/core'
-import { IconCheck } from '@tabler/icons'
-import { useForm } from '@mantine/form'
-import { showNotification } from '@mantine/notifications'
-import { db } from '../../database'
-import { HttpMethod, THeader, TMock } from '../../types'
+    useMantineTheme,
+} from '@mantine/core';
+import { IconCheck } from '@tabler/icons';
+import { useForm } from '@mantine/form';
+import { showNotification } from '@mantine/notifications';
+import { db } from '../../database';
+import { HttpMethod, THeader, TMock } from '../../types';
 import { Response } from './components/Response';
 import { Headers } from './components/Headers';
-import styles from './MockForm.module.css'
+import styles from './MockForm.module.css';
 import { trimHeaders } from './utils';
 
 type MockFormProps = {
@@ -35,67 +36,67 @@ const initialValues: TMock = {
     responseType: 'json',
     responseHeaders: [],
     isActive: true,
-}
+};
 
-const maxDelay = 999999
-const httpMethods =  Object.values(HttpMethod)
+const maxDelay = 999999;
+const httpMethods = Object.values(HttpMethod);
 
 export const MockForm: FC<MockFormProps> = ({ mock, isOpen, onClose }) => {
-    const theme = useMantineTheme()
+    const theme = useMantineTheme();
 
-    const form = useForm<TMock>({ initialValues })
+    const form = useForm<TMock>({ initialValues });
 
     useEffect(() => {
         if (mock) {
-            form.setValues(mock)
+            form.setValues(mock);
         }
-    }, [mock])
+    }, [mock]);
 
     const handleClose = () => {
-        onClose()
-        form.reset()
-    }
+        onClose();
+        form.reset();
+    };
 
     const handleChangeResponse = (value: string): void => {
-        form.setFieldValue('response', value)
-    }
+        form.setFieldValue('response', value);
+    };
 
     const handleChangeHeaders = (headers: THeader[]): void => {
-        form.setFieldValue('responseHeaders', headers)
-    }
+        form.setFieldValue('responseHeaders', headers);
+    };
 
     const handleChangeStatus = (value: string): void => {
         if (value === 'enabled') {
-            form.setFieldValue('isActive', true)
+            form.setFieldValue('isActive', true);
         } else {
-            form.setFieldValue('isActive', false)
+            form.setFieldValue('isActive', false);
         }
-    }
+    };
 
-    const handleSubmit = async (mock: TMock) => {
-        const updatedMock = trimHeaders(mock)
+    const handleSubmit = async (values: TMock) => {
+        const updatedMock = trimHeaders(values);
         if (updatedMock?.id) {
-            await db.mocks.update(updatedMock.id, updatedMock)
+            await db.mocks.update(updatedMock.id, updatedMock);
         } else {
-            await db.mocks.add(updatedMock)
+            await db.mocks.add(updatedMock);
         }
 
-        handleClose()
+        handleClose();
 
         showNotification({
             title: 'You deal great',
             message: 'Mock data was saved',
             icon: <IconCheck size={18} />,
-            color: 'green'
-        })
-    }
+            color: 'green',
+        });
+    };
 
     return (
         <Drawer
             opened={isOpen}
-            padding='sm'
-            position='right'
-            size='50%'
+            padding="sm"
+            position="right"
+            size="50%"
             onClose={handleClose}
             title={mock?.id ? 'Edit mock' : 'Add new mock'}
             className={styles.drawer}
@@ -112,13 +113,13 @@ export const MockForm: FC<MockFormProps> = ({ mock, isOpen, onClose }) => {
                         <TextInput
                             required
                             label="Url"
-                            size='xs'
+                            size="xs"
                             {...form.getInputProps('url')}
                         />
                     </Grid.Col>
                     <Grid.Col span={4}>
                         <SegmentedControl
-                            size='xs'
+                            size="xs"
                             fullWidth
                             color={form.values.isActive ? 'blue' : 'gray'}
                             value={form.values.isActive ? 'enabled' : 'disabled'}
@@ -131,13 +132,13 @@ export const MockForm: FC<MockFormProps> = ({ mock, isOpen, onClose }) => {
                     </Grid.Col>
                 </Grid>
 
-                <Grid mt='xs'>
+                <Grid mt="xs">
                     <Grid.Col span={4}>
                         <Select
                             required
                             label="Request method"
                             data={httpMethods}
-                            size='xs'
+                            size="xs"
                             {...form.getInputProps('httpMethod')}
                         />
                     </Grid.Col>
@@ -148,7 +149,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, isOpen, onClose }) => {
                             label="Response status code"
                             min={100}
                             max={599}
-                            size='xs'
+                            size="xs"
                             {...form.getInputProps('httpStatusCode')}
                         />
                     </Grid.Col>
@@ -158,14 +159,14 @@ export const MockForm: FC<MockFormProps> = ({ mock, isOpen, onClose }) => {
                             label="Delay"
                             min={0}
                             max={maxDelay}
-                            size='xs'
+                            size="xs"
                             {...form.getInputProps('delay')}
                         />
                     </Grid.Col>
                 </Grid>
 
                 <Tabs
-                    mt='lg'
+                    mt="lg"
                     className={styles.tabs}
                     styles={() => ({
                         body: {
@@ -173,8 +174,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, isOpen, onClose }) => {
                             display: 'flex',
                             flexDirection: 'column',
                             overflowY: 'auto',
-                            borderBottom: `1px solid ${theme.colors.gray[4]}`
-                        }
+                        },
                     })}
                 >
                     <Tabs.Tab label="Response body">
@@ -193,7 +193,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, isOpen, onClose }) => {
 
                     <Tabs.Tab label="Comments">
                         <Textarea
-                            size='xs'
+                            size="xs"
                             autosize
                             minRows={5}
                             {...form.getInputProps('comment')}
@@ -204,20 +204,20 @@ export const MockForm: FC<MockFormProps> = ({ mock, isOpen, onClose }) => {
                 <Group position="right" mt="md">
                     <Button
                         variant="subtle"
-                        color='gray'
-                        size='xs'
+                        color="gray"
+                        size="xs"
                         onClick={handleClose}
                     >
                         Cancel
                     </Button>
                     <Button
                         type="submit"
-                        size='xs'
+                        size="xs"
                     >
                         Save
                     </Button>
                 </Group>
             </form>
         </Drawer>
-    )
-}
+    );
+};

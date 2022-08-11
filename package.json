@@ -12,6 +12,7 @@
     "dexie": "^3.2.2",
     "dexie-react-hooks": "^1.1.1",
     "jsoneditor": "^9.9.0",
+    "nanoid": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "xhook": "^1.4.9"
@@ -22,10 +23,17 @@
     "@types/jsoneditor": "^9.5.1",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/parser": "^5.31.0",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.1",
-    "eslint": "^8.3.0",
+    "eslint": "^8.20.0",
+    "eslint-config-airbnb": "^19.0.4",
     "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-react": "^7.30.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-webpack-plugin": "^3.1.1",
     "html-webpack-plugin": "^5.5.0",
     "html-webpack-skip-assets-plugin": "^1.0.3",
@@ -39,6 +47,7 @@
   },
   "scripts": {
     "start": "webpack serve --open --config config/webpack/webpack.dev.js",
-    "build": "rm -rf ./build && webpack --config config/webpack/webpack.prod.js"
+    "build": "rm -rf ./build && webpack --config config/webpack/webpack.prod.js",
+    "lint": "eslint \"**/*.{ts,tsx}\""
   }
 }

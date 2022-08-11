@@ -1,1 +1,1 @@
-export { MockForm } from './MockForm'
+export { MockForm } from './MockForm';
