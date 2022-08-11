@@ -26,7 +26,6 @@ export const Response: FC<TResponseProps> = ({ form, onChange }) => (
             <JSONEditor
                 value={form.getInputProps('response').value}
                 onChange={onChange}
-                error={form.errors.response as string}
             />
         )}
 

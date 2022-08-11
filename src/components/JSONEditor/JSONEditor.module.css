@@ -9,6 +9,8 @@
     border-color: #339af0;
 }
 
-.editor-error {
-    border-color: #fa5252 !important;
+@media (prefers-color-scheme: dark) {
+    .editor {
+        border-color: #2C2E33;
+    }
 }

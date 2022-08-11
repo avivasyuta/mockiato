@@ -174,7 +174,6 @@ export const MockForm: FC<MockFormProps> = ({ mock, isOpen, onClose }) => {
                             display: 'flex',
                             flexDirection: 'column',
                             overflowY: 'auto',
-                            borderBottom: `1px solid ${theme.colors.gray[4]}`,
                         },
                     })}
                 >
