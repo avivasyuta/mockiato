@@ -1,7 +1,6 @@
 import { FC } from 'react';
-import { Radio, RadioGroup, Textarea } from '@mantine/core';
-// eslint-disable-next-line import/no-unresolved
-import { UseFormReturnType } from '@mantine/form/lib/use-form';
+import { Radio, Textarea } from '@mantine/core';
+import { UseFormReturnType } from '@mantine/form';
 import { TMock } from '../../../../types';
 import { JSONEditor } from '../../../JSONEditor';
 
@@ -12,7 +11,7 @@ type TResponseProps = {
 
 export const Response: FC<TResponseProps> = ({ form, onChange }) => (
     <>
-        <RadioGroup
+        <Radio.Group
             size="sm"
             required
             mb="md"
@@ -20,7 +19,7 @@ export const Response: FC<TResponseProps> = ({ form, onChange }) => (
         >
             <Radio value="json" label="JSON" />
             <Radio value="text" label="Text" />
-        </RadioGroup>
+        </Radio.Group>
 
         {form.values.responseType === 'json' && (
             <JSONEditor

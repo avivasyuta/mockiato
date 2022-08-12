@@ -57,3 +57,5 @@ export type TMockFormAction = {
     type: 'open' | 'close'
     payload?: TMock
 }
+
+export type TRoute = 'logs' | 'mocks'

@@ -167,9 +167,10 @@ export const MockForm: FC<MockFormProps> = ({ mock, isOpen, onClose }) => {
 
                 <Tabs
                     mt="lg"
+                    defaultValue="response"
                     className={styles.tabs}
                     styles={() => ({
-                        body: {
+                        panel: {
                             flex: 1,
                             display: 'flex',
                             flexDirection: 'column',
@@ -177,28 +178,34 @@ export const MockForm: FC<MockFormProps> = ({ mock, isOpen, onClose }) => {
                         },
                     })}
                 >
-                    <Tabs.Tab label="Response body">
+                    <Tabs.List>
+                        <Tabs.Tab value="response">Response body</Tabs.Tab>
+                        <Tabs.Tab value="headers">Headers</Tabs.Tab>
+                        <Tabs.Tab value="comments">Comments</Tabs.Tab>
+                    </Tabs.List>
+
+                    <Tabs.Panel value="response" pt="xs">
                         <Response
                             form={form}
                             onChange={handleChangeResponse}
                         />
-                    </Tabs.Tab>
+                    </Tabs.Panel>
 
-                    <Tabs.Tab label="Response headers">
+                    <Tabs.Panel value="headers" pt="xs">
                         <Headers
                             form={form}
                             onChange={handleChangeHeaders}
                         />
-                    </Tabs.Tab>
+                    </Tabs.Panel>
 
-                    <Tabs.Tab label="Comments">
+                    <Tabs.Panel value="comments" pt="xs">
                         <Textarea
                             size="xs"
                             autosize
                             minRows={5}
                             {...form.getInputProps('comment')}
                         />
-                    </Tabs.Tab>
+                    </Tabs.Panel>
                 </Tabs>
 
                 <Group position="right" mt="md">

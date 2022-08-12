@@ -5,12 +5,25 @@ import {
     Group,
     Navbar,
     Text,
+    NavLink,
 } from '@mantine/core';
-import { IconBrandGithub, IconPlaylistAdd, IconVersions } from '@tabler/icons';
+import {
+    IconBrandGithub,
+    IconPlaylistAdd,
+    IconShadow,
+    IconVersions,
+    IconNotebook,
+} from '@tabler/icons';
 import { MockFormContext } from '../../context/MockFormContext';
 import manifest from '../../../public/manifest.json';
+import { TRoute } from '../../types';
 
-export const AppNavbar = () => {
+type NavbarProps = {
+    route: TRoute
+    onRouteChange: (route: TRoute) => void
+}
+
+export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
     const dispatch = useContext(MockFormContext);
 
     const handleOpenMockForm = useCallback(() => {
@@ -23,23 +36,39 @@ export const AppNavbar = () => {
                 <Group position="apart">
                     <Text size="sm">Mockiato</Text>
 
-                    <ActionIcon
-                        variant="hover"
-                        color="blue"
-                        size="sm"
-                        radius="sm"
-                        title="Add new mock"
-                        onClick={handleOpenMockForm}
-                    >
-                        <IconPlaylistAdd />
-                    </ActionIcon>
+                    {route === 'mocks' && (
+                        <ActionIcon
+                            variant="subtle"
+                            color="blue"
+                            size="sm"
+                            radius="sm"
+                            title="Add new mock"
+                            onClick={handleOpenMockForm}
+                        >
+                            <IconPlaylistAdd />
+                        </ActionIcon>
+                    )}
                 </Group>
             </Navbar.Section>
 
             <Divider my="sm" variant="dotted" />
 
-            <Navbar.Section grow mt="md">
-                Menu here
+            <Navbar.Section grow>
+                <NavLink
+                    label="Mocks"
+                    variant="light"
+                    active={route === 'mocks'}
+                    onClick={() => onRouteChange('mocks')}
+                    icon={<IconShadow size={16} stroke={1.5} />}
+                />
+                <NavLink
+                    label="Logs"
+                    variant="light"
+                    active={route === 'logs'}
+                    onClick={() => onRouteChange('logs')}
+                    color="orange"
+                    icon={<IconNotebook size={16} stroke={1.5} />}
+                />
             </Navbar.Section>
 
             <Divider my="sm" variant="dotted" />
