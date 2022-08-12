@@ -12,7 +12,7 @@ export class MessageBus {
         this.collector[messageId] = callback;
     }
 
-    dispatch(messageId: string, payload: TMock[]) {
+    dispatch(messageId: string, payload?: TMock) {
         const callback = this.collector[messageId];
 
         if (!callback) {

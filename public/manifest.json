@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Mockiato: Mock API calls seamlessly",
+  "name": "Mockiato: Mock HTTP requests",
   "description": "Adds the API mocker Mockiato to Dev Tools for seamless integration & testing.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "devtools_page": "devtools.html",
   "icons": {
     "16": "mockiato-16.png",
@@ -17,10 +17,11 @@
       "32": "mockiato-32.png",
       "48": "mockiato-48.png",
       "128": "mockiato-128.png"
-    },
-    "default_popup": "popup.html"
+    }
   },
-  "permissions": ["storage"],
+  "permissions": ["storage", "scripting", "tabs"],
+  "background": {"service_worker": "background.js"},
+  "host_permissions": ["<all_urls>"],
   "web_accessible_resources": [{
     "resources": ["interceptor.js"],
     "matches": ["<all_urls>"]
@@ -28,8 +29,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["contentScript.js"],
-      "run_at": "document_start"
+      "js": ["contentScript.js"]
     }
   ]
 }

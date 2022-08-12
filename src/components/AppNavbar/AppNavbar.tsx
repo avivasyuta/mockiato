@@ -13,8 +13,9 @@ import {
     IconShadow,
     IconVersions,
     IconNotebook,
+    IconCircleMinus,
 } from '@tabler/icons';
-import { MockFormContext } from '../../context/MockFormContext';
+import { AppContext } from '../../context/AppContext';
 import manifest from '../../../public/manifest.json';
 import { TRoute } from '../../types';
 
@@ -24,11 +25,18 @@ type NavbarProps = {
 }
 
 export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
-    const dispatch = useContext(MockFormContext);
+    const { dispatchMockForm, store, setStore } = useContext(AppContext);
 
     const handleOpenMockForm = useCallback(() => {
-        dispatch({ type: 'open' });
+        dispatchMockForm({ type: 'open' });
     }, []);
+
+    const handleClearMocks = useCallback(() => {
+        setStore({
+            ...store,
+            logs: [],
+        });
+    }, [store]);
 
     return (
         <Navbar p="sm" width={{ base: 300 }}>
@@ -46,6 +54,20 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                             onClick={handleOpenMockForm}
                         >
                             <IconPlaylistAdd />
+                        </ActionIcon>
+                    )}
+
+                    {route === 'logs' && (
+                        <ActionIcon
+                            variant="subtle"
+                            color="red"
+                            size="sm"
+                            radius="sm"
+                            title="Clear logs"
+                            disabled={store.logs.length === 0}
+                            onClick={handleClearMocks}
+                        >
+                            <IconCircleMinus />
                         </ActionIcon>
                     )}
                 </Group>
@@ -76,7 +98,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
             <Navbar.Section>
                 <Group position="left">
                     <IconVersions size={16} color="gray" />
-                    <Text size="xs" color="gray">
+                    <Text size="xs" color="dimmed">
                         v
                         {manifest.version}
                     </Text>
@@ -90,7 +112,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                         component="a"
                         target="_blank"
                         href="https://github.com/avivasyuta/mockiato"
-                        color="gray"
+                        color="dimmed"
                     >
                         View source code
                     </Text>

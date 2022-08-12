@@ -16,13 +16,7 @@ type TXhookCallback = (response?: unknown) => void
 const messageBus = new MessageBus();
 
 listenMessage<TMockResponseDTO>('mockChecked', (response) => {
-    if (!response) {
-        // TODO понять, почему не приходят ответы периодически
-        // eslint-disable-next-line no-console
-        console.error('Couldn\'t get response of mock in extension');
-    } else {
-        messageBus.dispatch(response.messageId, response.mocks);
-    }
+    messageBus.dispatch(response.messageId, response.mock);
 });
 
 const getUrl = (url: string): string => {
@@ -53,14 +47,12 @@ const send = <T>(request: TXhookRequest): Promise<T> => {
 };
 
 xhook.before(async (request: TXhookRequest, callback: TXhookCallback) => {
-    const mocks = await send<TMock[]>(request);
+    const mock = await send<TMock | null>(request);
 
-    if (mocks.length === 0) {
+    if (!mock) {
         callback();
         return;
     }
-
-    const mock = mocks[0];
 
     // eslint-disable-next-line no-console
     console.warn(`Mockiato intercepted request ${request.url} and replaced it with mock\n`, mock);

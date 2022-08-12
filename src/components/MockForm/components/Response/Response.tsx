@@ -23,7 +23,7 @@ export const Response: FC<TResponseProps> = ({ form, onChange }) => (
 
         {form.values.responseType === 'json' && (
             <JSONEditor
-                value={form.getInputProps('response').value}
+                value={'{"result": "21","message":1}'}
                 onChange={onChange}
             />
         )}
@@ -31,7 +31,6 @@ export const Response: FC<TResponseProps> = ({ form, onChange }) => (
         {form.values.responseType === 'text' && (
             <Textarea
                 size="xs"
-                minRows={12}
                 styles={() => ({
                     root: {
                         flex: 1,
