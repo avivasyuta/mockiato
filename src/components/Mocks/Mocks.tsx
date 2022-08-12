@@ -118,9 +118,11 @@ export const Mocks = () => {
                         <Group align="center" className={styles.url}>
                             <Text size="xs" title="URL">{mock.url}</Text>
                             {mock.comment && (
+                                // TODO починить тултип
                                 <Tooltip
                                     label={mock.comment}
                                     withArrow
+                                    position="bottom"
                                     className={styles.comment}
                                 >
                                     <IconInfoCircle size={16} color={theme.colors.blue[4]} />
@@ -149,13 +151,12 @@ export const Mocks = () => {
                         <Tooltip
                             label="Double click to delete"
                             position="bottom"
-                            placement="center"
                             transition="scale-y"
                             openDelay={300}
                             withArrow
                         >
                             <ActionIcon
-                                variant="hover"
+                                variant="subtle"
                                 color="red"
                                 size="xs"
                                 radius="sm"
@@ -167,7 +168,7 @@ export const Mocks = () => {
                         </Tooltip>
 
                         <ActionIcon
-                            variant="hover"
+                            variant="subtle"
                             color="cyan"
                             size="xs"
                             radius="sm"

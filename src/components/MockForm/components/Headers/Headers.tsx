@@ -4,8 +4,7 @@ import {
     useEffect,
     useState,
 } from 'react';
-// eslint-disable-next-line import/no-unresolved
-import { UseFormReturnType } from '@mantine/form/lib/use-form';
+import { UseFormReturnType } from '@mantine/form';
 import {
     ActionIcon,
     Grid,
@@ -74,7 +73,7 @@ export const Headers: FC<THeadersProps> = ({ form, onChange }) => {
     return (
         <>
             {headers.map(({ key, value, id }, index) => (
-                <Group position="left" spacing="xs" mb="xs">
+                <Group position="left" spacing="xs" mb="xs" key={id}>
                     <ActionIcon
                         color="red"
                         disabled={headers.length === 1}

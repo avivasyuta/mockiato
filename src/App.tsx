@@ -17,8 +17,9 @@ import { useMediaQuery } from '@mantine/hooks';
 import { Mocks } from './components/Mocks';
 import { MockFormContext } from './context/MockFormContext';
 import { MockForm } from './components/MockForm';
-import { TMockFormAction, TMockFormState } from './types';
+import { TMockFormAction, TMockFormState, TRoute } from './types';
 import { AppNavbar } from './components/AppNavbar';
+import { Logs } from './components/Logs';
 
 const initialMockFormState: TMockFormState = {
     isOpened: false,
@@ -40,6 +41,7 @@ export const App = () => {
     const [mockForm, dispatch] = useReducer(mockFormReducer, initialMockFormState);
     const isPreferredDarkTheme = useMediaQuery('(prefers-color-scheme: dark)');
     const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
+    const [route, setRoute] = useState<TRoute>('mocks');
 
     const handleCloseForm = useCallback(() => {
         dispatch({ type: 'close' });
@@ -74,7 +76,10 @@ export const App = () => {
                             align="flex-start"
                             sx={{ gridColumnGap: '0' }}
                         >
-                            <AppNavbar />
+                            <AppNavbar
+                                route={route}
+                                onRouteChange={setRoute}
+                            />
 
                             <Box
                                 p="md"
@@ -84,15 +89,19 @@ export const App = () => {
                                     overflowY: 'auto',
                                 }}
                             >
-                                <Mocks />
+                                {route === 'mocks' && (
+                                    <>
+                                        <Mocks />
+                                        <MockForm
+                                            mock={mockForm.mock}
+                                            isOpen={mockForm.isOpened}
+                                            onClose={handleCloseForm}
+                                        />
+                                    </>
+                                )}
+                                {route === 'logs' && <Logs />}
                             </Box>
                         </Group>
-
-                        <MockForm
-                            mock={mockForm.mock}
-                            isOpen={mockForm.isOpened}
-                            onClose={handleCloseForm}
-                        />
                     </MockFormContext.Provider>
                 </NotificationsProvider>
             </MantineProvider>
