@@ -48,6 +48,6 @@
     "start": "webpack serve --open --config config/webpack/webpack.dev.js",
     "build": "rm -rf ./build && webpack --config config/webpack/webpack.prod.js",
     "lint": "eslint \"**/*.{ts,tsx}\"",
-    "typecheck": "tsc -p ./tsconfig.json"
+    "typecheck": "npx tsc --noEmit --project ./tsconfig.json"
   }
 }
