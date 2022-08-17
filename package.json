@@ -14,7 +14,7 @@
     "nanoid": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "xhook": "^1.4.9"
+    "xhook": "^1.5.3"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.193",
