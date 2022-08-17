@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Mockiato: Mock HTTP requests",
   "description": "Adds the API mocker Mockiato to Dev Tools for seamless integration & testing.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "devtools_page": "devtools.html",
   "icons": {
     "16": "mockiato-16.png",

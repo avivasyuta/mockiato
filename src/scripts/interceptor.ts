@@ -1,4 +1,4 @@
-import * as xhook from 'xhook';
+import xhook from 'xhook';
 import { nanoid } from 'nanoid';
 import { MessageBus } from './messageBus';
 import { TRequest, TMock, TMockResponseDTO } from '../types';
