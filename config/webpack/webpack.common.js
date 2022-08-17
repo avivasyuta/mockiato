@@ -10,6 +10,7 @@ module.exports = {
         devtools: path.join(__dirname, `${srcDir}scripts/devtools.ts`),
         interceptor: path.join(__dirname, `${srcDir}scripts/interceptor.ts`),
         contentScript: path.join(__dirname, `${srcDir}scripts/contentScript.ts`),
+        background: path.join(__dirname, `${srcDir}scripts/background.ts`),
     },
     module: {
         rules: [

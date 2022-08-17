@@ -1,22 +1,4 @@
-.mocks {
+.logs {
     display: grid;
     grid-row-gap: 8px;
-}
-
-.method {
-    display: flex;
-    align-items: center;
-    min-width: 70px;
-}
-
-.url {
-    flex: 1;
-}
-
-.code {
-    width: 160px;
-}
-
-.comment {
-    display: flex;
 }

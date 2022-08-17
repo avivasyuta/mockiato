@@ -1,6 +1,6 @@
 import React, {
-    useCallback,
     useEffect,
+    useMemo,
     useReducer,
     useState,
 } from 'react';
@@ -15,11 +15,18 @@ import {
 import { NotificationsProvider } from '@mantine/notifications';
 import { useMediaQuery } from '@mantine/hooks';
 import { Mocks } from './components/Mocks';
-import { MockFormContext } from './context/MockFormContext';
+import { AppContext } from './context/AppContext';
 import { MockForm } from './components/MockForm';
-import { TMockFormAction, TMockFormState, TRoute } from './types';
+import {
+    TMockFormAction,
+    TMockFormState,
+    TRoute,
+    TStore,
+} from './types';
 import { AppNavbar } from './components/AppNavbar';
 import { Logs } from './components/Logs';
+import { useStorage } from './hooks/useStorage';
+import { STORE_KEY } from './contstant';
 
 const initialMockFormState: TMockFormState = {
     isOpened: false,
@@ -42,10 +49,7 @@ export const App = () => {
     const isPreferredDarkTheme = useMediaQuery('(prefers-color-scheme: dark)');
     const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
     const [route, setRoute] = useState<TRoute>('mocks');
-
-    const handleCloseForm = useCallback(() => {
-        dispatch({ type: 'close' });
-    }, []);
+    const [store, setStore] = useStorage<TStore>(STORE_KEY, { mocks: [], logs: [] });
 
     const toggleColorScheme = () => setColorScheme(colorScheme === 'dark' ? 'light' : 'dark');
 
@@ -53,11 +57,17 @@ export const App = () => {
         setColorScheme(isPreferredDarkTheme ? 'dark' : 'light');
     }, [isPreferredDarkTheme]);
 
+    const context = useMemo(() => ({
+        dispatchMockForm: dispatch,
+        store,
+        setStore,
+    }), [store]);
+
     return (
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
             <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
                 <NotificationsProvider position="bottom-center">
-                    <MockFormContext.Provider value={dispatch}>
+                    <AppContext.Provider value={context}>
                         <Global
                             styles={(theme) => ({
                                 body: {
@@ -95,14 +105,13 @@ export const App = () => {
                                         <MockForm
                                             mock={mockForm.mock}
                                             isOpen={mockForm.isOpened}
-                                            onClose={handleCloseForm}
                                         />
                                     </>
                                 )}
                                 {route === 'logs' && <Logs />}
                             </Box>
                         </Group>
-                    </MockFormContext.Provider>
+                    </AppContext.Provider>
                 </NotificationsProvider>
             </MantineProvider>
         </ColorSchemeProvider>

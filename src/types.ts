@@ -1,4 +1,4 @@
-export enum HttpMethod {
+export enum HttpMethodType {
     GET = 'GET',
     POST = 'POST',
     PATCH = 'PATCH',
@@ -24,9 +24,9 @@ export type THeader = {
 }
 
 export type TMock = {
-    id?: number
+    id: string
     url: string
-    httpMethod: HttpMethod
+    httpMethod: HttpMethodType
     httpStatusCode: number
     delay: number
     response?: string
@@ -45,7 +45,7 @@ export type TRequest = {
 
 export type TMockResponseDTO = {
     messageId: string
-    mocks: TMock[]
+    mock?: TMock
 }
 
 export type TMockFormState = {
@@ -59,3 +59,14 @@ export type TMockFormAction = {
 }
 
 export type TRoute = 'logs' | 'mocks'
+
+export type TLog = {
+    request: TRequest,
+    mock: TMock,
+    date: string
+}
+
+export type TStore = {
+    mocks: TMock[]
+    logs: TLog[]
+}

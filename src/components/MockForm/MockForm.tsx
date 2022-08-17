@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useContext, useEffect } from 'react';
 import {
     Button,
     Drawer,
@@ -15,22 +15,23 @@ import {
 import { IconCheck } from '@tabler/icons';
 import { useForm } from '@mantine/form';
 import { showNotification } from '@mantine/notifications';
-import { db } from '../../database';
-import { HttpMethod, THeader, TMock } from '../../types';
+import { nanoid } from 'nanoid';
+import { HttpMethodType, THeader, TMock } from '../../types';
 import { Response } from './components/Response';
 import { Headers } from './components/Headers';
 import styles from './MockForm.module.css';
 import { trimHeaders } from './utils';
+import { AppContext } from '../../context/AppContext';
 
 type MockFormProps = {
     mock?: TMock
     isOpen: boolean
-    onClose: () => void
 }
 
 const initialValues: TMock = {
+    id: nanoid(),
     url: '',
-    httpMethod: HttpMethod.GET,
+    httpMethod: HttpMethodType.GET,
     httpStatusCode: 200,
     delay: 0,
     responseType: 'json',
@@ -39,11 +40,11 @@ const initialValues: TMock = {
 };
 
 const maxDelay = 999999;
-const httpMethods = Object.values(HttpMethod);
+const httpMethods = Object.values(HttpMethodType);
 
-export const MockForm: FC<MockFormProps> = ({ mock, isOpen, onClose }) => {
+export const MockForm: FC<MockFormProps> = ({ mock, isOpen }) => {
+    const { dispatchMockForm, store, setStore } = useContext(AppContext);
     const theme = useMantineTheme();
-
     const form = useForm<TMock>({ initialValues });
 
     useEffect(() => {
@@ -53,7 +54,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, isOpen, onClose }) => {
     }, [mock]);
 
     const handleClose = () => {
-        onClose();
+        dispatchMockForm({ type: 'close' });
         form.reset();
     };
 
@@ -75,10 +76,22 @@ export const MockForm: FC<MockFormProps> = ({ mock, isOpen, onClose }) => {
 
     const handleSubmit = async (values: TMock) => {
         const updatedMock = trimHeaders(values);
-        if (updatedMock?.id) {
-            await db.mocks.update(updatedMock.id, updatedMock);
+        const isNew = !store.mocks.find((m) => m.id === updatedMock.id);
+        if (isNew) {
+            setStore({
+                ...store,
+                mocks: [...store.mocks, updatedMock],
+            });
         } else {
-            await db.mocks.add(updatedMock);
+            setStore({
+                ...store,
+                mocks: store.mocks.map((m) => {
+                    if (m.id === updatedMock.id) {
+                        return updatedMock;
+                    }
+                    return m;
+                }),
+            });
         }
 
         handleClose();
@@ -180,7 +193,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, isOpen, onClose }) => {
                 >
                     <Tabs.List>
                         <Tabs.Tab value="response">Response body</Tabs.Tab>
-                        <Tabs.Tab value="headers">Headers</Tabs.Tab>
+                        <Tabs.Tab value="headers">Response headers</Tabs.Tab>
                         <Tabs.Tab value="comments">Comments</Tabs.Tab>
                     </Tabs.List>
 
@@ -208,7 +221,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, isOpen, onClose }) => {
                     </Tabs.Panel>
                 </Tabs>
 
-                <Group position="right" mt="md">
+                <Group position="right" mt="md" spacing="xs">
                     <Button
                         variant="subtle"
                         color="gray"
