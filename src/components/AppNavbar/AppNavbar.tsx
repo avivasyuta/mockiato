@@ -42,7 +42,10 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
         <Navbar p="sm" width={{ base: 300 }}>
             <Navbar.Section>
                 <Group position="apart">
-                    <Text size="sm">Mockiato</Text>
+                    <Group>
+                        <img src="mockiato-128.png" alt="Mockiato" width="32" />
+                        <Text size="sm">Mockiato</Text>
+                    </Group>
 
                     {route === 'mocks' && (
                         <ActionIcon
