@@ -20,8 +20,6 @@ export const Log: React.FC<LogProps> = ({ log }) => {
         setIsOpen((prev) => !prev);
     };
 
-    console.log('log', log);
-
     return (
         <Paper
             component="a"
