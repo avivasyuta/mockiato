@@ -7,14 +7,13 @@
     "@mantine/hooks": "^5.1.6",
     "@mantine/next": "^5.1.6",
     "@mantine/notifications": "^5.1.6",
-    "@mantine/prism": "^5.1.6",
     "@tabler/icons": "^1.81.0",
     "classnames": "^2.3.1",
     "jsoneditor": "^9.9.0",
     "nanoid": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "xhook": "^1.5.3"
+    "xhook": "^1.5.5"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.193",
