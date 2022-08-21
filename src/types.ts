@@ -40,7 +40,6 @@ export type TRequest = {
     messageId: string
     url: string
     method: string
-    body: string
 }
 
 export type TMockResponseDTO = {

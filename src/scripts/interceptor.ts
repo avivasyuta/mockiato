@@ -36,7 +36,6 @@ const send = <T>(request: TXhookRequest): Promise<T> => {
         messageId,
         url: getUrl(request.url),
         method: request.method,
-        body: request.body,
     };
 
     sendMessage<TRequest>('intercepted', message);
@@ -47,7 +46,15 @@ const send = <T>(request: TXhookRequest): Promise<T> => {
 };
 
 xhook.before(async (request: TXhookRequest, callback: TXhookCallback) => {
-    const mock = await send<TMock | null>(request);
+    let mock;
+    try {
+        mock = await send<TMock | null>(request);
+    } catch (e) {
+        // eslint-disable-next-line no-console
+        console.error(e);
+        callback();
+        return;
+    }
 
     if (!mock) {
         callback();

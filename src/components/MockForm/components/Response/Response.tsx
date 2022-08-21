@@ -23,7 +23,7 @@ export const Response: FC<TResponseProps> = ({ form, onChange }) => (
 
         {form.values.responseType === 'json' && (
             <JSONEditor
-                value={'{"result": "21","message":1}'}
+                value={form.getInputProps('response').value}
                 onChange={onChange}
             />
         )}
