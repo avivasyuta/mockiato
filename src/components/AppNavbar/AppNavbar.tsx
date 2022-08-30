@@ -14,6 +14,7 @@ import {
     IconVersions,
     IconNotebook,
     IconCircleMinus,
+    IconCoin,
 } from '@tabler/icons';
 import { AppContext } from '../../context/AppContext';
 import manifest from '../../../public/manifest.json';
@@ -118,6 +119,20 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                         color="dimmed"
                     >
                         View source code
+                    </Text>
+                </Group>
+
+                <Group position="left" mt="xs">
+                    <IconCoin size={16} color="gray" />
+                    <Text
+                        size="xs"
+                        variant="link"
+                        component="a"
+                        target="_blank"
+                        href="https://www.buymeacoffee.com/mockiatoexW"
+                        color="dimmed"
+                    >
+                        Support extension
                     </Text>
                 </Group>
             </Navbar.Section>

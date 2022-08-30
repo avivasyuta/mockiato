@@ -1,19 +1,13 @@
 import { listenMessage, sendMessage } from '../services/message';
-import { TMockResponseDTO, TRequest, TStore } from '../types';
+import { TLog, TMockResponseDTO, TRequest } from '../types';
 import { INTERCEPTOR_ID, STORE_KEY } from '../contstant';
+import { getStore } from './store';
 
 listenMessage<TRequest>('intercepted', async (request) => {
-    let store;
-    // TODO extension content invalidated
-    try {
-        store = await chrome.storage.local.get(STORE_KEY);
-    } catch (_) {
-        return;
-    }
+    const store = await getStore();
 
-    const extStore = store[STORE_KEY] as TStore;
-    if (extStore?.mocks) {
-        const mocks = extStore.mocks.filter((mock) => mock.isActive
+    if (store?.mocks) {
+        const mocks = store.mocks.filter((mock) => mock.isActive
             && request.url.startsWith(mock.url)
             && mock.httpMethod === request.method);
 
@@ -26,23 +20,23 @@ listenMessage<TRequest>('intercepted', async (request) => {
 
         const mock = mocks[0];
 
-        chrome.storage.local.set({
-            [STORE_KEY]: {
-                ...extStore,
-                logs: [
-                    ...(extStore.logs ?? []),
-                    {
-                        request,
-                        mock,
-                        date: new Date().toLocaleString(),
-                    },
-                ],
-            },
-        });
-
         sendMessage<TMockResponseDTO>('mockChecked', {
             messageId: request.messageId,
             mock,
+        });
+
+        const log: TLog = {
+            request,
+            mock,
+            date: new Date().toLocaleString(),
+            host: window.location.hostname,
+        };
+
+        await chrome.storage.local.set({
+            [STORE_KEY]: {
+                ...store,
+                logs: [...(store.logs ?? []), log],
+            },
         });
     } else {
         sendMessage<TMockResponseDTO>('mockChecked', {

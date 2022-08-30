@@ -60,9 +60,10 @@ export type TMockFormAction = {
 export type TRoute = 'logs' | 'mocks'
 
 export type TLog = {
-    request: TRequest,
-    mock: TMock,
+    request: TRequest
+    mock: TMock
     date: string
+    host: string
 }
 
 export type TStore = {

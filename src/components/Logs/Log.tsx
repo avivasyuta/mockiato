@@ -43,7 +43,7 @@ export const Log: React.FC<LogProps> = ({ log }) => {
                         Request was intercepted and response mocked.
                     </Text>
 
-                    <Text size="xs">
+                    <Text size="xs" mt="sm">
                         <strong>Response status code:</strong> {log.mock.httpStatusCode}
                     </Text>
 
@@ -53,7 +53,7 @@ export const Log: React.FC<LogProps> = ({ log }) => {
 
                     {log.mock.responseHeaders.length > 0 ? (
                         <>
-                            <Text size="xs" weight={700}>Response headers</Text>
+                            <Text size="xs" mt="sm" weight={700}>Response headers</Text>
                             <Code block>
                                 {log.mock.responseHeaders.map((header) => (
                                     <Text size="xs">{header.key}: {header.value}</Text>
@@ -68,7 +68,7 @@ export const Log: React.FC<LogProps> = ({ log }) => {
 
                     {log.mock.response ? (
                         <>
-                            <Text size="xs" weight={700}>Response body</Text>
+                            <Text size="xs" mt="sm" weight={700}>Response body</Text>
                             <Code block>
                                 <Text size="xs">{log.mock.response}</Text>
                             </Code>
