@@ -17,8 +17,8 @@ export const Response: FC<TResponseProps> = ({ form, onChange }) => (
             mb="md"
             {...form.getInputProps('responseType')}
         >
-            <Radio value="json" label="JSON" />
-            <Radio value="text" label="Text" />
+            <Radio value="json" label="JSON" size="xs" />
+            <Radio value="text" label="Text" size="xs" />
         </Radio.Group>
 
         {form.values.responseType === 'json' && (
