@@ -1,14 +1,15 @@
 import { TMock } from '../types';
 
-// TODO remove any type
+type Callback = (value?: TMock) => void
+
 export class MessageBus {
-    private readonly collector: Record<string, any>;
+    private readonly collector: Record<string, Callback>;
 
     constructor() {
         this.collector = {};
     }
 
-    addListener(messageId: string, callback: any) {
+    addListener(messageId: string, callback: Callback) {
         this.collector[messageId] = callback;
     }
 
