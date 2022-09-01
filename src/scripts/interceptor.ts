@@ -29,7 +29,7 @@ const getUrl = (url: string): string => {
     return url.slice(0, questionMarkIndex);
 };
 
-const send = <T>(request: TXhookRequest): Promise<T> => {
+const send = (request: TXhookRequest): Promise<TMock | undefined> => {
     const messageId = nanoid();
 
     const message: TRequest = {
@@ -40,7 +40,7 @@ const send = <T>(request: TXhookRequest): Promise<T> => {
 
     sendMessage<TRequest>('intercepted', message);
 
-    return new Promise<T>((resolve) => {
+    return new Promise<TMock | undefined>((resolve) => {
         messageBus.addListener(messageId, resolve);
     });
 };
@@ -48,7 +48,7 @@ const send = <T>(request: TXhookRequest): Promise<T> => {
 xhook.before(async (request: TXhookRequest, callback: TXhookCallback) => {
     let mock;
     try {
-        mock = await send<TMock | null>(request);
+        mock = await send(request);
     } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e);
