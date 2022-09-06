@@ -88,7 +88,7 @@ export const Mocks = () => {
     }, []);
 
     if (!store.mocks || store.mocks.length === 0) {
-        return <NotFound text="You haven&apos;t added any mock yet." />;
+        return <NotFound text="You haven&apos;t added any mock yet" />;
     }
 
     return (

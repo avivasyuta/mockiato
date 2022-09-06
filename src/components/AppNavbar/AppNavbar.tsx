@@ -13,7 +13,6 @@ import {
     IconShadow,
     IconVersions,
     IconNotebook,
-    IconCircleMinus,
     IconCoin,
 } from '@tabler/icons';
 import { AppContext } from '../../context/AppContext';
@@ -26,18 +25,11 @@ type NavbarProps = {
 }
 
 export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
-    const { dispatchMockForm, store, setStore } = useContext(AppContext);
+    const { dispatchMockForm } = useContext(AppContext);
 
     const handleOpenMockForm = useCallback(() => {
         dispatchMockForm({ type: 'open' });
     }, []);
-
-    const handleClearMocks = useCallback(() => {
-        setStore({
-            ...store,
-            logs: [],
-        });
-    }, [store]);
 
     return (
         <Navbar p="sm" width={{ base: 300 }}>
@@ -58,20 +50,6 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                             onClick={handleOpenMockForm}
                         >
                             <IconPlaylistAdd />
-                        </ActionIcon>
-                    )}
-
-                    {route === 'logs' && (
-                        <ActionIcon
-                            variant="subtle"
-                            color="red"
-                            size="sm"
-                            radius="sm"
-                            title="Clear logs"
-                            disabled={store.logs.length === 0}
-                            onClick={handleClearMocks}
-                        >
-                            <IconCircleMinus />
                         </ActionIcon>
                     )}
                 </Group>

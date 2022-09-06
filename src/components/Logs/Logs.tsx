@@ -1,4 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+    useCallback, useContext, useEffect, useState,
+} from 'react';
+import { Button, Title } from '@mantine/core';
+import { IconCircleMinus } from '@tabler/icons';
 import { AppContext } from '../../context/AppContext';
 import { NotFound } from '../NotFound';
 import { TLog } from '../../types';
@@ -8,7 +12,7 @@ import styles from './Logs.module.css';
 export const Logs: React.FC = () => {
     const [tabHost, setTabHost] = useState<string | null>(null);
     const [logs, setLogs] = useState<TLog[]>([]);
-    const { store } = useContext(AppContext);
+    const { store, setStore } = useContext(AppContext);
 
     chrome?.tabs?.query({ active: true, currentWindow: true }, (tabs) => {
         const tab = tabs[0];
@@ -17,6 +21,14 @@ export const Logs: React.FC = () => {
             setTabHost(url.hostname);
         }
     });
+
+    const handleClearMocks = useCallback(() => {
+        const filtered = store.logs.filter((log) => log.host !== tabHost);
+        setStore({
+            ...store,
+            logs: filtered,
+        });
+    }, [store, tabHost]);
 
     useEffect(() => {
         const filtered = store.logs?.filter((log) => log.host === tabHost);
@@ -27,13 +39,31 @@ export const Logs: React.FC = () => {
         return null;
     }
 
-    if (logs.length === 0) {
-        return <NotFound text="There are no logs" />;
-    }
-
     return (
-        <div className={styles.logs}>
-            {logs.map((log) => <Log log={log} />)}
-        </div>
+        <>
+            <div className={styles.header}>
+                <Title order={5}>Logs for host {tabHost}</Title>
+                <Button
+                    variant="outline"
+                    size="xs"
+                    leftIcon={<IconCircleMinus size={16} />}
+                    color="red"
+                    compact
+                    disabled={logs.length === 0}
+                    title={`Clear logs for host ${tabHost}`}
+                    onClick={handleClearMocks}
+                >
+                    Clear logs
+                </Button>
+            </div>
+
+            {logs.length === 0 ? (
+                <NotFound text="There are no logs" />
+            ) : (
+                <div className={styles.logs}>
+                    {logs.map((log) => <Log log={log} />)}
+                </div>
+            )}
+        </>
     );
 };

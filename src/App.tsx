@@ -97,6 +97,8 @@ export const App = () => {
                                     flex: '1',
                                     height: '100vh',
                                     overflowY: 'auto',
+                                    display: 'flex',
+                                    flexDirection: 'column',
                                 }}
                             >
                                 {route === 'mocks' && (
