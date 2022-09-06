@@ -2,14 +2,13 @@ import { listenMessage, sendMessage } from '../services/message';
 import { TLog, TMockResponseDTO, TRequest } from '../types';
 import { INTERCEPTOR_ID, STORE_KEY } from '../contstant';
 import { getStore } from './store';
+import { getValidMocks } from '../utils';
 
 listenMessage<TRequest>('intercepted', async (request) => {
     const store = await getStore();
 
     if (store?.mocks) {
-        const mocks = store.mocks.filter((mock) => mock.isActive
-            && request.url.startsWith(mock.url)
-            && mock.httpMethod === request.method);
+        const mocks = getValidMocks(store.mocks, request, window.location.origin);
 
         if (mocks.length === 0) {
             sendMessage<TMockResponseDTO>('mockChecked', {

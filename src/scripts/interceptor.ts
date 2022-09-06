@@ -1,15 +1,13 @@
 import xhook from 'xhook';
 import { nanoid } from 'nanoid';
 import { MessageBus } from './messageBus';
-import { TRequest, TMock, TMockResponseDTO } from '../types';
+import {
+    TRequest,
+    TMock,
+    TMockResponseDTO,
+    TXhookRequest,
+} from '../types';
 import { sendMessage, listenMessage } from '../services/message';
-
-type TXhookRequest = {
-    url: string
-    method: string
-    body: string
-    headers: Record<string, string>
-}
 
 type TXhookCallback = (response?: unknown) => void
 
@@ -62,7 +60,7 @@ xhook.before(async (request: TXhookRequest, callback: TXhookCallback) => {
     }
 
     // eslint-disable-next-line no-console
-    console.warn(`Mockiato intercepted request ${request.url} and replaced it with mock\n`, mock);
+    console.warn(`Mockiato intercepted request ${request.url}.`);
 
     const response = {
         status: mock.httpStatusCode,

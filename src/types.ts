@@ -70,3 +70,10 @@ export type TStore = {
     mocks: TMock[]
     logs: TLog[]
 }
+
+export type TXhookRequest = {
+    url: string
+    method: string
+    body: string
+    headers: Record<string, string>
+}
