@@ -49,7 +49,7 @@
   },
   "scripts": {
     "start": "webpack serve --open --config config/webpack/webpack.dev.js",
-    "editorconfig": "editorconfig-checker",
+    "editorconfig": "editorconfig-checker ./src",
     "build": "rm -rf ./build && webpack --config config/webpack/webpack.prod.js",
     "lint": "eslint \"**/*.{ts,tsx}\"",
     "typecheck": "npx tsc --noEmit --project ./tsconfig.json",
