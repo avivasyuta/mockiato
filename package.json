@@ -25,6 +25,7 @@
     "@typescript-eslint/parser": "^5.31.0",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.1",
+    "editorconfig-checker": "4.0.2",
     "eslint": "^8.20.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-react-app": "^7.0.1",
@@ -48,6 +49,7 @@
   },
   "scripts": {
     "start": "webpack serve --open --config config/webpack/webpack.dev.js",
+    "editorconfig": "editorconfig-checker",
     "build": "rm -rf ./build && webpack --config config/webpack/webpack.prod.js",
     "lint": "eslint \"**/*.{ts,tsx}\"",
     "typecheck": "npx tsc --noEmit --project ./tsconfig.json",
