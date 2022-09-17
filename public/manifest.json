@@ -1,30 +1,48 @@
 {
-  "manifest_version": 3,
-  "name": "Mockiato",
-  "description": "Adds the API mocker Mockiato to Dev Tools for seamless integration & testing.",
-  "version": "1.0.0",
-  "devtools_page": "devtools.html",
-  "icons": {
-    "16": "mockiato-16.png",
-    "128": "mockiato-128.png"
-  },
-  "action": {
-    "default_icon": {
-      "16": "mockiato-16.png",
-      "128": "mockiato-128.png"
-    }
-  },
-  "permissions": ["storage", "scripting", "tabs"],
-  "background": {"service_worker": "background.js"},
-  "host_permissions": ["<all_urls>"],
-  "web_accessible_resources": [{
-    "resources": ["interceptor.js"],
-    "matches": ["<all_urls>"]
-  }],
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["contentScript.js"]
-    }
-  ]
+    "manifest_version": 3,
+    "name": "Mockiato",
+    "description": "Adds the API mocker Mockiato to Dev Tools for seamless integration & testing.",
+    "version": "1.0.0",
+    "devtools_page": "devtools.html",
+    "icons": {
+        "16": "mockiato-16.png",
+        "128": "mockiato-128.png"
+    },
+    "action": {
+        "default_icon": {
+            "16": "mockiato-16.png",
+            "128": "mockiato-128.png"
+        }
+    },
+    "permissions": [
+        "storage",
+        "scripting",
+        "tabs"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "host_permissions": [
+        "<all_urls>"
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "interceptor.js"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "contentScript.js"
+            ]
+        }
+    ]
 }
