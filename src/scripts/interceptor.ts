@@ -8,6 +8,7 @@ import {
     TXhookRequest,
 } from '../types';
 import { sendMessage, listenMessage } from '../services/message';
+import { showAlert, createStack } from '../services/alert';
 
 type TXhookCallback = (response?: unknown) => void
 
@@ -59,9 +60,6 @@ xhook.before(async (request: TXhookRequest, callback: TXhookCallback) => {
         return;
     }
 
-    // eslint-disable-next-line no-console
-    console.warn(`Mockiato intercepted request ${request.url}.`);
-
     const response = {
         status: mock.httpStatusCode,
         text: mock.response,
@@ -71,10 +69,14 @@ xhook.before(async (request: TXhookRequest, callback: TXhookCallback) => {
     if (mock.delay) {
         setTimeout(() => {
             callback(response);
+            showAlert(request);
         }, mock.delay);
     } else {
         callback(response);
+        showAlert(request);
     }
 });
+
+createStack();
 
 export {};
