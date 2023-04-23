@@ -7,7 +7,7 @@ import {
     Text,
 } from '@mantine/core';
 import { TLog } from '../../types';
-import { HttpMethod } from '../HttpMethod';
+import { HttpMethod } from '../../components/HttpMethod';
 
 type LogProps = {
     log: TLog

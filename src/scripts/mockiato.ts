@@ -1,6 +1,5 @@
 import xhook from 'xhook';
 import { nanoid } from 'nanoid';
-import { MessageBus } from './messageBus';
 import {
     TRequest,
     TMock,
@@ -8,6 +7,7 @@ import {
     TXhookRequest,
 } from '../types';
 import { sendMessage, listenMessage } from '../services/message';
+import { MessageBus } from '../services/messageBus';
 import { showAlert, createStack } from '../services/alert';
 
 type TXhookCallback = (response?: unknown) => void
@@ -33,7 +33,8 @@ const send = (request: TXhookRequest): Promise<TMock | undefined> => {
 
     const message: TRequest = {
         messageId,
-        url: getUrl(request.url),
+        // TODO обработать тип URL
+        url: getUrl(request.url as string),
         method: request.method,
     };
 

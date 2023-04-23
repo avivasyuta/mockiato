@@ -10,7 +10,7 @@ module.exports = merge(common, {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, '../../public/devtools.html'),
             filename: 'devtools.html',
-            skipAssets: ['app.js', 'contentScript.js', 'interceptor.js'],
+            skipAssets: ['app.js', 'contentScript.js', 'mockiato.js'],
         }),
         ...common.plugins,
         new CopyWebpackPlugin({

@@ -2,9 +2,9 @@ import React, {
     useCallback, useContext, useEffect, useState,
 } from 'react';
 import { Button, Title } from '@mantine/core';
-import { IconCircleMinus } from '@tabler/icons';
+import { IconTrash } from '@tabler/icons';
 import { AppContext } from '../../context/AppContext';
-import { NotFound } from '../NotFound';
+import { NotFound } from '../../components/NotFound';
 import { TLog } from '../../types';
 import { Log } from './Log';
 import styles from './Logs.module.css';
@@ -46,7 +46,7 @@ export const Logs: React.FC = () => {
                 <Button
                     variant="outline"
                     size="xs"
-                    leftIcon={<IconCircleMinus size={16} />}
+                    leftIcon={<IconTrash size={16} />}
                     color="red"
                     compact
                     disabled={logs.length === 0}

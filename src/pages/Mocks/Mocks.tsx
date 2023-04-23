@@ -18,8 +18,8 @@ import { showNotification } from '@mantine/notifications';
 import { nanoid } from 'nanoid';
 import { TMock } from '../../types';
 import { AppContext } from '../../context/AppContext';
-import { NotFound } from '../NotFound';
-import { HttpMethod } from '../HttpMethod';
+import { NotFound } from '../../components/NotFound';
+import { HttpMethod } from '../../components/HttpMethod';
 import styles from './Mocks.module.css';
 
 export const Mocks = () => {

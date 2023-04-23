@@ -14,7 +14,9 @@ import {
 } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { useMediaQuery } from '@mantine/hooks';
-import { Mocks } from './components/Mocks';
+import { Mocks } from './pages/Mocks';
+import { Logs } from './pages/Logs';
+import { Settings } from './pages/Settings';
 import { AppContext } from './context/AppContext';
 import { MockForm } from './components/MockForm';
 import {
@@ -24,7 +26,6 @@ import {
     TStore,
 } from './types';
 import { AppNavbar } from './components/AppNavbar';
-import { Logs } from './components/Logs';
 import { useStorage } from './hooks/useStorage';
 import { STORE_KEY } from './contstant';
 
@@ -111,6 +112,7 @@ export const App = () => {
                                     </>
                                 )}
                                 {route === 'logs' && <Logs />}
+                                {route === 'settings' && <Settings />}
                             </Box>
                         </Group>
                     </AppContext.Provider>

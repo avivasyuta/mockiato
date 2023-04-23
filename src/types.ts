@@ -57,7 +57,7 @@ export type TMockFormAction = {
     payload?: TMock
 }
 
-export type TRoute = 'logs' | 'mocks'
+export type TRoute = 'logs' | 'mocks' | 'settings'
 
 export type TLog = {
     request: TRequest
@@ -72,8 +72,7 @@ export type TStore = {
 }
 
 export type TXhookRequest = {
-    url: string
+    url: string | URL
     method: string
-    body: string
     headers: Record<string, string>
 }

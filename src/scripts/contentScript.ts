@@ -54,10 +54,10 @@ const destroy = () => {
 };
 
 export const main = () => {
-    // Inject new script to user's DOM
+    // Inject mockiato script to user's DOM
     const s = document.createElement('script');
     s.id = INTERCEPTOR_ID;
-    s.src = chrome.runtime.getURL('interceptor.js');
+    s.src = chrome.runtime.getURL('mockiato.js');
     (document.head || document.documentElement).appendChild(s);
 };
 

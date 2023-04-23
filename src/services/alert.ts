@@ -97,7 +97,7 @@ const handleClose = (id: string) => {
     alert?.remove();
 };
 
-const createAlertNode = (url: string): HTMLElementTagNameMap['div'] => {
+const createAlertNode = (url: string | URL): HTMLElementTagNameMap['div'] => {
     const id = nanoid();
 
     const alert = document.createElement('div');
@@ -116,7 +116,7 @@ const createAlertNode = (url: string): HTMLElementTagNameMap['div'] => {
     return alert;
 };
 
-const logToConsole = (url: string): void => {
+const logToConsole = (url: string | URL): void => {
     const text = `${EXTENSION_NAME} intercepted request ${url}. See logs in the «Mockiato» tab in Dev Tools.`;
     // eslint-disable-next-line no-console
     console.warn(text);
