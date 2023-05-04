@@ -9,7 +9,6 @@
         "@mantine/notifications": "^5.1.6",
         "@tabler/icons-react": "2.17.0",
         "classnames": "^2.3.1",
-        "http-request-mock": "1.8.15",
         "jsoneditor": "^9.9.0",
         "nanoid": "^4.0.0",
         "react": "^18.2.0",
