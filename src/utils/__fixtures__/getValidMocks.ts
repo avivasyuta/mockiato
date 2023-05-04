@@ -41,6 +41,16 @@ export const testMocks: TMock[] = [
         responseHeaders: [],
         isActive: false,
     },
+    {
+        id: '5',
+        url: '/path?param=value',
+        httpMethod: HttpMethodType.GET,
+        httpStatusCode: 200,
+        delay: 0,
+        responseType: 'json',
+        responseHeaders: [],
+        isActive: true,
+    },
 ];
 
 type Test = {
@@ -134,6 +144,30 @@ export const testTable: Test[] = [
                 messageId: '1',
             },
             origin: 'any',
+        },
+        expected: [testMocks[2]],
+    },
+    {
+        title: 'Uses query string for search mocks.',
+        data: {
+            request: {
+                url: '/path?param=value&param2=value',
+                method: 'GET',
+                messageId: '1',
+            },
+            origin: 'https://www.example.ru',
+        },
+        expected: [testMocks[4]],
+    },
+    {
+        title: 'Query url is relative but mock url is absolute.',
+        data: {
+            request: {
+                url: '/s/common/url',
+                method: 'GET',
+                messageId: '1',
+            },
+            origin: 'https://www.example.ru',
         },
         expected: [testMocks[2]],
     },

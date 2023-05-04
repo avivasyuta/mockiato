@@ -3,7 +3,7 @@ import { TLog, TMockResponseDTO, TRequest } from '../types';
 import { INTERCEPTOR_ID, STORE_KEY } from '../contstant';
 import { getValidMocks } from '../utils';
 import { removeStack } from '../services/alert';
-import { getStore } from './store';
+import { getStore } from '../utils/storage';
 
 listenMessage<TRequest>('intercepted', async (request) => {
     const store = await getStore();

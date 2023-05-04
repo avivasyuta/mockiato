@@ -24,6 +24,7 @@ const createStyles = () => {
             z-index: 99999;
         }
         .mockiato-alert {
+            font-family: Arial, serif
             font-size: 14px;
             display: flex;
             width: 400px;

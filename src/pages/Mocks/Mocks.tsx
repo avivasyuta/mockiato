@@ -1,49 +1,44 @@
-import React, { useCallback, useContext } from 'react';
+import React, { memo, useCallback, useReducer } from 'react';
 import {
-    ActionIcon,
-    Badge,
-    Group,
-    Paper, Switch,
-    Text,
-    Tooltip,
+    Button,
+    Drawer,
+    Title,
     useMantineTheme,
 } from '@mantine/core';
-import {
-    IconCheck,
-    IconCopy,
-    IconInfoCircle,
-    IconTrash,
-} from '@tabler/icons';
+import { IconCheck, IconPlaylistAdd } from '@tabler/icons-react';
 import { showNotification } from '@mantine/notifications';
 import { nanoid } from 'nanoid';
-import { TMock } from '../../types';
-import { AppContext } from '../../context/AppContext';
+import { useStore } from '../../hooks/useStore';
+import { TMock, TMockFormAction, TMockFormState } from '../../types';
 import { NotFound } from '../../components/NotFound';
-import { HttpMethod } from '../../components/HttpMethod';
+import { MockForm } from '../../components/MockForm';
+import { trimHeaders } from '../../components/MockForm/utils';
+import { Spinner } from '../../components/Spinner';
+import { Mock } from './components/Mock';
 import styles from './Mocks.module.css';
 
-export const Mocks = () => {
-    const { dispatchMockForm, store, setStore } = useContext(AppContext);
+const initialMockFormState: TMockFormState = {
+    isOpened: false,
+    mock: undefined,
+};
+
+const mockFormReducer = (state: TMockFormState, action: TMockFormAction): TMockFormState => {
+    switch (action.type) {
+    case 'open':
+        return { isOpened: true, mock: action.payload };
+    case 'close':
+        return { isOpened: false, mock: undefined };
+    default:
+        return state;
+    }
+};
+
+const MocksPage: React.FC = () => {
+    const [mockForm, dispatchMockForm] = useReducer(mockFormReducer, initialMockFormState);
+    const [mocks, setMocks] = useStore('mocks');
     const theme = useMantineTheme();
 
-    const handleDeleteMock = (mockId?: string) => async (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        if (e.detail < 2) {
-            return;
-        }
-        setStore({
-            ...store,
-            mocks: store.mocks.filter((m) => mockId !== m.id),
-        });
-        showNotification({
-            message: 'Mock was deleted',
-            icon: <IconCheck size={18} />,
-            color: 'green',
-        });
-    };
-
-    const handleCopyMock = (mock: TMock) => (e: React.MouseEvent<HTMLButtonElement>): void => {
-        e.stopPropagation();
+    const handleCopyMock = (mock: TMock): void => {
         dispatchMockForm({
             type: 'open',
             payload: {
@@ -53,137 +48,126 @@ export const Mocks = () => {
         });
     };
 
-    const handleEditMock = (mock: TMock) => (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault();
+    const handleOpenMockForm = useCallback(() => {
+        dispatchMockForm({ type: 'open' });
+    }, []);
+
+    const handleEditMock = (mock: TMock) => {
         dispatchMockForm({
             type: 'open',
             payload: mock,
         });
     };
 
-    const handleClickStatus = (e: React.MouseEvent<HTMLInputElement>) => e.stopPropagation();
-    const handleChangeStatus = (mockId: string) => (e: React.ChangeEvent<HTMLInputElement>): void => {
-        setStore({
-            ...store,
-            mocks: store.mocks.map((mock) => {
-                if (mock.id === mockId) {
-                    return { ...mock, isActive: e.currentTarget.checked };
-                }
-                return mock;
-            }),
+    if (!mocks) {
+        return <Spinner />;
+    }
+
+    const handleDeleteMock = (mockId?: string) => {
+        const newMocks = mocks.filter((m) => mockId !== m.id);
+
+        setMocks(newMocks);
+        showNotification({
+            message: 'Mock was deleted',
+            icon: <IconCheck size={18} />,
+            color: 'green',
         });
     };
 
-    const getStatusCodeColor = useCallback((code: number): string => {
-        if (code >= 100 && code < 200) {
-            return 'cyan';
-        } if (code >= 200 && code < 300) {
-            return 'green';
-        } if (code >= 300 && code < 400) {
-            return 'gray';
-        } if (code >= 400 && code < 500) {
-            return 'yellow';
-        }
-        return 'red';
-    }, []);
+    const handleChangeMock = (newMock: TMock): void => {
+        const newMocks = mocks.map((mock) => (mock.id === newMock.id ? newMock : mock));
+        setMocks(newMocks);
+    };
 
-    if (!store.mocks || store.mocks.length === 0) {
-        return <NotFound text="You haven&apos;t added any mock yet" />;
-    }
+    const handleCloseForm = (): void => {
+        dispatchMockForm({ type: 'close' });
+    };
+
+    const submitForm = (values: TMock): void => {
+        const mock = trimHeaders(values);
+        const isNew = !mocks.find((m) => m.id === mock.id);
+
+        if (isNew) {
+            setMocks([mock, ...mocks]);
+        } else {
+            const newMocks = mocks.map((m) => {
+                if (m.id === mock.id) {
+                    return mock;
+                }
+                return m;
+            });
+
+            setMocks(newMocks);
+        }
+
+        showNotification({
+            title: 'You deal great',
+            message: 'Mock data was saved',
+            icon: <IconCheck size={18} />,
+            color: 'green',
+        });
+
+        handleCloseForm();
+    };
 
     return (
-        <div className={styles.mocks}>
-            {store.mocks.map((mock: TMock) => (
-                <Paper
-                    component="a"
-                    href="#"
-                    shadow="sm"
-                    radius="md"
-                    py="xs"
-                    px="md"
-                    key={mock.id}
-                    onClick={handleEditMock(mock)}
+        <>
+            <div className={styles.header}>
+                <Title order={5}>Mocks for requests</Title>
+
+                <Button
+                    leftIcon={<IconPlaylistAdd />}
+                    variant="gradient"
+                    size="xs"
+                    title="Add new mock"
+                    gradient={{ from: 'indigo', to: 'cyan' }}
+                    onClick={handleOpenMockForm}
                 >
-                    <Group>
-                        <Switch
-                            onLabel="ON"
-                            offLabel="OFF"
-                            size="sm"
-                            checked={mock.isActive}
-                            onClick={handleClickStatus}
-                            onChange={handleChangeStatus(mock.id)}
-                        />
+                    Add new mock
+                </Button>
+            </div>
 
-                        <div className={styles.method}>
-                            <HttpMethod method={mock.httpMethod} />
-                        </div>
+            <div className={styles.c}>
+                {mocks.length > 0 ? (
+                    <div className={styles.mocks}>
+                        {mocks.map((mock: TMock) => (
+                            <Mock
+                                key={mock.id}
+                                mock={mock}
+                                onEditClick={handleEditMock}
+                                onCopyClick={handleCopyMock}
+                                onDelete={handleDeleteMock}
+                                onChange={handleChangeMock}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <NotFound text="No mocks to show" />
+                )}
+            </div>
 
-                        <Group align="center" className={styles.url}>
-                            <Text size="xs" title="URL">{mock.url}</Text>
-                            {mock.comment && (
-                                <Tooltip
-                                    label={mock.comment}
-                                    withArrow
-                                    position="bottom"
-                                    className={styles.comment}
-                                >
-                                    <span>
-                                        <IconInfoCircle size={16} color={theme.colors.blue[4]} />
-                                    </span>
-                                </Tooltip>
-                            )}
-                        </Group>
-
-                        <Group className={styles.code}>
-                            <Text
-                                size="xs"
-                                color={theme.colors.gray[6]}
-                            >
-                                Status code
-                            </Text>
-                            <Badge
-                                size="xs"
-                                variant="outline"
-                                color={getStatusCodeColor(mock.httpStatusCode)}
-                                radius="sm"
-                                title="HTTP status code"
-                            >
-                                {mock.httpStatusCode}
-                            </Badge>
-                        </Group>
-
-                        <Tooltip
-                            label="Double click to delete"
-                            position="bottom"
-                            transition="scale-y"
-                            openDelay={300}
-                            withArrow
-                        >
-                            <ActionIcon
-                                variant="subtle"
-                                color="red"
-                                size="xs"
-                                radius="sm"
-                                title="Delete mock"
-                                onClick={handleDeleteMock(mock.id)}
-                            >
-                                <IconTrash />
-                            </ActionIcon>
-                        </Tooltip>
-
-                        <ActionIcon
-                            variant="subtle"
-                            color="cyan"
-                            size="xs"
-                            radius="sm"
-                            title="Clone mock"
-                            onClick={handleCopyMock(mock)}
-                        >
-                            <IconCopy />
-                        </ActionIcon>
-                    </Group>
-                </Paper>
-            ))}
-        </div>
+            <Drawer
+                opened={mockForm.isOpened}
+                padding="sm"
+                position="right"
+                size="50%"
+                title={mockForm.mock?.id ? 'Edit mock' : 'Add new mock'}
+                className={styles.drawer}
+                overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[1]}
+                overlayOpacity={0.2}
+                overlayBlur={2}
+                onClose={handleCloseForm}
+            >
+                {mockForm.isOpened && (
+                    <MockForm
+                        mock={mockForm.mock}
+                        onClose={handleCloseForm}
+                        onSubmit={submitForm}
+                    />
+                )}
+            </Drawer>
+        </>
     );
 };
+
+export const Mocks = memo(MocksPage);

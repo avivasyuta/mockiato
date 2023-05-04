@@ -71,8 +71,15 @@ export type TStore = {
     logs: TLog[]
 }
 
+export type TUpdateStore = Record<string, {
+    newValue: TStore,
+    oldValue: TStore
+}>
+
+export type TStoreKey = keyof TStore
+
 export type TXhookRequest = {
-    url: string | URL
+    url: string
     method: string
     headers: Record<string, string>
 }

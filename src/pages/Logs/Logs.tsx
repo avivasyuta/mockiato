@@ -1,18 +1,14 @@
-import React, {
-    useCallback, useContext, useEffect, useState,
-} from 'react';
-import { Button, Title } from '@mantine/core';
-import { IconTrash } from '@tabler/icons';
-import { AppContext } from '../../context/AppContext';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Button, Loader, Title } from '@mantine/core';
+import { IconTrash } from '@tabler/icons-react';
 import { NotFound } from '../../components/NotFound';
-import { TLog } from '../../types';
+import { useStore } from '../../hooks/useStore';
 import { Log } from './Log';
 import styles from './Logs.module.css';
 
 export const Logs: React.FC = () => {
     const [tabHost, setTabHost] = useState<string | null>(null);
-    const [logs, setLogs] = useState<TLog[]>([]);
-    const { store, setStore } = useContext(AppContext);
+    const [logs, setLogs] = useStore('logs');
 
     chrome?.tabs?.query({ active: true, currentWindow: true }, (tabs) => {
         const tab = tabs[0];
@@ -23,20 +19,28 @@ export const Logs: React.FC = () => {
     });
 
     const handleClearMocks = useCallback(() => {
-        const filtered = store.logs.filter((log) => log.host !== tabHost);
-        setStore({
-            ...store,
-            logs: filtered,
-        });
-    }, [store, tabHost]);
-
-    useEffect(() => {
-        const filtered = store.logs?.filter((log) => log.host === tabHost);
+        const logsArray = logs ?? [];
+        const filtered = logsArray.filter((log) => log.host !== tabHost);
         setLogs(filtered);
-    }, [tabHost, store.logs]);
+    }, [logs, tabHost]);
+
+    const filteredLogs = useMemo(() => {
+        if (!logs) {
+            return null;
+        }
+
+        const filtered = logs?.filter((log) => log.host === tabHost);
+        filtered.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+        return filtered;
+    }, [tabHost, logs]);
 
     if (!tabHost) {
         return null;
+    }
+
+    if (!filteredLogs) {
+        return <Loader variant="bars" size="sm" />;
     }
 
     return (
@@ -49,7 +53,7 @@ export const Logs: React.FC = () => {
                     leftIcon={<IconTrash size={16} />}
                     color="red"
                     compact
-                    disabled={logs.length === 0}
+                    disabled={filteredLogs.length === 0}
                     title={`Clear logs for host ${tabHost}`}
                     onClick={handleClearMocks}
                 >
@@ -57,11 +61,11 @@ export const Logs: React.FC = () => {
                 </Button>
             </div>
 
-            {logs.length === 0 ? (
+            {filteredLogs.length === 0 ? (
                 <NotFound text="There are no logs" />
             ) : (
                 <div className={styles.logs}>
-                    {logs.map((log) => <Log log={log} />)}
+                    {filteredLogs.map((log) => <Log log={log} />)}
                 </div>
             )}
         </>

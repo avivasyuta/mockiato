@@ -18,23 +18,12 @@ listenMessage<TMockResponseDTO>('mockChecked', (response) => {
     messageBus.dispatch(response.messageId, response.mock);
 });
 
-const getUrl = (url: string): string => {
-    const questionMarkIndex = url.indexOf('?');
-
-    if (questionMarkIndex === -1) {
-        return url;
-    }
-
-    return url.slice(0, questionMarkIndex);
-};
-
 const send = (request: TXhookRequest): Promise<TMock | undefined> => {
     const messageId = nanoid();
 
     const message: TRequest = {
         messageId,
-        // TODO обработать тип URL
-        url: getUrl(request.url as string),
+        url: request.url,
         method: request.method,
     };
 
@@ -47,6 +36,7 @@ const send = (request: TXhookRequest): Promise<TMock | undefined> => {
 
 xhook.before(async (request: TXhookRequest, callback: TXhookCallback) => {
     let mock;
+
     try {
         mock = await send(request);
     } catch (e) {

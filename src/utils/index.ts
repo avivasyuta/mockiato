@@ -5,24 +5,8 @@ export const getValidMocks = (mocks: TMock[], request: TRequest, origin: string)
         return false;
     }
 
-    if (request.url.startsWith(mock.url)) {
-        return true;
-    }
+    const requestUrl = !request.url.startsWith('http') ? `${origin}${request.url}` : request.url;
+    const mockUrl = !mock.url.startsWith('http') ? `${origin}${mock.url}` : mock.url;
 
-    // relative mock paths
-    if (mock.url.startsWith('/')) {
-        try {
-            const url = new URL(request.url);
-            // mock — /url/path
-            // request - https://example.com/url/path*
-            // origin - https://example.com
-            if (origin === url.origin && url.pathname.startsWith(mock.url)) {
-                return true;
-            }
-        } catch (_) {
-            return false;
-        }
-    }
-
-    return false;
+    return requestUrl.startsWith(mockUrl);
 });

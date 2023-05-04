@@ -1,22 +1,17 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
 .mocks {
     display: grid;
     grid-row-gap: 8px;
-}
-
-.method {
-    display: flex;
-    align-items: center;
-    min-width: 70px;
-}
-
-.url {
-    flex: 1;
-}
-
-.code {
-    width: 160px;
-}
-
-.comment {
-    display: flex;
 }
