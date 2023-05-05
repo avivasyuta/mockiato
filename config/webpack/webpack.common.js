@@ -2,15 +2,16 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { HtmlWebpackSkipAssetsPlugin } = require('html-webpack-skip-assets-plugin');
 
-const srcDir = '../../src/';
+const srcDir = '../../src';
+const scriptsDir = `${srcDir}/scripts`;
 
 module.exports = {
     entry: {
-        app: path.join(__dirname, `${srcDir}index.tsx`),
-        devtools: path.join(__dirname, `${srcDir}scripts/devtools.ts`),
-        interceptor: path.join(__dirname, `${srcDir}scripts/interceptor.ts`),
-        contentScript: path.join(__dirname, `${srcDir}scripts/contentScript.ts`),
-        background: path.join(__dirname, `${srcDir}scripts/background.ts`),
+        app: path.join(__dirname, `${srcDir}/index.tsx`),
+        devtools: path.join(__dirname, `${scriptsDir}/devtools.ts`),
+        mockiato: path.join(__dirname, `${scriptsDir}/mockiato.ts`),
+        contentScript: path.join(__dirname, `${scriptsDir}/contentScript.ts`),
+        background: path.join(__dirname, `${scriptsDir}/background.ts`),
     },
     module: {
         rules: [
@@ -32,7 +33,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, '../../public/index.html'),
             filename: 'index.html',
-            skipAssets: ['devtools.js', 'contentScript.js', 'interceptor.js'],
+            skipAssets: ['devtools.js', 'contentScript.js', 'mockiato.js'],
         }),
         new HtmlWebpackSkipAssetsPlugin(),
     ],

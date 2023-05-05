@@ -1,13 +1,24 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import { App } from './App';
+import { initStore } from './utils/storage';
+import { TStore } from './types';
 
-const root = ReactDOM.createRoot(
+const root = createRoot(
     document.getElementById('root') as HTMLElement,
 );
 
-root.render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>,
-);
+const initialStore: TStore = {
+    mocks: [],
+    logs: [],
+};
+
+(async () => {
+    await initStore(initialStore);
+
+    root.render(
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>,
+    );
+})();

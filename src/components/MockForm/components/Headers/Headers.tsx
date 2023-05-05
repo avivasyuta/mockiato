@@ -11,7 +11,7 @@ import {
     Group,
     Input,
 } from '@mantine/core';
-import { IconX } from '@tabler/icons';
+import { IconX } from '@tabler/icons-react';
 import { nanoid } from 'nanoid';
 import { THeader, TMock } from '../../../../types';
 import styles from './Headers.module.css';

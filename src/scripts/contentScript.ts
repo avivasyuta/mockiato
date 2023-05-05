@@ -3,7 +3,7 @@ import { TLog, TMockResponseDTO, TRequest } from '../types';
 import { INTERCEPTOR_ID, STORE_KEY } from '../contstant';
 import { getValidMocks } from '../utils';
 import { removeStack } from '../services/alert';
-import { getStore } from './store';
+import { getStore } from '../utils/storage';
 
 listenMessage<TRequest>('intercepted', async (request) => {
     const store = await getStore();
@@ -54,10 +54,10 @@ const destroy = () => {
 };
 
 export const main = () => {
-    // Inject new script to user's DOM
+    // Inject mockiato script to user's DOM
     const s = document.createElement('script');
     s.id = INTERCEPTOR_ID;
-    s.src = chrome.runtime.getURL('interceptor.js');
+    s.src = chrome.runtime.getURL('mockiato.js');
     (document.head || document.documentElement).appendChild(s);
 };
 
