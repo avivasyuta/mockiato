@@ -46,7 +46,7 @@ export const Logs: React.FC = () => {
     return (
         <>
             <div className={styles.header}>
-                <Title order={5}>Logs for host {tabHost}</Title>
+                <Title order={4}>Logs for host {tabHost}</Title>
                 <Button
                     variant="outline"
                     size="xs"
