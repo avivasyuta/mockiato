@@ -8,12 +8,13 @@ import { useStore } from '../../hooks/useStore';
 
 export const Settings = () => {
     const [logs, setLogs] = useStore('logs');
+    const [mocks, setMocks] = useStore('mocks');
 
     const isClearLogsDisabled = useMemo(() => logs === null || logs.length === 0, [logs]);
+    const isClearMocksDisabled = useMemo(() => mocks === null || mocks.length === 0, [mocks]);
 
-    const handleClearAllLogs = () => {
-        setLogs([]);
-    };
+    const handleClearAllLogs = () => setLogs([]);
+    const handleClearAllMocks = () => setMocks([]);
 
     return (
         <Group position="center">
@@ -24,7 +25,26 @@ export const Settings = () => {
                 px="md"
                 className={styles.paper}
             >
-                <Title order={4} pb="lg">General settings</Title>
+                <Title order={4} pb="md">General settings</Title>
+
+                <div className={styles.setting}>
+                    <div>
+                        <Text size="sm" weight={500}>Mocks</Text>
+                        <Text size="sm" color="gray">
+                            All mocks for all hosts
+                        </Text>
+                    </div>
+                    <Button
+                        size="xs"
+                        variant="outline"
+                        color="red"
+                        leftIcon={<IconTrash size={16} />}
+                        disabled={isClearMocksDisabled}
+                        onClick={handleClearAllMocks}
+                    >
+                        Clear all
+                    </Button>
+                </div>
 
                 <div className={styles.setting}>
                     <div>
@@ -41,7 +61,7 @@ export const Settings = () => {
                         disabled={isClearLogsDisabled}
                         onClick={handleClearAllLogs}
                     >
-                        Clear all logs
+                        Clear all
                     </Button>
                 </div>
             </Paper>
