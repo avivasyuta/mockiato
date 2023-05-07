@@ -13,8 +13,13 @@ export const Settings = () => {
     const isClearLogsDisabled = useMemo(() => logs === null || logs.length === 0, [logs]);
     const isClearMocksDisabled = useMemo(() => mocks === null || mocks.length === 0, [mocks]);
 
-    const handleClearAllLogs = () => setLogs([]);
-    const handleClearAllMocks = () => setMocks([]);
+    const handleClearAllLogs = () => {
+        setLogs([]);
+    };
+
+    const handleClearAllMocks = () => {
+        setMocks([]);
+    };
 
     return (
         <Group position="center">

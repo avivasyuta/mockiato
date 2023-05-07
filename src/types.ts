@@ -57,7 +57,7 @@ export type TMockFormAction = {
     payload?: TMock
 }
 
-export type TRoute = 'logs' | 'mocks' | 'settings'
+export type TRoute = 'logs' | 'mocks' | 'settings' | 'headers'
 
 export type TLog = {
     request: TRequest
@@ -66,9 +66,19 @@ export type TLog = {
     host: string
 }
 
+export type THeaderProfileStatus = 'active' | 'inactive'
+
+export type THeaderProfile = {
+    id: string
+    name: string
+    status: THeaderProfileStatus
+    headers: THeader[]
+}
+
 export type TStore = {
     mocks: TMock[]
     logs: TLog[]
+    headersProfiles: THeaderProfile[]
 }
 
 export type TUpdateStore = Record<string, {

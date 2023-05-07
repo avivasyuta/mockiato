@@ -12,6 +12,7 @@ import { useMediaQuery } from '@mantine/hooks';
 import { Mocks } from './pages/Mocks';
 import { Logs } from './pages/Logs';
 import { Settings } from './pages/Settings';
+import { Headers } from './pages/Headers';
 import { TRoute } from './types';
 import { AppNavbar } from './components/AppNavbar';
 
@@ -62,6 +63,7 @@ export const App = () => {
                             }}
                         >
                             {route === 'mocks' && <Mocks />}
+                            {route === 'headers' && <Headers />}
                             {route === 'logs' && <Logs />}
                             {route === 'settings' && <Settings />}
                         </Box>

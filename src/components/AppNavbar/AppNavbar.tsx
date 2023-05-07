@@ -13,9 +13,40 @@ import {
     IconSettings2,
     IconShadow,
     IconVersions,
+    IconCodeMinus,
+    TablerIconsProps,
 } from '@tabler/icons-react';
 import manifest from '../../../public/manifest.json';
 import { TRoute } from '../../types';
+
+type TMenuItem = {
+    route: TRoute
+    name: string
+    icon: (props: TablerIconsProps) => JSX.Element
+}
+
+const menu: TMenuItem[] = [
+    {
+        route: 'mocks',
+        name: 'Mocks',
+        icon: IconShadow,
+    },
+    {
+        route: 'headers',
+        name: 'Headers',
+        icon: IconCodeMinus,
+    },
+    {
+        route: 'logs',
+        name: 'Logs',
+        icon: IconNotebook,
+    },
+    {
+        route: 'settings',
+        name: 'Settings',
+        icon: IconSettings2,
+    },
+];
 
 type NavbarProps = {
     route: TRoute
@@ -42,27 +73,19 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => (
         <Divider my="sm" variant="dotted" />
 
         <Navbar.Section grow>
-            <NavLink
-                label="Mocks"
-                variant="light"
-                active={route === 'mocks'}
-                onClick={() => onRouteChange('mocks')}
-                icon={<IconShadow size={16} stroke={1.5} />}
-            />
-            <NavLink
-                label="Logs"
-                variant="light"
-                active={route === 'logs'}
-                onClick={() => onRouteChange('logs')}
-                icon={<IconNotebook size={16} stroke={1.5} />}
-            />
-            <NavLink
-                label="Settings"
-                variant="light"
-                active={route === 'settings'}
-                onClick={() => onRouteChange('settings')}
-                icon={<IconSettings2 size={16} stroke={1.5} />}
-            />
+            {menu.map((link) => {
+                const Icon = link.icon;
+                return (
+                    <NavLink
+                        key={link.name}
+                        label={link.name}
+                        variant="light"
+                        active={route === link.route}
+                        onClick={() => onRouteChange(link.route)}
+                        icon={<Icon size={16} stroke={1.5} />}
+                    />
+                );
+            })}
         </Navbar.Section>
 
         <Divider my="sm" variant="dotted" />

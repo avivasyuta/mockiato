@@ -113,10 +113,10 @@ const MocksPage: React.FC = () => {
     return (
         <>
             <div className={styles.header}>
-                <Title order={4}>Mocks for requests</Title>
+                <Title order={4}>Response mocks</Title>
 
                 <Button
-                    leftIcon={<IconPlaylistAdd />}
+                    leftIcon={<IconPlaylistAdd size={20} />}
                     variant="gradient"
                     size="xs"
                     title="Add new mock"
