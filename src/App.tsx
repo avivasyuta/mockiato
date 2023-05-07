@@ -7,7 +7,7 @@ import {
     Box,
     Group,
 } from '@mantine/core';
-import { NotificationsProvider } from '@mantine/notifications';
+import { Notifications } from '@mantine/notifications';
 import { useMediaQuery } from '@mantine/hooks';
 import { Mocks } from './pages/Mocks';
 import { Logs } from './pages/Logs';
@@ -28,47 +28,46 @@ export const App = () => {
     return (
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={() => null}>
             <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
-                <NotificationsProvider position="bottom-center">
-                    <Global
-                        styles={(theme) => ({
-                            body: {
-                                ...theme.fn.fontStyles(),
-                                backgroundColor: theme.colorScheme === 'dark'
-                                    ? theme.colors.dark[8]
-                                    : theme.colors.gray[1],
-                                color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
-                                minHeight: '100vh',
-                            },
-                        })}
+                <Notifications position="bottom-center" />
+                <Global
+                    styles={(theme) => ({
+                        body: {
+                            ...theme.fn.fontStyles(),
+                            backgroundColor: theme.colorScheme === 'dark'
+                                ? theme.colors.dark[8]
+                                : theme.colors.gray[1],
+                            color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+                            minHeight: '100vh',
+                        },
+                    })}
+                />
+
+                <Group
+                    position="left"
+                    align="flex-start"
+                    sx={{ gridColumnGap: '0' }}
+                >
+                    <AppNavbar
+                        route={route}
+                        onRouteChange={setRoute}
                     />
 
-                    <Group
-                        position="left"
-                        align="flex-start"
-                        sx={{ gridColumnGap: '0' }}
+                    <Box
+                        p="md"
+                        sx={{
+                            flex: '1',
+                            height: '100vh',
+                            overflowY: 'auto',
+                            display: 'flex',
+                            flexDirection: 'column',
+                        }}
                     >
-                        <AppNavbar
-                            route={route}
-                            onRouteChange={setRoute}
-                        />
-
-                        <Box
-                            p="md"
-                            sx={{
-                                flex: '1',
-                                height: '100vh',
-                                overflowY: 'auto',
-                                display: 'flex',
-                                flexDirection: 'column',
-                            }}
-                        >
-                            {route === 'mocks' && <Mocks />}
-                            {route === 'headers' && <Headers />}
-                            {route === 'logs' && <Logs />}
-                            {route === 'settings' && <Settings />}
-                        </Box>
-                    </Group>
-                </NotificationsProvider>
+                        {route === 'mocks' && <Mocks />}
+                        {route === 'headers' && <Headers />}
+                        {route === 'logs' && <Logs />}
+                        {route === 'settings' && <Settings />}
+                    </Box>
+                </Group>
             </MantineProvider>
         </ColorSchemeProvider>
     );

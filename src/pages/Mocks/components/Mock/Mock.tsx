@@ -127,7 +127,7 @@ export const Mock: FC<MockProps> = ({
                 <Tooltip
                     label="Double click to delete"
                     position="bottom"
-                    transition="scale-y"
+                    transitionProps={{ transition: 'scale-y' }}
                     openDelay={300}
                     withArrow
                 >

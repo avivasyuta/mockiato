@@ -1,11 +1,10 @@
-import React, { memo, useCallback, useReducer } from 'react';
+import React, {
+    memo, useCallback, useMemo, useReducer,
+} from 'react';
 import {
-    Button,
-    Drawer,
-    Title,
-    useMantineTheme,
+    Button, Drawer, Title, useMantineTheme,
 } from '@mantine/core';
-import { IconCheck, IconPlaylistAdd } from '@tabler/icons-react';
+import { IconPlaylistAdd } from '@tabler/icons-react';
 import { showNotification } from '@mantine/notifications';
 import { nanoid } from 'nanoid';
 import { useStore } from '../../hooks/useStore';
@@ -38,6 +37,12 @@ const MocksPage: React.FC = () => {
     const [mocks, setMocks] = useStore('mocks');
     const theme = useMantineTheme();
 
+    const drawerOverlayProps = useMemo(() => ({
+        color: theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[1],
+        opacity: 0.2,
+        blur: 2,
+    }), [theme.colorScheme]);
+
     const handleCopyMock = (mock: TMock): void => {
         dispatchMockForm({
             type: 'open',
@@ -69,7 +74,6 @@ const MocksPage: React.FC = () => {
         setMocks(newMocks);
         showNotification({
             message: 'Mock was deleted',
-            icon: <IconCheck size={18} />,
             color: 'green',
         });
     };
@@ -103,7 +107,6 @@ const MocksPage: React.FC = () => {
         showNotification({
             title: 'You deal great',
             message: 'Mock data was saved',
-            icon: <IconCheck size={18} />,
             color: 'green',
         });
 
@@ -153,9 +156,7 @@ const MocksPage: React.FC = () => {
                 size="50%"
                 title={mockForm.mock?.id ? 'Edit mock' : 'Add new mock'}
                 className={styles.drawer}
-                overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[1]}
-                overlayOpacity={0.2}
-                overlayBlur={2}
+                overlayProps={drawerOverlayProps}
                 onClose={handleCloseForm}
             >
                 {mockForm.isOpened && (
