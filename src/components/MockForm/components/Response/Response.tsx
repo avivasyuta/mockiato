@@ -14,11 +14,10 @@ export const Response: FC<TResponseProps> = ({ form, onChange }) => (
         <Radio.Group
             size="sm"
             required
-            mb="md"
+            mb="sm"
             {...form.getInputProps('responseType')}
         >
-
-            <Group mt="xs">
+            <Group>
                 <Radio value="json" label="JSON" size="xs" />
                 <Radio value="text" label="Text" size="xs" />
             </Group>

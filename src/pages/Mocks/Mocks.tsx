@@ -2,7 +2,7 @@ import React, {
     memo, useCallback, useMemo, useReducer,
 } from 'react';
 import {
-    Button, Drawer, Title, useMantineTheme,
+    Button, Drawer, useMantineTheme, Text,
 } from '@mantine/core';
 import { IconPlaylistAdd } from '@tabler/icons-react';
 import { showNotification } from '@mantine/notifications';
@@ -116,13 +116,14 @@ const MocksPage: React.FC = () => {
     return (
         <>
             <div className={styles.header}>
-                <Title order={4}>Response mocks</Title>
+                <Text fz="md" fw={700}>Response mocks</Text>
 
                 <Button
                     leftIcon={<IconPlaylistAdd size={20} />}
                     variant="gradient"
                     size="xs"
                     title="Add new mock"
+                    compact
                     gradient={{ from: 'indigo', to: 'cyan' }}
                     onClick={handleOpenMockForm}
                 >

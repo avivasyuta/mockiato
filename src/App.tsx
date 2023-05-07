@@ -53,7 +53,7 @@ export const App = () => {
                     />
 
                     <Box
-                        p="md"
+                        p="0.7rem 1rem"
                         sx={{
                             flex: '1',
                             height: '100vh',

@@ -18,6 +18,7 @@ import {
 } from '@tabler/icons-react';
 import manifest from '../../../public/manifest.json';
 import { TRoute } from '../../types';
+import styles from './AppNavbar.module.css';
 
 type TMenuItem = {
     route: TRoute
@@ -58,7 +59,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => (
         <Navbar.Section>
             <Group position="apart" align="end">
                 <Group align="end">
-                    <img src="mockiato-128.png" alt="Mockiato" width="32" />
+                    <img src="mockiato-128.png" alt="Mockiato" width="28" />
                     <Text
                         size="sm"
                         variant="gradient"
@@ -82,6 +83,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => (
                         variant="light"
                         active={route === link.route}
                         onClick={() => onRouteChange(link.route)}
+                        className={styles.menuItem}
                         icon={<Icon size={16} stroke={1.5} />}
                     />
                 );
@@ -105,7 +107,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => (
                 </Text>
             </Group>
 
-            <Group position="left" mt="xs">
+            <Group position="left" mt="0.4rem">
                 <IconBrandGithub size={16} color="gray" />
                 <Text
                     size="xs"
@@ -119,7 +121,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => (
                 </Text>
             </Group>
 
-            <Group position="left" mt="xs">
+            <Group position="left" mt="0.4rem">
                 <IconCoin size={16} color="gray" />
                 <Text
                     size="xs"

@@ -123,6 +123,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
             <Tabs
                 mt="lg"
                 defaultValue="response"
+                variant="outline"
                 className={styles.tabs}
                 styles={() => ({
                     panel: {
@@ -134,9 +135,9 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
                 })}
             >
                 <Tabs.List>
-                    <Tabs.Tab value="response">Response body</Tabs.Tab>
-                    <Tabs.Tab value="headers">Response headers</Tabs.Tab>
-                    <Tabs.Tab value="comments">Comments</Tabs.Tab>
+                    <Tabs.Tab value="response" className={styles.tab}>Response body</Tabs.Tab>
+                    <Tabs.Tab value="headers" className={styles.tab}>Response headers</Tabs.Tab>
+                    <Tabs.Tab value="comments" className={styles.tab}>Comments</Tabs.Tab>
                 </Tabs.List>
 
                 <Tabs.Panel value="response" pt="xs">

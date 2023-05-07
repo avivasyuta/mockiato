@@ -9,3 +9,8 @@
     flex: 1;
     min-height: 0;
 }
+
+.tab {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.75rem;
+}

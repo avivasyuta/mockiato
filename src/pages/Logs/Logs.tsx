@@ -1,5 +1,8 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Button, Loader, Title } from '@mantine/core';
+import {
+    Badge,
+    Button, Group, Loader, Text,
+} from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { NotFound } from '../../components/NotFound';
 import { useStore } from '../../hooks/useStore';
@@ -40,17 +43,23 @@ export const Logs: React.FC = () => {
     }
 
     if (!filteredLogs) {
-        return <Loader variant="bars" size="sm" />;
+        return <Loader variant="bars" size="xs" />;
     }
 
     return (
         <>
             <div className={styles.header}>
-                <Title order={4}>Logs for host {tabHost}</Title>
+                <Group spacing="xs">
+                    <Text fz="md" fw={700}>Logs for host</Text>
+                    <Badge size="xs" variant="filled">
+                        {tabHost}
+                    </Badge>
+                </Group>
+
                 <Button
-                    variant="outline"
+                    variant="filled"
                     size="xs"
-                    leftIcon={<IconTrash size={16} />}
+                    leftIcon={<IconTrash size={14} />}
                     color="red"
                     compact
                     disabled={filteredLogs.length === 0}

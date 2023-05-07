@@ -73,15 +73,14 @@ export const Mock: FC<MockProps> = ({
         <Paper
             shadow="sm"
             radius="md"
-            py="xs"
-            px="md"
+            p="0.4rem 0.7rem"
             key={mock.id}
         >
             <Group>
                 <Switch
                     onLabel="ON"
                     offLabel="OFF"
-                    size="sm"
+                    size="xs"
                     checked={mock.isActive}
                     onChange={handleChangeStatus}
                 />

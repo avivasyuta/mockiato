@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { Button, Title } from '@mantine/core';
+import { Button, Text } from '@mantine/core';
 import { IconPlaylistAdd } from '@tabler/icons-react';
 import { useStore } from '../../hooks/useStore';
 import styles from './Headers.module.css';
@@ -13,7 +13,7 @@ const HeadersPage: React.FC = () => {
 
     return (
         <div className={styles.header}>
-            <Title order={4}>Headers modifications</Title>
+            <Text fz="md" fw={700}>Headers modifications</Text>
 
             <Button
                 leftIcon={<IconPlaylistAdd size={20} />}
@@ -21,6 +21,7 @@ const HeadersPage: React.FC = () => {
                 size="xs"
                 title="Add new header"
                 gradient={{ from: 'indigo', to: 'cyan' }}
+                compact
                 onClick={handleOpenHeaderForm}
             >
                 Add new mod

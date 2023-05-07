@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import {
-    Button, Group, Paper, Text, Title,
+    Button, Group, Paper, Text,
 } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import styles from './Settings..module.css';
@@ -30,7 +30,7 @@ export const Settings = () => {
                 px="md"
                 className={styles.paper}
             >
-                <Title order={4} pb="md">General settings</Title>
+                <Text fz="md" fw={700}>General settings</Text>
 
                 <div className={styles.setting}>
                     <div>
@@ -43,6 +43,7 @@ export const Settings = () => {
                         size="xs"
                         variant="outline"
                         color="red"
+                        compact
                         leftIcon={<IconTrash size={16} />}
                         disabled={isClearMocksDisabled}
                         onClick={handleClearAllMocks}
@@ -62,6 +63,7 @@ export const Settings = () => {
                         size="xs"
                         variant="outline"
                         color="red"
+                        compact
                         leftIcon={<IconTrash size={16} />}
                         disabled={isClearLogsDisabled}
                         onClick={handleClearAllLogs}

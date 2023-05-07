@@ -22,13 +22,12 @@ export const Log: React.FC<LogProps> = ({ log }) => {
 
     return (
         <Paper
+            key={log.date}
             component="a"
             href="#"
             shadow="sm"
             radius="md"
-            py="xs"
-            px="md"
-            key={log.date}
+            p="0.4rem 0.7rem"
             onClick={handleToggle}
         >
             <>
