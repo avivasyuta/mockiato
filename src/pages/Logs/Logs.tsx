@@ -6,7 +6,7 @@ import {
 import { IconTrash } from '@tabler/icons-react';
 import { NotFound } from '../../components/NotFound';
 import { useStore } from '../../hooks/useStore';
-import { Log } from './Log';
+import { Log } from './components/Log';
 import styles from './Logs.module.css';
 
 export const Logs: React.FC = () => {

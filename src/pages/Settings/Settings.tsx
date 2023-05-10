@@ -1,10 +1,9 @@
 import React, { useMemo } from 'react';
-import {
-    Button, Group, Paper, Text,
-} from '@mantine/core';
+import { Button, Group, Text } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import styles from './Settings..module.css';
 import { useStore } from '../../hooks/useStore';
+import { Card } from '../../components/Card';
 
 export const Settings = () => {
     const [logs, setLogs] = useStore('logs');
@@ -23,19 +22,13 @@ export const Settings = () => {
 
     return (
         <Group position="center">
-            <Paper
-                shadow="sm"
-                radius="md"
-                py="xs"
-                px="md"
-                className={styles.paper}
-            >
+            <Card className={styles.paper}>
                 <Text fz="md" fw={700}>General settings</Text>
 
                 <div className={styles.setting}>
                     <div>
                         <Text size="sm" weight={500}>Mocks</Text>
-                        <Text size="sm" color="gray">
+                        <Text size="sm" c="dimmed">
                             All mocks for all hosts
                         </Text>
                     </div>
@@ -55,7 +48,7 @@ export const Settings = () => {
                 <div className={styles.setting}>
                     <div>
                         <Text size="sm" weight={500}>Logs of mocks</Text>
-                        <Text size="sm" color="gray">
+                        <Text size="sm" c="dimmed">
                             Data about requests that were intercepted and replaced with mocks for all hosts
                         </Text>
                     </div>
@@ -71,7 +64,7 @@ export const Settings = () => {
                         Clear all
                     </Button>
                 </div>
-            </Paper>
+            </Card>
         </Group>
     );
 };

@@ -1,9 +1,7 @@
 import React, { FC } from 'react';
 import {
     ActionIcon,
-    Badge,
     Group,
-    Paper,
     Switch,
     Text,
     Tooltip,
@@ -16,6 +14,8 @@ import {
     IconTrash,
 } from '@tabler/icons-react';
 import { HttpMethod } from '../../../../components/HttpMethod';
+import { HttpStatus } from '../../../../components/HttpStatus';
+import { Card } from '../../../../components/Card';
 import { TMock } from '../../../../types';
 import styles from './Mock.module.css';
 
@@ -28,19 +28,6 @@ interface MockProps {
 }
 
 const iconSize = '0.95rem';
-
-const getStatusCodeColor = (code: number): string => {
-    if (code >= 100 && code < 200) {
-        return 'cyan';
-    } if (code >= 200 && code < 300) {
-        return 'green';
-    } if (code >= 300 && code < 400) {
-        return 'gray';
-    } if (code >= 400 && code < 500) {
-        return 'yellow';
-    }
-    return 'red';
-};
 
 export const Mock: FC<MockProps> = ({
     mock,
@@ -70,27 +57,14 @@ export const Mock: FC<MockProps> = ({
     const handleEditClick = (): void => onEditClick(mock);
 
     return (
-        <Paper
-            shadow="sm"
-            radius="md"
-            p="0.4rem 0.7rem"
-            key={mock.id}
-        >
-            <Group>
-                <Switch
-                    onLabel="ON"
-                    offLabel="OFF"
-                    size="xs"
-                    checked={mock.isActive}
-                    onChange={handleChangeStatus}
-                />
-
+        <Card key={mock.id}>
+            <Group spacing="xs">
                 <div className={styles.method}>
                     <HttpMethod method={mock.httpMethod} />
                 </div>
 
                 <Group align="center" className={styles.url}>
-                    <Text size="xs" title="URL">{mock.url}</Text>
+                    <Text size="xs" title={mock.url} className={styles.urlText}>{mock.url}</Text>
                     {mock.comment && (
                         <Tooltip
                             label={mock.comment}
@@ -110,59 +84,65 @@ export const Mock: FC<MockProps> = ({
                         size="xs"
                         color={theme.colors.gray[6]}
                     >
-                        Status code
+                        Status
                     </Text>
-                    <Badge
-                        size="xs"
-                        variant="outline"
-                        color={getStatusCodeColor(mock.httpStatusCode)}
-                        radius="sm"
-                        title="HTTP status code"
-                    >
-                        {mock.httpStatusCode}
-                    </Badge>
+
+                    <HttpStatus status={mock.httpStatusCode} />
                 </Group>
 
-                <Tooltip
-                    label="Double click to delete"
-                    position="bottom"
-                    transitionProps={{ transition: 'scale-y' }}
-                    openDelay={300}
-                    withArrow
-                >
+                <div className={styles.switch}>
+                    <Switch
+                        onLabel="ON"
+                        offLabel="OFF"
+                        size="xs"
+                        checked={mock.isActive}
+                        title="Enable/disable mock"
+                        onChange={handleChangeStatus}
+                    />
+                </div>
+
+                <Group spacing="xs">
+                    <Tooltip
+                        label="Double click to delete"
+                        position="bottom"
+                        transitionProps={{ transition: 'scale-y' }}
+                        openDelay={300}
+                        withArrow
+                    >
+                        <ActionIcon
+                            variant="subtle"
+                            color="red"
+                            size="sm"
+                            radius="sm"
+                            onClick={handleDelete}
+                        >
+                            <IconTrash size={iconSize} />
+                        </ActionIcon>
+                    </Tooltip>
+
                     <ActionIcon
                         variant="subtle"
-                        color="red"
+                        color="cyan"
                         size="sm"
                         radius="sm"
-                        onClick={handleDelete}
+                        title="Clone mock"
+                        onClick={handleCopy}
                     >
-                        <IconTrash size={iconSize} />
+                        <IconCopy size={iconSize} />
                     </ActionIcon>
-                </Tooltip>
 
-                <ActionIcon
-                    variant="subtle"
-                    color="cyan"
-                    size="sm"
-                    radius="sm"
-                    title="Clone mock"
-                    onClick={handleCopy}
-                >
-                    <IconCopy size={iconSize} />
-                </ActionIcon>
-
-                <ActionIcon
-                    variant="subtle"
-                    color="blue"
-                    size="sm"
-                    radius="sm"
-                    title="Edit mock"
-                    onClick={handleEditClick}
-                >
-                    <IconEdit size={iconSize} />
-                </ActionIcon>
+                    <ActionIcon
+                        variant="subtle"
+                        color="blue"
+                        size="sm"
+                        radius="sm"
+                        title="Edit mock"
+                        onClick={handleEditClick}
+                    >
+                        <IconEdit size={iconSize} />
+                    </ActionIcon>
+                </Group>
             </Group>
-        </Paper>
+        </Card>
     );
 };

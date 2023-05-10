@@ -131,24 +131,22 @@ const MocksPage: React.FC = () => {
                 </Button>
             </div>
 
-            <div className={styles.c}>
-                {mocks.length > 0 ? (
-                    <div className={styles.mocks}>
-                        {mocks.map((mock: TMock) => (
-                            <Mock
-                                key={mock.id}
-                                mock={mock}
-                                onEditClick={handleEditMock}
-                                onCopyClick={handleCopyMock}
-                                onDelete={handleDeleteMock}
-                                onChange={handleChangeMock}
-                            />
-                        ))}
-                    </div>
-                ) : (
-                    <NotFound text="No mocks to show" />
-                )}
-            </div>
+            {mocks.length > 0 ? (
+                <div className={styles.mocks}>
+                    {mocks.map((mock: TMock) => (
+                        <Mock
+                            key={mock.id}
+                            mock={mock}
+                            onEditClick={handleEditMock}
+                            onCopyClick={handleCopyMock}
+                            onDelete={handleDeleteMock}
+                            onChange={handleChangeMock}
+                        />
+                    ))}
+                </div>
+            ) : (
+                <NotFound text="No mocks to show" />
+            )}
 
             <Drawer
                 opened={mockForm.isOpened}
@@ -158,6 +156,10 @@ const MocksPage: React.FC = () => {
                 title={mockForm.mock?.id ? 'Edit mock' : 'Add new mock'}
                 className={styles.drawer}
                 overlayProps={drawerOverlayProps}
+                styles={{
+                    content: { display: 'flex', flexDirection: 'column' },
+                    body: { display: 'flex', flex: 1 },
+                }}
                 onClose={handleCloseForm}
             >
                 {mockForm.isOpened && (

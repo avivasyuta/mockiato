@@ -3,11 +3,13 @@ import {
     Code,
     Collapse,
     Group,
-    Paper,
     Text,
 } from '@mantine/core';
-import { TLog } from '../../types';
-import { HttpMethod } from '../../components/HttpMethod';
+import { TLog } from '../../../../types';
+import { HttpMethod } from '../../../../components/HttpMethod';
+import { Card } from '../../../../components/Card';
+import styles from './Log.module.css';
+import { HttpStatus } from '../../../../components/HttpStatus';
 
 type LogProps = {
     log: TLog
@@ -21,13 +23,9 @@ export const Log: React.FC<LogProps> = ({ log }) => {
     };
 
     return (
-        <Paper
+        <Card
             key={log.date}
-            component="a"
-            href="#"
-            shadow="sm"
-            radius="md"
-            p="0.4rem 0.7rem"
+            className={styles.log}
             onClick={handleToggle}
         >
             <>
@@ -43,7 +41,7 @@ export const Log: React.FC<LogProps> = ({ log }) => {
                     </Text>
 
                     <Text size="xs" mt="sm">
-                        <strong>Response status code:</strong> {log.mock.httpStatusCode}
+                        <strong>Response status code:</strong> <HttpStatus status={log.mock.httpStatusCode} />
                     </Text>
 
                     <Text size="xs">
@@ -77,6 +75,6 @@ export const Log: React.FC<LogProps> = ({ log }) => {
                     )}
                 </Collapse>
             </>
-        </Paper>
+        </Card>
     );
 };

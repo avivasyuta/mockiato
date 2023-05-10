@@ -12,6 +12,7 @@
 }
 
 .mocks {
-    display: grid;
-    grid-row-gap: 8px;
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
 }

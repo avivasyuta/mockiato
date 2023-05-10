@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
-    ColorScheme,
-    ColorSchemeProvider,
-    MantineProvider,
-    Global,
-    Box,
-    Group,
+    Box, ColorSchemeProvider, Global, Group, MantineProvider,
 } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
-import { useMediaQuery } from '@mantine/hooks';
+import { useColorScheme } from '@mantine/hooks';
 import { Mocks } from './pages/Mocks';
 import { Logs } from './pages/Logs';
 import { Settings } from './pages/Settings';
@@ -17,13 +12,8 @@ import { TRoute } from './types';
 import { AppNavbar } from './components/AppNavbar';
 
 export const App = () => {
-    const isPreferredDarkTheme = useMediaQuery('(prefers-color-scheme: dark)');
-    const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
+    const colorScheme = useColorScheme();
     const [route, setRoute] = useState<TRoute>('mocks');
-
-    useEffect(() => {
-        setColorScheme(isPreferredDarkTheme ? 'dark' : 'light');
-    }, [isPreferredDarkTheme]);
 
     return (
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={() => null}>
@@ -34,7 +24,7 @@ export const App = () => {
                         body: {
                             ...theme.fn.fontStyles(),
                             backgroundColor: theme.colorScheme === 'dark'
-                                ? theme.colors.dark[8]
+                                ? theme.colors.dark[7]
                                 : theme.colors.gray[1],
                             color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
                             minHeight: '100vh',
@@ -53,7 +43,7 @@ export const App = () => {
                     />
 
                     <Box
-                        p="0.7rem 1rem"
+                        p="1rem"
                         sx={{
                             flex: '1',
                             height: '100vh',

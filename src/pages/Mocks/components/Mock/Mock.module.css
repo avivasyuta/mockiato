@@ -1,15 +1,26 @@
 .method {
     display: flex;
     align-items: center;
-    min-width: 70px;
+    min-width: 60px;
 }
 
 .url {
     flex: 1;
+    overflow: hidden;
+    flex-wrap: nowrap;
+}
+
+.urlText {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.switch {
+    padding-right: 20px;
 }
 
 .code {
-    width: 160px;
+    padding-right: 20px;
 }
 
 .comment {

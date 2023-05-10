@@ -1,8 +1,3 @@
-.drawer {
-    display: flex;
-    flex-direction: column;
-}
-
 .form, .tabs {
     display: flex;
     flex-direction: column;

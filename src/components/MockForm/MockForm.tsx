@@ -58,11 +58,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
     };
 
     return (
-
-        <form
-            className={styles.form}
-            onSubmit={form.onSubmit(onSubmit)}
-        >
+        <form className={styles.form} onSubmit={form.onSubmit(onSubmit)}>
             <Grid align="flex-end">
                 <Grid.Col span={8}>
                     <TextInput
