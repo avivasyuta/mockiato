@@ -12,8 +12,7 @@
         "jsoneditor": "^9.9.0",
         "nanoid": "^4.0.0",
         "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "xhook": "^1.6.0"
+        "react-dom": "^18.2.0"
     },
     "devDependencies": {
         "@types/chrome": "^0.0.193",

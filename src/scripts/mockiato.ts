@@ -1,5 +1,7 @@
-import xhook from 'xhook';
 import { nanoid } from 'nanoid';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import xhook from '../xhook';
 import {
     TRequest,
     TMock,
