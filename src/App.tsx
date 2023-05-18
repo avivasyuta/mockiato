@@ -4,6 +4,7 @@ import {
 } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { useColorScheme } from '@mantine/hooks';
+import { ModalsProvider } from '@mantine/modals';
 import { Mocks } from './pages/Mocks';
 import { Logs } from './pages/Logs';
 import { Settings } from './pages/Settings';
@@ -18,46 +19,48 @@ export const App = () => {
     return (
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={() => null}>
             <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
-                <Notifications position="bottom-center" />
-                <Global
-                    styles={(theme) => ({
-                        body: {
-                            ...theme.fn.fontStyles(),
-                            backgroundColor: theme.colorScheme === 'dark'
-                                ? theme.colors.dark[7]
-                                : theme.colors.gray[1],
-                            color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
-                            minHeight: '100vh',
-                        },
-                    })}
-                />
-
-                <Group
-                    position="left"
-                    align="flex-start"
-                    sx={{ gridColumnGap: '0' }}
-                >
-                    <AppNavbar
-                        route={route}
-                        onRouteChange={setRoute}
+                <ModalsProvider>
+                    <Notifications position="bottom-center" />
+                    <Global
+                        styles={(theme) => ({
+                            body: {
+                                ...theme.fn.fontStyles(),
+                                backgroundColor: theme.colorScheme === 'dark'
+                                    ? theme.colors.dark[7]
+                                    : theme.colors.gray[1],
+                                color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+                                minHeight: '100vh',
+                            },
+                        })}
                     />
 
-                    <Box
-                        p="1rem"
-                        sx={{
-                            flex: '1',
-                            height: '100vh',
-                            overflowY: 'auto',
-                            display: 'flex',
-                            flexDirection: 'column',
-                        }}
+                    <Group
+                        position="left"
+                        align="flex-start"
+                        sx={{ gridColumnGap: '0' }}
                     >
-                        {route === 'mocks' && <Mocks />}
-                        {route === 'headers' && <Headers />}
-                        {route === 'logs' && <Logs />}
-                        {route === 'settings' && <Settings />}
-                    </Box>
-                </Group>
+                        <AppNavbar
+                            route={route}
+                            onRouteChange={setRoute}
+                        />
+
+                        <Box
+                            p="0.8rem 1rem"
+                            sx={{
+                                flex: '1',
+                                height: '100vh',
+                                overflowY: 'auto',
+                                display: 'flex',
+                                flexDirection: 'column',
+                            }}
+                        >
+                            {route === 'mocks' && <Mocks />}
+                            {route === 'headers' && <Headers />}
+                            {route === 'logs' && <Logs />}
+                            {route === 'settings' && <Settings />}
+                        </Box>
+                    </Group>
+                </ModalsProvider>
             </MantineProvider>
         </ColorSchemeProvider>
     );

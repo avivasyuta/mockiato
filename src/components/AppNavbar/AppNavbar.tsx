@@ -14,7 +14,7 @@ import {
     IconShadow,
     IconVersions,
     IconCodeMinus,
-    TablerIconsProps,
+    TablerIconsProps, IconThumbUp,
 } from '@tabler/icons-react';
 import manifest from '../../../public/manifest.json';
 import { TRoute } from '../../types';
@@ -60,8 +60,9 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
     return (
         <Navbar
             p="sm"
-            width={{ base: 250 }}
+            width={{ base: 200 }}
             bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : '#ffffff'}
+            zIndex={1}
         >
             <Navbar.Section>
                 <Group position="apart" align="end">
@@ -139,6 +140,20 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                         color="dimmed"
                     >
                         Support author
+                    </Text>
+                </Group>
+
+                <Group position="left" mt="0.4rem">
+                    <IconThumbUp size={16} color="gray" />
+                    <Text
+                        size="xs"
+                        variant="link"
+                        component="a"
+                        target="_blank"
+                        href="https://chrome.google.com/webstore/detail/mockiato/ilbkkhmnmnehcicempfpekgcpneeekao"
+                        color="dimmed"
+                    >
+                        Rate extension
                     </Text>
                 </Group>
             </Navbar.Section>

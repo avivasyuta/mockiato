@@ -11,7 +11,7 @@ const root = createRoot(
 const initialStore: TStore = {
     mocks: [],
     logs: [],
-    headersProfiles: [],
+    headersProfiles: {},
 };
 
 (async () => {

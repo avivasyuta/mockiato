@@ -22,8 +22,8 @@ export const Settings = () => {
 
     return (
         <Group position="center">
-            <Card className={styles.paper}>
-                <Text fz="md" fw={700}>General settings</Text>
+            <Card w="900px" p="0.5rem 0.8rem">
+                <Text fz="md" fw={500}>General settings</Text>
 
                 <div className={styles.setting}>
                     <div>
@@ -32,6 +32,7 @@ export const Settings = () => {
                             All mocks for all hosts
                         </Text>
                     </div>
+
                     <Button
                         size="xs"
                         variant="outline"
@@ -52,6 +53,7 @@ export const Settings = () => {
                             Data about requests that were intercepted and replaced with mocks for all hosts
                         </Text>
                     </div>
+
                     <Button
                         size="xs"
                         variant="outline"

@@ -12,7 +12,7 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { nanoid } from 'nanoid';
-import { HttpMethodType, THeader, TMock } from '../../types';
+import { HttpMethodType, TMockHeader, TMock } from '../../types';
 import { Response } from './components/Response';
 import { Headers } from './components/Headers';
 import styles from './MockForm.module.css';
@@ -45,7 +45,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
         form.setFieldValue('response', value);
     };
 
-    const handleChangeHeaders = (headers: THeader[]): void => {
+    const handleChangeHeaders = (headers: TMockHeader[]): void => {
         form.setFieldValue('responseHeaders', headers);
     };
 
@@ -83,7 +83,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
                 </Grid.Col>
             </Grid>
 
-            <Grid mt="xs">
+            <Grid>
                 <Grid.Col span={4}>
                     <Select
                         required
@@ -117,7 +117,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
             </Grid>
 
             <Tabs
-                mt="lg"
+                mt="xs"
                 defaultValue="response"
                 variant="outline"
                 className={styles.tabs}

@@ -1,0 +1,1 @@
+export { ProfileLabel } from './ProfileLabel';

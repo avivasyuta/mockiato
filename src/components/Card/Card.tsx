@@ -11,7 +11,7 @@ export const Card: FC<CardProps> = ({ children, ...rest }) => {
             bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : '#ffffff'}
             shadow="sm"
             radius="md"
-            p="0.4rem 0.7rem"
+            p="0.2rem 0.6rem"
             {...rest}
         >
             {children}

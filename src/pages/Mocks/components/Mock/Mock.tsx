@@ -17,6 +17,7 @@ import { HttpMethod } from '../../../../components/HttpMethod';
 import { HttpStatus } from '../../../../components/HttpStatus';
 import { Card } from '../../../../components/Card';
 import { TMock } from '../../../../types';
+import { iconSize } from '../../../../contstant';
 import styles from './Mock.module.css';
 
 interface MockProps {
@@ -26,8 +27,6 @@ interface MockProps {
     onChange: (mock: TMock) => void
     onDelete: (mockId: string) => void
 }
-
-const iconSize = '0.95rem';
 
 export const Mock: FC<MockProps> = ({
     mock,
@@ -59,6 +58,16 @@ export const Mock: FC<MockProps> = ({
     return (
         <Card key={mock.id}>
             <Group spacing="xs">
+                <Switch
+                    onLabel="ON"
+                    offLabel="OFF"
+                    size="xs"
+                    pr="xs"
+                    checked={mock.isActive}
+                    title="Enable/disable mock"
+                    onChange={handleChangeStatus}
+                />
+
                 <div className={styles.method}>
                     <HttpMethod method={mock.httpMethod} />
                 </div>
@@ -89,17 +98,6 @@ export const Mock: FC<MockProps> = ({
 
                     <HttpStatus status={mock.httpStatusCode} />
                 </Group>
-
-                <div className={styles.switch}>
-                    <Switch
-                        onLabel="ON"
-                        offLabel="OFF"
-                        size="xs"
-                        checked={mock.isActive}
-                        title="Enable/disable mock"
-                        onChange={handleChangeStatus}
-                    />
-                </div>
 
                 <Group spacing="xs">
                     <Tooltip

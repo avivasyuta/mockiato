@@ -17,10 +17,22 @@ export type MessageType = 'intercepted' | 'mockChecked'
 
 export type TResponseType = 'text' | 'json' | 'none'
 
+export type THeaderType = 'request' | 'response'
+
+export type TMockHeader = {
+    id: string
+    key: string
+    value: string
+}
+
 export type THeader = {
     id: string
     key: string
     value: string
+    type: THeaderType
+    isActive: boolean
+    url?: string
+    httpMethod?: HttpMethodType
 }
 
 export type TMock = {
@@ -31,7 +43,7 @@ export type TMock = {
     delay: number
     response?: string
     responseType: TResponseType
-    responseHeaders: THeader[]
+    responseHeaders: TMockHeader[]
     comment?: string
     isActive: boolean
 }
@@ -47,16 +59,6 @@ export type TMockResponseDTO = {
     mock?: TMock
 }
 
-export type TMockFormState = {
-    isOpened: boolean
-    mock?: TMock
-}
-
-export type TMockFormAction = {
-    type: 'open' | 'close'
-    payload?: TMock
-}
-
 export type TRoute = 'logs' | 'mocks' | 'settings' | 'headers'
 
 export type TLog = {
@@ -66,19 +68,21 @@ export type TLog = {
     host: string
 }
 
-export type THeaderProfileStatus = 'active' | 'inactive'
+export type THeaderStatus = 'enabled' | 'disabled'
+export type THeadersProfileStatus = 'enabled' | 'disabled'
 
-export type THeaderProfile = {
+export type THeadersProfile = {
     id: string
     name: string
-    status: THeaderProfileStatus
+    status: THeadersProfileStatus
+    lastActive: boolean
     headers: THeader[]
 }
 
 export type TStore = {
     mocks: TMock[]
     logs: TLog[]
-    headersProfiles: THeaderProfile[]
+    headersProfiles: Record<string, THeadersProfile>
 }
 
 export type TUpdateStore = Record<string, {

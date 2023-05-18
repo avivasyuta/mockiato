@@ -50,24 +50,25 @@ export const Logs: React.FC = () => {
         <>
             <div className={styles.header}>
                 <Group spacing="xs">
-                    <Text fz="md" fw={700}>Logs for host</Text>
+                    <Text fz="md" fw={500}>Logs for host</Text>
                     <Badge size="xs" variant="filled">
                         {tabHost}
                     </Badge>
                 </Group>
 
-                <Button
-                    variant="filled"
-                    size="xs"
-                    leftIcon={<IconTrash size={14} />}
-                    color="red"
-                    compact
-                    disabled={filteredLogs.length === 0}
-                    title={`Clear logs for host ${tabHost}`}
-                    onClick={handleClearMocks}
-                >
-                    Clear logs
-                </Button>
+                {filteredLogs.length > 0 && (
+                    <Button
+                        variant="filled"
+                        size="xs"
+                        leftIcon={<IconTrash size={14} />}
+                        color="red"
+                        compact
+                        title={`Clear logs for host ${tabHost}`}
+                        onClick={handleClearMocks}
+                    >
+                        Clear logs
+                    </Button>
+                )}
             </div>
 
             {filteredLogs.length === 0 ? (
