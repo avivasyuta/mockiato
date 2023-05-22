@@ -1,17 +1,13 @@
 .tableHeader {
     display: flex;
-    padding: 0 8px;
+    padding: 0 .6rem;
+    gap: .625rem;
 }
 
 .tableBody {
     display: flex;
     flex-direction: column;
     gap: 8px;
-}
-
-.header {
-    display: flex;
-    align-items: center;
 }
 
 .grow, .url {
@@ -24,7 +20,7 @@
 }
 
 .status {
-    width: 50px;
+    width: 35px;
 }
 
 .actions {

@@ -35,7 +35,7 @@ export const Settings = () => {
 
                     <Button
                         size="xs"
-                        variant="outline"
+                        variant="filled"
                         color="red"
                         compact
                         leftIcon={<IconTrash size={16} />}
@@ -56,7 +56,7 @@ export const Settings = () => {
 
                     <Button
                         size="xs"
-                        variant="outline"
+                        variant="filled"
                         color="red"
                         compact
                         leftIcon={<IconTrash size={16} />}

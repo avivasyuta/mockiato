@@ -122,18 +122,28 @@ const MocksPage: React.FC = () => {
             </div>
 
             {mocks.length > 0 ? (
-                <div className={styles.mocks}>
-                    {mocks.map((mock: TMock) => (
-                        <Mock
-                            key={mock.id}
-                            mock={mock}
-                            onEditClick={handleEditMock}
-                            onCopyClick={handleCopyMock}
-                            onDelete={handleDeleteMock}
-                            onChange={handleChangeMock}
-                        />
-                    ))}
-                </div>
+                <>
+                    <div className={styles.tableHeader}>
+                        <Text size="xs" color="dimmed" className={styles.status}> </Text>
+                        <Text size="xs" color="dimmed" className={styles.method}>Method</Text>
+                        <Text size="xs" color="dimmed" className={styles.url}>URL</Text>
+                        <Text size="xs" color="dimmed" className={styles.code}>Status</Text>
+                        <Text size="xs" color="dimmed" className={styles.actions}> </Text>
+                    </div>
+
+                    <div className={styles.mocks}>
+                        {mocks.map((mock: TMock) => (
+                            <Mock
+                                key={mock.id}
+                                mock={mock}
+                                onEditClick={handleEditMock}
+                                onCopyClick={handleCopyMock}
+                                onDelete={handleDeleteMock}
+                                onChange={handleChangeMock}
+                            />
+                        ))}
+                    </div>
+                </>
             ) : (
                 <NotFound text="No mocks to show" />
             )}

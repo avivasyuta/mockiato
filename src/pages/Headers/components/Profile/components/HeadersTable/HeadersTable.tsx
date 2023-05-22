@@ -37,17 +37,17 @@ export const HeadersTable: FC<HeadersTableProps> = ({
     return (
         <>
             <div className={styles.tableHeader}>
-                <Text size="xs" color="dimmed" className={styles.status}>&nbsp;</Text>
+                <Text size="xs" color="dimmed" className={styles.status}> </Text>
                 <Text size="xs" color="dimmed" className={styles.grow}>Key</Text>
                 <Text size="xs" color="dimmed" className={styles.grow}>Value</Text>
                 <Text size="xs" color="dimmed" className={styles.grow}>URL</Text>
-                <Text size="xs" color="dimmed" className={styles.actions}>&nbsp;</Text>
+                <Text size="xs" color="dimmed" className={styles.actions}> </Text>
             </div>
 
             <div className={styles.tableBody}>
                 {headers.map((header) => (
                     <Card key={header.id} className={styles.header}>
-                        <div className={styles.status}>
+                        <Group spacing="xs" align="center">
                             <Switch
                                 size="xs"
                                 onLabel="ON"
@@ -55,45 +55,45 @@ export const HeadersTable: FC<HeadersTableProps> = ({
                                 checked={header.isActive}
                                 onChange={(e) => handleChangeStatus(e, header)}
                             />
-                        </div>
 
-                        <div className={styles.grow}>
-                            <Text size="xs">{header.key}</Text>
-                        </div>
+                            <div className={styles.grow}>
+                                <Text size="xs">{header.key}</Text>
+                            </div>
 
-                        <div className={styles.grow}>
-                            <Text size="xs">{header.value}</Text>
-                        </div>
+                            <div className={styles.grow}>
+                                <Text size="xs">{header.value}</Text>
+                            </div>
 
-                        <div className={styles.url}>
-                            {header.httpMethod && <HttpMethod method={header?.httpMethod} />}
-                            {header.url ? (
-                                <Text size="xs">{header.url}</Text>
-                            ) : (
-                                <Text size="xs" c="orange.5">Works for all URL&apos;s</Text>
-                            )}
-                        </div>
+                            <div className={styles.url}>
+                                {header.httpMethod && <HttpMethod method={header?.httpMethod} />}
+                                {header.url ? (
+                                    <Text size="xs">{header.url}</Text>
+                                ) : (
+                                    <Text size="xs" c="orange.5">Works for all URL&apos;s</Text>
+                                )}
+                            </div>
 
-                        <Group spacing="sm">
-                            <ActionIcon
-                                variant="subtle"
-                                color="red"
-                                size="sm"
-                                radius="sm"
-                                onClick={(): void => onDelete(header.id)}
-                            >
-                                <IconTrash size={iconSize} />
-                            </ActionIcon>
+                            <Group spacing="sm">
+                                <ActionIcon
+                                    variant="subtle"
+                                    color="red"
+                                    size="sm"
+                                    radius="sm"
+                                    onClick={(): void => onDelete(header.id)}
+                                >
+                                    <IconTrash size={iconSize} />
+                                </ActionIcon>
 
-                            <ActionIcon
-                                variant="subtle"
-                                color="blue"
-                                size="sm"
-                                radius="sm"
-                                onClick={(): void => onEdit(header)}
-                            >
-                                <IconEdit size={iconSize} />
-                            </ActionIcon>
+                                <ActionIcon
+                                    variant="subtle"
+                                    color="blue"
+                                    size="sm"
+                                    radius="sm"
+                                    onClick={(): void => onEdit(header)}
+                                >
+                                    <IconEdit size={iconSize} />
+                                </ActionIcon>
+                            </Group>
                         </Group>
                     </Card>
                 ))}

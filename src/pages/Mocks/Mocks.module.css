@@ -1,3 +1,30 @@
+.tableHeader {
+    display: flex;
+    padding: 0 .6rem;
+    gap: .625rem;
+
+}
+
+.status {
+    width: 35px;
+}
+
+.method {
+    width: 60px;
+}
+
+.url {
+    flex: 1;
+}
+
+.code {
+    width: 45px;
+}
+
+.actions {
+    width: 86px;
+}
+
 .header {
     display: flex;
     justify-content: space-between;

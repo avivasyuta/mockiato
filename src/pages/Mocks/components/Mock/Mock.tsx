@@ -62,7 +62,6 @@ export const Mock: FC<MockProps> = ({
                     onLabel="ON"
                     offLabel="OFF"
                     size="xs"
-                    pr="xs"
                     checked={mock.isActive}
                     title="Enable/disable mock"
                     onChange={handleChangeStatus}
@@ -89,13 +88,6 @@ export const Mock: FC<MockProps> = ({
                 </Group>
 
                 <Group className={styles.code}>
-                    <Text
-                        size="xs"
-                        color={theme.colors.gray[6]}
-                    >
-                        Status
-                    </Text>
-
                     <HttpStatus status={mock.httpStatusCode} />
                 </Group>
 
