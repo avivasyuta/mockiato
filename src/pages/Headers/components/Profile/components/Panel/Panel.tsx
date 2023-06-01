@@ -22,26 +22,28 @@ export const Panel: FC<PanelProps> = ({ type, onAdd }) => {
     };
 
     return (
-        <Group mb="xs" align="flex-start">
-            <div>
+        <div>
+            <Group align="center" spacing="0.7rem">
                 <Text size="sm" weight={500}>
                     {type.charAt(0).toUpperCase() + type.slice(1)} headers
                 </Text>
-                <Text size="xs" c="dimmed">
-                    These headers will be added to {type}s. If such a header already exists in the request,
-                    it will be overwritten.
-                </Text>
-            </div>
 
-            <ActionIcon
-                color="blue"
-                variant="filled"
-                size="xs"
-                title={`Add new ${type} header`}
-                onClick={handleOpenForm}
-            >
-                <IconPlus size={iconSize} />
-            </ActionIcon>
-        </Group>
+                <ActionIcon
+                    color="blue"
+                    variant="gradient"
+                    gradient={{ from: 'indigo', to: 'cyan' }}
+                    size="xs"
+                    title={`Add new ${type} header`}
+                    onClick={handleOpenForm}
+                >
+                    <IconPlus size={iconSize} />
+                </ActionIcon>
+            </Group>
+
+            <Text size="xs" c="dimmed">
+                These headers will be added to {type}s. If such a header already exists in the request,
+                it will be overwritten.
+            </Text>
+        </div>
     );
 };

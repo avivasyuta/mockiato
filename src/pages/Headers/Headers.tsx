@@ -68,7 +68,7 @@ const HeadersPage: React.FC = () => {
             <div className={styles.header}>
                 <Group spacing="xs" align="center">
                     <Text fz="md" fw={500}>
-                        Headers modifications {activeProfile && `profile «${activeProfile.name}»`}
+                        Headers modifications {activeProfile && `profile ${activeProfile.name}`}
                     </Text>
 
                     {activeProfile && (

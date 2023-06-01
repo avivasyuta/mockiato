@@ -8,7 +8,7 @@ type AddProfileFormProps = {
     onSubmit: (profile: THeadersProfile) => void
 }
 
-const maxLength = 20;
+const maxLength = 16;
 
 type Form = Omit<THeadersProfile, 'id'>;
 

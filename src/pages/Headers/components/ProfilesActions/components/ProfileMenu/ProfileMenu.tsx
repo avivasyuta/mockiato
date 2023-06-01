@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import {
-    ActionIcon, Badge, Menu, Text,
+    ActionIcon, Menu, Text,
 } from '@mantine/core';
 import { modals } from '@mantine/modals';
 import {
@@ -35,7 +35,7 @@ export const ProfileMenu: FC<ProfileMenuProps> = ({
                     Are you sure you want to delete the profile? This action will remove all settings for headers.
                 </Text>
             ),
-            labels: { confirm: 'Delete profile', cancel: "No don't delete it" },
+            labels: { confirm: 'Delete profile', cancel: 'Cancel' },
             confirmProps: { color: 'red', size: 'xs', compact: true },
             cancelProps: {
                 size: 'xs',
@@ -73,17 +73,6 @@ export const ProfileMenu: FC<ProfileMenuProps> = ({
             </Menu.Target>
 
             <Menu.Dropdown>
-                <Menu.Label>
-                    Profile {name}&nbsp;&nbsp;
-                    <Badge
-                        variant="filled"
-                        size="xs"
-                        color={status === 'enabled' ? 'green' : 'gray'}
-                    >
-                        {status}
-                    </Badge>
-                </Menu.Label>
-
                 <Menu.Item
                     icon={<IconUserPlus size={iconSize} />}
                     onClick={onAdd}
