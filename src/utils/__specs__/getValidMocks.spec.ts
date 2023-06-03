@@ -1,5 +1,5 @@
 import { testMocks, testTable } from '../__fixtures__/getValidMocks';
-import { getValidMocks } from '../index';
+import { getValidMocks } from '../getValidMocks';
 
 describe('getValidMocks', () => {
     testTable.forEach((testCase) => {

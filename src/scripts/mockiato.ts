@@ -5,8 +5,8 @@ import xhook from '../xhook';
 import {
     TRequest,
     TMock,
-    TMockResponseDTO,
     TXhookRequest,
+    TInterceptedRequestDTO,
 } from '../types';
 import { sendMessage, listenMessage } from '../services/message';
 import { MessageBus } from '../services/messageBus';
@@ -16,11 +16,11 @@ type TXhookCallback = (response?: unknown) => void
 
 const messageBus = new MessageBus();
 
-listenMessage<TMockResponseDTO>('mockChecked', (response) => {
-    messageBus.dispatch(response.messageId, response.mock);
+listenMessage<TInterceptedRequestDTO>('requestChecked', (response) => {
+    messageBus.dispatch(response.messageId, response);
 });
 
-const send = (request: TXhookRequest): Promise<TMock | undefined> => {
+const getRequestMocks = (request: TXhookRequest): Promise<unknown> => {
     const messageId = nanoid();
 
     const message: TRequest = {
@@ -31,16 +31,19 @@ const send = (request: TXhookRequest): Promise<TMock | undefined> => {
 
     sendMessage<TRequest>('intercepted', message);
 
-    return new Promise<TMock | undefined>((resolve) => {
+    return new Promise((resolve) => {
         messageBus.addListener(messageId, resolve);
     });
 };
 
 xhook.before(async (request: TXhookRequest, callback: TXhookCallback) => {
-    let mock;
+    let data: {
+        headers: Record<string, string>
+        mock?: TMock
+    };
 
     try {
-        mock = await send(request);
+        data = await getRequestMocks(request);
     } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e);

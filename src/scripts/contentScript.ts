@@ -1,16 +1,25 @@
 import { listenMessage, sendMessage } from '../services/message';
-import { TLog, TMockResponseDTO, TRequest } from '../types';
+import { TInterceptedRequestDTO, TLog, TRequest } from '../types';
 import { INTERCEPTOR_ID, STORE_KEY } from '../contstant';
-import { getValidMocks } from '../utils';
-import { removeStack } from '../services/alert';
+import { getValidMocks } from '../utils/getValidMocks';
+import { getValidHeaders } from '../utils/getValidHeaders';
 import { getStore } from '../utils/storage';
+import { removeStack } from '../services/alert';
 
 listenMessage<TRequest>('intercepted', async (request) => {
     const store = await getStore();
 
+    const headers = getValidHeaders({
+        headerProfiles: store.headersProfiles,
+        origin: window.location.origin,
+        request,
+        type: 'request',
+    });
+
     if (!store?.mocks) {
-        sendMessage<TMockResponseDTO>('mockChecked', {
+        sendMessage<TInterceptedRequestDTO>('requestChecked', {
             messageId: request.messageId,
+            headers,
         });
         return;
     }
@@ -18,16 +27,18 @@ listenMessage<TRequest>('intercepted', async (request) => {
     const mocks = getValidMocks(store.mocks, request, window.location.origin);
 
     if (mocks.length === 0) {
-        sendMessage<TMockResponseDTO>('mockChecked', {
+        sendMessage<TInterceptedRequestDTO>('requestChecked', {
             messageId: request.messageId,
+            headers,
         });
         return;
     }
 
     const mock = mocks[0];
 
-    sendMessage<TMockResponseDTO>('mockChecked', {
+    sendMessage<TInterceptedRequestDTO>('requestChecked', {
         messageId: request.messageId,
+        headers,
         mock,
     });
 

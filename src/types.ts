@@ -13,7 +13,7 @@ export enum HttpMethodType {
     PURGE = 'PURGE',
 }
 
-export type MessageType = 'intercepted' | 'mockChecked'
+export type MessageType = 'intercepted' | 'requestChecked'
 
 export type TResponseType = 'text' | 'json' | 'none'
 
@@ -54,9 +54,10 @@ export type TRequest = {
     method: string
 }
 
-export type TMockResponseDTO = {
+export type TInterceptedRequestDTO = {
     messageId: string
     mock?: TMock
+    headers: Record<string, string>
 }
 
 export type TRoute = 'logs' | 'mocks' | 'settings' | 'headers'

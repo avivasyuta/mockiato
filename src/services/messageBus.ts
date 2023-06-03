@@ -1,6 +1,4 @@
-import { TMock } from '../types';
-
-type Callback = (value?: TMock) => void
+type Callback = (value?: any) => void
 
 export class MessageBus {
     private readonly collector: Record<string, Callback>;
@@ -13,7 +11,7 @@ export class MessageBus {
         this.collector[messageId] = callback;
     }
 
-    dispatch(messageId: string, payload?: TMock): void {
+    dispatch(messageId: string, payload?: any): void {
         const callback = this.collector[messageId];
 
         if (!callback) {
