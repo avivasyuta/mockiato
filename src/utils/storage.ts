@@ -1,22 +1,31 @@
 import { TStore, TStoreKey, TUpdateStore } from '../types';
 import { STORE_KEY } from '../contstant';
 
-const getLocalStorage = (): TStore => {
+const emptyStore: TStore = {
+    mocks: [],
+    logs: [],
+};
+
+const getLocalStorage = (): TStore | undefined => {
     const data = localStorage.getItem(STORE_KEY) || '{}';
     return JSON.parse(data);
 };
 
-const getExtensionStore = async (): Promise<TStore> => {
+const getExtensionStore = async (): Promise<TStore | undefined> => {
     const response = await chrome.storage.local.get(STORE_KEY);
     return response[STORE_KEY] as TStore;
 };
 
 export const getStore = async (): Promise<TStore> => {
+    let store: TStore | undefined;
+
     if (process.env.NODE_ENV === 'development') {
-        return getLocalStorage();
+        store = getLocalStorage();
+    } else {
+        store = await getExtensionStore();
     }
 
-    return getExtensionStore();
+    return store ?? emptyStore;
 };
 
 export const setStore = async (store: TStore): Promise<void> => {
