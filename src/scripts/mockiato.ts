@@ -62,8 +62,6 @@ interceptor.on('request', async ({ request }) => {
             mock.response,
             {
                 status: mock.httpStatusCode,
-                // TODO
-                statusText: 'My custom status text',
                 headers: responseHeaders,
             },
         );
