@@ -4,7 +4,8 @@ import { INTERCEPTOR_ID, STORE_KEY } from '../contstant';
 import { getValidMocks } from '../utils/getValidMocks';
 import { getValidHeaders } from '../utils/getValidHeaders';
 import { getStore } from '../utils/storage';
-import { removeStack } from '../services/alert';
+import { createStack, removeStack } from '../services/alert';
+import { logError } from '../utils/logger';
 
 listenMessage<TInterceptedRequestDTO>('requestIntercepted', async (message) => {
     try {
@@ -65,8 +66,7 @@ listenMessage<TInterceptedRequestDTO>('requestIntercepted', async (message) => {
             },
         });
     } catch (err) {
-        // TODO сделать логгер
-        console.log('Mockiato error', err);
+        logError(err);
         sendMessage<TInterceptedRequestMockDTO>('requestChecked', {
             messageId: message.messageId,
             headers: {},
@@ -78,7 +78,6 @@ const destroy = () => {
     const script = document.getElementById(INTERCEPTOR_ID);
     script?.parentNode?.removeChild(script);
 
-    // TODO он тут должен быть?
     removeStack();
 };
 
@@ -88,6 +87,8 @@ export const main = () => {
     s.id = INTERCEPTOR_ID;
     s.src = chrome.runtime.getURL('mockiato.js');
     (document.head || document.documentElement).appendChild(s);
+
+    createStack();
 };
 
 destroy();
