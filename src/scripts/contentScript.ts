@@ -4,8 +4,8 @@ import { INTERCEPTOR_ID, STORE_KEY } from '../contstant';
 import { getValidMocks } from '../utils/getValidMocks';
 import { getValidHeaders } from '../utils/getValidHeaders';
 import { getStore } from '../utils/storage';
-import { createStack, removeStack } from '../services/alert';
-import { logError } from '../utils/logger';
+import { createStack } from '../services/alert';
+import { logError, logWarn } from '../utils/logger';
 
 listenMessage<TInterceptedRequestDTO>('requestIntercepted', async (message) => {
     try {
@@ -77,19 +77,26 @@ listenMessage<TInterceptedRequestDTO>('requestIntercepted', async (message) => {
 const destroy = () => {
     const script = document.getElementById(INTERCEPTOR_ID);
     script?.parentNode?.removeChild(script);
-
-    removeStack();
 };
 
 export const main = () => {
+    destroy();
+
     // Inject mockiato script to user's DOM
     const s = document.createElement('script');
     s.id = INTERCEPTOR_ID;
     s.src = chrome.runtime.getURL('mockiato.js');
-    (document.head || document.documentElement).appendChild(s);
+    s.onload = () => {
+        // eslint-disable-next-line max-len
+        logWarn('The Mockiato extension has created a request interceptor! Now all requests are proxies through it to implement mocks.');
+    };
 
-    createStack();
+    (document.head || document.documentElement).appendChild(s);
 };
 
-destroy();
+document.addEventListener('DOMContentLoaded', () => {
+    // Add div for alerts when dom is ready
+    createStack();
+});
+
 main();

@@ -6,7 +6,7 @@ import { TInterceptedRequestDTO, TInterceptedRequestMockDTO } from '../types';
 import { sendMessage, listenMessage } from '../services/message';
 import { MessageBus } from '../services/messageBus';
 import { showAlert } from '../services/alert';
-import { logError, logWarn } from '../utils/logger';
+import { logError } from '../utils/logger';
 import { delay } from '../utils/delay';
 
 const messageBus = new MessageBus();
@@ -19,9 +19,6 @@ const interceptor = new BatchInterceptor({
 });
 
 interceptor.apply();
-
-// eslint-disable-next-line max-len
-logWarn('The Mockiato extension has created a request interceptor! Now all requests are proxies through it to implement mocks.');
 
 const getRequestMocks = (url: string, method: string): Promise<TInterceptedRequestMockDTO> => {
     const messageId = nanoid();

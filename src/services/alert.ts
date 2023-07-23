@@ -21,6 +21,7 @@ const createStyles = () => {
             flex-direction: column;
             gap: 8px;
             z-index: 99999;
+            color: #000000;
         }
         .mockiato-alert {
             font-family: Arial, serif
