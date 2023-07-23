@@ -1,75 +1,97 @@
 import { nanoid } from 'nanoid';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import xhook from '../xhook';
+import { BatchInterceptor } from '@mswjs/interceptors';
+import { FetchInterceptor } from '@mswjs/interceptors/fetch';
+import { XMLHttpRequestInterceptor } from '@mswjs/interceptors/XMLHttpRequest';
 import {
-    TRequest,
-    TMock,
-    TXhookRequest,
     TInterceptedRequestDTO,
+    TInterceptedRequestMockDTO,
 } from '../types';
 import { sendMessage, listenMessage } from '../services/message';
 import { MessageBus } from '../services/messageBus';
 import { showAlert, createStack } from '../services/alert';
 
-type TXhookCallback = (response?: unknown) => void
+const interceptor = new BatchInterceptor({
+    name: 'mockiatoInterceptor',
+    interceptors: [
+        new FetchInterceptor(),
+        new XMLHttpRequestInterceptor(),
+    ],
+});
+
+interceptor.apply();
+
+// TODO почему в тестов приложении срабатывает после отправки запроса?
+console.warn('The Mockiato extension has created a request interceptor! Now all requests are proxied through it to implement mocks.');
 
 const messageBus = new MessageBus();
 
-listenMessage<TInterceptedRequestDTO>('requestChecked', (response) => {
-    messageBus.dispatch(response.messageId, response);
+listenMessage<TInterceptedRequestMockDTO>('requestChecked', (message) => {
+    messageBus.dispatch(message.messageId, message);
 });
 
-const getRequestMocks = (request: TXhookRequest): Promise<unknown> => {
+const getRequestMocks = (url: string, method: string): Promise<TInterceptedRequestMockDTO> => {
     const messageId = nanoid();
 
-    const message: TRequest = {
+    const message: TInterceptedRequestDTO = {
         messageId,
-        url: request.url,
-        method: request.method,
+        url,
+        method,
     };
 
-    sendMessage<TRequest>('intercepted', message);
+    sendMessage<TInterceptedRequestDTO>('requestIntercepted', message);
 
     return new Promise((resolve) => {
         messageBus.addListener(messageId, resolve);
     });
 };
 
-xhook.before(async (request: TXhookRequest, callback: TXhookCallback) => {
-    let data: {
-        headers: Record<string, string>
-        mock?: TMock
-    };
+interceptor.on('request', async ({ request }) => {
+    let data: TInterceptedRequestMockDTO;
 
     try {
-        data = await getRequestMocks(request);
+        data = await getRequestMocks(request.url, request.method);
     } catch (e) {
         // eslint-disable-next-line no-console
         console.error(e);
-        callback();
         return;
     }
+
+    const { mock, headers } = data;
+
+    // Add headers to request
+    Object.entries(headers).forEach(([key, value]) => {
+        request.headers.set(key, value);
+    });
 
     if (!mock) {
-        callback();
         return;
     }
 
-    const response = {
-        status: mock.httpStatusCode,
-        text: mock.response,
-        type: mock.responseType,
-    };
+    // Convert response headers from mock
+    const responseHeaders = mock.responseHeaders.reduce<Record<string, string>>((acc, header) => ({
+        ...acc,
+        [header.key]: header.value,
+    }), {});
 
+    const response = new Response(
+        mock.response,
+        {
+            status: mock.httpStatusCode,
+            // TODO
+            statusText: 'My custom status text',
+            headers: responseHeaders,
+        },
+    );
+
+    // TODO проверить таймауты
     if (mock.delay) {
         setTimeout(() => {
-            callback(response);
-            showAlert(request);
+            request.respondWith(response);
+            showAlert(request.url);
         }, mock.delay);
     } else {
-        callback(response);
-        showAlert(request);
+        request.respondWith(response);
+        showAlert(request.url);
     }
 });
 

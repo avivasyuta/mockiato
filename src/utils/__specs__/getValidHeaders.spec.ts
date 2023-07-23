@@ -5,8 +5,9 @@ describe('getValidHeaders', () => {
     testTable.forEach((testCase) => {
         test(testCase.title, () => {
             const result = getValidHeaders({
-                headerProfiles: testCase.data.profiles,
-                request: testCase.data.request,
+                headerProfiles: testCase.data.headerProfiles,
+                url: testCase.data.url,
+                method: testCase.data.method,
                 type: testCase.data.type,
                 origin: testCase.data.origin,
             });

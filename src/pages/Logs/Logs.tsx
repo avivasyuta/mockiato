@@ -13,7 +13,10 @@ export const Logs: React.FC = () => {
     const [tabHost, setTabHost] = useState<string | null>(null);
     const [logs, setLogs] = useStore('logs');
 
-    chrome?.tabs?.query({ active: true, currentWindow: true }, (tabs) => {
+    chrome?.tabs?.query({
+        active: true,
+        currentWindow: true,
+    }, (tabs) => {
         const tab = tabs[0];
         const url = new URL(tab.url as string);
         if (!tabHost) {

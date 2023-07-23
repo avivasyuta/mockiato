@@ -30,9 +30,9 @@ export const Log: React.FC<LogProps> = ({ log }) => {
         >
             <>
                 <Group>
-                    <Text size="xs" color="dimmed">{log.date}</Text>
+                    <Text size="xs" color="dimmed">{new Date(log.date).toLocaleString()}</Text>
                     <HttpMethod method={log.mock.httpMethod} />
-                    <Text size="xs">{log.request.url}</Text>
+                    <Text size="xs">{log.url}</Text>
                 </Group>
 
                 <Collapse in={isOpen}>

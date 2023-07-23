@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import {
-    Badge, Button, Group, Modal, Text,
+    Badge, Button, Flex, Group, Modal, Text,
 } from '@mantine/core';
 import { IconPlaylistAdd } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
@@ -13,11 +13,11 @@ import { THeadersProfile, THeaderStatus } from '../../types';
 import { NotFound } from '../../components/NotFound';
 import { isEmpty } from '../../utils/isEmpty';
 import { Profile } from './components/Profile';
+import { ProfilesActions } from './components/ProfilesActions';
 import {
     addProfile, changeProfile, changeProfileStatus, deleteProfile, setLastActive,
 } from './helpers';
 import styles from './Headers.module.css';
-import { ProfilesActions } from './components/ProfilesActions';
 
 const HeadersPage: React.FC = () => {
     const [profiles, setProfiles] = useStore('headersProfiles');
@@ -66,21 +66,27 @@ const HeadersPage: React.FC = () => {
     return (
         <>
             <div className={styles.header}>
-                <Group spacing="xs" align="center">
+                <Flex direction="column">
                     <Text fz="md" fw={500}>
-                        Headers modifications {activeProfile && `profile ${activeProfile.name}`}
+                        Request Headers
                     </Text>
 
                     {activeProfile && (
-                        <Badge
-                            size="xs"
-                            variant="filled"
-                            color={activeProfile.status === 'enabled' ? 'green' : 'gray'}
-                        >
-                            {activeProfile.status}
-                        </Badge>
+                        <Group spacing="0.3rem">
+                            <Text fz="xs" c="dimmed">
+                                {activeProfile.name}
+                            </Text>
+
+                            <Badge
+                                size="xs"
+                                variant="filled"
+                                color={activeProfile.status === 'enabled' ? 'green' : 'gray'}
+                            >
+                                {activeProfile.status}
+                            </Badge>
+                        </Group>
                     )}
-                </Group>
+                </Flex>
 
                 {profiles && activeProfile && (
                     <ProfilesActions
@@ -104,7 +110,7 @@ const HeadersPage: React.FC = () => {
                             leftIcon={<IconPlaylistAdd size={20} />}
                             variant="gradient"
                             size="xs"
-                            title="Add new header"
+                            title="Add new profile"
                             gradient={{ from: 'indigo', to: 'cyan' }}
                             compact
                             onClick={open}

@@ -1,10 +1,26 @@
-import { TMock, TRequest } from '../types';
+import { TMock } from '../types';
 import { matchUrl } from './matchUrl';
 
-export const getValidMocks = (mocks: TMock[], request: TRequest, origin: string): TMock[] => mocks.filter((mock) => {
-    if (!mock.isActive || mock.httpMethod !== request.method) {
-        return false;
-    }
+export interface Options {
+    mocks: TMock[];
+    origin: string;
+    url: string;
+    method: string;
+}
 
-    return matchUrl(request.url, mock.url, origin);
-});
+export const getValidMocks = (options: Options): TMock[] => {
+    const {
+        url,
+        method,
+        origin,
+        mocks,
+    } = options;
+
+    return mocks.filter((mock) => {
+        if (!mock.isActive || mock.httpMethod !== method) {
+            return false;
+        }
+
+        return matchUrl(url, mock.url, origin);
+    });
+};

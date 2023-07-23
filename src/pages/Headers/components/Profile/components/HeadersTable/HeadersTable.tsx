@@ -1,6 +1,4 @@
-import {
-    ActionIcon, Group, Switch, Text,
-} from '@mantine/core';
+import { ActionIcon, Group, Switch, Text, Tooltip } from '@mantine/core';
 import React, { FC } from 'react';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import { THeader } from '../../../../../../types';
@@ -8,6 +6,7 @@ import { Card } from '../../../../../../components/Card';
 import { iconSize } from '../../../../../../contstant';
 import styles from './HeaderTable.module.css';
 import { HttpMethod } from '../../../../../../components/HttpMethod';
+import { NotFound } from '../../../../../../components/NotFound';
 
 interface HeadersTableProps {
     headers: THeader[]
@@ -31,8 +30,16 @@ export const HeadersTable: FC<HeadersTableProps> = ({
     };
 
     if (headers.length === 0) {
-        return <Text size="xs" c="gray.7">There are no headers</Text>;
+        return <NotFound text="No headers to show" />;
     }
+
+    const handleDelete = (id: string) => (e: React.MouseEvent<HTMLButtonElement>): void => {
+        if (e.detail < 2) {
+            return;
+        }
+
+        onDelete(id);
+    };
 
     return (
         <>
@@ -74,15 +81,23 @@ export const HeadersTable: FC<HeadersTableProps> = ({
                             </div>
 
                             <Group spacing="sm">
-                                <ActionIcon
-                                    variant="subtle"
-                                    color="red"
-                                    size="sm"
-                                    radius="sm"
-                                    onClick={(): void => onDelete(header.id)}
+                                <Tooltip
+                                    label="Double click to delete"
+                                    position="bottom"
+                                    transitionProps={{ transition: 'scale-y' }}
+                                    openDelay={300}
+                                    withArrow
                                 >
-                                    <IconTrash size={iconSize} />
-                                </ActionIcon>
+                                    <ActionIcon
+                                        variant="subtle"
+                                        color="red"
+                                        size="sm"
+                                        radius="sm"
+                                        onClick={handleDelete(header.id)}
+                                    >
+                                        <IconTrash size={iconSize} />
+                                    </ActionIcon>
+                                </Tooltip>
 
                                 <ActionIcon
                                     variant="subtle"

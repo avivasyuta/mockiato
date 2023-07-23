@@ -106,7 +106,7 @@ const MocksPage: React.FC = () => {
     return (
         <>
             <div className={styles.header}>
-                <Text fz="md" fw={500}>Requests mocks</Text>
+                <Text fz="md" fw={500}>Response Mocks</Text>
 
                 <Button
                     leftIcon={<IconPlaylistAdd size={20} />}

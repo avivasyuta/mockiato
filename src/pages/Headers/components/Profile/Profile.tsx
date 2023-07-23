@@ -1,5 +1,5 @@
 import React, { FC, useReducer } from 'react';
-import { Drawer, Space } from '@mantine/core';
+import { Drawer } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { THeader } from '../../../../types';
 import { overlaySettings } from '../../../../contstant';
@@ -28,7 +28,6 @@ export const Profile: FC<ProfileProps> = ({ profile, onChange }) => {
     const [headerForm, dispatchHeaderForm] = useReducer(headerFormReducer, initialFormState);
 
     const requestHeaders = profile.headers.filter((h) => h.type === 'request');
-    const responseHeaders = profile.headers.filter((h) => h.type === 'response');
 
     const handleDeleteHeader = (id: string): void => {
         const newProfile = { ...profile };
@@ -85,29 +84,12 @@ export const Profile: FC<ProfileProps> = ({ profile, onChange }) => {
 
     return (
         <>
-            <Panel
-                type="request"
-                onAdd={handleOpenForm}
-            />
+            <Panel onAdd={handleOpenForm} />
 
             <HeadersTable
                 headers={requestHeaders}
                 onEdit={handleEditHeader}
                 onDelete={handleDeleteHeader}
-                onChange={handleChangeHeader}
-            />
-
-            <Space h="xl" />
-
-            <Panel
-                type="response"
-                onAdd={handleOpenForm}
-            />
-
-            <HeadersTable
-                headers={responseHeaders}
-                onDelete={handleDeleteHeader}
-                onEdit={handleEditHeader}
                 onChange={handleChangeHeader}
             />
 

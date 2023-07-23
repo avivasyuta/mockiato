@@ -1,9 +1,10 @@
-import { THeadersProfile, THeaderType, TRequest } from '../types';
+import { THeadersProfile, THeaderType } from '../types';
 import { matchUrl } from './matchUrl';
 
-interface Options {
+export interface Options {
     headerProfiles: Record<string, THeadersProfile>
-    request: TRequest
+    url: string
+    method: string
     type: THeaderType
     origin: string
 }
@@ -11,7 +12,8 @@ interface Options {
 export const getValidHeaders = (options: Options): Record<string, string> => {
     const {
         headerProfiles,
-        request,
+        url,
+        method,
         type,
         origin,
     } = options;
@@ -27,7 +29,7 @@ export const getValidHeaders = (options: Options): Record<string, string> => {
             let isValidUrl = true;
 
             if (header.url) {
-                isValidUrl = header.httpMethod === request.method && matchUrl(request.url, header.url, origin);
+                isValidUrl = header.httpMethod === method && matchUrl(url, header.url, origin);
             }
 
             const isValid = header.isActive && header.type === type && isValidUrl;

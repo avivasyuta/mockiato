@@ -1,14 +1,10 @@
-import { HttpMethodType, THeadersProfile, THeaderType, TRequest } from '../../types';
+import { HttpMethodType } from '../../types';
+import { Options } from '../getValidHeaders';
 
 type Test = {
     title: string
     expected: Record<string, string>
-    data: {
-        type: THeaderType
-        profiles: Record<string, THeadersProfile>
-        request: TRequest
-        origin: string
-    }
+    data: Options
 }
 
 export const testTable: Test[] = [
@@ -16,7 +12,7 @@ export const testTable: Test[] = [
         title: 'Get headers only from enabled profiles.',
         data: {
             type: 'request',
-            profiles: {
+            headerProfiles: {
                 1: {
                     id: '1',
                     name: 'name',
@@ -48,11 +44,8 @@ export const testTable: Test[] = [
                     ],
                 },
             },
-            request: {
-                url: '/item/load/url',
-                method: 'GET',
-                messageId: '1',
-            },
+            url: '/item/load/url',
+            method: 'GET',
             origin: 'https://www.example.ru',
         },
         expected: {
@@ -63,7 +56,7 @@ export const testTable: Test[] = [
         title: 'Get only active headers.',
         data: {
             type: 'request',
-            profiles: {
+            headerProfiles: {
                 1: {
                     id: '1',
                     name: 'name',
@@ -87,11 +80,8 @@ export const testTable: Test[] = [
                     ],
                 },
             },
-            request: {
-                url: '/item/load/url',
-                method: 'GET',
-                messageId: '1',
-            },
+            url: '/item/load/url',
+            method: 'GET',
             origin: 'https://www.example.ru',
         },
         expected: {
@@ -102,7 +92,7 @@ export const testTable: Test[] = [
         title: 'Get only request headers.',
         data: {
             type: 'request',
-            profiles: {
+            headerProfiles: {
                 1: {
                     id: '1',
                     name: 'name',
@@ -126,11 +116,8 @@ export const testTable: Test[] = [
                     ],
                 },
             },
-            request: {
-                url: '/item/load/url',
-                method: 'GET',
-                messageId: '1',
-            },
+            url: '/item/load/url',
+            method: 'GET',
             origin: 'https://www.example.ru',
         },
         expected: {
@@ -141,7 +128,7 @@ export const testTable: Test[] = [
         title: 'Get only response headers.',
         data: {
             type: 'response',
-            profiles: {
+            headerProfiles: {
                 1: {
                     id: '1',
                     name: 'name',
@@ -165,11 +152,8 @@ export const testTable: Test[] = [
                     ],
                 },
             },
-            request: {
-                url: '/item/load/url',
-                method: 'GET',
-                messageId: '1',
-            },
+            url: '/item/load/url',
+            method: 'GET',
             origin: 'https://www.example.ru',
         },
         expected: {
@@ -180,7 +164,7 @@ export const testTable: Test[] = [
         title: 'Return empty object if there are no valid headers.',
         data: {
             type: 'response',
-            profiles: {
+            headerProfiles: {
                 1: {
                     id: '1',
                     name: 'name',
@@ -189,11 +173,8 @@ export const testTable: Test[] = [
                     headers: [],
                 },
             },
-            request: {
-                url: '/item/load/url',
-                method: 'GET',
-                messageId: '1',
-            },
+            url: '/item/load/url',
+            method: 'GET',
             origin: 'https://www.example.ru',
         },
         expected: {},
@@ -202,7 +183,7 @@ export const testTable: Test[] = [
         title: 'Get headers which match request url.',
         data: {
             type: 'response',
-            profiles: {
+            headerProfiles: {
                 1: {
                     id: '1',
                     name: 'name',
@@ -228,11 +209,8 @@ export const testTable: Test[] = [
                     ],
                 },
             },
-            request: {
-                url: '/item/load/url',
-                method: 'GET',
-                messageId: '1',
-            },
+            url: '/item/load/url',
+            method: 'GET',
             origin: 'https://www.example.ru',
         },
         expected: {

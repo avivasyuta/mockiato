@@ -1,66 +1,84 @@
 import { listenMessage, sendMessage } from '../services/message';
-import { TInterceptedRequestDTO, TLog, TRequest } from '../types';
+import { TInterceptedRequestMockDTO, TLog, TInterceptedRequestDTO } from '../types';
 import { INTERCEPTOR_ID, STORE_KEY } from '../contstant';
 import { getValidMocks } from '../utils/getValidMocks';
 import { getValidHeaders } from '../utils/getValidHeaders';
 import { getStore } from '../utils/storage';
 import { removeStack } from '../services/alert';
 
-listenMessage<TRequest>('intercepted', async (request) => {
-    const store = await getStore();
+listenMessage<TInterceptedRequestDTO>('requestIntercepted', async (message) => {
+    try {
+        const store = await getStore();
+        const { origin } = window.location;
 
-    const headers = getValidHeaders({
-        headerProfiles: store.headersProfiles,
-        origin: window.location.origin,
-        request,
-        type: 'request',
-    });
+        const headers = getValidHeaders({
+            headerProfiles: store.headersProfiles,
+            origin: window.location.origin,
+            url: message.url,
+            method: message.method,
+            type: 'request',
+        });
 
-    if (!store?.mocks) {
-        sendMessage<TInterceptedRequestDTO>('requestChecked', {
-            messageId: request.messageId,
+        if (!store?.mocks) {
+            sendMessage<TInterceptedRequestMockDTO>('requestChecked', {
+                messageId: message.messageId,
+                headers,
+            });
+            return;
+        }
+
+        const mocks = getValidMocks({
+            mocks: store.mocks,
+            url: message.url,
+            method: message.method,
+            origin,
+        });
+
+        if (mocks.length === 0) {
+            sendMessage<TInterceptedRequestMockDTO>('requestChecked', {
+                messageId: message.messageId,
+                headers,
+            });
+            return;
+        }
+
+        const mock = mocks[0];
+
+        sendMessage<TInterceptedRequestMockDTO>('requestChecked', {
+            messageId: message.messageId,
+            mock,
             headers,
         });
-        return;
-    }
 
-    const mocks = getValidMocks(store.mocks, request, window.location.origin);
+        const log: TLog = {
+            url: message.url,
+            method: message.method,
+            date: new Date().toISOString(),
+            host: window.location.hostname,
+            mock,
+        };
 
-    if (mocks.length === 0) {
-        sendMessage<TInterceptedRequestDTO>('requestChecked', {
-            messageId: request.messageId,
-            headers,
+        await chrome.storage.local.set({
+            [STORE_KEY]: {
+                ...store,
+                logs: [...(store.logs ?? []), log],
+            },
         });
-        return;
+    } catch (err) {
+        // TODO сделать логгер
+        console.log('Mockiato error', err);
+        sendMessage<TInterceptedRequestMockDTO>('requestChecked', {
+            messageId: message.messageId,
+            headers: {},
+        });
     }
-
-    const mock = mocks[0];
-
-    sendMessage<TInterceptedRequestDTO>('requestChecked', {
-        messageId: request.messageId,
-        headers,
-        mock,
-    });
-
-    const log: TLog = {
-        request,
-        mock,
-        date: new Date().toLocaleString(),
-        host: window.location.hostname,
-    };
-
-    await chrome.storage.local.set({
-        [STORE_KEY]: {
-            ...store,
-            logs: [...(store.logs ?? []), log],
-        },
-    });
 });
 
 const destroy = () => {
     const script = document.getElementById(INTERCEPTOR_ID);
     script?.parentNode?.removeChild(script);
 
+    // TODO он тут должен быть?
     removeStack();
 };
 

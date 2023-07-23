@@ -29,12 +29,12 @@ type TMenuItem = {
 const menu: TMenuItem[] = [
     {
         route: 'mocks',
-        name: 'Mocks',
+        name: 'Response Mocks',
         icon: IconShadow,
     },
     {
         route: 'headers',
-        name: 'Headers',
+        name: 'Request Headers',
         icon: IconCodeMinus,
     },
     {

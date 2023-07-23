@@ -4,6 +4,7 @@ import { STORE_KEY } from '../contstant';
 const emptyStore: TStore = {
     mocks: [],
     logs: [],
+    headersProfiles: {},
 };
 
 const getLocalStorage = (): TStore | undefined => {

@@ -13,7 +13,7 @@ export enum HttpMethodType {
     PURGE = 'PURGE',
 }
 
-export type MessageType = 'intercepted' | 'requestChecked'
+export type MessageType = 'requestIntercepted' | 'requestChecked'
 
 export type TResponseType = 'text' | 'json' | 'none'
 
@@ -48,13 +48,13 @@ export type TMock = {
     isActive: boolean
 }
 
-export type TRequest = {
+export type TInterceptedRequestDTO = {
     messageId: string
     url: string
     method: string
 }
 
-export type TInterceptedRequestDTO = {
+export type TInterceptedRequestMockDTO = {
     messageId: string
     mock?: TMock
     headers: Record<string, string>
@@ -63,7 +63,8 @@ export type TInterceptedRequestDTO = {
 export type TRoute = 'logs' | 'mocks' | 'settings' | 'headers'
 
 export type TLog = {
-    request: TRequest
+    url: string
+    method: string
     mock: TMock
     date: string
     host: string
@@ -92,9 +93,3 @@ export type TUpdateStore = Record<string, {
 }>
 
 export type TStoreKey = keyof TStore
-
-export type TXhookRequest = {
-    url: string
-    method: string
-    headers: Record<string, string>
-}

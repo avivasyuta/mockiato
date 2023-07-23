@@ -1,8 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useForm } from '@mantine/form';
-import {
-    Button, Checkbox, Grid, Group, SegmentedControl, Select, TextInput,
-} from '@mantine/core';
+import { Button, Checkbox, Grid, Group, SegmentedControl, Select, TextInput } from '@mantine/core';
 import { HttpMethodType, THeader } from '../../types';
 import styles from './HeaderForm.module.css';
 
@@ -21,7 +19,18 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
     });
 
     const handleSpecifyUrl = (): void => {
-        setIsUrlEnabled((curr) => !curr);
+        setIsUrlEnabled((curr) => {
+            const newVal = !curr;
+
+            if (!newVal) {
+                form.setFieldValue('url', undefined);
+                form.setFieldValue('httpMethod', undefined);
+            } else {
+                form.setFieldValue('httpMethod', HttpMethodType.GET);
+            }
+
+            return newVal;
+        });
     };
 
     const handleSubmit = (values: THeader) => {
@@ -41,19 +50,6 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
         <form className={styles.form} onSubmit={form.onSubmit(handleSubmit)}>
             <div className={styles.inputs}>
                 <Grid align="flex-end">
-                    <Grid.Col span={6}>
-                        <Select
-                            required
-                            label="Header type"
-                            data={[
-                                { value: 'request', label: 'Request' },
-                                { value: 'response', label: 'Response' },
-                            ]}
-                            size="xs"
-                            {...form.getInputProps('type')}
-                        />
-                    </Grid.Col>
-
                     <Grid.Col span={6}>
                         <SegmentedControl
                             size="xs"
