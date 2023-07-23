@@ -7,6 +7,7 @@ import { sendMessage, listenMessage } from '../services/message';
 import { MessageBus } from '../services/messageBus';
 import { showAlert } from '../services/alert';
 import { logError, logWarn } from '../utils/logger';
+import { delay } from '../utils/delay';
 
 const messageBus = new MessageBus();
 const interceptor = new BatchInterceptor({
@@ -66,16 +67,12 @@ interceptor.on('request', async ({ request }) => {
             },
         );
 
-        // TODO проверить таймауты
         if (mock.delay) {
-            setTimeout(() => {
-                request.respondWith(response);
-                showAlert(request.url);
-            }, mock.delay);
-        } else {
-            request.respondWith(response);
-            showAlert(request.url);
+            await delay(mock.delay);
         }
+
+        request.respondWith(response);
+        showAlert(request.url);
     } catch (err) {
         logError(err);
     }

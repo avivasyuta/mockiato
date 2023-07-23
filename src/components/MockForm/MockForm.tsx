@@ -107,7 +107,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
 
                 <Grid.Col span={4}>
                     <NumberInput
-                        label="Delay"
+                        label="Delay, ms"
                         min={0}
                         max={maxDelay}
                         size="xs"
