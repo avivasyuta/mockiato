@@ -67,7 +67,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
             <Navbar.Section>
                 <Group position="apart" align="end">
                     <Group align="end">
-                        <img src="mockiato-128.png" alt="Mockiato" width="28" />
+                        <img src="icons/mockiato-128.png" alt="Mockiato" width="28" />
                         <Text
                             size="sm"
                             variant="gradient"

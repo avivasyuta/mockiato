@@ -5,13 +5,13 @@
     "version": "1.4.0",
     "devtools_page": "devtools.html",
     "icons": {
-        "16": "mockiato-16.png",
-        "128": "mockiato-128.png"
+        "16": "icons/mockiato-16.png",
+        "128": "icons/mockiato-128.png"
     },
     "action": {
         "default_icon": {
-            "16": "mockiato-16.png",
-            "128": "mockiato-128.png"
+            "16": "icons/mockiato-16.png",
+            "128": "icons/mockiato-128.png"
         }
     },
     "permissions": [
