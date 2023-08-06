@@ -1,3 +1,4 @@
+/* eslint-disable-next-line */
 type Callback = (value?: any) => void
 
 export class MessageBus {
@@ -11,6 +12,7 @@ export class MessageBus {
         this.collector[messageId] = callback;
     }
 
+    /* eslint-disable-next-line */
     dispatch(messageId: string, payload?: any): void {
         const callback = this.collector[messageId];
 
