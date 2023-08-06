@@ -13,18 +13,18 @@ import {
 } from '@mantine/core';
 import { IconX } from '@tabler/icons-react';
 import { nanoid } from 'nanoid';
-import { THeader, TMock } from '../../../../types';
+import { TMockHeader, TMock } from '../../../../types';
 import styles from './Headers.module.css';
 
 type THeadersProps = {
     form: UseFormReturnType<TMock>
-    onChange: (headers: THeader[]) => void
+    onChange: (headers: TMockHeader[]) => void
 }
 
-const emptyHeader: THeader = { key: '', value: '', id: nanoid() };
+const emptyHeader: TMockHeader = { key: '', value: '', id: nanoid() };
 
 export const Headers: FC<THeadersProps> = ({ form, onChange }) => {
-    const [headers, setHeaders] = useState<THeader[]>([]);
+    const [headers, setHeaders] = useState<TMockHeader[]>([]);
 
     useEffect(() => {
         const collection = [...form.values.responseHeaders];

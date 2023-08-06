@@ -12,7 +12,7 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { nanoid } from 'nanoid';
-import { HttpMethodType, THeader, TMock } from '../../types';
+import { HttpMethodType, TMockHeader, TMock } from '../../types';
 import { Response } from './components/Response';
 import { Headers } from './components/Headers';
 import styles from './MockForm.module.css';
@@ -45,7 +45,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
         form.setFieldValue('response', value);
     };
 
-    const handleChangeHeaders = (headers: THeader[]): void => {
+    const handleChangeHeaders = (headers: TMockHeader[]): void => {
         form.setFieldValue('responseHeaders', headers);
     };
 
@@ -58,11 +58,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
     };
 
     return (
-
-        <form
-            className={styles.form}
-            onSubmit={form.onSubmit(onSubmit)}
-        >
+        <form className={styles.form} onSubmit={form.onSubmit(onSubmit)}>
             <Grid align="flex-end">
                 <Grid.Col span={8}>
                     <TextInput
@@ -87,7 +83,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
                 </Grid.Col>
             </Grid>
 
-            <Grid mt="xs">
+            <Grid>
                 <Grid.Col span={4}>
                     <Select
                         required
@@ -111,7 +107,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
 
                 <Grid.Col span={4}>
                     <NumberInput
-                        label="Delay"
+                        label="Delay, ms"
                         min={0}
                         max={maxDelay}
                         size="xs"
@@ -121,8 +117,9 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
             </Grid>
 
             <Tabs
-                mt="lg"
+                mt="xs"
                 defaultValue="response"
+                variant="outline"
                 className={styles.tabs}
                 styles={() => ({
                     panel: {
@@ -134,9 +131,9 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
                 })}
             >
                 <Tabs.List>
-                    <Tabs.Tab value="response">Response body</Tabs.Tab>
-                    <Tabs.Tab value="headers">Response headers</Tabs.Tab>
-                    <Tabs.Tab value="comments">Comments</Tabs.Tab>
+                    <Tabs.Tab value="response" className={styles.tab}>Response body</Tabs.Tab>
+                    <Tabs.Tab value="headers" className={styles.tab}>Response headers</Tabs.Tab>
+                    <Tabs.Tab value="comments" className={styles.tab}>Comments</Tabs.Tab>
                 </Tabs.List>
 
                 <Tabs.Panel value="response" pt="xs">

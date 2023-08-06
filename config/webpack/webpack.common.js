@@ -11,7 +11,6 @@ module.exports = {
         devtools: path.join(__dirname, `${scriptsDir}/devtools.ts`),
         mockiato: path.join(__dirname, `${scriptsDir}/mockiato.ts`),
         contentScript: path.join(__dirname, `${scriptsDir}/contentScript.ts`),
-        background: path.join(__dirname, `${scriptsDir}/background.ts`),
     },
     module: {
         rules: [

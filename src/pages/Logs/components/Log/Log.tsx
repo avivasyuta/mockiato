@@ -3,11 +3,13 @@ import {
     Code,
     Collapse,
     Group,
-    Paper,
     Text,
 } from '@mantine/core';
-import { TLog } from '../../types';
-import { HttpMethod } from '../../components/HttpMethod';
+import { TLog } from '../../../../types';
+import { HttpMethod } from '../../../../components/HttpMethod';
+import { Card } from '../../../../components/Card';
+import styles from './Log.module.css';
+import { HttpStatus } from '../../../../components/HttpStatus';
 
 type LogProps = {
     log: TLog
@@ -21,21 +23,16 @@ export const Log: React.FC<LogProps> = ({ log }) => {
     };
 
     return (
-        <Paper
-            component="a"
-            href="#"
-            shadow="sm"
-            radius="md"
-            py="xs"
-            px="md"
+        <Card
             key={log.date}
+            className={styles.log}
             onClick={handleToggle}
         >
             <>
                 <Group>
-                    <Text size="xs" color="dimmed">{log.date}</Text>
+                    <Text size="xs" color="dimmed">{new Date(log.date).toLocaleString()}</Text>
                     <HttpMethod method={log.mock.httpMethod} />
-                    <Text size="xs">{log.request.url}</Text>
+                    <Text size="xs">{log.url}</Text>
                 </Group>
 
                 <Collapse in={isOpen}>
@@ -44,7 +41,7 @@ export const Log: React.FC<LogProps> = ({ log }) => {
                     </Text>
 
                     <Text size="xs" mt="sm">
-                        <strong>Response status code:</strong> {log.mock.httpStatusCode}
+                        <strong>Response status code:</strong> <HttpStatus status={log.mock.httpStatusCode} />
                     </Text>
 
                     <Text size="xs">
@@ -78,6 +75,6 @@ export const Log: React.FC<LogProps> = ({ log }) => {
                     )}
                 </Collapse>
             </>
-        </Paper>
+        </Card>
     );
 };

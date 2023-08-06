@@ -28,10 +28,12 @@
         }
     },
     "rules": {
+        "object-curly-newline": 0,
         "max-len": ["error", 120],
-        "indent": ["error", 4],
+        "indent": ["error", 4, { "SwitchCase": 1 }],
         "no-unused-vars": "off",
         "no-shadow": "off",
+        "arrow-body-style": ["error", "as-needed"],
         "import/prefer-default-export": "off",
         "import/extensions": ["error", {
             "ts": "never",

@@ -13,14 +13,26 @@ export enum HttpMethodType {
     PURGE = 'PURGE',
 }
 
-export type MessageType = 'intercepted' | 'mockChecked'
+export type MessageType = 'requestIntercepted' | 'requestChecked'
 
 export type TResponseType = 'text' | 'json' | 'none'
+
+export type THeaderType = 'request' | 'response'
+
+export type TMockHeader = {
+    id: string
+    key: string
+    value: string
+}
 
 export type THeader = {
     id: string
     key: string
     value: string
+    type: THeaderType
+    isActive: boolean
+    url?: string
+    httpMethod?: HttpMethodType
 }
 
 export type TMock = {
@@ -31,44 +43,48 @@ export type TMock = {
     delay: number
     response?: string
     responseType: TResponseType
-    responseHeaders: THeader[]
+    responseHeaders: TMockHeader[]
     comment?: string
     isActive: boolean
 }
 
-export type TRequest = {
+export type TInterceptedRequestDTO = {
     messageId: string
     url: string
     method: string
 }
 
-export type TMockResponseDTO = {
+export type TInterceptedRequestMockDTO = {
     messageId: string
     mock?: TMock
+    headers: Record<string, string>
 }
 
-export type TMockFormState = {
-    isOpened: boolean
-    mock?: TMock
-}
-
-export type TMockFormAction = {
-    type: 'open' | 'close'
-    payload?: TMock
-}
-
-export type TRoute = 'logs' | 'mocks' | 'settings'
+export type TRoute = 'logs' | 'mocks' | 'settings' | 'headers'
 
 export type TLog = {
-    request: TRequest
+    url: string
+    method: string
     mock: TMock
     date: string
     host: string
 }
 
+export type THeaderStatus = 'enabled' | 'disabled'
+export type THeadersProfileStatus = 'enabled' | 'disabled'
+
+export type THeadersProfile = {
+    id: string
+    name: string
+    status: THeadersProfileStatus
+    lastActive: boolean
+    headers: THeader[]
+}
+
 export type TStore = {
     mocks: TMock[]
     logs: TLog[]
+    headersProfiles: Record<string, THeadersProfile>
 }
 
 export type TUpdateStore = Record<string, {
@@ -77,9 +93,3 @@ export type TUpdateStore = Record<string, {
 }>
 
 export type TStoreKey = keyof TStore
-
-export type TXhookRequest = {
-    url: string
-    method: string
-    headers: Record<string, string>
-}

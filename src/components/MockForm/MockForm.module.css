@@ -1,11 +1,11 @@
-.drawer {
-    display: flex;
-    flex-direction: column;
-}
-
 .form, .tabs {
     display: flex;
     flex-direction: column;
     flex: 1;
     min-height: 0;
+}
+
+.tab {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.75rem;
 }

@@ -1,6 +1,5 @@
-import { TMock } from '../types';
-
-type Callback = (value?: TMock) => void
+/* eslint-disable-next-line */
+type Callback = (value?: any) => void
 
 export class MessageBus {
     private readonly collector: Record<string, Callback>;
@@ -13,7 +12,8 @@ export class MessageBus {
         this.collector[messageId] = callback;
     }
 
-    dispatch(messageId: string, payload?: TMock): void {
+    /* eslint-disable-next-line */
+    dispatch(messageId: string, payload?: any): void {
         const callback = this.collector[messageId];
 
         if (!callback) {

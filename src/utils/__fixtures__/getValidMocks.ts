@@ -1,4 +1,4 @@
-import { HttpMethodType, TMock, TRequest } from '../../types';
+import { HttpMethodType, TMock } from '../../types';
 
 export const testMocks: TMock[] = [
     {
@@ -57,7 +57,8 @@ type Test = {
     title: string
     expected: TMock[]
     data: {
-        request: TRequest
+        url: string
+        method: string
         origin: string
     }
 }
@@ -66,11 +67,8 @@ export const testTable: Test[] = [
     {
         title: 'Filter only active mocks.',
         data: {
-            request: {
-                url: '/item/load/url',
-                method: 'GET',
-                messageId: '1',
-            },
+            url: '/item/load/url',
+            method: 'GET',
             origin: 'https://www.example.ru',
         },
         expected: [testMocks[0]],
@@ -78,11 +76,8 @@ export const testTable: Test[] = [
     {
         title: 'Return empty array if active there are no active mocks of defined http method.',
         data: {
-            request: {
-                url: '/item/load/url',
-                method: 'POST',
-                messageId: '1',
-            },
+            url: '/item/load/url',
+            method: 'POST',
             origin: 'https://www.example.ru',
         },
         expected: [],
@@ -90,11 +85,8 @@ export const testTable: Test[] = [
     {
         title: 'If mock has relative path, mock should work only for requests to site host [relative request path].',
         data: {
-            request: {
-                url: '/item/load/url',
-                method: 'GET',
-                messageId: '1',
-            },
+            url: '/item/load/url',
+            method: 'GET',
             origin: 'https://www.example.ru',
         },
         expected: [testMocks[0]],
@@ -102,11 +94,8 @@ export const testTable: Test[] = [
     {
         title: 'If mock has relative path, mock should work only for requests to site host [absolute request path].',
         data: {
-            request: {
-                url: 'https://www.example.ru/item/load/url',
-                method: 'GET',
-                messageId: '1',
-            },
+            url: 'https://www.example.ru/item/load/url',
+            method: 'GET',
             origin: 'https://www.example.ru',
         },
         expected: [testMocks[0]],
@@ -114,11 +103,8 @@ export const testTable: Test[] = [
     {
         title: 'If mock has relative path, mock should not work for requests to another hosts.',
         data: {
-            request: {
-                url: 'https://example.ru/item/load/url',
-                method: 'GET',
-                messageId: '1',
-            },
+            url: 'https://example.ru/item/load/url',
+            method: 'GET',
             origin: 'https://another.host.ru',
         },
         expected: [],
@@ -126,11 +112,8 @@ export const testTable: Test[] = [
     {
         title: 'Wrong request path.',
         data: {
-            request: {
-                url: 'example.ru/item/load/url',
-                method: 'GET',
-                messageId: '1',
-            },
+            url: 'example.ru/item/load/url',
+            method: 'GET',
             origin: 'https://example.ru',
         },
         expected: [],
@@ -138,11 +121,8 @@ export const testTable: Test[] = [
     {
         title: 'Get mock if mock has absolute url.',
         data: {
-            request: {
-                url: 'https://www.example.ru/s/common/url',
-                method: 'GET',
-                messageId: '1',
-            },
+            url: 'https://www.example.ru/s/common/url',
+            method: 'GET',
             origin: 'any',
         },
         expected: [testMocks[2]],
@@ -150,11 +130,8 @@ export const testTable: Test[] = [
     {
         title: 'Uses query string for search mocks.',
         data: {
-            request: {
-                url: '/path?param=value&param2=value',
-                method: 'GET',
-                messageId: '1',
-            },
+            url: '/path?param=value&param2=value',
+            method: 'GET',
             origin: 'https://www.example.ru',
         },
         expected: [testMocks[4]],
@@ -162,11 +139,8 @@ export const testTable: Test[] = [
     {
         title: 'Query url is relative but mock url is absolute.',
         data: {
-            request: {
-                url: '/s/common/url',
-                method: 'GET',
-                messageId: '1',
-            },
+            url: '/s/common/url',
+            method: 'GET',
             origin: 'https://www.example.ru',
         },
         expected: [testMocks[2]],

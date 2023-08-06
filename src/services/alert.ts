@@ -1,5 +1,4 @@
 import { nanoid } from 'nanoid';
-import { TXhookRequest } from '../types';
 import { EXTENSION_NAME } from '../contstant';
 
 const closeTimeout = 10000;
@@ -22,6 +21,7 @@ const createStyles = () => {
             flex-direction: column;
             gap: 8px;
             z-index: 99999;
+            color: #000000;
         }
         .mockiato-alert {
             font-family: Arial, serif
@@ -123,9 +123,9 @@ const logToConsole = (url: string | URL): void => {
     console.warn(text);
 };
 
-export const showAlert = (request: TXhookRequest) => {
-    logToConsole(request.url);
-    const alert = createAlertNode(request.url);
+export const showAlert = (url: string) => {
+    logToConsole(url);
+    const alert = createAlertNode(url);
 
     const stackNode = document.getElementById(stackId);
     if (!stackNode) {

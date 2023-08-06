@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Radio, Textarea } from '@mantine/core';
+import { Group, Radio, Textarea } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { TMock } from '../../../../types';
 import { JSONEditor } from '../../../JSONEditor';
@@ -14,11 +14,13 @@ export const Response: FC<TResponseProps> = ({ form, onChange }) => (
         <Radio.Group
             size="sm"
             required
-            mb="md"
+            mb="sm"
             {...form.getInputProps('responseType')}
         >
-            <Radio value="json" label="JSON" size="xs" />
-            <Radio value="text" label="Text" size="xs" />
+            <Group>
+                <Radio value="json" label="JSON" size="xs" />
+                <Radio value="text" label="Text" size="xs" />
+            </Group>
         </Radio.Group>
 
         {form.values.responseType === 'json' && (

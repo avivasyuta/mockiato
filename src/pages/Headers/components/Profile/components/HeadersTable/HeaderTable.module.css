@@ -1,0 +1,28 @@
+.tableHeader {
+    display: flex;
+    padding: 0 .6rem;
+    gap: .625rem;
+}
+
+.tableBody {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.grow, .url {
+    flex: 1;
+}
+
+.url {
+    display: inline-flex;
+    gap: 4px;
+}
+
+.status {
+    width: 35px;
+}
+
+.actions {
+    width: 56px;
+}

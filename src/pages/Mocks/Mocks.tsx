@@ -1,20 +1,17 @@
-import React, { memo, useCallback, useReducer } from 'react';
-import {
-    Button,
-    Drawer,
-    Title,
-    useMantineTheme,
-} from '@mantine/core';
-import { IconCheck, IconPlaylistAdd } from '@tabler/icons-react';
+import React, { memo, useReducer } from 'react';
+import { Button, Drawer, Text } from '@mantine/core';
+import { IconPlaylistAdd } from '@tabler/icons-react';
 import { showNotification } from '@mantine/notifications';
 import { nanoid } from 'nanoid';
 import { useStore } from '../../hooks/useStore';
-import { TMock, TMockFormAction, TMockFormState } from '../../types';
+import { TMock } from '../../types';
 import { NotFound } from '../../components/NotFound';
 import { MockForm } from '../../components/MockForm';
 import { trimHeaders } from '../../components/MockForm/utils';
 import { Spinner } from '../../components/Spinner';
+import { overlaySettings } from '../../contstant';
 import { Mock } from './components/Mock';
+import { TMockFormAction, TMockFormState } from './types';
 import styles from './Mocks.module.css';
 
 const initialMockFormState: TMockFormState = {
@@ -24,19 +21,18 @@ const initialMockFormState: TMockFormState = {
 
 const mockFormReducer = (state: TMockFormState, action: TMockFormAction): TMockFormState => {
     switch (action.type) {
-    case 'open':
-        return { isOpened: true, mock: action.payload };
-    case 'close':
-        return { isOpened: false, mock: undefined };
-    default:
-        return state;
+        case 'open':
+            return { isOpened: true, mock: action.payload };
+        case 'close':
+            return { isOpened: false, mock: undefined };
+        default:
+            return state;
     }
 };
 
 const MocksPage: React.FC = () => {
     const [mockForm, dispatchMockForm] = useReducer(mockFormReducer, initialMockFormState);
     const [mocks, setMocks] = useStore('mocks');
-    const theme = useMantineTheme();
 
     const handleCopyMock = (mock: TMock): void => {
         dispatchMockForm({
@@ -48,9 +44,13 @@ const MocksPage: React.FC = () => {
         });
     };
 
-    const handleOpenMockForm = useCallback(() => {
+    const handleOpenForm = () => {
         dispatchMockForm({ type: 'open' });
-    }, []);
+    };
+
+    const handleCloseForm = (): void => {
+        dispatchMockForm({ type: 'close' });
+    };
 
     const handleEditMock = (mock: TMock) => {
         dispatchMockForm({
@@ -69,7 +69,6 @@ const MocksPage: React.FC = () => {
         setMocks(newMocks);
         showNotification({
             message: 'Mock was deleted',
-            icon: <IconCheck size={18} />,
             color: 'green',
         });
     };
@@ -77,10 +76,6 @@ const MocksPage: React.FC = () => {
     const handleChangeMock = (newMock: TMock): void => {
         const newMocks = mocks.map((mock) => (mock.id === newMock.id ? newMock : mock));
         setMocks(newMocks);
-    };
-
-    const handleCloseForm = (): void => {
-        dispatchMockForm({ type: 'close' });
     };
 
     const submitForm = (values: TMock): void => {
@@ -101,9 +96,7 @@ const MocksPage: React.FC = () => {
         }
 
         showNotification({
-            title: 'You deal great',
             message: 'Mock data was saved',
-            icon: <IconCheck size={18} />,
             color: 'green',
         });
 
@@ -113,22 +106,31 @@ const MocksPage: React.FC = () => {
     return (
         <>
             <div className={styles.header}>
-                <Title order={4}>Mocks for requests</Title>
+                <Text fz="md" fw={500}>Response Mocks</Text>
 
                 <Button
-                    leftIcon={<IconPlaylistAdd />}
-                    variant="gradient"
+                    leftIcon={<IconPlaylistAdd size={20} />}
                     size="xs"
                     title="Add new mock"
+                    compact
+                    variant="gradient"
                     gradient={{ from: 'indigo', to: 'cyan' }}
-                    onClick={handleOpenMockForm}
+                    onClick={handleOpenForm}
                 >
                     Add new mock
                 </Button>
             </div>
 
-            <div className={styles.c}>
-                {mocks.length > 0 ? (
+            {mocks.length > 0 ? (
+                <>
+                    <div className={styles.tableHeader}>
+                        <Text size="xs" color="dimmed" className={styles.status}> </Text>
+                        <Text size="xs" color="dimmed" className={styles.method}>Method</Text>
+                        <Text size="xs" color="dimmed" className={styles.url}>URL</Text>
+                        <Text size="xs" color="dimmed" className={styles.code}>Status</Text>
+                        <Text size="xs" color="dimmed" className={styles.actions}> </Text>
+                    </div>
+
                     <div className={styles.mocks}>
                         {mocks.map((mock: TMock) => (
                             <Mock
@@ -141,10 +143,10 @@ const MocksPage: React.FC = () => {
                             />
                         ))}
                     </div>
-                ) : (
-                    <NotFound text="No mocks to show" />
-                )}
-            </div>
+                </>
+            ) : (
+                <NotFound text="No mocks to show" />
+            )}
 
             <Drawer
                 opened={mockForm.isOpened}
@@ -153,9 +155,11 @@ const MocksPage: React.FC = () => {
                 size="50%"
                 title={mockForm.mock?.id ? 'Edit mock' : 'Add new mock'}
                 className={styles.drawer}
-                overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[1]}
-                overlayOpacity={0.2}
-                overlayBlur={2}
+                overlayProps={overlaySettings}
+                styles={{
+                    content: { display: 'flex', flexDirection: 'column' },
+                    body: { display: 'flex', flex: 1 },
+                }}
                 onClose={handleCloseForm}
             >
                 {mockForm.isOpened && (

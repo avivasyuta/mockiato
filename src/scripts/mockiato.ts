@@ -1,75 +1,82 @@
 import { nanoid } from 'nanoid';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import xhook from '../xhook';
-import {
-    TRequest,
-    TMock,
-    TMockResponseDTO,
-    TXhookRequest,
-} from '../types';
+import { BatchInterceptor } from '@mswjs/interceptors';
+import { FetchInterceptor } from '@mswjs/interceptors/fetch';
+import { XMLHttpRequestInterceptor } from '@mswjs/interceptors/XMLHttpRequest';
+import { TInterceptedRequestDTO, TInterceptedRequestMockDTO } from '../types';
 import { sendMessage, listenMessage } from '../services/message';
 import { MessageBus } from '../services/messageBus';
-import { showAlert, createStack } from '../services/alert';
-
-type TXhookCallback = (response?: unknown) => void
+import { showAlert } from '../services/alert';
+import { logError } from '../utils/logger';
+import { delay } from '../utils/delay';
 
 const messageBus = new MessageBus();
-
-listenMessage<TMockResponseDTO>('mockChecked', (response) => {
-    messageBus.dispatch(response.messageId, response.mock);
+const interceptor = new BatchInterceptor({
+    name: 'mockiatoInterceptor',
+    interceptors: [
+        new FetchInterceptor(),
+        new XMLHttpRequestInterceptor(),
+    ],
 });
 
-const send = (request: TXhookRequest): Promise<TMock | undefined> => {
+interceptor.apply();
+
+const getRequestMocks = (url: string, method: string): Promise<TInterceptedRequestMockDTO> => {
     const messageId = nanoid();
 
-    const message: TRequest = {
+    const message: TInterceptedRequestDTO = {
         messageId,
-        url: request.url,
-        method: request.method,
+        url,
+        method,
     };
 
-    sendMessage<TRequest>('intercepted', message);
+    sendMessage<TInterceptedRequestDTO>('requestIntercepted', message);
 
-    return new Promise<TMock | undefined>((resolve) => {
+    return new Promise((resolve) => {
         messageBus.addListener(messageId, resolve);
     });
 };
 
-xhook.before(async (request: TXhookRequest, callback: TXhookCallback) => {
-    let mock;
-
+interceptor.on('request', async ({ request }) => {
     try {
-        mock = await send(request);
-    } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error(e);
-        callback();
-        return;
-    }
+        const { mock, headers } = await getRequestMocks(request.url, request.method);
 
-    if (!mock) {
-        callback();
-        return;
-    }
+        // Add headers to request
+        Object.entries(headers).forEach(([key, value]) => {
+            request.headers.set(key, value);
+        });
 
-    const response = {
-        status: mock.httpStatusCode,
-        text: mock.response,
-        type: mock.responseType,
-    };
+        // If there is no mock return from interceptor and send original request with additional headers (if exists)
+        if (!mock) {
+            return;
+        }
 
-    if (mock.delay) {
-        setTimeout(() => {
-            callback(response);
-            showAlert(request);
-        }, mock.delay);
-    } else {
-        callback(response);
-        showAlert(request);
+        // Convert response headers from mock
+        const responseHeaders = mock.responseHeaders.reduce<Record<string, string>>((acc, header) => ({
+            ...acc,
+            [header.key]: header.value,
+        }), {});
+
+        const response = new Response(
+            mock.response,
+            {
+                status: mock.httpStatusCode,
+                headers: responseHeaders,
+            },
+        );
+
+        if (mock.delay) {
+            await delay(mock.delay);
+        }
+
+        request.respondWith(response);
+        showAlert(request.url);
+    } catch (err) {
+        logError(err);
     }
 });
 
-createStack();
+listenMessage<TInterceptedRequestMockDTO>('requestChecked', (message) => {
+    messageBus.dispatch(message.messageId, message);
+});
 
 export {};
