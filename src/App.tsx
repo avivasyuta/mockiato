@@ -9,6 +9,7 @@ import { Mocks } from './pages/Mocks';
 import { Logs } from './pages/Logs';
 import { Settings } from './pages/Settings';
 import { Headers } from './pages/Headers';
+import { Network } from './pages/Network';
 import { TRoute } from './types';
 import { AppNavbar } from './components/AppNavbar';
 
@@ -58,6 +59,7 @@ export const App = () => {
                             {route === 'headers' && <Headers />}
                             {route === 'logs' && <Logs />}
                             {route === 'settings' && <Settings />}
+                            {route === 'network' && <Network />}
                         </Box>
                     </Group>
                 </ModalsProvider>

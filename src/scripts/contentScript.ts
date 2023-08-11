@@ -1,16 +1,70 @@
 import { listenMessage, sendMessage } from '../services/message';
-import { TInterceptedRequestMockDTO, TLog, TInterceptedRequestDTO } from '../types';
+import {
+    TInterceptedRequestMockDTO,
+    TLog,
+    TInterceptedRequestDTO,
+    TStore,
+    TMock,
+    TNetworkEvent,
+    TInterceptedResponseDTO,
+} from '../types';
 import { INTERCEPTOR_ID, STORE_KEY } from '../contstant';
 import { getValidMocks } from '../utils/getValidMocks';
 import { getValidHeaders } from '../utils/getValidHeaders';
-import { getStore } from '../utils/storage';
+import { getStore, initStore } from '../utils/storage';
 import { createStack } from '../services/alert';
 import { logError, logWarn } from '../utils/logger';
+
+const logNetwork = async (store: TStore, event: TNetworkEvent) => {
+    await chrome.storage.local.set({
+        [STORE_KEY]: {
+            ...store,
+            network: [...(store.network ?? []), event],
+        },
+    });
+};
+
+const logInterceptedRequest = async (store: TStore, message: TInterceptedRequestDTO, mock: TMock) => {
+    const log: TLog = {
+        url: message.url,
+        method: message.method,
+        date: new Date().toISOString(),
+        host: window.location.hostname,
+        mock,
+    };
+
+    await chrome.storage.local.set({
+        [STORE_KEY]: {
+            ...store,
+            logs: [...(store.logs ?? []), log],
+        },
+    });
+};
+
+const getMock = (store: TStore, message: TInterceptedRequestDTO): TMock | null => {
+    const { origin } = window.location;
+
+    if (!store?.mocks) {
+        return null;
+    }
+
+    const mocks = getValidMocks({
+        mocks: store.mocks,
+        url: message.url,
+        method: message.method,
+        origin,
+    });
+
+    if (mocks.length === 0) {
+        return null;
+    }
+
+    return mocks[0];
+};
 
 listenMessage<TInterceptedRequestDTO>('requestIntercepted', async (message) => {
     try {
         const store = await getStore();
-        const { origin } = window.location;
 
         const headers = getValidHeaders({
             headerProfiles: store.headersProfiles,
@@ -20,51 +74,17 @@ listenMessage<TInterceptedRequestDTO>('requestIntercepted', async (message) => {
             type: 'request',
         });
 
-        if (!store?.mocks) {
-            sendMessage<TInterceptedRequestMockDTO>('requestChecked', {
-                messageId: message.messageId,
-                headers,
-            });
-            return;
-        }
-
-        const mocks = getValidMocks({
-            mocks: store.mocks,
-            url: message.url,
-            method: message.method,
-            origin,
-        });
-
-        if (mocks.length === 0) {
-            sendMessage<TInterceptedRequestMockDTO>('requestChecked', {
-                messageId: message.messageId,
-                headers,
-            });
-            return;
-        }
-
-        const mock = mocks[0];
+        const mock = getMock(store, message);
 
         sendMessage<TInterceptedRequestMockDTO>('requestChecked', {
             messageId: message.messageId,
-            mock,
             headers,
-        });
-
-        const log: TLog = {
-            url: message.url,
-            method: message.method,
-            date: new Date().toISOString(),
-            host: window.location.hostname,
             mock,
-        };
-
-        await chrome.storage.local.set({
-            [STORE_KEY]: {
-                ...store,
-                logs: [...(store.logs ?? []), log],
-            },
         });
+
+        if (mock) {
+            await logInterceptedRequest(store, message, mock);
+        }
     } catch (err) {
         logError(err);
         sendMessage<TInterceptedRequestMockDTO>('requestChecked', {
@@ -74,13 +94,31 @@ listenMessage<TInterceptedRequestDTO>('requestIntercepted', async (message) => {
     }
 });
 
+listenMessage<TInterceptedResponseDTO>('responseIntercepted', async (message) => {
+    try {
+        const store = await getStore();
+        await logNetwork(store, message.event);
+    } catch (err) {
+        logError(err);
+    }
+});
+
 const destroy = () => {
     const script = document.getElementById(INTERCEPTOR_ID);
     script?.parentNode?.removeChild(script);
 };
 
-export const main = () => {
+const initialStore: TStore = {
+    mocks: [],
+    logs: [],
+    headersProfiles: {},
+    network: [],
+};
+
+export const main = async () => {
     destroy();
+
+    await initStore(initialStore);
 
     // Inject mockiato script to user's DOM
     const s = document.createElement('script');

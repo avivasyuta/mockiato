@@ -14,7 +14,9 @@ import {
     IconShadow,
     IconVersions,
     IconCodeMinus,
-    TablerIconsProps, IconThumbUp,
+    TablerIconsProps,
+    IconThumbUp,
+    IconWifi,
 } from '@tabler/icons-react';
 import manifest from '../../../public/manifest.json';
 import { TRoute } from '../../types';
@@ -36,6 +38,11 @@ const menu: TMenuItem[] = [
         route: 'headers',
         name: 'Request Headers',
         icon: IconCodeMinus,
+    },
+    {
+        route: 'network',
+        name: 'Network',
+        icon: IconWifi,
     },
     {
         route: 'logs',

@@ -5,6 +5,7 @@ const emptyStore: TStore = {
     mocks: [],
     logs: [],
     headersProfiles: {},
+    network: [],
 };
 
 const getLocalStorage = (): TStore | undefined => {
@@ -82,6 +83,8 @@ export const initStore = async <StoreKey extends TStoreKey>(initialValue: TStore
             newStore[k] = store[k];
         }
     });
+
+    newStore.network = [];
 
     await setStore(newStore);
 };

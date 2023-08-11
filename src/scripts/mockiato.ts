@@ -2,7 +2,12 @@ import { nanoid } from 'nanoid';
 import { BatchInterceptor } from '@mswjs/interceptors';
 import { FetchInterceptor } from '@mswjs/interceptors/fetch';
 import { XMLHttpRequestInterceptor } from '@mswjs/interceptors/XMLHttpRequest';
-import { TInterceptedRequestDTO, TInterceptedRequestMockDTO } from '../types';
+import {
+    HttpMethodType,
+    TInterceptedRequestDTO,
+    TInterceptedRequestMockDTO,
+    TInterceptedResponseDTO, TMockHeader, TResponseType,
+} from '../types';
 import { sendMessage, listenMessage } from '../services/message';
 import { MessageBus } from '../services/messageBus';
 import { showAlert } from '../services/alert';
@@ -73,6 +78,49 @@ interceptor.on('request', async ({ request }) => {
     } catch (err) {
         logError(err);
     }
+});
+
+interceptor.on('response', async ({ request, response }) => {
+    const headers: TMockHeader[] = [];
+    const res = response.clone();
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const [key, value] of res.headers.entries()) {
+        headers.push({
+            id: nanoid(),
+            key,
+            value,
+        });
+    }
+
+    const body = await res.text();
+    let type: TResponseType;
+
+    try {
+        JSON.parse(body);
+        type = 'json';
+    } catch (_) {
+        type = 'text';
+    }
+
+    const message: TInterceptedResponseDTO = {
+        event: {
+            date: new Date().toISOString(),
+            host: window.location.hostname,
+            request: {
+                url: request.url,
+                method: request.method as HttpMethodType,
+            },
+            response: {
+                body,
+                type,
+                headers,
+                httpStatusCode: response.status,
+            },
+        },
+    };
+
+    sendMessage<TInterceptedResponseDTO>('responseIntercepted', message);
 });
 
 listenMessage<TInterceptedRequestMockDTO>('requestChecked', (message) => {
