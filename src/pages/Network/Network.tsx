@@ -42,7 +42,7 @@ export const Network: React.FC = () => {
 
             <Content>
                 {filteredNetwork.length === 0 ? (
-                    <NotFound text="There are no logs" />
+                    <NotFound text="There are no requsts" />
                 ) : (
                     <>
                         <div className={styles.tableHeader}>
