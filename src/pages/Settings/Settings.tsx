@@ -5,6 +5,7 @@ import { modals } from '@mantine/modals';
 import { useStore } from '../../hooks/useStore';
 import { Card } from '../../components/Card';
 import { isEmpty } from '../../utils/isEmpty';
+import { Content } from '../../components/Contnent';
 import styles from './Settings..module.css';
 
 export const Settings = () => {
@@ -77,73 +78,75 @@ export const Settings = () => {
     };
 
     return (
-        <Group position="center">
-            <Card w="900px" p="0.5rem 0.8rem">
-                <Text fz="md" fw={500}>General settings</Text>
+        <Content>
+            <Group position="center">
+                <Card w="900px" p="0.5rem 0.8rem">
+                    <Text fz="md" fw={500}>General settings</Text>
 
-                <div className={styles.setting}>
-                    <div>
-                        <Text size="sm" weight={500}>Mocks</Text>
-                        <Text size="sm" c="dimmed">
-                            All mocks for all hosts
-                        </Text>
+                    <div className={styles.setting}>
+                        <div>
+                            <Text size="sm" weight={500}>Mocks</Text>
+                            <Text size="sm" c="dimmed">
+                                All mocks for all hosts
+                            </Text>
+                        </div>
+
+                        <Button
+                            size="xs"
+                            variant="filled"
+                            color="red"
+                            compact
+                            leftIcon={<IconTrash size={16} />}
+                            disabled={isClearMocksDisabled}
+                            onClick={handleClearAllMocks}
+                        >
+                            Clear all
+                        </Button>
                     </div>
 
-                    <Button
-                        size="xs"
-                        variant="filled"
-                        color="red"
-                        compact
-                        leftIcon={<IconTrash size={16} />}
-                        disabled={isClearMocksDisabled}
-                        onClick={handleClearAllMocks}
-                    >
-                        Clear all
-                    </Button>
-                </div>
+                    <div className={styles.setting}>
+                        <div>
+                            <Text size="sm" weight={500}>Logs of mocks</Text>
+                            <Text size="sm" c="dimmed">
+                                Data about requests that were intercepted and replaced with mocks for all hosts
+                            </Text>
+                        </div>
 
-                <div className={styles.setting}>
-                    <div>
-                        <Text size="sm" weight={500}>Logs of mocks</Text>
-                        <Text size="sm" c="dimmed">
-                            Data about requests that were intercepted and replaced with mocks for all hosts
-                        </Text>
+                        <Button
+                            size="xs"
+                            variant="filled"
+                            color="red"
+                            compact
+                            leftIcon={<IconTrash size={16} />}
+                            disabled={isClearLogsDisabled}
+                            onClick={handleClearAllLogs}
+                        >
+                            Clear all
+                        </Button>
                     </div>
 
-                    <Button
-                        size="xs"
-                        variant="filled"
-                        color="red"
-                        compact
-                        leftIcon={<IconTrash size={16} />}
-                        disabled={isClearLogsDisabled}
-                        onClick={handleClearAllLogs}
-                    >
-                        Clear all
-                    </Button>
-                </div>
+                    <div className={styles.setting}>
+                        <div>
+                            <Text size="sm" weight={500}>Headers profiles</Text>
+                            <Text size="sm" c="dimmed">
+                                Header profiles that allow you to substitute headers in requests and responses
+                            </Text>
+                        </div>
 
-                <div className={styles.setting}>
-                    <div>
-                        <Text size="sm" weight={500}>Headers profiles</Text>
-                        <Text size="sm" c="dimmed">
-                            Header profiles that allow you to substitute headers in requests and responses
-                        </Text>
+                        <Button
+                            size="xs"
+                            variant="filled"
+                            color="red"
+                            compact
+                            leftIcon={<IconTrash size={16} />}
+                            disabled={isHeadersDisabled}
+                            onClick={handleDeleteProfiles}
+                        >
+                            Clear all
+                        </Button>
                     </div>
-
-                    <Button
-                        size="xs"
-                        variant="filled"
-                        color="red"
-                        compact
-                        leftIcon={<IconTrash size={16} />}
-                        disabled={isHeadersDisabled}
-                        onClick={handleDeleteProfiles}
-                    >
-                        Clear all
-                    </Button>
-                </div>
-            </Card>
-        </Group>
+                </Card>
+            </Group>
+        </Content>
     );
 };

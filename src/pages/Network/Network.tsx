@@ -1,24 +1,17 @@
-import React, { useMemo, useState } from 'react';
-import { Badge, Group, Loader, Text } from '@mantine/core';
+import React, { useMemo } from 'react';
+import { Badge, Group, Text } from '@mantine/core';
 import { useStore } from '../../hooks/useStore';
 import { NotFound } from '../../components/NotFound';
 import { NetworkEvent } from './components/NetworkEvent';
+import { useTabHost } from '../../hooks/useTab';
+import { Header } from '../../components/Header';
+import { Content } from '../../components/Contnent';
+import { Spinner } from '../../components/Spinner';
 import styles from './Network.module.css';
 
 export const Network: React.FC = () => {
-    const [tabHost, setTabHost] = useState<string | null>(null);
+    const tabHost = useTabHost();
     const [events] = useStore('network');
-
-    chrome?.tabs?.query({
-        active: true,
-        currentWindow: true,
-    }, (tabs) => {
-        const tab = tabs[0];
-        const url = new URL(tab.url as string);
-        if (!tabHost) {
-            setTabHost(url.hostname);
-        }
-    });
 
     const filteredNetwork = useMemo(() => {
         if (!events) {
@@ -33,34 +26,38 @@ export const Network: React.FC = () => {
     }
 
     if (!filteredNetwork) {
-        return <Loader variant="bars" size="xs" />;
+        return <Spinner />;
     }
 
     return (
         <>
-            <div className={styles.header}>
+            <Header>
                 <Group spacing="xs">
-                    <Text fz="md" fw={500}>Network for host</Text>
+                    <Text fz="sm" fw={500}>Network</Text>
                     <Badge size="xs" variant="filled">
                         {tabHost}
                     </Badge>
                 </Group>
-            </div>
+            </Header>
 
-            <div className={styles.tableHeader}>
-                <Text size="xs" color="dimmed" className={styles.date}>Date</Text>
-                <Text size="xs" color="dimmed" className={styles.method}>Method</Text>
-                <Text size="xs" color="dimmed" className={styles.url}>URL</Text>
-                <Text size="xs" color="dimmed" className={styles.code}>Status</Text>
-            </div>
+            <Content>
+                {filteredNetwork.length === 0 ? (
+                    <NotFound text="There are no logs" />
+                ) : (
+                    <>
+                        <div className={styles.tableHeader}>
+                            <Text size="xs" color="dimmed" className={styles.date}>Date</Text>
+                            <Text size="xs" color="dimmed" className={styles.method}>Method</Text>
+                            <Text size="xs" color="dimmed" className={styles.url}>URL</Text>
+                            <Text size="xs" color="dimmed" className={styles.code}>Status</Text>
+                        </div>
 
-            {filteredNetwork.length === 0 ? (
-                <NotFound text="There are no logs" />
-            ) : (
-                <div className={styles.events}>
-                    {filteredNetwork.map((event) => <NetworkEvent event={event} />)}
-                </div>
-            )}
+                        <div className={styles.events}>
+                            {filteredNetwork.map((event) => <NetworkEvent event={event} />)}
+                        </div>
+                    </>
+                )}
+            </Content>
         </>
     );
 };

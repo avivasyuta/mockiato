@@ -7,6 +7,8 @@ import { useStore } from '../../hooks/useStore';
 import { TMock } from '../../types';
 import { NotFound } from '../../components/NotFound';
 import { MockForm } from '../../components/MockForm';
+import { Header } from '../../components/Header';
+import { Content } from '../../components/Contnent';
 import { trimHeaders } from '../../components/MockForm/utils';
 import { Spinner } from '../../components/Spinner';
 import { overlaySettings } from '../../contstant';
@@ -105,8 +107,8 @@ const MocksPage: React.FC = () => {
 
     return (
         <>
-            <div className={styles.header}>
-                <Text fz="md" fw={500}>Response Mocks</Text>
+            <Header>
+                <Text fz="sm" fw={500}>Response Mocks</Text>
 
                 <Button
                     leftIcon={<IconPlaylistAdd size={20} />}
@@ -119,57 +121,58 @@ const MocksPage: React.FC = () => {
                 >
                     Add new mock
                 </Button>
-            </div>
+            </Header>
 
-            {mocks.length > 0 ? (
-                <>
-                    <div className={styles.tableHeader}>
-                        <Text size="xs" color="dimmed" className={styles.status}> </Text>
-                        <Text size="xs" color="dimmed" className={styles.method}>Method</Text>
-                        <Text size="xs" color="dimmed" className={styles.url}>URL</Text>
-                        <Text size="xs" color="dimmed" className={styles.code}>Status</Text>
-                        <Text size="xs" color="dimmed" className={styles.actions}> </Text>
-                    </div>
+            <Content>
+                {mocks.length > 0 ? (
+                    <>
+                        <div className={styles.tableHeader}>
+                            <Text size="xs" color="dimmed" className={styles.status}> </Text>
+                            <Text size="xs" color="dimmed" className={styles.method}>Method</Text>
+                            <Text size="xs" color="dimmed" className={styles.url}>URL</Text>
+                            <Text size="xs" color="dimmed" className={styles.code}>Status</Text>
+                        </div>
 
-                    <div className={styles.mocks}>
-                        {mocks.map((mock: TMock) => (
-                            <Mock
-                                key={mock.id}
-                                mock={mock}
-                                onEditClick={handleEditMock}
-                                onCopyClick={handleCopyMock}
-                                onDelete={handleDeleteMock}
-                                onChange={handleChangeMock}
-                            />
-                        ))}
-                    </div>
-                </>
-            ) : (
-                <NotFound text="No mocks to show" />
-            )}
-
-            <Drawer
-                opened={mockForm.isOpened}
-                padding="sm"
-                position="right"
-                size="50%"
-                title={mockForm.mock?.id ? 'Edit mock' : 'Add new mock'}
-                className={styles.drawer}
-                overlayProps={overlaySettings}
-                styles={{
-                    content: { display: 'flex', flexDirection: 'column' },
-                    body: { display: 'flex', flex: 1 },
-                }}
-                onClose={handleCloseForm}
-            >
-                {mockForm.isOpened && (
-                    <MockForm
-                        mock={mockForm.mock}
-                        onClose={handleCloseForm}
-                        onSubmit={submitForm}
-                    />
+                        <div className={styles.mocks}>
+                            {mocks.map((mock: TMock) => (
+                                <Mock
+                                    key={mock.id}
+                                    mock={mock}
+                                    onEditClick={handleEditMock}
+                                    onCopyClick={handleCopyMock}
+                                    onDelete={handleDeleteMock}
+                                    onChange={handleChangeMock}
+                                />
+                            ))}
+                        </div>
+                    </>
+                ) : (
+                    <NotFound text="No mocks to show" />
                 )}
-            </Drawer>
+
+                <Drawer
+                    opened={mockForm.isOpened}
+                    padding="sm"
+                    position="right"
+                    size="50%"
+                    title={mockForm.mock?.id ? 'Edit mock' : 'Add new mock'}
+                    className={styles.drawer}
+                    overlayProps={overlaySettings}
+                    styles={{
+                        content: { display: 'flex', flexDirection: 'column' },
+                        body: { display: 'flex', flex: 1 },
+                    }}
+                    onClose={handleCloseForm}
+                >
+                    {mockForm.isOpened && (
+                        <MockForm
+                            mock={mockForm.mock}
+                            onClose={handleCloseForm}
+                            onSubmit={submitForm}
+                        />
+                    )}
+                </Drawer>
+            </Content>
         </>
     );
 };

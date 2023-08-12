@@ -2,10 +2,3 @@
     display: grid;
     grid-row-gap: 8px;
 }
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-}

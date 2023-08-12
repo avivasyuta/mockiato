@@ -66,17 +66,18 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
 
     return (
         <Navbar
-            p="sm"
             width={{ base: 200 }}
             bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : '#ffffff'}
             zIndex={1}
         >
-            <Navbar.Section>
+            <Navbar.Section p="0.425rem 0.525rem">
                 <Group position="apart" align="end">
-                    <Group align="end">
-                        <img src="icons/mockiato-128.png" alt="Mockiato" width="28" />
+                    <Group align="end" spacing="0.5rem">
+                        <img src="icons/mockiato-128.png" alt="Mockiato" width="24" />
                         <Text
                             size="sm"
+                            lh="0.8rem"
+                            lts="0.1rem"
                             variant="gradient"
                             gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
                         >
@@ -86,7 +87,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                 </Group>
             </Navbar.Section>
 
-            <Divider my="sm" variant="dotted" />
+            <Divider mb="xs" variant="dotted" />
 
             <Navbar.Section grow>
                 {menu.map((link) => {
@@ -105,9 +106,9 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                 })}
             </Navbar.Section>
 
-            <Divider my="sm" variant="dotted" />
+            <Divider variant="dotted" />
 
-            <Navbar.Section>
+            <Navbar.Section p="xs">
                 <Group position="left">
                     <IconVersions size={16} color="gray" />
                     <Text

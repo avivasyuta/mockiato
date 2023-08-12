@@ -1,30 +1,43 @@
-import React, { memo, useMemo } from 'react';
-import {
-    Badge, Button, Flex, Group, Modal, Text,
-} from '@mantine/core';
+import React, { memo, useMemo, useReducer } from 'react';
+import { Button, Modal } from '@mantine/core';
 import { IconPlaylistAdd } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
-import { showNotification } from '@mantine/notifications';
+import { Content } from '../../components/Contnent';
 import { useStore } from '../../hooks/useStore';
 import { Spinner } from '../../components/Spinner';
 import { overlaySettings } from '../../contstant';
 import { AddProfileForm } from './components/AddProfileForm';
-import { THeadersProfile, THeaderStatus } from '../../types';
+import { THeader, THeadersProfile } from '../../types';
 import { NotFound } from '../../components/NotFound';
 import { isEmpty } from '../../utils/isEmpty';
 import { Profile } from './components/Profile';
-import { ProfilesActions } from './components/ProfilesActions';
-import {
-    addProfile, changeProfile, changeProfileStatus, deleteProfile, setLastActive,
-} from './helpers';
-import styles from './Headers.module.css';
+import { addProfile, changeProfile } from './helpers';
+import { THeaderFormAction, THeaderFormState } from './components/Profile/types';
+import { TopPanel } from './components/TopPanel';
+
+const initialFormState: THeaderFormState = {
+    isOpen: false,
+    header: undefined,
+};
+
+const headerFormReducer = (state: THeaderFormState, action: THeaderFormAction): THeaderFormState => {
+    switch (action.type) {
+        case 'open':
+            return { isOpen: true, header: action.payload };
+        case 'close':
+            return { isOpen: false, header: undefined };
+        default:
+            return state;
+    }
+};
 
 const HeadersPage: React.FC = () => {
+    const [headerForm, dispatchHeaderForm] = useReducer(headerFormReducer, initialFormState);
     const [profiles, setProfiles] = useStore('headersProfiles');
-    const [isModelOpen, { open, close }] = useDisclosure(false);
+    const [isProfileModelOpen, profileModelActions] = useDisclosure(false);
 
     const handleAddProfile = (profile: THeadersProfile) => {
-        close();
+        profileModelActions.close();
         setProfiles(addProfile(profiles, profile));
     };
 
@@ -32,24 +45,15 @@ const HeadersPage: React.FC = () => {
         setProfiles(changeProfile(profiles, profile));
     };
 
-    const handleChangeProfileStatus = (id: string, status: THeaderStatus): void => {
-        setProfiles(changeProfileStatus(profiles, id, status));
-        showNotification({
-            message: `Profile ${status}`,
-            color: 'green',
-        });
+    const handleCloseForm = (): void => {
+        dispatchHeaderForm({ type: 'close' });
     };
 
-    const handleDeleteProfile = (id: string): void => {
-        setProfiles(deleteProfile(profiles, id));
-        showNotification({
-            message: 'Profile deleted',
-            color: 'green',
+    const handleOpenForm = (header: THeader) => {
+        dispatchHeaderForm({
+            type: 'open',
+            payload: header,
         });
-    };
-
-    const handleChangeActiveProfile = (id: string): void => {
-        setProfiles(setLastActive(profiles, id));
     };
 
     const activeProfileId = useMemo(() => {
@@ -65,77 +69,57 @@ const HeadersPage: React.FC = () => {
 
     return (
         <>
-            <div className={styles.header}>
-                <Flex direction="column">
-                    <Text fz="md" fw={500}>
-                        Request Headers
-                    </Text>
+            {profiles !== null && (
+                <TopPanel
+                    profiles={profiles}
+                    activeProfile={activeProfile}
+                    setProfiles={setProfiles}
+                    onHeaderAdd={handleOpenForm}
+                    onProfileAdd={profileModelActions.open}
+                />
+            )}
 
-                    {activeProfile && (
-                        <Group spacing="0.3rem">
-                            <Text fz="xs" c="dimmed">
-                                {activeProfile.name}
-                            </Text>
+            <Content>
+                {profiles === null && <Spinner />}
 
-                            <Badge
+                {profiles !== null && isEmpty(profiles) && (
+                    <NotFound
+                        text="No profiles to show"
+                        action={(
+                            <Button
+                                leftIcon={<IconPlaylistAdd size={20} />}
+                                variant="gradient"
                                 size="xs"
-                                variant="filled"
-                                color={activeProfile.status === 'enabled' ? 'green' : 'gray'}
+                                title="Add new profile"
+                                gradient={{ from: 'indigo', to: 'cyan' }}
+                                compact
+                                onClick={profileModelActions.open}
                             >
-                                {activeProfile.status}
-                            </Badge>
-                        </Group>
-                    )}
-                </Flex>
-
-                {profiles && activeProfile && (
-                    <ProfilesActions
-                        profiles={profiles}
-                        activeProfile={activeProfile}
-                        onChangeActive={handleChangeActiveProfile}
-                        onDelete={handleDeleteProfile}
-                        onStatusChange={handleChangeProfileStatus}
-                        onAdd={open}
+                                Add new profile
+                            </Button>
+                        )}
                     />
                 )}
-            </div>
 
-            {profiles === null && <Spinner />}
+                {activeProfile && (
+                    <Profile
+                        headerForm={headerForm}
+                        profile={activeProfile}
+                        onChange={handleChangeProfile}
+                        onHeaderEdit={handleOpenForm}
+                        onCloseHeaderForm={handleCloseForm}
+                    />
+                )}
 
-            {profiles !== null && isEmpty(profiles) && (
-                <NotFound
-                    text="No profiles to show"
-                    action={(
-                        <Button
-                            leftIcon={<IconPlaylistAdd size={20} />}
-                            variant="gradient"
-                            size="xs"
-                            title="Add new profile"
-                            gradient={{ from: 'indigo', to: 'cyan' }}
-                            compact
-                            onClick={open}
-                        >
-                            Add new profile
-                        </Button>
-                    )}
-                />
-            )}
-
-            {activeProfile && (
-                <Profile
-                    profile={activeProfile}
-                    onChange={handleChangeProfile}
-                />
-            )}
-
-            <Modal
-                opened={isModelOpen}
-                overlayProps={overlaySettings}
-                title="Add new profile"
-                onClose={close}
-            >
-                <AddProfileForm onSubmit={handleAddProfile} />
-            </Modal>
+                <Modal
+                    opened={isProfileModelOpen}
+                    overlayProps={overlaySettings}
+                    title="Add new profile"
+                    onClose={profileModelActions.close}
+                >
+                    <AddProfileForm onSubmit={handleAddProfile} />
+                </Modal>
+            </Content>
         </>
     );
 };

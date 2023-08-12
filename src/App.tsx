@@ -46,7 +46,6 @@ export const App = () => {
                         />
 
                         <Box
-                            p="0.8rem 1rem"
                             sx={{
                                 flex: '1',
                                 height: '100vh',

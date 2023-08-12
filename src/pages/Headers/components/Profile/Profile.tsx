@@ -1,31 +1,14 @@
-import React, { FC, useReducer } from 'react';
+import React, { FC } from 'react';
 import { Drawer } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { THeader } from '../../../../types';
 import { overlaySettings } from '../../../../contstant';
 import { HeaderForm } from '../../../../components/HeaderForm';
 import { HeadersTable } from './components/HeadersTable';
-import { ProfileProps, THeaderFormAction, THeaderFormState } from './types';
-import { Panel } from './components/Panel';
+import { ProfileProps } from './types';
 
-const initialFormState: THeaderFormState = {
-    isOpen: false,
-    header: undefined,
-};
-
-const headerFormReducer = (state: THeaderFormState, action: THeaderFormAction): THeaderFormState => {
-    switch (action.type) {
-        case 'open':
-            return { isOpen: true, header: action.payload };
-        case 'close':
-            return { isOpen: false, header: undefined };
-        default:
-            return state;
-    }
-};
-
-export const Profile: FC<ProfileProps> = ({ profile, onChange }) => {
-    const [headerForm, dispatchHeaderForm] = useReducer(headerFormReducer, initialFormState);
+export const Profile: FC<ProfileProps> = (props) => {
+    const { profile, headerForm, onChange, onCloseHeaderForm, onHeaderEdit } = props;
 
     const requestHeaders = profile.headers.filter((h) => h.type === 'request');
 
@@ -46,21 +29,6 @@ export const Profile: FC<ProfileProps> = ({ profile, onChange }) => {
         onChange(newProfile);
     };
 
-    const handleEditHeader = (header: THeader): void => {
-        dispatchHeaderForm({
-            type: 'open',
-            payload: header,
-        });
-    };
-
-    const handleOpenForm = (initialValue: THeader) => {
-        dispatchHeaderForm({ type: 'open', payload: initialValue });
-    };
-
-    const handleCloseForm = (): void => {
-        dispatchHeaderForm({ type: 'close' });
-    };
-
     const handleSubmitForm = (header: THeader): void => {
         const isNew = !profile.headers.find((h) => h.id === header.id);
 
@@ -74,7 +42,7 @@ export const Profile: FC<ProfileProps> = ({ profile, onChange }) => {
         }
 
         onChange(newProfile);
-        handleCloseForm();
+        onCloseHeaderForm();
 
         showNotification({
             message: 'Header modification data was saved',
@@ -84,11 +52,9 @@ export const Profile: FC<ProfileProps> = ({ profile, onChange }) => {
 
     return (
         <>
-            <Panel onAdd={handleOpenForm} />
-
             <HeadersTable
                 headers={requestHeaders}
-                onEdit={handleEditHeader}
+                onEdit={onHeaderEdit}
                 onDelete={handleDeleteHeader}
                 onChange={handleChangeHeader}
             />
@@ -104,12 +70,12 @@ export const Profile: FC<ProfileProps> = ({ profile, onChange }) => {
                     content: { display: 'flex', flexDirection: 'column' },
                     body: { display: 'flex', flex: 1 },
                 }}
-                onClose={handleCloseForm}
+                onClose={onCloseHeaderForm}
             >
                 {headerForm.isOpen && headerForm.header && (
                     <HeaderForm
                         initialValue={headerForm.header}
-                        onClose={handleCloseForm}
+                        onClose={onCloseHeaderForm}
                         onSubmit={handleSubmitForm}
                     />
                 )}

@@ -9,8 +9,8 @@ const emptyStore: TStore = {
 };
 
 const getLocalStorage = (): TStore | undefined => {
-    const data = localStorage.getItem(STORE_KEY) || '{}';
-    return JSON.parse(data);
+    const data = localStorage.getItem(STORE_KEY);
+    return data ? JSON.parse(data) : undefined;
 };
 
 const getExtensionStore = async (): Promise<TStore | undefined> => {

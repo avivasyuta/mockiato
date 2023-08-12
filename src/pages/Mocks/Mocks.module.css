@@ -17,24 +17,7 @@
 }
 
 .code {
-    width: 45px;
-}
-
-.actions {
-    width: 86px;
-}
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-}
-
-.content {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    width: 134px;
 }
 
 .mocks {
