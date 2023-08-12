@@ -105,6 +105,9 @@ export type TStore = {
     logs: TLog[]
     headersProfiles: Record<string, THeadersProfile>
     network: TNetworkEvent[]
+    settings: {
+        showNotifications: boolean
+    }
 }
 
 export type TUpdateStore = Record<string, {

@@ -51,9 +51,9 @@ export const Logs: React.FC = () => {
 
                 {filteredLogs.length > 0 && (
                     <Button
-                        variant="filled"
+                        variant="light"
                         size="xs"
-                        leftIcon={<IconTrash size={14} />}
+                        rightIcon={<IconTrash size={12} />}
                         color="red"
                         compact
                         title={`Clear logs for host ${tabHost}`}

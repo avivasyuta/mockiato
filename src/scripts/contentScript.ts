@@ -12,7 +12,7 @@ import { INTERCEPTOR_ID, STORE_KEY } from '../contstant';
 import { getValidMocks } from '../utils/getValidMocks';
 import { getValidHeaders } from '../utils/getValidHeaders';
 import { getStore, initStore } from '../utils/storage';
-import { createStack } from '../services/alert';
+import { createStack, showAlert } from '../services/alert';
 import { logError, logWarn } from '../utils/logger';
 
 const logNetwork = async (store: TStore, event: TNetworkEvent) => {
@@ -25,6 +25,10 @@ const logNetwork = async (store: TStore, event: TNetworkEvent) => {
 };
 
 const logInterceptedRequest = async (store: TStore, message: TInterceptedRequestDTO, mock: TMock) => {
+    if (store.settings.showNotifications) {
+        showAlert(message.url);
+    }
+
     const log: TLog = {
         url: message.url,
         method: message.method,
@@ -108,17 +112,10 @@ const destroy = () => {
     script?.parentNode?.removeChild(script);
 };
 
-const initialStore: TStore = {
-    mocks: [],
-    logs: [],
-    headersProfiles: {},
-    network: [],
-};
-
 export const main = async () => {
     destroy();
 
-    await initStore(initialStore);
+    await initStore();
 
     // Inject mockiato script to user's DOM
     const s = document.createElement('script');

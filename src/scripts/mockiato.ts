@@ -10,7 +10,6 @@ import {
 } from '../types';
 import { sendMessage, listenMessage } from '../services/message';
 import { MessageBus } from '../services/messageBus';
-import { showAlert } from '../services/alert';
 import { logError } from '../utils/logger';
 import { delay } from '../utils/delay';
 
@@ -74,7 +73,6 @@ interceptor.on('request', async ({ request }) => {
         }
 
         request.respondWith(response);
-        showAlert(request.url);
     } catch (err) {
         logError(err);
     }

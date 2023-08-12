@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Button, Group, Text } from '@mantine/core';
+import { Button, Group, Switch, Text } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { modals } from '@mantine/modals';
 import { useStore } from '../../hooks/useStore';
@@ -12,6 +12,7 @@ export const Settings = () => {
     const [logs, setLogs] = useStore('logs');
     const [mocks, setMocks] = useStore('mocks');
     const [headersProfiles, setHeadersProfiles] = useStore('headersProfiles');
+    const [settings, setSettings] = useStore('settings');
 
     const isClearLogsDisabled = useMemo(() => logs === null || logs.length === 0, [logs]);
     const isClearMocksDisabled = useMemo(() => mocks === null || mocks.length === 0, [mocks]);
@@ -77,26 +78,48 @@ export const Settings = () => {
         });
     };
 
+    const handleToggleNotifications = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSettings({
+            ...settings,
+            showNotifications: e.target.checked,
+        });
+    };
+
     return (
         <Content>
             <Group position="center">
-                <Card w="900px" p="0.5rem 0.8rem">
-                    <Text fz="md" fw={500}>General settings</Text>
+                <Card p="0.5rem 0.8rem">
+                    <Text fz="sm" fw={500}>General settings</Text>
 
                     <div className={styles.setting}>
                         <div>
-                            <Text size="sm" weight={500}>Mocks</Text>
-                            <Text size="sm" c="dimmed">
-                                All mocks for all hosts
+                            <Switch
+                                size="xs"
+                                onLabel="ON"
+                                offLabel="OFF"
+                                label="Show notifications"
+                                checked={settings?.showNotifications}
+                                onChange={handleToggleNotifications}
+                            />
+                            <Text size="xs" c="dimmed">
+                                If you enable this setting, notifications about intercepted requests will
+                                be shown on the site page.
                             </Text>
                         </div>
+                    </div>
+
+                    <div className={styles.setting}>
+                        <Text size="sm" weight={500}>Mocks</Text>
+                        <Text size="xs" c="dimmed">
+                            All mocks for all hosts
+                        </Text>
 
                         <Button
+                            mt="xs"
                             size="xs"
-                            variant="filled"
+                            variant="light"
                             color="red"
-                            compact
-                            leftIcon={<IconTrash size={16} />}
+                            rightIcon={<IconTrash size={12} />}
                             disabled={isClearMocksDisabled}
                             onClick={handleClearAllMocks}
                         >
@@ -105,19 +128,17 @@ export const Settings = () => {
                     </div>
 
                     <div className={styles.setting}>
-                        <div>
-                            <Text size="sm" weight={500}>Logs of mocks</Text>
-                            <Text size="sm" c="dimmed">
-                                Data about requests that were intercepted and replaced with mocks for all hosts
-                            </Text>
-                        </div>
+                        <Text size="sm" weight={500}>Logs of mocks</Text>
+                        <Text size="xs" c="dimmed">
+                            Data about requests that were intercepted and replaced with mocks for all hosts
+                        </Text>
 
                         <Button
+                            mt="xs"
                             size="xs"
-                            variant="filled"
+                            variant="light"
                             color="red"
-                            compact
-                            leftIcon={<IconTrash size={16} />}
+                            rightIcon={<IconTrash size={12} />}
                             disabled={isClearLogsDisabled}
                             onClick={handleClearAllLogs}
                         >
@@ -126,19 +147,17 @@ export const Settings = () => {
                     </div>
 
                     <div className={styles.setting}>
-                        <div>
-                            <Text size="sm" weight={500}>Headers profiles</Text>
-                            <Text size="sm" c="dimmed">
-                                Header profiles that allow you to substitute headers in requests and responses
-                            </Text>
-                        </div>
+                        <Text size="sm" weight={500}>Headers profiles</Text>
+                        <Text size="xs" c="dimmed">
+                            Header profiles that allow you to substitute headers in requests and responses
+                        </Text>
 
                         <Button
+                            mt="xs"
                             size="xs"
-                            variant="filled"
+                            variant="light"
                             color="red"
-                            compact
-                            leftIcon={<IconTrash size={16} />}
+                            rightIcon={<IconTrash size={12} />}
                             disabled={isHeadersDisabled}
                             onClick={handleDeleteProfiles}
                         >

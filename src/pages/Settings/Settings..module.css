@@ -1,7 +1,3 @@
 .setting {
-    display: flex;
-    justify-content: space-between;
-    width: 75%;
-    gap: 64px;
     margin-top: 18px;
 }
