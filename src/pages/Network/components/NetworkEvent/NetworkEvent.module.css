@@ -29,3 +29,7 @@
     font-size: 12px;
     line-height: 12px;
 }
+
+.code {
+    max-height: 300px;
+}

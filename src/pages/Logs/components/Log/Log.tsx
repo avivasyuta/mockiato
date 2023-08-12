@@ -53,7 +53,7 @@ export const Log: React.FC<LogProps> = ({ log }) => {
                     {log.mock.responseHeaders.length > 0 ? (
                         <>
                             <Text size="xs" mt="sm" weight={700}>Response headers</Text>
-                            <Code block>
+                            <Code block className={styles.code}>
                                 <div className={styles.headers}>
                                     {log.mock.responseHeaders.map((header) => (
                                         <>
@@ -73,7 +73,7 @@ export const Log: React.FC<LogProps> = ({ log }) => {
                     {log.mock.response ? (
                         <>
                             <Text size="xs" mt="sm" weight={700}>Response body</Text>
-                            <Code block>{log.mock.response}</Code>
+                            <Code block className={styles.code}>{log.mock.response}</Code>
                         </>
                     ) : (
                         <Text size="xs"><strong>Response body:</strong> empty</Text>

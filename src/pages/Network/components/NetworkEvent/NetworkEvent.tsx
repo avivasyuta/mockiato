@@ -93,7 +93,7 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
                     {event.response.headers.length > 0 ? (
                         <>
                             <Text size="xs" mt="sm" weight={700}>Response headers</Text>
-                            <Code block>
+                            <Code block className={styles.code}>
                                 <div className={styles.headers}>
                                     {event.response.headers.map((header) => (
                                         <>
@@ -113,7 +113,7 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
                     {event.response.body ? (
                         <>
                             <Text size="xs" mt="sm" weight={700}>Response body</Text>
-                            <Code block>
+                            <Code block className={styles.code}>
                                 {getBodyText(event.response.type, event.response.body)}
                             </Code>
                         </>
