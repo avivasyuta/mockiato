@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import {
-    Code,
-    Collapse,
-    Group,
-    Text,
-} from '@mantine/core';
+import { Code, Collapse, Group, Text } from '@mantine/core';
 import { IconChevronDown, IconChevronRight } from '@tabler/icons-react';
 import { TLog } from '../../../../types';
 import { HttpMethod } from '../../../../components/HttpMethod';

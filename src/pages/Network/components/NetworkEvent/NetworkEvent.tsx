@@ -1,12 +1,15 @@
 import React, { memo, useState } from 'react';
 import { ActionIcon, Code, Collapse, Group, Text, Tooltip } from '@mantine/core';
 import { IconChevronDown, IconChevronRight, IconSquarePlus } from '@tabler/icons-react';
-import { TNetworkEvent, TResponseType } from '../../../../types';
+import { nanoid } from 'nanoid';
+import { showNotification } from '@mantine/notifications';
+import { TMock, TNetworkEvent, TResponseType } from '../../../../types';
 import { Card } from '../../../../components/Card';
 import { HttpMethod } from '../../../../components/HttpMethod';
 import styles from './NetworkEvent.module.css';
 import { HttpStatus } from '../../../../components/HttpStatus';
 import { iconSize } from '../../../../contstant';
+import { useStore } from '../../../../hooks/useStore';
 
 type NetworkEventProps = {
     event: TNetworkEvent
@@ -27,6 +30,7 @@ const getBodyText = (type: TResponseType, body: string) => {
 
 const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [mocks, setMocks] = useStore('mocks');
 
     const handleToggle = () => {
         setIsOpen((prev) => !prev);
@@ -34,6 +38,23 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
 
     const handleCreate = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
+        const mock: TMock = {
+            id: nanoid(),
+            url: event.request.url,
+            httpMethod: event.request.method,
+            httpStatusCode: event.response.httpStatusCode,
+            delay: 0,
+            response: event.response.body,
+            responseType: event.response.type,
+            responseHeaders: event.response.headers,
+            isActive: true,
+        };
+        setMocks([mock, ...mocks ?? []]);
+
+        showNotification({
+            message: 'Mock was created. See new mock in Response Mocks tab.',
+            color: 'green',
+        });
     };
 
     return (
