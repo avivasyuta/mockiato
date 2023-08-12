@@ -69,7 +69,7 @@ export const TopPanel: FC<TopPanelProps> = (props) => {
             {activeProfile && (
                 <Group spacing="xs">
                     <Button
-                        leftIcon={<IconPlaylistAdd size={20} />}
+                        leftIcon={<IconPlaylistAdd size={16} />}
                         variant="gradient"
                         size="xs"
                         title="Add Header"

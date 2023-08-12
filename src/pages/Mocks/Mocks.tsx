@@ -111,7 +111,7 @@ const MocksPage: React.FC = () => {
                 <Text fz="sm" fw={500}>Response Mocks</Text>
 
                 <Button
-                    leftIcon={<IconPlaylistAdd size={20} />}
+                    leftIcon={<IconPlaylistAdd size={16} />}
                     size="xs"
                     title="Add new mock"
                     compact
