@@ -87,7 +87,7 @@ const HeadersPage: React.FC = () => {
                         text="No profiles to show"
                         action={(
                             <Button
-                                leftIcon={<IconPlaylistAdd size={20} />}
+                                leftIcon={<IconPlaylistAdd size={16} />}
                                 variant="gradient"
                                 size="xs"
                                 title="Add Profile"
