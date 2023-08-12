@@ -119,7 +119,7 @@ const MocksPage: React.FC = () => {
                     gradient={{ from: 'indigo', to: 'cyan' }}
                     onClick={handleOpenForm}
                 >
-                    Add new mock
+                    Add Mock
                 </Button>
             </Header>
 

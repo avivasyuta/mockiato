@@ -90,12 +90,12 @@ const HeadersPage: React.FC = () => {
                                 leftIcon={<IconPlaylistAdd size={20} />}
                                 variant="gradient"
                                 size="xs"
-                                title="Add new profile"
+                                title="Add Profile"
                                 gradient={{ from: 'indigo', to: 'cyan' }}
                                 compact
                                 onClick={profileModelActions.open}
                             >
-                                Add new profile
+                                Add Profile
                             </Button>
                         )}
                     />

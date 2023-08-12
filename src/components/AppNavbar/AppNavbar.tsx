@@ -70,25 +70,6 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
             bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : '#ffffff'}
             zIndex={1}
         >
-            <Navbar.Section p="0.425rem 0.525rem">
-                <Group position="apart" align="end">
-                    <Group align="end" spacing="0.5rem">
-                        <img src="icons/mockiato-128.png" alt="Mockiato" width="24" />
-                        <Text
-                            size="sm"
-                            lh="0.8rem"
-                            lts="0.1rem"
-                            variant="gradient"
-                            gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
-                        >
-                            Mockiato
-                        </Text>
-                    </Group>
-                </Group>
-            </Navbar.Section>
-
-            <Divider mb="xs" variant="dotted" />
-
             <Navbar.Section grow>
                 {menu.map((link) => {
                     const Icon = link.icon;
@@ -119,7 +100,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                         href={`https://github.com/avivasyuta/mockiato/releases/tag/v${manifest.version}`}
                         color="dimmed"
                     >
-                        Version {manifest.version}
+                        Mockiato v{manifest.version}
                     </Text>
                 </Group>
 

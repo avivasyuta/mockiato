@@ -72,12 +72,12 @@ export const TopPanel: FC<TopPanelProps> = (props) => {
                         leftIcon={<IconPlaylistAdd size={20} />}
                         variant="gradient"
                         size="xs"
-                        title="Add new header"
+                        title="Add Header"
                         gradient={{ from: 'indigo', to: 'cyan' }}
                         compact
                         onClick={handleAddHeader}
                     >
-                        Add new header
+                        Add Header
                     </Button>
 
                     <ProfileMenu
