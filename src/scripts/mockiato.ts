@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
-import { BatchInterceptor } from '@mswjs/interceptors';
-import { FetchInterceptor } from '@mswjs/interceptors/fetch';
-import { XMLHttpRequestInterceptor } from '@mswjs/interceptors/XMLHttpRequest';
+import { BatchInterceptor } from '@avivasyuta/request-interceptor';
+import { FetchInterceptor } from '@avivasyuta/request-interceptor/fetch';
+import { XMLHttpRequestInterceptor } from '@avivasyuta/request-interceptor/XMLHttpRequest';
 import {
     HttpMethodType,
     TInterceptedRequestDTO,

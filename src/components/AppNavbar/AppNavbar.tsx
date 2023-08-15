@@ -4,7 +4,8 @@ import {
     Group,
     Navbar,
     NavLink,
-    Text, useMantineTheme,
+    Text,
+    useMantineTheme,
 } from '@mantine/core';
 import {
     IconBrandGithub,
@@ -67,7 +68,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
     return (
         <Navbar
             width={{ base: 200 }}
-            bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : '#ffffff'}
+            bg={theme.colorScheme === 'dark' ? theme.colors.dark[7] : '#ffffff'}
             zIndex={1}
         >
             <Navbar.Section grow>
@@ -99,6 +100,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                         target="_blank"
                         href={`https://github.com/avivasyuta/mockiato/releases/tag/v${manifest.version}`}
                         color="dimmed"
+                        className={styles.link}
                     >
                         Mockiato v{manifest.version}
                     </Text>
@@ -113,6 +115,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                         target="_blank"
                         href="https://github.com/avivasyuta/mockiato"
                         color="dimmed"
+                        className={styles.link}
                     >
                         View source code
                     </Text>
@@ -127,6 +130,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                         target="_blank"
                         href="https://www.buymeacoffee.com/mockiatoexW"
                         color="dimmed"
+                        className={styles.link}
                     >
                         Support author
                     </Text>
@@ -141,6 +145,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                         target="_blank"
                         href="https://chrome.google.com/webstore/detail/mockiato/ilbkkhmnmnehcicempfpekgcpneeekao"
                         color="dimmed"
+                        className={styles.link}
                     >
                         Rate extension
                     </Text>

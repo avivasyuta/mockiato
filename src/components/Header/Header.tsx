@@ -8,7 +8,7 @@ export const Header: FC<React.PropsWithChildren> = ({ children }) => {
     return (
         <Box
             className={styles.header}
-            bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : '#ffffff'}
+            bg={theme.colorScheme === 'dark' ? theme.colors.dark[7] : '#ffffff'}
             style={{ borderColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2] }}
         >
             {children}

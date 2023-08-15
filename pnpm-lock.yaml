@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@avivasyuta/request-interceptor':
+    specifier: ^0.1.0
+    version: 0.1.0
   '@mantine/core':
     specifier: ^6.0.19
     version: 6.0.19(@emotion/react@11.11.1)(@mantine/hooks@6.0.19)(@types/react@18.0.15)(react-dom@18.2.0)(react@18.2.0)
@@ -26,9 +29,6 @@ dependencies:
   '@mantine/utils':
     specifier: 6.0.19
     version: 6.0.19(react@18.2.0)
-  '@mswjs/interceptors':
-    specifier: 0.23.0
-    version: 0.23.0
   '@tabler/icons-react':
     specifier: 2.17.0
     version: 2.17.0(react@18.2.0)
@@ -162,6 +162,19 @@ packages:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.18
+
+  /@avivasyuta/request-interceptor@0.1.0:
+    resolution: {integrity: sha512-DF5wDLna/9v+s0iIhekfcXYs9l7s6Rtwsj5SHnZVQJcaCAqILzoZDvMXFt9crkWs/4X3J3bct4m9pi+WkOQN6w==}
+    engines: {node: '>=18'}
+    dependencies:
+      '@open-draft/deferred-promise': 2.1.0
+      '@open-draft/logger': 0.3.0
+      '@open-draft/until': 2.1.0
+      headers-polyfill: 3.1.2
+      is-node-process: 1.2.0
+      outvariant: 1.4.0
+      strict-event-emitter: 0.5.0
+    dev: false
 
   /@babel/code-frame@7.22.5:
     resolution: {integrity: sha512-Xmwn266vad+6DAqEB2A6V/CcZVp62BbwVmcOJc2RPuwih1kw02TjQvWVWlcKGbBPd+8/0V5DEkOcizRGYsspYQ==}
@@ -2204,18 +2217,6 @@ packages:
       react: '>=16.8.0'
     dependencies:
       react: 18.2.0
-    dev: false
-
-  /@mswjs/interceptors@0.23.0:
-    resolution: {integrity: sha512-JytvDa7pBbxXvCTXBYQs+0eE6MqxpqH/H4peRNY6zVAlvJ6d/hAWLHAef1D9lWN4zuIigN0VkakGOAUrX7FWLg==}
-    engines: {node: '>=18'}
-    dependencies:
-      '@open-draft/deferred-promise': 2.1.0
-      '@open-draft/logger': 0.3.0
-      '@open-draft/until': 2.1.0
-      headers-polyfill: 3.1.2
-      outvariant: 1.4.0
-      strict-event-emitter: 0.5.0
     dev: false
 
   /@next/env@13.4.12:

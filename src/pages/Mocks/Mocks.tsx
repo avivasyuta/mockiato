@@ -130,7 +130,7 @@ const MocksPage: React.FC = () => {
                             <Text size="xs" color="dimmed" className={styles.status}> </Text>
                             <Text size="xs" color="dimmed" className={styles.method}>Method</Text>
                             <Text size="xs" color="dimmed" className={styles.url}>URL</Text>
-                            <Text size="xs" color="dimmed" className={styles.code}>Status</Text>
+                            <Text size="xs" color="dimmed" className={styles.code}>Code</Text>
                         </div>
 
                         <div className={styles.mocks}>
