@@ -30,6 +30,7 @@ export const Headers: FC = () => {
                     spacing="xs"
                     mb="xs"
                     key={id}
+                    align="flex-start"
                 >
                     <Grid key={id} className={styles.inputs}>
                         <Grid.Col span={6}>
