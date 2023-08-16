@@ -9,7 +9,7 @@
         "@mantine/next": "^6.0.19",
         "@mantine/notifications": "^6.0.19",
         "@mantine/utils": "6.0.19",
-        "@avivasyuta/request-interceptor": "^0.1.0",
+        "@avivasyuta/request-interceptor": "^0.1.3",
         "@tabler/icons-react": "2.17.0",
         "classnames": "^2.3.1",
         "jsoneditor": "^9.9.0",
