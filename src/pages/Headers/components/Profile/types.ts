@@ -11,6 +11,9 @@ export interface THeaderFormState {
 }
 
 export interface ProfileProps {
+    headerForm: THeaderFormState
     profile: THeadersProfile
     onChange: (profile: THeadersProfile) => void
+    onHeaderEdit: (header: THeader) => void
+    onCloseHeaderForm: () => void
 }

@@ -4,7 +4,8 @@ import {
     Group,
     Navbar,
     NavLink,
-    Text, useMantineTheme,
+    Text,
+    useMantineTheme,
 } from '@mantine/core';
 import {
     IconBrandGithub,
@@ -14,7 +15,9 @@ import {
     IconShadow,
     IconVersions,
     IconCodeMinus,
-    TablerIconsProps, IconThumbUp,
+    TablerIconsProps,
+    IconThumbUp,
+    IconWifi,
 } from '@tabler/icons-react';
 import manifest from '../../../public/manifest.json';
 import { TRoute } from '../../types';
@@ -38,6 +41,11 @@ const menu: TMenuItem[] = [
         icon: IconCodeMinus,
     },
     {
+        route: 'network',
+        name: 'Network',
+        icon: IconWifi,
+    },
+    {
         route: 'logs',
         name: 'Logs',
         icon: IconNotebook,
@@ -59,28 +67,10 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
 
     return (
         <Navbar
-            p="sm"
             width={{ base: 200 }}
-            bg={theme.colorScheme === 'dark' ? theme.colors.dark[6] : '#ffffff'}
+            bg={theme.colorScheme === 'dark' ? theme.colors.dark[7] : '#ffffff'}
             zIndex={1}
         >
-            <Navbar.Section>
-                <Group position="apart" align="end">
-                    <Group align="end">
-                        <img src="icons/mockiato-128.png" alt="Mockiato" width="28" />
-                        <Text
-                            size="sm"
-                            variant="gradient"
-                            gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
-                        >
-                            Mockiato
-                        </Text>
-                    </Group>
-                </Group>
-            </Navbar.Section>
-
-            <Divider my="sm" variant="dotted" />
-
             <Navbar.Section grow>
                 {menu.map((link) => {
                     const Icon = link.icon;
@@ -98,9 +88,9 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                 })}
             </Navbar.Section>
 
-            <Divider my="sm" variant="dotted" />
+            <Divider variant="dotted" />
 
-            <Navbar.Section>
+            <Navbar.Section p="xs">
                 <Group position="left">
                     <IconVersions size={16} color="gray" />
                     <Text
@@ -110,8 +100,9 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                         target="_blank"
                         href={`https://github.com/avivasyuta/mockiato/releases/tag/v${manifest.version}`}
                         color="dimmed"
+                        className={styles.link}
                     >
-                        Version {manifest.version}
+                        Mockiato v{manifest.version}
                     </Text>
                 </Group>
 
@@ -124,6 +115,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                         target="_blank"
                         href="https://github.com/avivasyuta/mockiato"
                         color="dimmed"
+                        className={styles.link}
                     >
                         View source code
                     </Text>
@@ -138,6 +130,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                         target="_blank"
                         href="https://www.buymeacoffee.com/mockiatoexW"
                         color="dimmed"
+                        className={styles.link}
                     >
                         Support author
                     </Text>
@@ -152,6 +145,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                         target="_blank"
                         href="https://chrome.google.com/webstore/detail/mockiato/ilbkkhmnmnehcicempfpekgcpneeekao"
                         color="dimmed"
+                        className={styles.link}
                     >
                         Rate extension
                     </Text>

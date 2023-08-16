@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
-    "name": "Mockiato",
-    "description": "Adds the API mocker Mockiato to Dev Tools for seamless integration & testing.",
+    "name": "Mockiato: Mocks on the Fly!",
+    "description": "Chrome extension to intercept requests, create real-time mocks, and auto-insert headers for web development & testing.",
     "version": "1.4.0",
     "devtools_page": "devtools.html",
     "icons": {

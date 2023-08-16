@@ -5,11 +5,15 @@ const emptyStore: TStore = {
     mocks: [],
     logs: [],
     headersProfiles: {},
+    network: [],
+    settings: {
+        showNotifications: true,
+    },
 };
 
 const getLocalStorage = (): TStore | undefined => {
-    const data = localStorage.getItem(STORE_KEY) || '{}';
-    return JSON.parse(data);
+    const data = localStorage.getItem(STORE_KEY);
+    return data ? JSON.parse(data) : undefined;
 };
 
 const getExtensionStore = async (): Promise<TStore | undefined> => {
@@ -71,17 +75,15 @@ export const setStoreValue = async <StoreKey extends TStoreKey>(
     await setStore(newStore);
 };
 
-export const initStore = async <StoreKey extends TStoreKey>(initialValue: TStore): Promise<void> => {
+export const initStore = async <StoreKey extends TStoreKey>(): Promise<void> => {
     const store = await getStore();
 
-    const newStore: TStore = { ...initialValue };
-
-    Object.keys(initialValue).forEach((key) => {
+    Object.keys(emptyStore).forEach((key) => {
         const k = key as StoreKey;
-        if (store[k]) {
-            newStore[k] = store[k];
+        if (store[k] && k !== 'network') {
+            emptyStore[k] = store[k];
         }
     });
 
-    await setStore(newStore);
+    await setStore(emptyStore);
 };

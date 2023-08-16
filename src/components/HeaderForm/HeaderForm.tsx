@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import { useForm } from '@mantine/form';
-import { Button, Checkbox, Grid, Group, SegmentedControl, Select, TextInput } from '@mantine/core';
+import { Alert, Button, Checkbox, Grid, Group, SegmentedControl, Select, TextInput } from '@mantine/core';
+import { IconAlertCircle } from '@tabler/icons-react';
 import { HttpMethodType, THeader } from '../../types';
 import styles from './HeaderForm.module.css';
 
@@ -48,6 +49,11 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
 
     return (
         <form className={styles.form} onSubmit={form.onSubmit(handleSubmit)}>
+            <Alert mb="lg" icon={<IconAlertCircle size="1rem" />}>
+                These header will be added to requests.<br />
+                If such header already exists in requests, it will be overwritten.
+            </Alert>
+
             <div className={styles.inputs}>
                 <Grid align="flex-end">
                     <Grid.Col span={6}>

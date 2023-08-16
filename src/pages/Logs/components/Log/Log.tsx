@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
-import {
-    Code,
-    Collapse,
-    Group,
-    Text,
-} from '@mantine/core';
+import { Code, Collapse, Group, Text } from '@mantine/core';
+import { IconChevronDown, IconChevronRight } from '@tabler/icons-react';
 import { TLog } from '../../../../types';
 import { HttpMethod } from '../../../../components/HttpMethod';
 import { Card } from '../../../../components/Card';
@@ -30,6 +26,7 @@ export const Log: React.FC<LogProps> = ({ log }) => {
         >
             <>
                 <Group>
+                    {isOpen ? <IconChevronDown size={14} /> : <IconChevronRight size={14} />}
                     <Text size="xs" color="dimmed">{new Date(log.date).toLocaleString()}</Text>
                     <HttpMethod method={log.mock.httpMethod} />
                     <Text size="xs">{log.url}</Text>
@@ -51,10 +48,15 @@ export const Log: React.FC<LogProps> = ({ log }) => {
                     {log.mock.responseHeaders.length > 0 ? (
                         <>
                             <Text size="xs" mt="sm" weight={700}>Response headers</Text>
-                            <Code block>
-                                {log.mock.responseHeaders.map((header) => (
-                                    <Text size="xs">{header.key}: {header.value}</Text>
-                                ))}
+                            <Code block className={styles.code}>
+                                <div className={styles.headers}>
+                                    {log.mock.responseHeaders.map((header) => (
+                                        <>
+                                            <Text size="xs">{header.key}:</Text>
+                                            <Text size="xs">{header.value}</Text>
+                                        </>
+                                    ))}
+                                </div>
                             </Code>
                         </>
                     ) : (
@@ -66,9 +68,7 @@ export const Log: React.FC<LogProps> = ({ log }) => {
                     {log.mock.response ? (
                         <>
                             <Text size="xs" mt="sm" weight={700}>Response body</Text>
-                            <Code block>
-                                <Text size="xs">{log.mock.response}</Text>
-                            </Code>
+                            <Code block className={styles.code}>{log.mock.response}</Code>
                         </>
                     ) : (
                         <Text size="xs"><strong>Response body:</strong> empty</Text>

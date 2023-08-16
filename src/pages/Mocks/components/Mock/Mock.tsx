@@ -91,7 +91,7 @@ export const Mock: FC<MockProps> = ({
                     <HttpStatus status={mock.httpStatusCode} />
                 </Group>
 
-                <Group spacing="xs">
+                <Group spacing="0.4rem">
                     <Tooltip
                         label="Double click to delete"
                         position="bottom"

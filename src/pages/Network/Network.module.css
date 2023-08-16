@@ -1,0 +1,27 @@
+.events {
+    display: grid;
+    grid-row-gap: 8px;
+}
+
+.tableHeader {
+    display: flex;
+    padding: 0 .6rem;
+    gap: .625rem;
+}
+
+.date {
+    padding-left: 30px;
+    width: 154px;
+}
+
+.method {
+    width: 66px;
+}
+
+.url {
+    flex: 1;
+}
+
+.code {
+    width: 74px;
+}

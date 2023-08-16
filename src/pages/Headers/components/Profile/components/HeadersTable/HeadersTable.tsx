@@ -80,7 +80,7 @@ export const HeadersTable: FC<HeadersTableProps> = ({
                                 )}
                             </div>
 
-                            <Group spacing="sm">
+                            <Group spacing="0.4rem">
                                 <Tooltip
                                     label="Double click to delete"
                                     position="bottom"

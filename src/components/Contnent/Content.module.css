@@ -1,0 +1,6 @@
+.content {
+    flex: 1;
+    padding: 0.6rem 0.8rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}

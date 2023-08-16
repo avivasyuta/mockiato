@@ -1,28 +1,18 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import {
-    Badge,
-    Button, Group, Loader, Text,
-} from '@mantine/core';
+import React, { useCallback, useMemo } from 'react';
+import { Badge, Button, Group, Text } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { NotFound } from '../../components/NotFound';
 import { useStore } from '../../hooks/useStore';
 import { Log } from './components/Log';
+import { useTabHost } from '../../hooks/useTab';
+import { Header } from '../../components/Header';
+import { Content } from '../../components/Contnent';
+import { Spinner } from '../../components/Spinner';
 import styles from './Logs.module.css';
 
 export const Logs: React.FC = () => {
-    const [tabHost, setTabHost] = useState<string | null>(null);
+    const tabHost = useTabHost();
     const [logs, setLogs] = useStore('logs');
-
-    chrome?.tabs?.query({
-        active: true,
-        currentWindow: true,
-    }, (tabs) => {
-        const tab = tabs[0];
-        const url = new URL(tab.url as string);
-        if (!tabHost) {
-            setTabHost(url.hostname);
-        }
-    });
 
     const handleClearMocks = useCallback(() => {
         const logsArray = logs ?? [];
@@ -46,14 +36,14 @@ export const Logs: React.FC = () => {
     }
 
     if (!filteredLogs) {
-        return <Loader variant="bars" size="xs" />;
+        return <Spinner />;
     }
 
     return (
         <>
-            <div className={styles.header}>
+            <Header>
                 <Group spacing="xs">
-                    <Text fz="md" fw={500}>Logs for host</Text>
+                    <Text fz="sm" fw={500}>Logs</Text>
                     <Badge size="xs" variant="filled">
                         {tabHost}
                     </Badge>
@@ -61,9 +51,9 @@ export const Logs: React.FC = () => {
 
                 {filteredLogs.length > 0 && (
                     <Button
-                        variant="filled"
+                        variant="light"
                         size="xs"
-                        leftIcon={<IconTrash size={14} />}
+                        rightIcon={<IconTrash size={12} />}
                         color="red"
                         compact
                         title={`Clear logs for host ${tabHost}`}
@@ -72,15 +62,17 @@ export const Logs: React.FC = () => {
                         Clear logs
                     </Button>
                 )}
-            </div>
+            </Header>
 
-            {filteredLogs.length === 0 ? (
-                <NotFound text="There are no logs" />
-            ) : (
-                <div className={styles.logs}>
-                    {filteredLogs.map((log) => <Log log={log} />)}
-                </div>
-            )}
+            <Content>
+                {filteredLogs.length === 0 ? (
+                    <NotFound text="There are no logs" />
+                ) : (
+                    <div className={styles.logs}>
+                        {filteredLogs.map((log) => <Log log={log} />)}
+                    </div>
+                )}
+            </Content>
         </>
     );
 };
