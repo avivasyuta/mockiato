@@ -7,6 +7,9 @@ import { Card } from '../../components/Card';
 import { isEmpty } from '../../utils/isEmpty';
 import { Content } from '../../components/Contnent';
 import styles from './Settings..module.css';
+import { Header } from '../../components/Header';
+import { ExcludedHosts } from './ExcludedHosts';
+import { TExcludedHost } from '../../types';
 
 export const Settings = () => {
     const [logs, setLogs] = useStore('logs');
@@ -79,19 +82,39 @@ export const Settings = () => {
     };
 
     const handleToggleNotifications = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!settings) {
+            return;
+        }
+
         setSettings({
             ...settings,
             showNotifications: e.target.checked,
         });
     };
 
-    return (
-        <Content>
-            <Group position="center">
-                <Card p="0.5rem 0.8rem">
-                    <Text fz="sm" fw={500}>General settings</Text>
+    const handleChangeExcludedHosts = (hosts: TExcludedHost[]) => {
+        if (!settings) {
+            return;
+        }
+        setSettings({
+            ...settings,
+            excludedHosts: hosts,
+        });
+    };
 
-                    <div className={styles.setting}>
+    if (!settings) {
+        return null;
+    }
+
+    return (
+        <>
+            <Header>
+                <Text fz="sm" fw={500}>Settings</Text>
+            </Header>
+
+            <Content>
+                <Group position="center">
+                    <Card className={styles.card}>
                         <div>
                             <Switch
                                 size="xs"
@@ -106,66 +129,70 @@ export const Settings = () => {
                                 be shown on the site page.
                             </Text>
                         </div>
-                    </div>
 
-                    <div className={styles.setting}>
-                        <Text size="sm" weight={500}>Mocks</Text>
-                        <Text size="xs" c="dimmed">
-                            All mocks for all hosts
-                        </Text>
+                        <div>
+                            <Text size="sm" weight={500}>Mocks</Text>
+                            <Text size="xs" c="dimmed">
+                                All mocks for all hosts
+                            </Text>
 
-                        <Button
-                            mt="xs"
-                            size="xs"
-                            variant="light"
-                            color="red"
-                            rightIcon={<IconTrash size={12} />}
-                            disabled={isClearMocksDisabled}
-                            onClick={handleClearAllMocks}
-                        >
-                            Clear all
-                        </Button>
-                    </div>
+                            <Button
+                                mt="xs"
+                                size="xs"
+                                variant="light"
+                                color="red"
+                                rightIcon={<IconTrash size={12} />}
+                                disabled={isClearMocksDisabled}
+                                onClick={handleClearAllMocks}
+                            >
+                                Clear all
+                            </Button>
+                        </div>
 
-                    <div className={styles.setting}>
-                        <Text size="sm" weight={500}>Logs of mocks</Text>
-                        <Text size="xs" c="dimmed">
-                            Data about requests that were intercepted and replaced with mocks for all hosts
-                        </Text>
+                        <div>
+                            <Text size="sm" weight={500}>Logs of mocks</Text>
+                            <Text size="xs" c="dimmed">
+                                Data about requests that were intercepted and replaced with mocks for all hosts
+                            </Text>
 
-                        <Button
-                            mt="xs"
-                            size="xs"
-                            variant="light"
-                            color="red"
-                            rightIcon={<IconTrash size={12} />}
-                            disabled={isClearLogsDisabled}
-                            onClick={handleClearAllLogs}
-                        >
-                            Clear all
-                        </Button>
-                    </div>
+                            <Button
+                                mt="xs"
+                                size="xs"
+                                variant="light"
+                                color="red"
+                                rightIcon={<IconTrash size={12} />}
+                                disabled={isClearLogsDisabled}
+                                onClick={handleClearAllLogs}
+                            >
+                                Clear all
+                            </Button>
+                        </div>
 
-                    <div className={styles.setting}>
-                        <Text size="sm" weight={500}>Headers profiles</Text>
-                        <Text size="xs" c="dimmed">
-                            Header profiles that allow you to substitute headers in requests and responses
-                        </Text>
+                        <div>
+                            <Text size="sm" weight={500}>Headers profiles</Text>
+                            <Text size="xs" c="dimmed">
+                                Header profiles that allow you to substitute headers in requests and responses
+                            </Text>
 
-                        <Button
-                            mt="xs"
-                            size="xs"
-                            variant="light"
-                            color="red"
-                            rightIcon={<IconTrash size={12} />}
-                            disabled={isHeadersDisabled}
-                            onClick={handleDeleteProfiles}
-                        >
-                            Clear all
-                        </Button>
-                    </div>
-                </Card>
-            </Group>
-        </Content>
+                            <Button
+                                mt="xs"
+                                size="xs"
+                                variant="light"
+                                color="red"
+                                rightIcon={<IconTrash size={12} />}
+                                disabled={isHeadersDisabled}
+                                onClick={handleDeleteProfiles}
+                            >
+                                Clear all
+                            </Button>
+                        </div>
+
+                        <div>
+                            <ExcludedHosts hosts={settings.excludedHosts} onChange={handleChangeExcludedHosts} />
+                        </div>
+                    </Card>
+                </Group>
+            </Content>
+        </>
     );
 };
