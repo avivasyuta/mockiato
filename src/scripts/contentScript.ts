@@ -115,7 +115,13 @@ const destroy = () => {
 export const main = async () => {
     destroy();
 
-    await initStore();
+    const store = await initStore();
+
+    const excludedHosts = store.settings.excludedHosts.map((host) => host.value);
+    if (excludedHosts.includes(window.location.host)) {
+        // Don't inject extension script for excluded hosts
+        return;
+    }
 
     // Inject mockiato script to user's DOM
     const s = document.createElement('script');

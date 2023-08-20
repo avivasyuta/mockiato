@@ -100,6 +100,12 @@ export type THeadersProfile = {
     headers: THeader[]
 }
 
+export type TExcludedHost = {
+    id: string
+    type: 'scalar' | 'regexp'
+    value: string
+}
+
 export type TStore = {
     mocks: TMock[]
     logs: TLog[]
@@ -107,6 +113,7 @@ export type TStore = {
     network: TNetworkEvent[]
     settings: {
         showNotifications: boolean
+        excludedHosts: TExcludedHost[]
     }
 }
 

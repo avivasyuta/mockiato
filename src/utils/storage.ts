@@ -1,5 +1,6 @@
 import { TStore, TStoreKey, TUpdateStore } from '../types';
 import { STORE_KEY } from '../contstant';
+import { isObject } from './isObject';
 
 const emptyStore: TStore = {
     mocks: [],
@@ -8,6 +9,7 @@ const emptyStore: TStore = {
     network: [],
     settings: {
         showNotifications: true,
+        excludedHosts: [],
     },
 };
 
@@ -75,15 +77,23 @@ export const setStoreValue = async <StoreKey extends TStoreKey>(
     await setStore(newStore);
 };
 
-export const initStore = async <StoreKey extends TStoreKey>(): Promise<void> => {
+export const initStore = async <StoreKey extends TStoreKey>(): Promise<TStore> => {
+    const initialStore = structuredClone(emptyStore);
     const store = await getStore();
 
-    Object.keys(emptyStore).forEach((key) => {
+    Object.keys(initialStore).forEach((key) => {
         const k = key as StoreKey;
-        if (store[k] && k !== 'network') {
-            emptyStore[k] = store[k];
+        const existingValue = store[k];
+
+        if (existingValue && k !== 'network') {
+            if (isObject(existingValue)) {
+                initialStore[k] = { ...initialStore[k], ...existingValue };
+            } else {
+                initialStore[k] = existingValue;
+            }
         }
     });
 
-    await setStore(emptyStore);
+    await setStore(initialStore);
+    return initialStore;
 };
