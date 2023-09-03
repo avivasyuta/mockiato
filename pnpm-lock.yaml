@@ -5,9 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@avivasyuta/request-interceptor':
-    specifier: ^0.1.3
-    version: 0.1.3
   '@mantine/core':
     specifier: ^6.0.19
     version: 6.0.19(@emotion/react@11.11.1)(@mantine/hooks@6.0.19)(@types/react@18.0.15)(react-dom@18.2.0)(react@18.2.0)
@@ -29,6 +26,9 @@ dependencies:
   '@mantine/utils':
     specifier: 6.0.19
     version: 6.0.19(react@18.2.0)
+  '@mswjs/interceptors':
+    specifier: ^0.24.1
+    version: 0.24.1
   '@tabler/icons-react':
     specifier: 2.17.0
     version: 2.17.0(react@18.2.0)
@@ -162,19 +162,6 @@ packages:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.18
-
-  /@avivasyuta/request-interceptor@0.1.3:
-    resolution: {integrity: sha512-a7/cEyplAQd4A8awy8+CONlvGVrLVXfqsQ4hLU/LlnzB2g44FqHcTVqWwE+v78a9pO27GFDzcNC9gkHea5U+kQ==}
-    engines: {node: '>=18'}
-    dependencies:
-      '@open-draft/deferred-promise': 2.1.0
-      '@open-draft/logger': 0.3.0
-      '@open-draft/until': 2.1.0
-      headers-polyfill: 3.1.2
-      is-node-process: 1.2.0
-      outvariant: 1.4.0
-      strict-event-emitter: 0.5.0
-    dev: false
 
   /@babel/code-frame@7.22.5:
     resolution: {integrity: sha512-Xmwn266vad+6DAqEB2A6V/CcZVp62BbwVmcOJc2RPuwih1kw02TjQvWVWlcKGbBPd+8/0V5DEkOcizRGYsspYQ==}
@@ -2217,6 +2204,18 @@ packages:
       react: '>=16.8.0'
     dependencies:
       react: 18.2.0
+    dev: false
+
+  /@mswjs/interceptors@0.24.1:
+    resolution: {integrity: sha512-fCH1t3yc8JW3gMqtkmO/L+kII7GAXWw9bTmCZBsrwSFKkG1y5RmNZN9BEygmWMJGxjdjAp3JTLAQpnBqLV6wpA==}
+    engines: {node: '>=18'}
+    dependencies:
+      '@open-draft/deferred-promise': 2.1.0
+      '@open-draft/logger': 0.3.0
+      '@open-draft/until': 2.1.0
+      is-node-process: 1.2.0
+      outvariant: 1.4.0
+      strict-event-emitter: 0.5.0
     dev: false
 
   /@next/env@13.4.12:
@@ -5308,10 +5307,6 @@ packages:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
     dev: true
-
-  /headers-polyfill@3.1.2:
-    resolution: {integrity: sha512-tWCK4biJ6hcLqTviLXVR9DTRfYGQMXEIUj3gwJ2rZ5wO/at3XtkI4g8mCvFdUF9l1KMBNCfmNAdnahm1cgavQA==}
-    dev: false
 
   /hoist-non-react-statics@3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}

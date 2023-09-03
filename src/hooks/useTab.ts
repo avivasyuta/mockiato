@@ -10,8 +10,8 @@ export const useTabHost = () => {
         currentWindow: true,
     }, (tabs) => {
         const tab = tabs[0];
-        const url = new URL(tab.url as string);
-        if (!host) {
+        if (!host && tab?.url) {
+            const url = new URL(tab.url as string);
             setHost(url.hostname);
         }
     });
