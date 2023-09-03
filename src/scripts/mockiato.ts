@@ -1,12 +1,14 @@
 import { nanoid } from 'nanoid';
-import { BatchInterceptor } from '@avivasyuta/request-interceptor';
-import { FetchInterceptor } from '@avivasyuta/request-interceptor/fetch';
-import { XMLHttpRequestInterceptor } from '@avivasyuta/request-interceptor/XMLHttpRequest';
+import { BatchInterceptor } from '@mswjs/interceptors';
+import { FetchInterceptor } from '@mswjs/interceptors/fetch';
+import { XMLHttpRequestInterceptor } from '@mswjs/interceptors/XMLHttpRequest';
 import {
     HttpMethodType,
     TInterceptedRequestDTO,
     TInterceptedRequestMockDTO,
-    TInterceptedResponseDTO, TMockHeader, TResponseType,
+    TInterceptedResponseDTO,
+    TMockHeader,
+    TResponseType,
 } from '../types';
 import { sendMessage, listenMessage } from '../services/message';
 import { MessageBus } from '../services/messageBus';
