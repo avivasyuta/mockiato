@@ -14,11 +14,13 @@ import { TExcludedHost } from '../../types';
 export const Settings = () => {
     const [logs, setLogs] = useStore('logs');
     const [mocks, setMocks] = useStore('mocks');
+    const [network, setNetworks] = useStore('network');
     const [headersProfiles, setHeadersProfiles] = useStore('headersProfiles');
     const [settings, setSettings] = useStore('settings');
 
     const isClearLogsDisabled = useMemo(() => logs === null || logs.length === 0, [logs]);
     const isClearMocksDisabled = useMemo(() => mocks === null || mocks.length === 0, [mocks]);
+    const isClearNetworkDisabled = useMemo(() => network === null || network.length === 0, [network]);
     const isHeadersDisabled = useMemo(() => headersProfiles === null || isEmpty(headersProfiles), [headersProfiles]);
 
     const handleClearAllLogs = () => {
@@ -63,7 +65,7 @@ export const Settings = () => {
 
     const handleDeleteProfiles = () => {
         modals.openConfirmModal({
-            title: 'Are you sure you want to delete all headers profiles?',
+            title: 'Are you sure you want to remove all headers profiles?',
             children: (
                 <Text size="sm">
                     All headers profiles with headers will be completely removed.
@@ -78,6 +80,26 @@ export const Settings = () => {
                 color: 'gray',
             },
             onConfirm: () => setHeadersProfiles({}),
+        });
+    };
+
+    const handleDeleteNetwork = () => {
+        modals.openConfirmModal({
+            title: 'Are you sure you want to remove all network logs?',
+            children: (
+                <Text size="sm">
+                    All network logs will be completely removed.
+                </Text>
+            ),
+            labels: { confirm: 'Delete', cancel: 'Cancel' },
+            confirmProps: { color: 'red', size: 'xs', compact: true },
+            cancelProps: {
+                size: 'xs',
+                variant: 'subtle',
+                compact: true,
+                color: 'gray',
+            },
+            onConfirm: () => setNetworks([]),
         });
     };
 
@@ -115,21 +137,6 @@ export const Settings = () => {
             <Content>
                 <Group position="center">
                     <Card className={styles.card}>
-                        <div>
-                            <Switch
-                                size="xs"
-                                onLabel="ON"
-                                offLabel="OFF"
-                                label="Show notifications"
-                                checked={settings?.showNotifications}
-                                onChange={handleToggleNotifications}
-                            />
-                            <Text size="xs" c="dimmed">
-                                If you enable this setting, notifications about intercepted requests will
-                                be shown on the site page.
-                            </Text>
-                        </div>
-
                         <div>
                             <Text size="sm" weight={500}>Mocks</Text>
                             <Text size="xs" c="dimmed">
@@ -169,6 +176,25 @@ export const Settings = () => {
                         </div>
 
                         <div>
+                            <Text size="sm" weight={500}>Network logs</Text>
+                            <Text size="xs" c="dimmed">
+                                Delete all network logs
+                            </Text>
+
+                            <Button
+                                mt="xs"
+                                size="xs"
+                                variant="light"
+                                color="red"
+                                rightIcon={<IconTrash size={12} />}
+                                disabled={isClearNetworkDisabled}
+                                onClick={handleDeleteNetwork}
+                            >
+                                Clear all
+                            </Button>
+                        </div>
+
+                        <div>
                             <Text size="sm" weight={500}>Headers profiles</Text>
                             <Text size="xs" c="dimmed">
                                 Header profiles that allow you to substitute headers in requests and responses
@@ -185,6 +211,21 @@ export const Settings = () => {
                             >
                                 Clear all
                             </Button>
+                        </div>
+
+                        <div>
+                            <Switch
+                                size="xs"
+                                onLabel="ON"
+                                offLabel="OFF"
+                                label="Show notifications"
+                                checked={settings?.showNotifications}
+                                onChange={handleToggleNotifications}
+                            />
+                            <Text size="xs" c="dimmed">
+                                If you enable this setting, notifications about intercepted requests will
+                                be shown on the site page.
+                            </Text>
                         </div>
 
                         <div>
