@@ -75,6 +75,7 @@ export const ExcludedHosts: React.FC<ExcludedHostsProps> = ({ hosts, onChange })
             <div>
                 <Button
                     size="xs"
+                    mt="xs"
                     variant="outline"
                     compact
                     leftIcon={<IconPlaylistAdd size={16} />}
