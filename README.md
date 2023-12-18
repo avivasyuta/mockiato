@@ -2,7 +2,7 @@
 
 > Mock HTTP requests easy
 
-[Chrome Web Store](https://chrome.google.com/webstore/detail/mockiato-mock-http-reques/ilbkkhmnmnehcicempfpekgcpneeekao/related)
+[Chrome Web Store](https://chromewebstore.google.com/u/2/detail/mockiato-mocks-on-the-fly/ilbkkhmnmnehcicempfpekgcpneeekao)
 
 <a href="https://www.buymeacoffee.com/mockiatoexW" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
