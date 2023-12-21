@@ -44,17 +44,17 @@ export const HeadersTable: FC<HeadersTableProps> = ({
     return (
         <>
             <div className={styles.tableHeader}>
-                <Text size="xs" color="dimmed" className={styles.status}> </Text>
-                <Text size="xs" color="dimmed" className={styles.grow}>Key</Text>
-                <Text size="xs" color="dimmed" className={styles.grow}>Value</Text>
-                <Text size="xs" color="dimmed" className={styles.grow}>URL</Text>
-                <Text size="xs" color="dimmed" className={styles.actions}> </Text>
+                <Text size="xs" c="dimmed" className={styles.status}> </Text>
+                <Text size="xs" c="dimmed" className={styles.grow}>Key</Text>
+                <Text size="xs" c="dimmed" className={styles.grow}>Value</Text>
+                <Text size="xs" c="dimmed" className={styles.grow}>URL</Text>
+                <Text size="xs" c="dimmed" className={styles.actions}> </Text>
             </div>
 
             <div className={styles.tableBody}>
                 {headers.map((header) => (
                     <Card key={header.id} className={styles.header}>
-                        <Group spacing="xs" align="center">
+                        <Group gap="xs" align="center">
                             <Switch
                                 size="xs"
                                 onLabel="ON"
@@ -80,7 +80,7 @@ export const HeadersTable: FC<HeadersTableProps> = ({
                                 )}
                             </div>
 
-                            <Group spacing="0.4rem">
+                            <Group gap="0.4rem">
                                 <Tooltip
                                     label="Double click to delete"
                                     position="bottom"

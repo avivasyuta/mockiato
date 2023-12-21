@@ -1,15 +1,14 @@
 import React, { useMemo } from 'react';
-import { Button, Group, Switch, Text } from '@mantine/core';
+import { Button, Group, Stack, Switch, Text } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { modals } from '@mantine/modals';
 import { useStore } from '../../hooks/useStore';
-import { Card } from '../../components/Card';
 import { isEmpty } from '../../utils/isEmpty';
 import { Content } from '../../components/Contnent';
-import styles from './Settings..module.css';
-import { Header } from '../../components/Header';
 import { ExcludedHosts } from './ExcludedHosts';
 import { TExcludedHost } from '../../types';
+import { Header } from '../../components/Header';
+import { Card } from '../../components/Card';
 
 export const Settings = () => {
     const [logs, setLogs] = useStore('logs');
@@ -32,11 +31,10 @@ export const Settings = () => {
                 </Text>
             ),
             labels: { confirm: 'Clear logs', cancel: 'Cancel' },
-            confirmProps: { color: 'red', size: 'xs', compact: true },
+            confirmProps: { color: 'red', size: 'compact-xs' },
             cancelProps: {
-                size: 'xs',
+                size: 'compact-xs',
                 variant: 'subtle',
-                compact: true,
                 color: 'gray',
             },
             onConfirm: () => setLogs([]),
@@ -52,11 +50,10 @@ export const Settings = () => {
                 </Text>
             ),
             labels: { confirm: 'Clear mocks', cancel: 'Cancel' },
-            confirmProps: { color: 'red', size: 'xs', compact: true },
+            confirmProps: { color: 'red', size: 'compact-xs' },
             cancelProps: {
-                size: 'xs',
+                size: 'compact-xs',
                 variant: 'subtle',
-                compact: true,
                 color: 'gray',
             },
             onConfirm: () => setMocks([]),
@@ -72,11 +69,10 @@ export const Settings = () => {
                 </Text>
             ),
             labels: { confirm: 'Delete', cancel: 'Cancel' },
-            confirmProps: { color: 'red', size: 'xs', compact: true },
+            confirmProps: { color: 'red', size: 'compact-xs' },
             cancelProps: {
-                size: 'xs',
+                size: 'compact-xs',
                 variant: 'subtle',
-                compact: true,
                 color: 'gray',
             },
             onConfirm: () => setHeadersProfiles({}),
@@ -92,11 +88,10 @@ export const Settings = () => {
                 </Text>
             ),
             labels: { confirm: 'Delete', cancel: 'Cancel' },
-            confirmProps: { color: 'red', size: 'xs', compact: true },
+            confirmProps: { color: 'red', size: 'compact-xs' },
             cancelProps: {
-                size: 'xs',
+                size: 'compact-xs',
                 variant: 'subtle',
-                compact: true,
                 color: 'gray',
             },
             onConfirm: () => setNetworks([]),
@@ -135,102 +130,104 @@ export const Settings = () => {
             </Header>
 
             <Content>
-                <Group position="center">
-                    <Card className={styles.card}>
-                        <div>
-                            <Text size="sm" weight={500}>Mocks</Text>
-                            <Text size="xs" c="dimmed">
-                                All mocks for all hosts
-                            </Text>
+                <Group justify="center">
+                    <Card>
+                        <Stack gap="xl">
+                            <div>
+                                <Text size="sm" fw={500}>Mocks</Text>
+                                <Text size="xs" c="dimmed">
+                                    All mocks for all hosts
+                                </Text>
 
-                            <Button
-                                mt="xs"
-                                size="xs"
-                                variant="light"
-                                color="red"
-                                rightIcon={<IconTrash size={12} />}
-                                disabled={isClearMocksDisabled}
-                                onClick={handleClearAllMocks}
-                            >
-                                Clear all
-                            </Button>
-                        </div>
+                                <Button
+                                    mt="xs"
+                                    size="xs"
+                                    variant="light"
+                                    color="red"
+                                    rightSection={<IconTrash size={12} />}
+                                    disabled={isClearMocksDisabled}
+                                    onClick={handleClearAllMocks}
+                                >
+                                    Clear all
+                                </Button>
+                            </div>
 
-                        <div>
-                            <Text size="sm" weight={500}>Logs of mocks</Text>
-                            <Text size="xs" c="dimmed">
-                                Data about requests that were intercepted and replaced with mocks for all hosts
-                            </Text>
+                            <div>
+                                <Text size="sm" fw={500}>Logs of mocks</Text>
+                                <Text size="xs" c="dimmed">
+                                    Data about requests that were intercepted and replaced with mocks for all hosts
+                                </Text>
 
-                            <Button
-                                mt="xs"
-                                size="xs"
-                                variant="light"
-                                color="red"
-                                rightIcon={<IconTrash size={12} />}
-                                disabled={isClearLogsDisabled}
-                                onClick={handleClearAllLogs}
-                            >
-                                Clear all
-                            </Button>
-                        </div>
+                                <Button
+                                    mt="xs"
+                                    size="xs"
+                                    variant="light"
+                                    color="red"
+                                    rightSection={<IconTrash size={12} />}
+                                    disabled={isClearLogsDisabled}
+                                    onClick={handleClearAllLogs}
+                                >
+                                    Clear all
+                                </Button>
+                            </div>
 
-                        <div>
-                            <Text size="sm" weight={500}>Network logs</Text>
-                            <Text size="xs" c="dimmed">
-                                Delete all network logs
-                            </Text>
+                            <div>
+                                <Text size="sm" fw={500}>Network logs</Text>
+                                <Text size="xs" c="dimmed">
+                                    Delete all network logs
+                                </Text>
 
-                            <Button
-                                mt="xs"
-                                size="xs"
-                                variant="light"
-                                color="red"
-                                rightIcon={<IconTrash size={12} />}
-                                disabled={isClearNetworkDisabled}
-                                onClick={handleDeleteNetwork}
-                            >
-                                Clear all
-                            </Button>
-                        </div>
+                                <Button
+                                    mt="xs"
+                                    size="xs"
+                                    variant="light"
+                                    color="red"
+                                    rightSection={<IconTrash size={12} />}
+                                    disabled={isClearNetworkDisabled}
+                                    onClick={handleDeleteNetwork}
+                                >
+                                    Clear all
+                                </Button>
+                            </div>
 
-                        <div>
-                            <Text size="sm" weight={500}>Headers profiles</Text>
-                            <Text size="xs" c="dimmed">
-                                Header profiles that allow you to substitute headers in requests and responses
-                            </Text>
+                            <div>
+                                <Text size="sm" fw={500}>Headers profiles</Text>
+                                <Text size="xs" c="dimmed">
+                                    Header profiles that allow you to substitute headers in requests and responses
+                                </Text>
 
-                            <Button
-                                mt="xs"
-                                size="xs"
-                                variant="light"
-                                color="red"
-                                rightIcon={<IconTrash size={12} />}
-                                disabled={isHeadersDisabled}
-                                onClick={handleDeleteProfiles}
-                            >
-                                Clear all
-                            </Button>
-                        </div>
+                                <Button
+                                    mt="xs"
+                                    size="xs"
+                                    variant="light"
+                                    color="red"
+                                    rightSection={<IconTrash size={12} />}
+                                    disabled={isHeadersDisabled}
+                                    onClick={handleDeleteProfiles}
+                                >
+                                    Clear all
+                                </Button>
+                            </div>
 
-                        <div>
-                            <Switch
-                                size="xs"
-                                onLabel="ON"
-                                offLabel="OFF"
-                                label="Show notifications"
-                                checked={settings?.showNotifications}
-                                onChange={handleToggleNotifications}
-                            />
-                            <Text size="xs" c="dimmed">
-                                If you enable this setting, notifications about intercepted requests will
-                                be shown on the site page.
-                            </Text>
-                        </div>
+                            <div>
+                                <Switch
+                                    size="xs"
+                                    onLabel="ON"
+                                    offLabel="OFF"
+                                    label="Show notifications"
+                                    checked={settings?.showNotifications}
+                                    onChange={handleToggleNotifications}
+                                />
+                                <Text size="xs" c="dimmed">
+                                    If you enable this setting, notifications about intercepted requests will
+                                    be shown on the site page.
+                                </Text>
+                            </div>
 
-                        <div>
-                            <ExcludedHosts hosts={settings.excludedHosts} onChange={handleChangeExcludedHosts} />
-                        </div>
+                            <div>
+                                <ExcludedHosts hosts={settings.excludedHosts} onChange={handleChangeExcludedHosts} />
+                            </div>
+                        </Stack>
                     </Card>
                 </Group>
             </Content>

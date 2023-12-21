@@ -41,15 +41,15 @@ export const ExcludedHosts: React.FC<ExcludedHostsProps> = ({ hosts, onChange })
 
     return (
         <>
-            <Text size="sm" weight={500}>Excluded hosts</Text>
+            <Text size="sm" fw={500}>Excluded hosts</Text>
             <Text size="xs" c="dimmed">
                 The extension script will not be added to the pages of these hosts
             </Text>
 
             {hosts.map(({ value, id }) => (
                 <Group
-                    position="left"
-                    spacing="xs"
+                    justify="left"
+                    gap="xs"
                     mb="xs"
                     mt="sm"
                     key={id}
@@ -65,6 +65,7 @@ export const ExcludedHosts: React.FC<ExcludedHostsProps> = ({ hosts, onChange })
 
                     <ActionIcon
                         color="red"
+                        variant="subtle"
                         onClick={() => handleDelete(id)}
                     >
                         <IconX size={16} />
@@ -74,11 +75,10 @@ export const ExcludedHosts: React.FC<ExcludedHostsProps> = ({ hosts, onChange })
 
             <div>
                 <Button
-                    size="xs"
+                    size="compact-xs"
                     mt="xs"
                     variant="outline"
-                    compact
-                    leftIcon={<IconPlaylistAdd size={16} />}
+                    leftSection={<IconPlaylistAdd size={16} />}
                     onClick={handleAddHeader}
                 >
                     Add Host

@@ -1,20 +1,17 @@
 import React, { memo, useReducer } from 'react';
-import { Button, Drawer, Text } from '@mantine/core';
-import { IconPlaylistAdd } from '@tabler/icons-react';
+import { Drawer } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { nanoid } from 'nanoid';
 import { useStore } from '../../hooks/useStore';
 import { TMock } from '../../types';
 import { NotFound } from '../../components/NotFound';
 import { MockForm } from '../../components/MockForm';
-import { Header } from '../../components/Header';
-import { Content } from '../../components/Contnent';
 import { trimHeaders } from '../../components/MockForm/utils';
 import { Spinner } from '../../components/Spinner';
 import { overlaySettings } from '../../contstant';
-import { Mock } from './components/Mock';
 import { TMockFormAction, TMockFormState } from './types';
-import styles from './Mocks.module.css';
+import { TopPanel } from './components/TopPanel';
+import { Content } from './components/Content/Content';
 
 const initialMockFormState: TMockFormState = {
     isOpened: false,
@@ -36,7 +33,7 @@ const MocksPage: React.FC = () => {
     const [mockForm, dispatchMockForm] = useReducer(mockFormReducer, initialMockFormState);
     const [mocks, setMocks] = useStore('mocks');
 
-    const handleCopyMock = (mock: TMock): void => {
+    const handleCopyMock = (mock: TMock) => {
         dispatchMockForm({
             type: 'open',
             payload: {
@@ -50,7 +47,7 @@ const MocksPage: React.FC = () => {
         dispatchMockForm({ type: 'open' });
     };
 
-    const handleCloseForm = (): void => {
+    const handleCloseForm = () => {
         dispatchMockForm({ type: 'close' });
     };
 
@@ -65,7 +62,7 @@ const MocksPage: React.FC = () => {
         return <Spinner />;
     }
 
-    const handleDeleteMock = (mockId?: string) => {
+    const handleDeleteMock = (mockId: string) => {
         const newMocks = mocks.filter((m) => mockId !== m.id);
 
         setMocks(newMocks);
@@ -81,6 +78,7 @@ const MocksPage: React.FC = () => {
     };
 
     const submitForm = (values: TMock): void => {
+        debugger
         const mock = trimHeaders(values);
         const isNew = !mocks.find((m) => m.id === mock.id);
 
@@ -107,72 +105,42 @@ const MocksPage: React.FC = () => {
 
     return (
         <>
-            <Header>
-                <Text fz="sm" fw={500}>Response Mocks</Text>
+            <TopPanel onMockAdd={handleOpenForm} />
 
-                <Button
-                    leftIcon={<IconPlaylistAdd size={16} />}
-                    size="xs"
-                    title="Add new mock"
-                    compact
-                    variant="gradient"
-                    gradient={{ from: 'indigo', to: 'cyan' }}
-                    onClick={handleOpenForm}
-                >
-                    Add Mock
-                </Button>
-            </Header>
+            {mocks.length > 0 ? (
+                <Content
+                    onDeleteMock={handleDeleteMock}
+                    onChangeMock={handleChangeMock}
+                    onEditMock={handleEditMock}
+                    onCopyMock={handleCopyMock}
+                />
+            ) : (
+                <NotFound text="No mocks to show" />
+            )}
 
-            <Content>
-                {mocks.length > 0 ? (
-                    <>
-                        <div className={styles.tableHeader}>
-                            <Text size="xs" color="dimmed" className={styles.status}> </Text>
-                            <Text size="xs" color="dimmed" className={styles.method}>Method</Text>
-                            <Text size="xs" color="dimmed" className={styles.url}>URL</Text>
-                            <Text size="xs" color="dimmed" className={styles.code}>Code</Text>
-                        </div>
-
-                        <div className={styles.mocks}>
-                            {mocks.map((mock: TMock) => (
-                                <Mock
-                                    key={mock.id}
-                                    mock={mock}
-                                    onEditClick={handleEditMock}
-                                    onCopyClick={handleCopyMock}
-                                    onDelete={handleDeleteMock}
-                                    onChange={handleChangeMock}
-                                />
-                            ))}
-                        </div>
-                    </>
-                ) : (
-                    <NotFound text="No mocks to show" />
+            <Drawer
+                opened={mockForm.isOpened}
+                padding="sm"
+                position="right"
+                size="50%"
+                title={mockForm.mock?.id ? 'Edit mock' : 'Add new mock'}
+                overlayProps={overlaySettings}
+                styles={{
+                    content: { display: 'flex', flexDirection: 'column' },
+                    body: { display: 'flex', flex: 1 },
+                }}
+                offset={8}
+                radius="md"
+                onClose={handleCloseForm}
+            >
+                {mockForm.isOpened && (
+                    <MockForm
+                        mock={mockForm.mock}
+                        onClose={handleCloseForm}
+                        onSubmit={submitForm}
+                    />
                 )}
-
-                <Drawer
-                    opened={mockForm.isOpened}
-                    padding="sm"
-                    position="right"
-                    size="50%"
-                    title={mockForm.mock?.id ? 'Edit mock' : 'Add new mock'}
-                    className={styles.drawer}
-                    overlayProps={overlaySettings}
-                    styles={{
-                        content: { display: 'flex', flexDirection: 'column' },
-                        body: { display: 'flex', flex: 1 },
-                    }}
-                    onClose={handleCloseForm}
-                >
-                    {mockForm.isOpened && (
-                        <MockForm
-                            mock={mockForm.mock}
-                            onClose={handleCloseForm}
-                            onSubmit={submitForm}
-                        />
-                    )}
-                </Drawer>
-            </Content>
+            </Drawer>
         </>
     );
 };

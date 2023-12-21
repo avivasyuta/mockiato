@@ -42,7 +42,7 @@ export const Logs: React.FC = () => {
     return (
         <>
             <Header>
-                <Group spacing="xs">
+                <Group gap="xs">
                     <Text fz="sm" fw={500}>Logs</Text>
                     <Badge size="xs" variant="filled">
                         {tabHost}
@@ -52,10 +52,9 @@ export const Logs: React.FC = () => {
                 {filteredLogs.length > 0 && (
                     <Button
                         variant="light"
-                        size="xs"
-                        rightIcon={<IconTrash size={12} />}
+                        size="compact-xs"
+                        rightSection={<IconTrash size={12} />}
                         color="red"
-                        compact
                         title={`Clear logs for host ${tabHost}`}
                         onClick={handleClearMocks}
                     >

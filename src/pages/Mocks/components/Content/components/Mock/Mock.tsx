@@ -13,11 +13,11 @@ import {
     IconInfoCircle,
     IconTrash,
 } from '@tabler/icons-react';
-import { HttpMethod } from '../../../../components/HttpMethod';
-import { HttpStatus } from '../../../../components/HttpStatus';
-import { Card } from '../../../../components/Card';
-import { TMock } from '../../../../types';
-import { iconSize } from '../../../../contstant';
+import { HttpMethod } from '../../../../../../components/HttpMethod';
+import { HttpStatus } from '../../../../../../components/HttpStatus';
+import { Card } from '../../../../../../components/Card';
+import { TMock } from '../../../../../../types';
+import { iconSize } from '../../../../../../contstant';
 import styles from './Mock.module.css';
 
 interface MockProps {
@@ -56,8 +56,8 @@ export const Mock: FC<MockProps> = ({
     const handleEditClick = (): void => onEditClick(mock);
 
     return (
-        <Card key={mock.id}>
-            <Group spacing="xs">
+        <Card key={mock.id} p="0.2rem 0.6rem">
+            <Group gap="xs">
                 <Switch
                     onLabel="ON"
                     offLabel="OFF"
@@ -91,7 +91,7 @@ export const Mock: FC<MockProps> = ({
                     <HttpStatus status={mock.httpStatusCode} />
                 </Group>
 
-                <Group spacing="0.4rem">
+                <Group gap="0.4rem">
                     <Tooltip
                         label="Double click to delete"
                         position="bottom"

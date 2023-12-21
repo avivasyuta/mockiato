@@ -32,7 +32,7 @@ export const Network: React.FC = () => {
     return (
         <>
             <Header>
-                <Group spacing="xs">
+                <Group gap="xs">
                     <Text fz="sm" fw={500}>Network</Text>
                     <Badge size="xs" variant="filled">
                         {tabHost}

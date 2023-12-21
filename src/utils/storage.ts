@@ -4,6 +4,7 @@ import { isObject } from './isObject';
 
 const emptyStore: TStore = {
     mocks: [],
+    mockGroups: [],
     logs: [],
     headersProfiles: {},
     network: [],

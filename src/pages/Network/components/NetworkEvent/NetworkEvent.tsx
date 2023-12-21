@@ -67,7 +67,7 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
                 <Group>
                     {isOpen ? <IconChevronDown size={14} /> : <IconChevronRight size={14} />}
 
-                    <Text size="xs" color="dimmed">{new Date(event.date).toLocaleString()}</Text>
+                    <Text size="xs" c="dimmed">{new Date(event.date).toLocaleString()}</Text>
 
                     <div className={styles.method}>
                         <HttpMethod method={event.request.method} />
@@ -85,7 +85,7 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
                         <HttpStatus status={event.response.httpStatusCode} />
                     </Text>
 
-                    <Group spacing="0.4rem">
+                    <Group gap="0.4rem">
                         <Tooltip
                             label="Create mock from response"
                             position="bottom"
@@ -113,7 +113,7 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
 
                     {event.response.headers.length > 0 ? (
                         <>
-                            <Text size="xs" mt="sm" weight={700}>Response headers</Text>
+                            <Text size="xs" mt="sm" fw={700}>Response headers</Text>
                             <Code block className={styles.code}>
                                 <div className={styles.headers}>
                                     {event.response.headers.map((header) => (
@@ -133,7 +133,7 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
 
                     {event.response.body ? (
                         <>
-                            <Text size="xs" mt="sm" weight={700}>Response body</Text>
+                            <Text size="xs" mt="sm" fw={700}>Response body</Text>
                             <Code block className={styles.code}>
                                 {getBodyText(event.response.type, event.response.body)}
                             </Code>

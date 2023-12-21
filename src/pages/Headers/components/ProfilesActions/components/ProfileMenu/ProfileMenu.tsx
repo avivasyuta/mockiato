@@ -36,11 +36,10 @@ export const ProfileMenu: FC<ProfileMenuProps> = ({
                 </Text>
             ),
             labels: { confirm: 'Delete profile', cancel: 'Cancel' },
-            confirmProps: { color: 'red', size: 'xs', compact: true },
+            confirmProps: { color: 'red', size: 'compact-xs' },
             cancelProps: {
-                size: 'xs',
+                size: 'compact-xs',
                 variant: 'subtle',
-                compact: true,
                 color: 'gray',
             },
             onConfirm: () => onDelete(id),
@@ -74,14 +73,14 @@ export const ProfileMenu: FC<ProfileMenuProps> = ({
 
             <Menu.Dropdown>
                 <Menu.Item
-                    icon={<IconUserPlus size={iconSize} />}
+                    leftSection={<IconUserPlus size={iconSize} />}
                     onClick={onAdd}
                 >
                     Add new profile
                 </Menu.Item>
 
                 <Menu.Item
-                    icon={status === 'enabled' ? <IconUserOff size={iconSize} /> : <IconUser size={iconSize} />}
+                    leftSection={status === 'enabled' ? <IconUserOff size={iconSize} /> : <IconUser size={iconSize} />}
                     onClick={handleChangeStatus}
                 >
                     {status === 'enabled' ? 'Disable' : 'Enable'} profile
@@ -92,7 +91,7 @@ export const ProfileMenu: FC<ProfileMenuProps> = ({
                 <Menu.Label>Danger zone</Menu.Label>
                 <Menu.Item
                     color="red"
-                    icon={<IconTrash size={14} />}
+                    leftSection={<IconTrash size={14} />}
                     onClick={handleDelete}
                 >
                     Delete profile

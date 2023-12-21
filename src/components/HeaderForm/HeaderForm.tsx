@@ -122,7 +122,7 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
                 )}
             </div>
 
-            <Group position="right" mt="md" spacing="xs">
+            <Group justify="right" mt="md" gap="xs">
                 <Button
                     variant="subtle"
                     color="gray"

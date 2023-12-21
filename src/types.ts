@@ -45,6 +45,7 @@ export type TMock = {
     responseType: TResponseType
     responseHeaders: TMockHeader[]
     comment?: string
+    groupId?: string
     isActive: boolean
 }
 
@@ -106,8 +107,14 @@ export type TExcludedHost = {
     value: string
 }
 
+export type TMockGroup = {
+    id: string,
+    name: string
+}
+
 export type TStore = {
     mocks: TMock[]
+    mockGroups: TMockGroup[]
     logs: TLog[]
     headersProfiles: Record<string, THeadersProfile>
     network: TNetworkEvent[]

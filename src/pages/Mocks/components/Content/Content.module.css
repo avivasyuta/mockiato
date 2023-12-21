@@ -19,9 +19,3 @@
 .code {
     width: 134px;
 }
-
-.mocks {
-    display: flex;
-    gap: 8px;
-    flex-direction: column;
-}

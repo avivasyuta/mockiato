@@ -52,7 +52,7 @@ export const TopPanel: FC<TopPanelProps> = (props) => {
 
     return (
         <Header>
-            <Group spacing="sm">
+            <Group gap="sm">
                 <Text fz="sm" fw={500}>
                     Request Headers
                 </Text>
@@ -67,14 +67,13 @@ export const TopPanel: FC<TopPanelProps> = (props) => {
             </Group>
 
             {activeProfile && (
-                <Group spacing="xs">
+                <Group gap="xs">
                     <Button
-                        leftIcon={<IconPlaylistAdd size={16} />}
+                        leftSection={<IconPlaylistAdd size={16} />}
                         variant="gradient"
-                        size="xs"
+                        size="compact-xs"
                         title="Add Header"
                         gradient={{ from: 'indigo', to: 'cyan' }}
-                        compact
                         onClick={handleAddHeader}
                     >
                         Add Header

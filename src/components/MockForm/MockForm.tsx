@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useMemo } from 'react';
 import {
     Button,
     Grid,
@@ -7,9 +7,9 @@ import {
     SegmentedControl,
     Select,
     Tabs,
+    Text,
     Textarea,
     TextInput,
-    Text,
 } from '@mantine/core';
 import { nanoid } from 'nanoid';
 import { isNotEmpty } from '@mantine/form';
@@ -18,6 +18,7 @@ import { Response } from './components/Response';
 import { Headers } from './components/Headers';
 import { MockFormProvider, useMockForm } from './context';
 import styles from './MockForm.module.css';
+import { useStore } from '../../hooks/useStore';
 
 type MockFormProps = {
     mock?: TMock
@@ -46,7 +47,7 @@ export const MockForm: FC<MockFormProps> = ({
     onClose,
     onSubmit,
 }) => {
-    const [activeTab, setActiveTab] = useState<string | null>('response');
+    const [groups] = useStore('mockGroups');
 
     const form = useMockForm({
         initialValues: mock ?? {
@@ -69,13 +70,12 @@ export const MockForm: FC<MockFormProps> = ({
         }
     };
 
-    useEffect(() => {
-        Object.keys(form.errors).forEach((key) => {
-            if (key.startsWith('responseHeaders')) {
-                setActiveTab('headers');
-            }
-        });
-    }, [form.errors]);
+    const groupsOptions = useMemo(() => {
+        return (groups ?? []).map((g) => ({
+            value: g.id,
+            label: g.name,
+        }));
+    }, [groups]);
 
     return (
         <MockFormProvider form={form}>
@@ -88,6 +88,7 @@ export const MockForm: FC<MockFormProps> = ({
                             {...form.getInputProps('url')}
                         />
                     </Grid.Col>
+
                     <Grid.Col span={4}>
                         <Text size="xs" mb="0.3rem">Status</Text>
                         <SegmentedControl
@@ -143,10 +144,19 @@ export const MockForm: FC<MockFormProps> = ({
                     </Grid.Col>
                 </Grid>
 
+                <Select
+                    label="Group"
+                    size="xs"
+                    data={groupsOptions}
+                    searchable
+                    {...form.getInputProps('groupId')}
+                />
+
                 <Tabs
                     mt="xs"
                     variant="outline"
                     className={styles.tabs}
+                    defaultValue="response"
                     styles={() => ({
                         panel: {
                             flex: 1,
@@ -155,8 +165,6 @@ export const MockForm: FC<MockFormProps> = ({
                             overflowY: 'auto',
                         },
                     })}
-                    value={activeTab}
-                    onTabChange={setActiveTab}
                 >
                     <Tabs.List>
                         <Tabs.Tab value="response" className={styles.tab}>Response Body</Tabs.Tab>
@@ -182,7 +190,7 @@ export const MockForm: FC<MockFormProps> = ({
                     </Tabs.Panel>
                 </Tabs>
 
-                <Group position="right" mt="md" spacing="xs">
+                <Group justify="right" mt="md" gap="xs">
                     <Button
                         variant="subtle"
                         color="gray"

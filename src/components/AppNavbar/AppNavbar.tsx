@@ -2,10 +2,10 @@ import React from 'react';
 import {
     Divider,
     Group,
-    Navbar,
+    AppShell,
     NavLink,
     Text,
-    useMantineTheme,
+    ScrollArea,
 } from '@mantine/core';
 import {
     IconBrandGithub,
@@ -63,15 +63,9 @@ type NavbarProps = {
 }
 
 export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
-    const theme = useMantineTheme();
-
     return (
-        <Navbar
-            width={{ base: 200 }}
-            bg={theme.colorScheme === 'dark' ? theme.colors.dark[7] : '#ffffff'}
-            zIndex={1}
-        >
-            <Navbar.Section grow>
+        <AppShell.Navbar p="0" style={{ padding: 0 }}>
+            <AppShell.Section grow component={ScrollArea}>
                 {menu.map((link) => {
                     const Icon = link.icon;
                     return (
@@ -82,16 +76,16 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                             active={route === link.route}
                             onClick={() => onRouteChange(link.route)}
                             className={styles.menuItem}
-                            icon={<Icon size={16} stroke={1.5} />}
+                            leftSection={<Icon size={16} stroke={1.5} />}
                         />
                     );
                 })}
-            </Navbar.Section>
+            </AppShell.Section>
 
             <Divider variant="dotted" />
 
-            <Navbar.Section p="xs">
-                <Group position="left">
+            <AppShell.Section p="xs">
+                <Group justify="left">
                     <IconVersions size={16} color="gray" />
                     <Text
                         size="xs"
@@ -99,14 +93,14 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                         component="a"
                         target="_blank"
                         href={`https://github.com/avivasyuta/mockiato/releases/tag/v${manifest.version}`}
-                        color="dimmed"
+                        c="dimmed"
                         className={styles.link}
                     >
                         Mockiato v{manifest.version}
                     </Text>
                 </Group>
 
-                <Group position="left" mt="0.4rem">
+                <Group justify="left" mt="0.4rem">
                     <IconBrandGithub size={16} color="gray" />
                     <Text
                         size="xs"
@@ -114,14 +108,14 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                         component="a"
                         target="_blank"
                         href="https://github.com/avivasyuta/mockiato"
-                        color="dimmed"
+                        c="dimmed"
                         className={styles.link}
                     >
                         View source code
                     </Text>
                 </Group>
 
-                <Group position="left" mt="0.4rem">
+                <Group justify="left" mt="0.4rem">
                     <IconCoin size={16} color="gray" />
                     <Text
                         size="xs"
@@ -129,14 +123,14 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                         component="a"
                         target="_blank"
                         href="https://www.buymeacoffee.com/mockiatoexW"
-                        color="dimmed"
+                        c="dimmed"
                         className={styles.link}
                     >
                         Support author
                     </Text>
                 </Group>
 
-                <Group position="left" mt="0.4rem">
+                <Group justify="left" mt="0.4rem">
                     <IconThumbUp size={16} color="gray" />
                     <Text
                         size="xs"
@@ -144,13 +138,13 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                         component="a"
                         target="_blank"
                         href="https://chrome.google.com/webstore/detail/mockiato/ilbkkhmnmnehcicempfpekgcpneeekao"
-                        color="dimmed"
+                        c="dimmed"
                         className={styles.link}
                     >
                         Rate extension
                     </Text>
                 </Group>
-            </Navbar.Section>
-        </Navbar>
+            </AppShell.Section>
+        </AppShell.Navbar>
     );
 };

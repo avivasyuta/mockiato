@@ -87,12 +87,11 @@ const HeadersPage: React.FC = () => {
                         text="No profiles to show"
                         action={(
                             <Button
-                                leftIcon={<IconPlaylistAdd size={16} />}
+                                leftSection={<IconPlaylistAdd size={16} />}
                                 variant="gradient"
-                                size="xs"
+                                size="compact-xs"
                                 title="Add Profile"
                                 gradient={{ from: 'indigo', to: 'cyan' }}
-                                compact
                                 onClick={profileModelActions.open}
                             >
                                 Add Profile

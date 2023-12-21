@@ -2,24 +2,21 @@ import React, { FC } from 'react';
 import { Button, Group, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { nanoid } from 'nanoid';
-import { THeadersProfile } from '../../../../types';
+import { TMockGroup } from '../../../../types';
 
-type AddProfileFormProps = {
-    onSubmit: (profile: THeadersProfile) => void
+type AddGroupFormProps = {
+    onSubmit: (group: TMockGroup) => void
 }
 
-const maxLength = 16;
+const maxLength = 64;
 
-type Form = Omit<THeadersProfile, 'id'>;
+type Form = Omit<TMockGroup, 'id'>;
 
 const initialValues: Form = {
     name: '',
-    status: 'enabled',
-    headers: [],
-    lastActive: false,
 };
 
-export const AddProfileForm: FC<AddProfileFormProps> = ({ onSubmit }) => {
+export const AddGroupForm: FC<AddGroupFormProps> = ({ onSubmit }) => {
     const form = useForm<Form>({
         initialValues,
     });
@@ -36,9 +33,9 @@ export const AddProfileForm: FC<AddProfileFormProps> = ({ onSubmit }) => {
         <form onSubmit={form.onSubmit(handleSubmit)}>
             <TextInput
                 data-autofocus
-                label="Profile name"
+                label="Group name"
                 maxLength={maxLength}
-                placeholder="Development"
+                placeholder="Mocks for testing authentication"
                 description={`Maximum ${maxLength} symbols`}
                 required
                 size="xs"
