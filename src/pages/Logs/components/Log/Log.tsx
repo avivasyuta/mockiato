@@ -1,33 +1,54 @@
 import React, { useState } from 'react';
-import { Code, Collapse, Group, Text } from '@mantine/core';
+import {ActionIcon, Code, Collapse, Group, Text } from '@mantine/core';
 import { IconChevronDown, IconChevronRight } from '@tabler/icons-react';
-import { TLog } from '../../../../types';
+import { TLog, TResponseType } from '../../../../types';
 import { HttpMethod } from '../../../../components/HttpMethod';
 import { Card } from '../../../../components/Card';
-import styles from './Log.module.css';
 import { HttpStatus } from '../../../../components/HttpStatus';
+import { useDisclosure } from '@mantine/hooks';
+import styles from './Log.module.css';
 
 type LogProps = {
     log: TLog
 }
 
-export const Log: React.FC<LogProps> = ({ log }) => {
-    const [isOpen, setIsOpen] = useState(false);
+const getBodyText = (type: TResponseType, body: string) => {
+    if (type === 'text') {
+        return body;
+    }
 
-    const handleToggle = () => {
-        setIsOpen((prev) => !prev);
-    };
+    try {
+        const json = JSON.parse(body);
+        return JSON.stringify(json, null, 2);
+    } catch (_) {
+        return body;
+    }
+};
+
+export const Log: React.FC<LogProps> = ({ log }) => {
+    const [isOpen, { toggle }] = useDisclosure(false);
 
     return (
         <Card
             key={log.date}
             className={styles.log}
-            onClick={handleToggle}
+            p="0.2rem 0.6rem"
         >
             <>
                 <Group>
-                    {isOpen ? <IconChevronDown size={14} /> : <IconChevronRight size={14} />}
-                    <Text size="xs" color="dimmed">{new Date(log.date).toLocaleString()}</Text>
+                    <ActionIcon
+                        variant="subtle"
+                        onClick={toggle}
+                        size="sm"
+                        >
+                        {isOpen ? (
+                            <IconChevronDown size={14} />
+                            ) : (
+                                <IconChevronRight size={14} />
+                                )}
+                    </ActionIcon>
+
+                    <Text size="xs" c="dimmed">{new Date(log.date).toLocaleString()}</Text>
                     <HttpMethod method={log.mock.httpMethod} />
                     <Text size="xs">{log.url}</Text>
                 </Group>
@@ -68,7 +89,7 @@ export const Log: React.FC<LogProps> = ({ log }) => {
                     {log.mock.response ? (
                         <>
                             <Text size="xs" mt="sm" fw={700}>Response body</Text>
-                            <Code block className={styles.code}>{log.mock.response}</Code>
+                        <Code block className={styles.code}>{getBodyText(log.mock.responseType, log.mock.response)}</Code>
                         </>
                     ) : (
                         <Text size="xs"><strong>Response body:</strong> empty</Text>

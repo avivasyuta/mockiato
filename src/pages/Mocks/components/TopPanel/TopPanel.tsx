@@ -1,28 +1,25 @@
+import React, { FC } from 'react';
 import { ActionIcon, Button, Group, Menu, Modal, Text } from '@mantine/core';
 import { IconDotsVertical, IconPlaylistAdd, IconSelectAll } from '@tabler/icons-react';
-import React, { FC } from 'react';
 import { useDisclosure } from '@mantine/hooks';
 import { iconSize, overlaySettings } from '../../../../contstant';
 import { AddGroupForm } from '../AddGroupForm';
 import { TMockGroup } from '../../../../types';
-import { useStore } from '../../../../hooks/useStore';
 import { Header } from '../../../../components/Header';
 
 type TopPanelProps = {
+    groups: TMockGroup[]
     onMockAdd: () => void
+    onGroupAdd: (group: TMockGroup) => void
 }
 
-export const TopPanel: FC<TopPanelProps> = ({ onMockAdd }) => {
-    const [groups, setGroups] = useStore('mockGroups');
+export const TopPanel: FC<TopPanelProps> = ({ groups, onMockAdd, onGroupAdd }) => {
     const [isGroupModalOpen, groupModalActions] = useDisclosure(false);
 
     const handleAddGroup = (group: TMockGroup) => {
-        setGroups([
-            ...(groups ?? []),
-            group,
-        ]);
+        onGroupAdd(group)
         groupModalActions.close();
-    };
+    }
 
     return (
         <Header>
@@ -33,8 +30,7 @@ export const TopPanel: FC<TopPanelProps> = ({ onMockAdd }) => {
                     leftSection={<IconPlaylistAdd size={16} />}
                     size="compact-xs"
                     title="Add new mock"
-                    variant="gradient"
-                    gradient={{ from: 'indigo', to: 'cyan' }}
+                    variant="light"
                     onClick={onMockAdd}
                 >
                     Add Mock
@@ -79,7 +75,7 @@ export const TopPanel: FC<TopPanelProps> = ({ onMockAdd }) => {
                 title="Add new group"
                 onClose={groupModalActions.close}
             >
-                <AddGroupForm groups={groups ?? []} onAdd={handleAddGroup} />
+                <AddGroupForm groups={groups} onAdd={handleAddGroup} />
             </Modal>
         </Header>
     );

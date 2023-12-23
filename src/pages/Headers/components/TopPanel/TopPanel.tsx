@@ -70,10 +70,9 @@ export const TopPanel: FC<TopPanelProps> = (props) => {
                 <Group gap="xs">
                     <Button
                         leftSection={<IconPlaylistAdd size={16} />}
-                        variant="gradient"
+                        variant="light"
                         size="compact-xs"
                         title="Add Header"
-                        gradient={{ from: 'indigo', to: 'cyan' }}
                         onClick={handleAddHeader}
                     >
                         Add Header

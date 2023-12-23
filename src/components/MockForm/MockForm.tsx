@@ -47,7 +47,7 @@ export const MockForm: FC<MockFormProps> = ({
     onClose,
     onSubmit,
 }) => {
-    const [groups] = useStore('mockGroups');
+    const [groups] = useStore('mockGroups', []);
 
     const form = useMockForm({
         initialValues: mock ?? {
@@ -149,6 +149,7 @@ export const MockForm: FC<MockFormProps> = ({
                     size="xs"
                     data={groupsOptions}
                     searchable
+                    disabled={groups.length === 0}
                     {...form.getInputProps('groupId')}
                 />
 

@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import { ActionIcon, Code, Collapse, Group, Text, Tooltip } from '@mantine/core';
 import { IconChevronDown, IconChevronRight, IconSquarePlus } from '@tabler/icons-react';
 import { nanoid } from 'nanoid';
@@ -6,10 +6,11 @@ import { showNotification } from '@mantine/notifications';
 import { TMock, TNetworkEvent, TResponseType } from '../../../../types';
 import { Card } from '../../../../components/Card';
 import { HttpMethod } from '../../../../components/HttpMethod';
-import styles from './NetworkEvent.module.css';
 import { HttpStatus } from '../../../../components/HttpStatus';
 import { iconSize } from '../../../../contstant';
 import { useStore } from '../../../../hooks/useStore';
+import { useDisclosure } from '@mantine/hooks';
+import styles from './NetworkEvent.module.css';
 
 type NetworkEventProps = {
     event: TNetworkEvent
@@ -29,12 +30,8 @@ const getBodyText = (type: TResponseType, body: string) => {
 };
 
 const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [mocks, setMocks] = useStore('mocks');
-
-    const handleToggle = () => {
-        setIsOpen((prev) => !prev);
-    };
+    const [isOpen, { toggle }] = useDisclosure(false);
+    const [mocks, setMocks] = useStore('mocks', []);
 
     const handleCreate = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
@@ -61,11 +58,21 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
         <Card
             key={event.date}
             className={styles.log}
-            onClick={handleToggle}
+            p="0.2rem 0.6rem"
         >
             <>
                 <Group>
-                    {isOpen ? <IconChevronDown size={14} /> : <IconChevronRight size={14} />}
+                    <ActionIcon
+                        variant="subtle"
+                        onClick={toggle}
+                        size="sm"
+                    >
+                        {isOpen ? (
+                            <IconChevronDown size={14} />
+                        ) : (
+                            <IconChevronRight size={14} />
+                        )}
+                    </ActionIcon>
 
                     <Text size="xs" c="dimmed">{new Date(event.date).toLocaleString()}</Text>
 

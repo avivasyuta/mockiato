@@ -6,13 +6,12 @@ import { useStore } from '../../hooks/useStore';
 import { Log } from './components/Log';
 import { useTabHost } from '../../hooks/useTab';
 import { Header } from '../../components/Header';
-import { Content } from '../../components/Contnent';
 import { Spinner } from '../../components/Spinner';
 import styles from './Logs.module.css';
 
 export const Logs: React.FC = () => {
     const tabHost = useTabHost();
-    const [logs, setLogs] = useStore('logs');
+    const [logs, setLogs] = useStore('logs', []);
 
     const handleClearMocks = useCallback(() => {
         const logsArray = logs ?? [];
@@ -63,15 +62,13 @@ export const Logs: React.FC = () => {
                 )}
             </Header>
 
-            <Content>
-                {filteredLogs.length === 0 ? (
-                    <NotFound text="There are no logs" />
-                ) : (
-                    <div className={styles.logs}>
-                        {filteredLogs.map((log) => <Log log={log} />)}
-                    </div>
-                )}
-            </Content>
+            {filteredLogs.length === 0 ? (
+                <NotFound text="There are no logs" />
+            ) : (
+                <div className={styles.logs}>
+                    {filteredLogs.map((log) => <Log log={log} />)}
+                </div>
+            )}
         </>
     );
 };

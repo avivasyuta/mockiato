@@ -112,16 +112,18 @@ export type TMockGroup = {
     name: string
 }
 
+export type TStoreSettings = {
+    showNotifications: boolean
+    excludedHosts: TExcludedHost[]
+}
+
 export type TStore = {
     mocks: TMock[]
     mockGroups: TMockGroup[]
     logs: TLog[]
     headersProfiles: Record<string, THeadersProfile>
     network: TNetworkEvent[]
-    settings: {
-        showNotifications: boolean
-        excludedHosts: TExcludedHost[]
-    }
+    settings: TStoreSettings
 }
 
 export type TUpdateStore = Record<string, {

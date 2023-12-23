@@ -4,18 +4,22 @@ import { IconTrash } from '@tabler/icons-react';
 import { modals } from '@mantine/modals';
 import { useStore } from '../../hooks/useStore';
 import { isEmpty } from '../../utils/isEmpty';
-import { Content } from '../../components/Contnent';
 import { ExcludedHosts } from './ExcludedHosts';
-import { TExcludedHost } from '../../types';
+import { TExcludedHost, TStoreSettings } from '../../types';
 import { Header } from '../../components/Header';
 import { Card } from '../../components/Card';
 
+const defaultSettings: TStoreSettings = {
+    showNotifications: true,
+    excludedHosts: []
+}
+
 export const Settings = () => {
-    const [logs, setLogs] = useStore('logs');
-    const [mocks, setMocks] = useStore('mocks');
-    const [network, setNetworks] = useStore('network');
-    const [headersProfiles, setHeadersProfiles] = useStore('headersProfiles');
-    const [settings, setSettings] = useStore('settings');
+    const [logs, setLogs] = useStore('logs', []);
+    const [mocks, setMocks] = useStore('mocks', []);
+    const [network, setNetworks] = useStore('network', []);
+    const [headersProfiles, setHeadersProfiles] = useStore('headersProfiles', {});
+    const [settings, setSettings] = useStore('settings', defaultSettings);
 
     const isClearLogsDisabled = useMemo(() => logs === null || logs.length === 0, [logs]);
     const isClearMocksDisabled = useMemo(() => mocks === null || mocks.length === 0, [mocks]);
@@ -129,108 +133,106 @@ export const Settings = () => {
                 <Text fz="sm" fw={500}>Settings</Text>
             </Header>
 
-            <Content>
-                <Group justify="center">
-                    <Card>
-                        <Stack gap="xl">
-                            <div>
-                                <Text size="sm" fw={500}>Mocks</Text>
-                                <Text size="xs" c="dimmed">
-                                    All mocks for all hosts
-                                </Text>
+            <Group justify="center">
+                <Card>
+                    <Stack gap="xl">
+                        <div>
+                            <Text size="sm" fw={500}>Mocks</Text>
+                            <Text size="xs" c="dimmed">
+                                All mocks for all hosts
+                            </Text>
 
-                                <Button
-                                    mt="xs"
-                                    size="xs"
-                                    variant="light"
-                                    color="red"
-                                    rightSection={<IconTrash size={12} />}
-                                    disabled={isClearMocksDisabled}
-                                    onClick={handleClearAllMocks}
-                                >
-                                    Clear all
-                                </Button>
-                            </div>
+                            <Button
+                                mt="xs"
+                                size="xs"
+                                variant="light"
+                                color="red"
+                                rightSection={<IconTrash size={12} />}
+                                disabled={isClearMocksDisabled}
+                                onClick={handleClearAllMocks}
+                            >
+                                Clear all
+                            </Button>
+                        </div>
 
-                            <div>
-                                <Text size="sm" fw={500}>Logs of mocks</Text>
-                                <Text size="xs" c="dimmed">
-                                    Data about requests that were intercepted and replaced with mocks for all hosts
-                                </Text>
+                        <div>
+                            <Text size="sm" fw={500}>Logs of mocks</Text>
+                            <Text size="xs" c="dimmed">
+                                Data about requests that were intercepted and replaced with mocks for all hosts
+                            </Text>
 
-                                <Button
-                                    mt="xs"
-                                    size="xs"
-                                    variant="light"
-                                    color="red"
-                                    rightSection={<IconTrash size={12} />}
-                                    disabled={isClearLogsDisabled}
-                                    onClick={handleClearAllLogs}
-                                >
-                                    Clear all
-                                </Button>
-                            </div>
+                            <Button
+                                mt="xs"
+                                size="xs"
+                                variant="light"
+                                color="red"
+                                rightSection={<IconTrash size={12} />}
+                                disabled={isClearLogsDisabled}
+                                onClick={handleClearAllLogs}
+                            >
+                                Clear all
+                            </Button>
+                        </div>
 
-                            <div>
-                                <Text size="sm" fw={500}>Network logs</Text>
-                                <Text size="xs" c="dimmed">
-                                    Delete all network logs
-                                </Text>
+                        <div>
+                            <Text size="sm" fw={500}>Network logs</Text>
+                            <Text size="xs" c="dimmed">
+                                Delete all network logs
+                            </Text>
 
-                                <Button
-                                    mt="xs"
-                                    size="xs"
-                                    variant="light"
-                                    color="red"
-                                    rightSection={<IconTrash size={12} />}
-                                    disabled={isClearNetworkDisabled}
-                                    onClick={handleDeleteNetwork}
-                                >
-                                    Clear all
-                                </Button>
-                            </div>
+                            <Button
+                                mt="xs"
+                                size="xs"
+                                variant="light"
+                                color="red"
+                                rightSection={<IconTrash size={12} />}
+                                disabled={isClearNetworkDisabled}
+                                onClick={handleDeleteNetwork}
+                            >
+                                Clear all
+                            </Button>
+                        </div>
 
-                            <div>
-                                <Text size="sm" fw={500}>Headers profiles</Text>
-                                <Text size="xs" c="dimmed">
-                                    Header profiles that allow you to substitute headers in requests and responses
-                                </Text>
+                        <div>
+                            <Text size="sm" fw={500}>Headers profiles</Text>
+                            <Text size="xs" c="dimmed">
+                                Header profiles that allow you to substitute headers in requests and responses
+                            </Text>
 
-                                <Button
-                                    mt="xs"
-                                    size="xs"
-                                    variant="light"
-                                    color="red"
-                                    rightSection={<IconTrash size={12} />}
-                                    disabled={isHeadersDisabled}
-                                    onClick={handleDeleteProfiles}
-                                >
-                                    Clear all
-                                </Button>
-                            </div>
+                            <Button
+                                mt="xs"
+                                size="xs"
+                                variant="light"
+                                color="red"
+                                rightSection={<IconTrash size={12} />}
+                                disabled={isHeadersDisabled}
+                                onClick={handleDeleteProfiles}
+                            >
+                                Clear all
+                            </Button>
+                        </div>
 
-                            <div>
-                                <Switch
-                                    size="xs"
-                                    onLabel="ON"
-                                    offLabel="OFF"
-                                    label="Show notifications"
-                                    checked={settings?.showNotifications}
-                                    onChange={handleToggleNotifications}
-                                />
-                                <Text size="xs" c="dimmed">
-                                    If you enable this setting, notifications about intercepted requests will
-                                    be shown on the site page.
-                                </Text>
-                            </div>
+                        <div>
+                            <Switch
+                                size="xs"
+                                onLabel="ON"
+                                offLabel="OFF"
+                                label="Show notifications"
+                                checked={settings?.showNotifications}
+                                onChange={handleToggleNotifications}
+                            />
+                            <Text size="xs" c="dimmed">
+                                If you enable this setting, notifications about intercepted requests will
+                                be shown on the site page.
+                            </Text>
+                        </div>
 
-                            <div>
-                                <ExcludedHosts hosts={settings.excludedHosts} onChange={handleChangeExcludedHosts} />
-                            </div>
-                        </Stack>
-                    </Card>
-                </Group>
-            </Content>
+                        <div>
+                            <ExcludedHosts hosts={settings.excludedHosts} onChange={handleChangeExcludedHosts} />
+                        </div>
+                    </Stack>
+                </Card>
+            </Group>
         </>
     );
 };

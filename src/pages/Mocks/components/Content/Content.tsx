@@ -1,70 +1,37 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Stack, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import { useMocks } from '../../../../hooks/useMocks';
 import { Mock } from './components/Mock';
 import { TMock, TMockGroup } from '../../../../types';
 import { MockGroup } from './components/MockGroup';
+import { filterMocks } from "../../../../utils/filterMocks";
+import { useStore } from "../../../../hooks/useStore";
 import styles from './Content.module.css';
 
 type ContentProps = {
+    mocks: TMock[]
+    groups: TMockGroup[]
     onDeleteMock: (mockId: string) => void
     onChangeMock: (newMock: TMock) => void
     onEditMock: (mock: TMock) => void
     onCopyMock: (mock: TMock) => void
+    onDeleteGroup: (groupId: TMockGroup['id']) => void
+    onClearGroup: (groupId: TMockGroup['id']) => void
 }
 
 export const Content: FC<ContentProps> = ({
+    mocks,
+    groups,
     onCopyMock,
     onDeleteMock,
     onChangeMock,
     onEditMock,
+    onDeleteGroup,
+    onClearGroup,
 }) => {
-    const {
-        mocksByGroups,
-        emptyMocks,
-        emptyGroups,
-        mocks,
-        groups,
-        setMocks,
-        setGroups,
-    } = useMocks();
-
-    const deleteMocksByGroup = (groupId: TMockGroup['id']) => {
-        const newMocks = mocks.filter((mock) => mock.groupId !== groupId);
-        setMocks(newMocks);
-    };
-
-    const handleDeleteMocks = (group: TMockGroup) => {
-        modals.openConfirmModal({
-            title: 'Delete mocks in group',
-            children: (
-                <Text size="sm">
-                    Are you sure you want to delete all mocks in group «{group.name}»?
-                </Text>
-            ),
-            labels: {
-                confirm: 'Delete',
-                cancel: 'Cancel',
-            },
-            confirmProps: {
-                color: 'red',
-                size: 'compact-xs',
-            },
-            cancelProps: {
-                size: 'compact-xs',
-                variant: 'subtle',
-                color: 'gray',
-            },
-            onConfirm: () => deleteMocksByGroup(group.id),
-        });
-    };
-
-    const deleteGroup = (groupId: TMockGroup['id']) => {
-        const newGroups = groups.filter((group) => group.id !== groupId);
-        setGroups(newGroups);
-        deleteMocksByGroup(groupId);
-    };
+    const { emptyGroups, emptyMocks, mocksByGroups } = useMemo(() => {
+        return filterMocks(mocks, groups)
+    }, [mocks, groups])
 
     const handleDeleteGroup = (group: TMockGroup) => {
         modals.openConfirmModal({
@@ -87,25 +54,16 @@ export const Content: FC<ContentProps> = ({
                 variant: 'subtle',
                 color: 'gray',
             },
-            onConfirm: () => deleteGroup(group.id),
+            onConfirm: () => onDeleteGroup(group.id),
         });
     };
 
-    const handleRemoveMocks = (group: TMockGroup) => {
-        const newMocks = mocks.map((mock) => {
-            const newMock = { ...mock };
-            if (mock.groupId === group.id) {
-                delete newMock.groupId;
-            }
-            return newMock;
-        });
-
-        setMocks(newMocks);
-    };
+    const handleRemoveMocks = (group: TMockGroup) => onClearGroup(group.id);
 
     return (
         <Stack gap="xl">
-            <Stack gap="xs">
+            {Object.values(mocksByGroups).length > 0 && (
+                <Stack gap="xs">
                 {Object.values(mocksByGroups)
                     .map((value) => (
                         <MockGroup
@@ -114,32 +72,32 @@ export const Content: FC<ContentProps> = ({
                             hasMocks={mocks.length > 0}
                             onDeleteGroup={handleDeleteGroup}
                             onRemoveMocks={handleRemoveMocks}
-                            onDeleteMocks={handleDeleteMocks}
-                        >
+                            >
                             <>
-                                <div className={styles.tableHeader}>
-                                    <Text size="xs" c="dimmed" className={styles.status}> </Text>
-                                    <Text size="xs" c="dimmed" className={styles.method}>Method</Text>
-                                    <Text size="xs" c="dimmed" className={styles.url}>URL</Text>
-                                    <Text size="xs" c="dimmed" className={styles.code}>Code</Text>
-                                </div>
+                            <div className={styles.tableHeader}>
+                                <Text size="xs" c="dimmed" className={styles.status}> </Text>
+                                <Text size="xs" c="dimmed" className={styles.method}>Method</Text>
+                                <Text size="xs" c="dimmed" className={styles.url}>URL</Text>
+                                <Text size="xs" c="dimmed" className={styles.code}>Code</Text>
+                            </div>
 
-                                <Stack gap="xs">
-                                    {value.mocks.map((mock: TMock) => (
-                                        <Mock
-                                            key={mock.id}
-                                            mock={mock}
-                                            onEditClick={onEditMock}
-                                            onCopyClick={onCopyMock}
-                                            onDelete={onDeleteMock}
-                                            onChange={onChangeMock}
-                                        />
+                            <Stack gap="xs">
+                                {value.mocks.map((mock: TMock) => (
+                                    <Mock
+                                        key={mock.id}
+                                        mock={mock}
+                                        onEditClick={onEditMock}
+                                        onCopyClick={onCopyMock}
+                                        onDelete={onDeleteMock}
+                                        onChange={onChangeMock}
+                                    />
                                     ))}
-                                </Stack>
+                            </Stack>
                             </>
                         </MockGroup>
-                    ))}
-            </Stack>
+                        ))}
+                </Stack>
+            )}
 
             {emptyMocks.length > 0 && (
                 <div>

@@ -2,7 +2,6 @@ import React, { memo, useMemo, useReducer } from 'react';
 import { Button, Modal } from '@mantine/core';
 import { IconPlaylistAdd } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
-import { Content } from '../../components/Contnent';
 import { useStore } from '../../hooks/useStore';
 import { Spinner } from '../../components/Spinner';
 import { overlaySettings } from '../../contstant';
@@ -33,7 +32,7 @@ const headerFormReducer = (state: THeaderFormState, action: THeaderFormAction): 
 
 const HeadersPage: React.FC = () => {
     const [headerForm, dispatchHeaderForm] = useReducer(headerFormReducer, initialFormState);
-    const [profiles, setProfiles] = useStore('headersProfiles');
+    const [profiles, setProfiles] = useStore('headersProfiles', {});
     const [isProfileModelOpen, profileModelActions] = useDisclosure(false);
 
     const handleAddProfile = (profile: THeadersProfile) => {
@@ -79,46 +78,44 @@ const HeadersPage: React.FC = () => {
                 />
             )}
 
-            <Content>
-                {profiles === null && <Spinner />}
+            {profiles === null && <Spinner />}
 
-                {profiles !== null && isEmpty(profiles) && (
-                    <NotFound
-                        text="No profiles to show"
-                        action={(
-                            <Button
-                                leftSection={<IconPlaylistAdd size={16} />}
-                                variant="gradient"
-                                size="compact-xs"
-                                title="Add Profile"
-                                gradient={{ from: 'indigo', to: 'cyan' }}
-                                onClick={profileModelActions.open}
-                            >
-                                Add Profile
-                            </Button>
-                        )}
-                    />
-                )}
+            {profiles !== null && isEmpty(profiles) && (
+                <NotFound
+                    text="No profiles to show"
+                    action={(
+                        <Button
+                            leftSection={<IconPlaylistAdd size={16} />}
+                            variant="gradient"
+                            size="compact-xs"
+                            title="Add Profile"
+                            gradient={{ from: 'indigo', to: 'cyan' }}
+                            onClick={profileModelActions.open}
+                        >
+                            Add Profile
+                        </Button>
+                    )}
+                />
+            )}
 
-                {activeProfile && (
-                    <Profile
-                        headerForm={headerForm}
-                        profile={activeProfile}
-                        onChange={handleChangeProfile}
-                        onHeaderEdit={handleOpenForm}
-                        onCloseHeaderForm={handleCloseForm}
-                    />
-                )}
+            {activeProfile && (
+                <Profile
+                    headerForm={headerForm}
+                    profile={activeProfile}
+                    onChange={handleChangeProfile}
+                    onHeaderEdit={handleOpenForm}
+                    onCloseHeaderForm={handleCloseForm}
+                />
+            )}
 
-                <Modal
-                    opened={isProfileModelOpen}
-                    overlayProps={overlaySettings}
-                    title="Add new profile"
-                    onClose={profileModelActions.close}
-                >
-                    <AddProfileForm onSubmit={handleAddProfile} />
-                </Modal>
-            </Content>
+            <Modal
+                opened={isProfileModelOpen}
+                overlayProps={overlaySettings}
+                title="Add new profile"
+                onClose={profileModelActions.close}
+            >
+                <AddProfileForm onSubmit={handleAddProfile} />
+            </Modal>
         </>
     );
 };

@@ -3,7 +3,7 @@ import { Drawer } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { nanoid } from 'nanoid';
 import { useStore } from '../../hooks/useStore';
-import { TMock } from '../../types';
+import { TMock, TMockGroup } from '../../types';
 import { NotFound } from '../../components/NotFound';
 import { MockForm } from '../../components/MockForm';
 import { trimHeaders } from '../../components/MockForm/utils';
@@ -11,7 +11,7 @@ import { Spinner } from '../../components/Spinner';
 import { overlaySettings } from '../../contstant';
 import { TMockFormAction, TMockFormState } from './types';
 import { TopPanel } from './components/TopPanel';
-import { Content } from './components/Content/Content';
+import { Content } from './components/Content';
 
 const initialMockFormState: TMockFormState = {
     isOpened: false,
@@ -31,7 +31,8 @@ const mockFormReducer = (state: TMockFormState, action: TMockFormAction): TMockF
 
 const MocksPage: React.FC = () => {
     const [mockForm, dispatchMockForm] = useReducer(mockFormReducer, initialMockFormState);
-    const [mocks, setMocks] = useStore('mocks');
+    const [mocks, setMocks] = useStore('mocks', []);
+    const [groups, setGroups] = useStore('mockGroups', []);
 
     const handleCopyMock = (mock: TMock) => {
         dispatchMockForm({
@@ -41,6 +42,13 @@ const MocksPage: React.FC = () => {
                 id: nanoid(),
             },
         });
+    };
+
+    const handleAddGroup = (group: TMockGroup) => {
+        setGroups([
+            ...(groups ?? []),
+            group,
+            ]);
     };
 
     const handleOpenForm = () => {
@@ -77,8 +85,26 @@ const MocksPage: React.FC = () => {
         setMocks(newMocks);
     };
 
+    const handleDeleteGroup = async (groupId: TMockGroup['id']) => {
+        const newGroups = groups.filter((group) => group.id !== groupId);
+        const newMocks = mocks.filter((mock) => mock.groupId !== groupId);
+        await setMocks(newMocks);
+        await setGroups(newGroups);
+    }
+
+    const handleClearGroup = async (groupId: TMockGroup['id']) => {
+        const newMocks = mocks.map((mock) => {
+            const newMock = { ...mock };
+            if (mock.groupId === groupId) {
+                delete newMock.groupId;
+            }
+            return newMock;
+        });
+
+        await setMocks(newMocks);
+    }
+
     const submitForm = (values: TMock): void => {
-        debugger
         const mock = trimHeaders(values);
         const isNew = !mocks.find((m) => m.id === mock.id);
 
@@ -105,14 +131,17 @@ const MocksPage: React.FC = () => {
 
     return (
         <>
-            <TopPanel onMockAdd={handleOpenForm} />
-
+        <TopPanel groups={groups} onMockAdd={handleOpenForm} onGroupAdd={handleAddGroup}/>
             {mocks.length > 0 ? (
                 <Content
+                    mocks={mocks}
+                    groups={groups}
                     onDeleteMock={handleDeleteMock}
                     onChangeMock={handleChangeMock}
                     onEditMock={handleEditMock}
                     onCopyMock={handleCopyMock}
+                    onDeleteGroup={handleDeleteGroup}
+                    onClearGroup={handleClearGroup}
                 />
             ) : (
                 <NotFound text="No mocks to show" />

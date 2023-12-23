@@ -53,7 +53,7 @@ export const HeadersTable: FC<HeadersTableProps> = ({
 
             <div className={styles.tableBody}>
                 {headers.map((header) => (
-                    <Card key={header.id} className={styles.header}>
+                    <Card key={header.id} p="0.2rem 0.6rem">
                         <Group gap="xs" align="center">
                             <Switch
                                 size="xs"

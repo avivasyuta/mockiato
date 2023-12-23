@@ -10,7 +10,6 @@ type MockGroupProps = React.PropsWithChildren & {
     hasMocks?: boolean
     onDeleteGroup: (group: TMockGroup) => void
     onRemoveMocks?: (group: TMockGroup) => void
-    onDeleteMocks?: (group: TMockGroup) => void
 }
 
 export const MockGroup: FC<MockGroupProps> = ({
@@ -19,16 +18,11 @@ export const MockGroup: FC<MockGroupProps> = ({
     hasMocks = false,
     onDeleteGroup,
     onRemoveMocks,
-    onDeleteMocks,
 }) => {
     const [isOpen, { toggle }] = useDisclosure(true);
 
     const handleRemoveMocks = () => {
         onRemoveMocks?.(group);
-    };
-
-    const handleDeleteMocks = () => {
-        onDeleteMocks?.(group);
     };
 
     return (
@@ -80,16 +74,6 @@ export const MockGroup: FC<MockGroupProps> = ({
                         >
                             Delete group
                         </Menu.Item>
-
-                        {hasMocks && (
-                            <Menu.Item
-                                leftSection={<IconTrash size={12} />}
-                                color="red"
-                                onClick={handleDeleteMocks}
-                            >
-                                Delete all mocks
-                            </Menu.Item>
-                        )}
                     </Menu.Dropdown>
                 </Menu>
             </Group>
