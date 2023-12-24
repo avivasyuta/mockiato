@@ -10,6 +10,7 @@ import { Network } from './pages/Network';
 import { TRoute } from './types';
 import { AppNavbar } from './components/AppNavbar';
 import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
 import './App.css';
 
 export const App = () => {

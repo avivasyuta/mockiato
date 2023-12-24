@@ -45,33 +45,21 @@
         "eslint-plugin-jsx-a11y": "^6.8.0",
         "eslint-plugin-react": "^7.33.2",
         "eslint-plugin-react-hooks": "^4.6.0",
-        "typescript": "^5.2.2",
-        "copy-webpack-plugin": "^11.0.0",
-        "css-loader": "^6.7.1",
-        "webpack": "^5.64.4",
-        "webpack-cli": "^4.10.0",
-        "webpack-dev-server": "^4.9.3",
-        "webpack-merge": "^5.8.0",
-        "ts-loader": "^9.3.1",
-        "ts-node": "10.9.1",
-        "html-webpack-plugin": "^5.5.0",
-        "html-webpack-skip-assets-plugin": "^1.0.3",
-        "style-loader": "^3.3.1"
+        "typescript": "^5.2.2"
     },
     "scripts": {
         "dev": "VITE_NODE_ENV=development vite",
         "build": "VITE_NODE_ENV=production pnpm run build:ext && pnpm run build:content && pnpm run build:mockiato && pnpm run build:devtools",
-        "build:ext": "vite build",
-        "build:content": "vite build --config vite.config.content.ts",
-        "build:mockiato": "vite build --config vite.config.mockiato.ts",
-        "build:devtools": "vite build --config vite.config.devtools.ts",
+        "build:ext": "vite build --config config/vite.config.ext.ts",
+        "build:content": "vite build --config config/vite.config.content.ts",
+        "build:mockiato": "vite build --config config/vite.config.mockiato.ts",
+        "build:devtools": "vite build --config config/vite.config.devtools.ts",
         "lint": "pnpm run lint:ts && pnpm run lint:css",
         "lint:ts": "eslint . --ext ts,tsx",
         "lint:css": "stylelint src/**/*.css",
         "typecheck": "npx tsc --noEmit --project ./tsconfig.json",
         "test": "vitest run",
-        "test:coverage": "vitest run --coverage",
-        "build:webpack": "rm -rf ./build && webpack --config config/webpack/webpack.prod.js"
+        "test:coverage": "vitest run --coverage"
     },
     "lint-staged": {
         "**/*": "prettier --write --ignore-unknown"
