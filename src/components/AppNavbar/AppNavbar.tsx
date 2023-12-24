@@ -12,8 +12,8 @@ import {
     IconThumbUp,
     IconWifi,
 } from '@tabler/icons-react';
+import { TRoute } from '~/types';
 import manifest from '../../../public/manifest.json';
-import { TRoute } from '../../types';
 import styles from './AppNavbar.module.css';
 
 type TMenuItem = {

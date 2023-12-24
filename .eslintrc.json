@@ -6,9 +6,9 @@
     },
     "extends": [
         "plugin:react/recommended",
-        "airbnb",
         "plugin:import/recommended",
         "plugin:import/typescript",
+        "airbnb",
         "prettier"
     ],
     "parser": "@typescript-eslint/parser",
@@ -21,15 +21,9 @@
     },
     "plugins": [
         "react",
+        "import",
         "@typescript-eslint"
     ],
-    "settings": {
-        "import/resolver": {
-            "node": {
-                "extensions": [".js", ".jsx", ".ts", ".tsx"]
-            }
-        }
-    },
     "rules": {
         "object-curly-newline": 0,
         "max-len": ["error", 120],
@@ -52,5 +46,12 @@
         "react/jsx-indent": ["error", 4],
         "react/jsx-indent-props": ["error", 4],
         "react/jsx-one-expression-per-line": "off"
+    },
+    "settings": {
+        "import/resolver": {
+            "typescript": {
+                "alwaysTryTypes": false
+            }
+        }
     }
 }

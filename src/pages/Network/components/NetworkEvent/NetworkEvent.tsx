@@ -4,29 +4,17 @@ import { IconChevronDown, IconChevronRight, IconSquarePlus } from '@tabler/icons
 import { nanoid } from 'nanoid';
 import { showNotification } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
-import { TMock, TNetworkEvent, TResponseType } from '../../../../types';
-import { Card } from '../../../../components/Card';
-import { HttpMethod } from '../../../../components/HttpMethod';
-import { HttpStatus } from '../../../../components/HttpStatus';
-import { iconSize } from '../../../../contstant';
-import { useStore } from '../../../../hooks/useStore';
+import { TMock, TNetworkEvent } from '~/types';
+import { Card } from '~/components/Card';
+import { HttpMethod } from '~/components/HttpMethod';
+import { ResponseBody } from '~/components/ResponseBody';
+import { HttpStatus } from '~/components/HttpStatus';
+import { iconSize } from '~/contstant';
+import { useStore } from '~/hooks/useStore';
 import styles from './NetworkEvent.module.css';
 
 type NetworkEventProps = {
-    event: TNetworkEvent
-}
-
-const getBodyText = (type: TResponseType, body: string) => {
-    if (type === 'text') {
-        return body;
-    }
-
-    try {
-        const json = JSON.parse(body);
-        return JSON.stringify(json, null, 2);
-    } catch (_) {
-        return body;
-    }
+    event: TNetworkEvent;
 };
 
 const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
@@ -46,7 +34,7 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
             responseHeaders: event.response.headers,
             isActive: true,
         };
-        setMocks([mock, ...mocks ?? []]);
+        setMocks([mock, ...(mocks ?? [])]);
 
         showNotification({
             message: 'Mock was created. See new mock in Response Mocks tab.',
@@ -67,14 +55,15 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
                         onClick={toggle}
                         size="sm"
                     >
-                        {isOpen ? (
-                            <IconChevronDown size={14} />
-                        ) : (
-                            <IconChevronRight size={14} />
-                        )}
+                        {isOpen ? <IconChevronDown size={14} /> : <IconChevronRight size={14} />}
                     </ActionIcon>
 
-                    <Text size="xs" c="dimmed">{new Date(event.date).toLocaleString()}</Text>
+                    <Text
+                        size="xs"
+                        c="dimmed"
+                    >
+                        {new Date(event.date).toLocaleString()}
+                    </Text>
 
                     <div className={styles.method}>
                         <HttpMethod method={event.request.method} />
@@ -120,8 +109,17 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
 
                     {event.response.headers.length > 0 ? (
                         <>
-                            <Text size="xs" mt="sm" fw={700}>Response headers</Text>
-                            <Code block className={styles.code}>
+                            <Text
+                                size="xs"
+                                mt="sm"
+                                fw={700}
+                            >
+                                Response headers
+                            </Text>
+                            <Code
+                                block
+                                className={styles.code}
+                            >
                                 <div className={styles.headers}>
                                     {event.response.headers.map((header) => (
                                         <>
@@ -138,16 +136,7 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
                         </Text>
                     )}
 
-                    {event.response.body ? (
-                        <>
-                            <Text size="xs" mt="sm" fw={700}>Response body</Text>
-                            <Code block className={styles.code}>
-                                {getBodyText(event.response.type, event.response.body)}
-                            </Code>
-                        </>
-                    ) : (
-                        <Text size="xs"><strong>Response body:</strong> empty</Text>
-                    )}
+                    <ResponseBody body={event.response.body} />
                 </Collapse>
             </>
         </Card>
