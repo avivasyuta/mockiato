@@ -4,8 +4,9 @@ import { EXTENSION_NAME } from '../contstant';
 const closeTimeout = 10000;
 const stackId = 'mockiato-alert-stack';
 
-// eslint-disable-next-line max-len
-const closeSVG = '<svg role="button" tabindex="0" aria-hidden="false" data-icon="close" viewBox="0 0 24 24" class="mockiato-alert-close"><path d="M18.7 5.3a1 1 0 0 0-1.4 0L12 10.58l-5.3-5.3a1 1 0 0 0-1.4 1.42L10.58 12l-5.3 5.3a1 1 0 1 0 1.42 1.4L12 13.42l5.3 5.3a1 1 0 0 0 1.4-1.42L13.42 12l5.3-5.3a1 1 0 0 0 0-1.4Z"></path></svg>';
+const closeSVG =
+    // eslint-disable-next-line max-len
+    '<svg role="button" tabindex="0" aria-hidden="false" data-icon="close" viewBox="0 0 24 24" class="mockiato-alert-close"><path d="M18.7 5.3a1 1 0 0 0-1.4 0L12 10.58l-5.3-5.3a1 1 0 0 0-1.4 1.42L10.58 12l-5.3 5.3a1 1 0 1 0 1.42 1.4L12 13.42l5.3 5.3a1 1 0 0 0 1.4-1.42L13.42 12l5.3-5.3a1 1 0 0 0 0-1.4Z"></path></svg>';
 
 const createStyles = () => {
     const css = `
@@ -98,6 +99,7 @@ const handleClose = (id: string) => {
     alert?.remove();
 };
 
+// eslint-disable-next-line no-undef
 const createAlertNode = (url: string | URL): HTMLElementTagNameMap['div'] => {
     const id = nanoid();
 
@@ -130,7 +132,7 @@ export const showAlert = (url: string) => {
     const stackNode = document.getElementById(stackId);
     if (!stackNode) {
         // eslint-disable-next-line no-console
-        console.warn('Mockiato stack node wasn\'t found.');
+        console.warn("Mockiato stack node wasn't found.");
         return;
     }
 

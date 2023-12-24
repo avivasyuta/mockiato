@@ -1,17 +1,20 @@
 import { TMock, TMockGroup } from '../types';
 
-type GroupId = string
+type GroupId = string;
 
-type MocksByGroupsRecord = Record<GroupId, {
-    group: TMockGroup
-    mocks: TMock[]
-}>
+type MocksByGroupsRecord = Record<
+    GroupId,
+    {
+        group: TMockGroup;
+        mocks: TMock[];
+    }
+>;
 
 type FilteredMocks = {
-    mocksByGroups: MocksByGroupsRecord,
-    emptyMocks: TMock[],
-    emptyGroups: TMockGroup[],
-}
+    mocksByGroups: MocksByGroupsRecord;
+    emptyMocks: TMock[];
+    emptyGroups: TMockGroup[];
+};
 
 export const filterMocks = (mocks: TMock[], groups: TMockGroup[]): FilteredMocks => {
     const usedGroupsIds = new Set<GroupId>();
@@ -23,8 +26,8 @@ export const filterMocks = (mocks: TMock[], groups: TMockGroup[]): FilteredMocks
             ...acc,
             [group.id]: group,
         };
-        }, {});
-    
+    }, {});
+
     mocks?.forEach((mock) => {
         if (!mock.groupId) {
             emptyMocks.push(mock);
@@ -40,7 +43,7 @@ export const filterMocks = (mocks: TMock[], groups: TMockGroup[]): FilteredMocks
             usedGroupsIds.add(mock.groupId);
         }
     });
-    
+
     // Filter groups without mocks
     const emptyGroups = (groups ?? []).filter((group) => !usedGroupsIds.has(group.id));
 

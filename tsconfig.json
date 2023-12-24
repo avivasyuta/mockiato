@@ -18,7 +18,11 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "jsx": "react-jsx",
-        "sourceMap": true
+        "sourceMap": true,
+        "baseUrl": "src",
+        "paths": {
+            "~/*": ["*"]
+        }
     },
     "include": [
         "src"

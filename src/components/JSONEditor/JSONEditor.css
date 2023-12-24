@@ -24,10 +24,6 @@
         background: #373A40;
     }
 
-    .ace-jsoneditor .ace_variable {
-        color: #5C5F66;
-    }
-
     .ace-jsoneditor .ace_marker-layer .ace_bracket {
         border-color: #5C5F66;
     }

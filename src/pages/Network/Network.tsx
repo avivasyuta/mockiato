@@ -32,8 +32,17 @@ export const Network: React.FC = () => {
         <>
             <Header>
                 <Group gap="xs">
-                    <Text fz="sm" fw={500}>Network</Text>
-                    <Badge size="xs" variant="filled">
+                    <Text
+                        fz="sm"
+                        fw={500}
+                    >
+                        Network
+                    </Text>
+                    <Badge
+                        size="xs"
+                        variant="filled"
+                        radius="sm"
+                    >
                         {tabHost}
                     </Badge>
                 </Group>
@@ -44,14 +53,40 @@ export const Network: React.FC = () => {
             ) : (
                 <>
                     <div className={styles.tableHeader}>
-                        <Text size="xs" c="dimmed" className={styles.date}>Date</Text>
-                        <Text size="xs" c="dimmed" className={styles.method}>Method</Text>
-                        <Text size="xs" c="dimmed" className={styles.url}>URL</Text>
-                        <Text size="xs" c="dimmed" className={styles.code}>Status</Text>
+                        <Text
+                            size="xs"
+                            c="dimmed"
+                            className={styles.date}
+                        >
+                            Date
+                        </Text>
+                        <Text
+                            size="xs"
+                            c="dimmed"
+                            className={styles.method}
+                        >
+                            Method
+                        </Text>
+                        <Text
+                            size="xs"
+                            c="dimmed"
+                            className={styles.url}
+                        >
+                            URL
+                        </Text>
+                        <Text
+                            size="xs"
+                            c="dimmed"
+                            className={styles.code}
+                        >
+                            Status
+                        </Text>
                     </div>
 
                     <div className={styles.events}>
-                        {filteredNetwork.map((event) => <NetworkEvent event={event} />)}
+                        {filteredNetwork.map((event) => (
+                            <NetworkEvent event={event} />
+                        ))}
                     </div>
                 </>
             )}

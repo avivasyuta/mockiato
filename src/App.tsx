@@ -36,7 +36,13 @@ export const App = () => {
                             onRouteChange={setRoute}
                         />
 
-                        <AppShell.Main>
+                        <AppShell.Main
+                            style={{
+                                header: {
+                                    height: '35px',
+                                },
+                            }}
+                        >
                             {route === 'mocks' && <Mocks />}
                             {route === 'headers' && <Headers />}
                             {route === 'logs' && <Logs />}

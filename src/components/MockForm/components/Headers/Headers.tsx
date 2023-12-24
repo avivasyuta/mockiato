@@ -51,7 +51,7 @@ export const Headers: FC = () => {
 
                     <ActionIcon
                         color="red"
-                        variant='subtle'
+                        variant="subtle"
                         onClick={() => handleDelete(index)}
                     >
                         <IconX size={16} />

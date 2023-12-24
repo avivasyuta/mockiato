@@ -42,8 +42,18 @@ export const Logs: React.FC = () => {
         <>
             <Header>
                 <Group gap="xs">
-                    <Text fz="sm" fw={500}>Logs</Text>
-                    <Badge size="xs" variant="filled">
+                    <Text
+                        fz="sm"
+                        fw={500}
+                    >
+                        Logs
+                    </Text>
+                    <Badge
+                        size="xs"
+                        variant="filled"
+                        color="blue"
+                        radius="sm"
+                    >
                         {tabHost}
                     </Badge>
                 </Group>
@@ -66,7 +76,9 @@ export const Logs: React.FC = () => {
                 <NotFound text="There are no logs" />
             ) : (
                 <div className={styles.logs}>
-                    {filteredLogs.map((log) => <Log log={log} />)}
+                    {filteredLogs.map((log) => (
+                        <Log log={log} />
+                    ))}
                 </div>
             )}
         </>

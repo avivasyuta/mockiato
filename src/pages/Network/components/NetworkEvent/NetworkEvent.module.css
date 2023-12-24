@@ -23,8 +23,7 @@
 .headers {
     display: grid;
     grid-template-columns: auto 1.5fr;
-    grid-column-gap: 12px;
-    grid-row-gap: 2px;
+    grid-gap: 2px 12px;
     align-items: center;
     font-size: 12px;
     line-height: 12px;

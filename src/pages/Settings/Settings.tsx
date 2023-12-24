@@ -11,8 +11,8 @@ import { Card } from '../../components/Card';
 
 const defaultSettings: TStoreSettings = {
     showNotifications: true,
-    excludedHosts: []
-}
+    excludedHosts: [],
+};
 
 export const Settings = () => {
     const [logs, setLogs] = useStore('logs', []);

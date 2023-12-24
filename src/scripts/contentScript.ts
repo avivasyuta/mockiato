@@ -125,11 +125,14 @@ export const main = async () => {
 
     // Inject mockiato script to user's DOM
     const s = document.createElement('script');
+    s.type = 'module';
     s.id = INTERCEPTOR_ID;
     s.src = chrome.runtime.getURL('mockiato.js');
     s.onload = () => {
-        // eslint-disable-next-line max-len
-        logWarn('The Mockiato extension has created a request interceptor! Now all requests are proxies through it to implement mocks.');
+        logWarn(
+            // eslint-disable-next-line max-len
+            'The Mockiato extension has created a request interceptor! Now all requests are proxies through it to implement mocks.',
+        );
     };
 
     (document.head || document.documentElement).appendChild(s);

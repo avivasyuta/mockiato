@@ -17,9 +17,9 @@ export const TopPanel: FC<TopPanelProps> = ({ groups, onMockAdd, onGroupAdd }) =
     const [isGroupModalOpen, groupModalActions] = useDisclosure(false);
 
     const handleAddGroup = (group: TMockGroup) => {
-        onGroupAdd(group)
+        onGroupAdd(group);
         groupModalActions.close();
-    }
+    };
 
     return (
         <Header>

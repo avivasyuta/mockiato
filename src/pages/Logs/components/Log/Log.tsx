@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import {ActionIcon, Code, Collapse, Group, Text } from '@mantine/core';
+import React from 'react';
+import { ActionIcon, Code, Collapse, Group, Text } from '@mantine/core';
 import { IconChevronDown, IconChevronRight } from '@tabler/icons-react';
+import { useDisclosure } from '@mantine/hooks';
 import { TLog, TResponseType } from '../../../../types';
 import { HttpMethod } from '../../../../components/HttpMethod';
 import { Card } from '../../../../components/Card';
 import { HttpStatus } from '../../../../components/HttpStatus';
-import { useDisclosure } from '@mantine/hooks';
 import styles from './Log.module.css';
 
 type LogProps = {
@@ -40,12 +40,12 @@ export const Log: React.FC<LogProps> = ({ log }) => {
                         variant="subtle"
                         onClick={toggle}
                         size="sm"
-                        >
+                    >
                         {isOpen ? (
                             <IconChevronDown size={14} />
-                            ) : (
-                                <IconChevronRight size={14} />
-                                )}
+                        ) : (
+                            <IconChevronRight size={14} />
+                        )}
                     </ActionIcon>
 
                     <Text size="xs" c="dimmed">{new Date(log.date).toLocaleString()}</Text>
@@ -89,7 +89,11 @@ export const Log: React.FC<LogProps> = ({ log }) => {
                     {log.mock.response ? (
                         <>
                             <Text size="xs" mt="sm" fw={700}>Response body</Text>
-                        <Code block className={styles.code}>{getBodyText(log.mock.responseType, log.mock.response)}</Code>
+                            <Code
+                                block
+                                className={styles.code}
+                            >{getBodyText(log.mock.responseType, log.mock.response)}
+                            </Code>
                         </>
                     ) : (
                         <Text size="xs"><strong>Response body:</strong> empty</Text>

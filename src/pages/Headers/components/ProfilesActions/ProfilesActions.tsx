@@ -5,20 +5,19 @@ import { THeadersProfile } from '../../../../types';
 import styles from './ProfilesActions.module.css';
 
 interface ProfilesActionsProps {
-    profiles: Record<string, THeadersProfile>
-    activeProfile: THeadersProfile
-    onChangeActive: (id: string) => void
+    profiles: Record<string, THeadersProfile>;
+    activeProfile: THeadersProfile;
+    onChangeActive: (id: string) => void;
 }
 
-export const ProfilesActions: FC<ProfilesActionsProps> = ({
-    profiles,
-    activeProfile,
-    onChangeActive,
-}) => {
+export const ProfilesActions: FC<ProfilesActionsProps> = ({ profiles, activeProfile, onChangeActive }) => {
     const profilesArray = useMemo(() => Object.values(profiles).filter((p) => p.id !== activeProfile.id), [profiles]);
 
     return (
-        <Group gap="xs" align="center">
+        <Group
+            gap="xs"
+            align="center"
+        >
             <Menu
                 shadow="md"
                 position="bottom-end"
@@ -34,6 +33,7 @@ export const ProfilesActions: FC<ProfilesActionsProps> = ({
                             variant="filled"
                             color={activeProfile.status === 'enabled' ? 'green' : 'gray'}
                             size="xs"
+                            radius="sm"
                         >
                             {activeProfile.status}
                         </Badge>
@@ -68,7 +68,11 @@ export const ProfilesActions: FC<ProfilesActionsProps> = ({
                                     p="0.35rem 0.5rem"
                                     onClick={() => onChangeActive(p.id)}
                                 >
-                                    <Group wrap="nowrap" gap="xs" justify="apart">
+                                    <Group
+                                        wrap="nowrap"
+                                        gap="xs"
+                                        justify="apart"
+                                    >
                                         <Box>{p.name}</Box>
                                         <Badge
                                             variant="filled"

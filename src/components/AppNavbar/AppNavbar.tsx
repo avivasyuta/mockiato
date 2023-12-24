@@ -1,12 +1,5 @@
-import React from 'react';
-import {
-    Divider,
-    Group,
-    AppShell,
-    NavLink,
-    Text,
-    ScrollArea,
-} from '@mantine/core';
+import React, { JSX } from 'react';
+import { Divider, Group, AppShell, NavLink, Text, ScrollArea } from '@mantine/core';
 import {
     IconBrandGithub,
     IconCoin,
@@ -24,10 +17,10 @@ import { TRoute } from '../../types';
 import styles from './AppNavbar.module.css';
 
 type TMenuItem = {
-    route: TRoute
-    name: string
-    icon: (props: TablerIconsProps) => JSX.Element
-}
+    route: TRoute;
+    name: string;
+    icon: (props: TablerIconsProps) => JSX.Element;
+};
 
 const menu: TMenuItem[] = [
     {
@@ -58,14 +51,20 @@ const menu: TMenuItem[] = [
 ];
 
 type NavbarProps = {
-    route: TRoute
-    onRouteChange: (route: TRoute) => void
-}
+    route: TRoute;
+    onRouteChange: (route: TRoute) => void;
+};
 
 export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
     return (
-        <AppShell.Navbar p="0" style={{ padding: 0 }}>
-            <AppShell.Section grow component={ScrollArea}>
+        <AppShell.Navbar
+            p="0"
+            style={{ padding: 0 }}
+        >
+            <AppShell.Section
+                grow
+                component={ScrollArea}
+            >
                 {menu.map((link) => {
                     const Icon = link.icon;
                     return (
@@ -75,8 +74,15 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                             variant="light"
                             active={route === link.route}
                             onClick={() => onRouteChange(link.route)}
-                            className={styles.menuItem}
-                            leftSection={<Icon size={16} stroke={1.5} />}
+                            leftSection={
+                                <Icon
+                                    size={16}
+                                    stroke={1.5}
+                                />
+                            }
+                            style={{
+                                padding: '0.3rem 0.55rem',
+                            }}
                         />
                     );
                 })}
@@ -86,7 +92,10 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
 
             <AppShell.Section p="xs">
                 <Group justify="left">
-                    <IconVersions size={16} color="gray" />
+                    <IconVersions
+                        size={16}
+                        color="gray"
+                    />
                     <Text
                         size="xs"
                         variant="link"
@@ -100,8 +109,14 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                     </Text>
                 </Group>
 
-                <Group justify="left" mt="0.4rem">
-                    <IconBrandGithub size={16} color="gray" />
+                <Group
+                    justify="left"
+                    mt="0.4rem"
+                >
+                    <IconBrandGithub
+                        size={16}
+                        color="gray"
+                    />
                     <Text
                         size="xs"
                         variant="link"
@@ -115,8 +130,14 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                     </Text>
                 </Group>
 
-                <Group justify="left" mt="0.4rem">
-                    <IconCoin size={16} color="gray" />
+                <Group
+                    justify="left"
+                    mt="0.4rem"
+                >
+                    <IconCoin
+                        size={16}
+                        color="gray"
+                    />
                     <Text
                         size="xs"
                         variant="link"
@@ -130,8 +151,14 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                     </Text>
                 </Group>
 
-                <Group justify="left" mt="0.4rem">
-                    <IconThumbUp size={16} color="gray" />
+                <Group
+                    justify="left"
+                    mt="0.4rem"
+                >
+                    <IconThumbUp
+                        size={16}
+                        color="gray"
+                    />
                     <Text
                         size="xs"
                         variant="link"

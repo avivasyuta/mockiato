@@ -45,10 +45,7 @@ const MocksPage: React.FC = () => {
     };
 
     const handleAddGroup = (group: TMockGroup) => {
-        setGroups([
-            ...(groups ?? []),
-            group,
-            ]);
+        setGroups([...(groups ?? []), group]);
     };
 
     const handleOpenForm = () => {
@@ -90,7 +87,7 @@ const MocksPage: React.FC = () => {
         const newMocks = mocks.filter((mock) => mock.groupId !== groupId);
         await setMocks(newMocks);
         await setGroups(newGroups);
-    }
+    };
 
     const handleClearGroup = async (groupId: TMockGroup['id']) => {
         const newMocks = mocks.map((mock) => {
@@ -102,7 +99,7 @@ const MocksPage: React.FC = () => {
         });
 
         await setMocks(newMocks);
-    }
+    };
 
     const submitForm = (values: TMock): void => {
         const mock = trimHeaders(values);
@@ -131,8 +128,12 @@ const MocksPage: React.FC = () => {
 
     return (
         <>
-        <TopPanel groups={groups} onMockAdd={handleOpenForm} onGroupAdd={handleAddGroup}/>
-            {mocks.length > 0 ? (
+            <TopPanel
+                groups={groups}
+                onMockAdd={handleOpenForm}
+                onGroupAdd={handleAddGroup}
+            />
+            {mocks.length > 0 || groups.length > 0 ? (
                 <Content
                     mocks={mocks}
                     groups={groups}
