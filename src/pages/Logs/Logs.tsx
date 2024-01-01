@@ -1,17 +1,17 @@
 import React, { useCallback, useMemo } from 'react';
 import { Badge, Button, Group, Text } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
-import { NotFound } from '../../components/NotFound';
-import { useStore } from '../../hooks/useStore';
+import { NotFound } from '~/components/NotFound';
+import { useStore } from '~/hooks/useStore';
+import { useTabHost } from '~/hooks/useTab';
+import { Header } from '~/components/Header';
+import { Spinner } from '~/components/Spinner';
 import { Log } from './components/Log';
-import { useTabHost } from '../../hooks/useTab';
-import { Header } from '../../components/Header';
-import { Spinner } from '../../components/Spinner';
 import styles from './Logs.module.css';
 
 export const Logs: React.FC = () => {
     const tabHost = useTabHost();
-    const [logs, setLogs] = useStore('logs', []);
+    const [logs, setLogs] = useStore('logs');
 
     const handleClearMocks = useCallback(() => {
         const logsArray = logs ?? [];

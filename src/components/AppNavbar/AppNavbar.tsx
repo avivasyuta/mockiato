@@ -1,5 +1,5 @@
-import React, { JSX } from 'react';
-import { Divider, Group, AppShell, NavLink, Text, ScrollArea } from '@mantine/core';
+import React, { JSX, useMemo } from 'react';
+import { Divider, Group, AppShell, NavLink, Text, ScrollArea, Button } from '@mantine/core';
 import {
     IconBrandGithub,
     IconCoin,
@@ -11,8 +11,12 @@ import {
     TablerIconsProps,
     IconThumbUp,
     IconWifi,
+    IconPlayerPlay,
+    IconPlayerStop,
 } from '@tabler/icons-react';
 import { TRoute } from '~/types';
+import { useStore } from '~/hooks/useStore';
+import { useTabHost } from '~/hooks/useTab';
 import manifest from '../../../public/manifest.json';
 import styles from './AppNavbar.module.css';
 
@@ -56,6 +60,32 @@ type NavbarProps = {
 };
 
 export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
+    const [settings, setSettings] = useStore('settings');
+    const tabHost = useTabHost();
+
+    const isEnabled = useMemo(() => {
+        if (!tabHost) {
+            return false;
+        }
+        return settings?.enabledHosts[tabHost];
+    }, [settings?.enabledHosts]);
+
+    const toggleMocking = async () => {
+        if (!settings || !tabHost) {
+            return;
+        }
+
+        if (settings.enabledHosts[tabHost]) {
+            delete settings.enabledHosts[tabHost];
+        } else {
+            settings.enabledHosts[tabHost] = true;
+        }
+
+        await setSettings({
+            ...settings,
+        });
+    };
+
     return (
         <AppShell.Navbar
             p="0"
@@ -74,18 +104,36 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                             variant="light"
                             active={route === link.route}
                             onClick={() => onRouteChange(link.route)}
-                            leftSection={
-                                <Icon
-                                    size={16}
-                                    stroke={1.5}
-                                />
-                            }
+                            leftSection={<Icon size={16} />}
                             style={{
                                 padding: '0.3rem 0.55rem',
                             }}
                         />
                     );
                 })}
+
+                <Group
+                    p="xs"
+                    justify="center"
+                    gap="4px"
+                >
+                    <Button
+                        variant="filled"
+                        color={isEnabled ? 'red' : 'green'}
+                        leftSection={isEnabled ? <IconPlayerStop size={22} /> : <IconPlayerPlay size={22} />}
+                        fullWidth
+                        onClick={toggleMocking}
+                    >
+                        {isEnabled ? 'Stop mocking' : 'Start mocking'}
+                    </Button>
+
+                    <Text
+                        c="dimmed"
+                        size="xs"
+                    >
+                        for {tabHost}
+                    </Text>
+                </Group>
             </AppShell.Section>
 
             <Divider variant="dotted" />

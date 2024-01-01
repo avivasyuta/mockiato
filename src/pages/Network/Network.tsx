@@ -1,16 +1,16 @@
 import React, { useMemo } from 'react';
 import { Badge, Group, Text } from '@mantine/core';
-import { useStore } from '../../hooks/useStore';
-import { NotFound } from '../../components/NotFound';
+import { useStore } from '~/hooks/useStore';
+import { NotFound } from '~/components/NotFound';
+import { useTabHost } from '~/hooks/useTab';
+import { Header } from '~/components/Header';
+import { Spinner } from '~/components/Spinner';
 import { NetworkEvent } from './components/NetworkEvent';
-import { useTabHost } from '../../hooks/useTab';
-import { Header } from '../../components/Header';
-import { Spinner } from '../../components/Spinner';
 import styles from './Network.module.css';
 
 export const Network: React.FC = () => {
     const tabHost = useTabHost();
-    const [events] = useStore('network', []);
+    const [events] = useStore('network');
 
     const filteredNetwork = useMemo(() => {
         if (!events) {

@@ -1,5 +1,5 @@
-import { TStore, TStoreKey, TUpdateStore } from '../types';
-import { STORE_KEY } from '../contstant';
+import { TStore, TStoreKey, TUpdateStore } from '~/types';
+import { STORE_KEY } from '~/contstant';
 import { isObject } from './isObject';
 
 const emptyStore: TStore = {
@@ -11,6 +11,7 @@ const emptyStore: TStore = {
     settings: {
         showNotifications: true,
         excludedHosts: [],
+        enabledHosts: {},
     },
 };
 

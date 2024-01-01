@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppShell, ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { ModalsProvider } from '@mantine/modals';
+import { initStore } from '~/utils/storage';
 import { Mocks } from './pages/Mocks';
 import { Logs } from './pages/Logs';
 import { Settings } from './pages/Settings';
@@ -15,6 +16,10 @@ import './App.css';
 
 export const App = () => {
     const [route, setRoute] = useState<TRoute>('mocks');
+
+    useEffect(() => {
+        initStore();
+    }, []);
 
     return (
         <>

@@ -19,7 +19,7 @@ type NetworkEventProps = {
 
 const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
     const [isOpen, { toggle }] = useDisclosure(false);
-    const [mocks, setMocks] = useStore('mocks', []);
+    const [mocks, setMocks] = useStore('mocks');
 
     const handleCreate = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();

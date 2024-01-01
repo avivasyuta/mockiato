@@ -1,4 +1,5 @@
-import { listenMessage, sendMessage } from '../services/message';
+import { listenMessage, sendMessage } from '~/services/message';
+import { createStack, showAlert } from '~/services/alert';
 import {
     TInterceptedRequestMockDTO,
     TLog,
@@ -7,13 +8,13 @@ import {
     TMock,
     TNetworkEvent,
     TInterceptedResponseDTO,
-} from '../types';
-import { INTERCEPTOR_ID, STORE_KEY } from '../contstant';
-import { getValidMocks } from '../utils/getValidMocks';
-import { getValidHeaders } from '../utils/getValidHeaders';
-import { getStore, initStore } from '../utils/storage';
-import { createStack, showAlert } from '../services/alert';
-import { logError, logWarn } from '../utils/logger';
+    TStoreSettings,
+} from '~/types';
+import { INTERCEPTOR_ID, STORE_KEY } from '~/contstant';
+import { getValidMocks } from '~/utils/getValidMocks';
+import { getValidHeaders } from '~/utils/getValidHeaders';
+import { getStore, initStore } from '~/utils/storage';
+import { logError, logWarn } from '~/utils/logger';
 
 const logNetwork = async (store: TStore, event: TNetworkEvent) => {
     await chrome.storage.local.set({
@@ -112,14 +113,20 @@ const destroy = () => {
     script?.parentNode?.removeChild(script);
 };
 
+const isExtensionEnabled = (settings: TStoreSettings): boolean => {
+    const pageHost = window.location.host;
+    const excludedHosts = settings.excludedHosts.map((host) => host.value);
+
+    return !(excludedHosts.includes(pageHost) || !settings.enabledHosts[pageHost]);
+};
+
 export const main = async () => {
     destroy();
 
     const store = await initStore();
 
-    const excludedHosts = store.settings.excludedHosts.map((host) => host.value);
-    if (excludedHosts.includes(window.location.host)) {
-        // Don't inject extension script for excluded hosts
+    if (!isExtensionEnabled(store.settings)) {
+        // Don't inject extension script
         return;
     }
 

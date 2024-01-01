@@ -2,13 +2,13 @@ import React from 'react';
 import { ActionIcon, Button, Group, Text, TextInput } from '@mantine/core';
 import { IconPlaylistAdd, IconX } from '@tabler/icons-react';
 import { nanoid } from 'nanoid';
-import { TExcludedHost } from '../../../types';
+import { TExcludedHost } from '~/types';
 import styles from './ExcludedHosts.module.css';
 
 type ExcludedHostsProps = {
-    hosts: TExcludedHost[]
-    onChange: (hosts: TExcludedHost[]) => void
-}
+    hosts: TExcludedHost[];
+    onChange: (hosts: TExcludedHost[]) => void;
+};
 
 export const ExcludedHosts: React.FC<ExcludedHostsProps> = ({ hosts, onChange }) => {
     const handleDelete = (id: string) => {
@@ -41,8 +41,16 @@ export const ExcludedHosts: React.FC<ExcludedHostsProps> = ({ hosts, onChange })
 
     return (
         <>
-            <Text size="sm" fw={500}>Excluded hosts</Text>
-            <Text size="xs" c="dimmed">
+            <Text
+                size="sm"
+                fw={500}
+            >
+                Excluded hosts
+            </Text>
+            <Text
+                size="xs"
+                c="dimmed"
+            >
                 The extension script will not be added to the pages of these hosts
             </Text>
 

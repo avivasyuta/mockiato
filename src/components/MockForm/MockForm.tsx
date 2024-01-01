@@ -13,18 +13,18 @@ import {
 } from '@mantine/core';
 import { nanoid } from 'nanoid';
 import { isNotEmpty } from '@mantine/form';
-import { HttpMethodType, TMock } from '../../types';
+import { HttpMethodType, TMock } from '~/types';
+import { useStore } from '~/hooks/useStore';
 import { Response } from './components/Response';
 import { Headers } from './components/Headers';
 import { MockFormProvider, useMockForm } from './context';
 import styles from './MockForm.module.css';
-import { useStore } from '../../hooks/useStore';
 
 type MockFormProps = {
-    mock?: TMock
-    onClose: () => void
-    onSubmit: (mock: TMock) => void
-}
+    mock?: TMock;
+    onClose: () => void;
+    onSubmit: (mock: TMock) => void;
+};
 
 const initialValues: TMock = {
     id: '',
@@ -42,12 +42,8 @@ const httpMethods = Object.values(HttpMethodType);
 const headerKeyRegexp = /^[a-zA-Z0-9_-]+$/;
 const headerKeyError = 'Only latin letters, numbers and symbols "-" and "_" are available';
 
-export const MockForm: FC<MockFormProps> = ({
-    mock,
-    onClose,
-    onSubmit,
-}) => {
-    const [groups] = useStore('mockGroups', []);
+export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
+    const [groups] = useStore('mockGroups');
 
     const form = useMockForm({
         initialValues: mock ?? {
@@ -79,7 +75,10 @@ export const MockForm: FC<MockFormProps> = ({
 
     return (
         <MockFormProvider form={form}>
-            <form className={styles.form} onSubmit={form.onSubmit(onSubmit)}>
+            <form
+                className={styles.form}
+                onSubmit={form.onSubmit(onSubmit)}
+            >
                 <Grid align="flex-start">
                     <Grid.Col span={8}>
                         <TextInput
@@ -90,7 +89,12 @@ export const MockForm: FC<MockFormProps> = ({
                     </Grid.Col>
 
                     <Grid.Col span={4}>
-                        <Text size="xs" mb="0.3rem">Status</Text>
+                        <Text
+                            size="xs"
+                            mb="0.3rem"
+                        >
+                            Status
+                        </Text>
                         <SegmentedControl
                             size="xs"
                             fullWidth
@@ -149,7 +153,7 @@ export const MockForm: FC<MockFormProps> = ({
                     size="xs"
                     data={groupsOptions}
                     searchable
-                    disabled={groups.length === 0}
+                    disabled={groups?.length === 0}
                     {...form.getInputProps('groupId')}
                 />
 
@@ -168,20 +172,44 @@ export const MockForm: FC<MockFormProps> = ({
                     })}
                 >
                     <Tabs.List>
-                        <Tabs.Tab value="response" className={styles.tab}>Response Body</Tabs.Tab>
-                        <Tabs.Tab value="headers" className={styles.tab}>Response Headers</Tabs.Tab>
-                        <Tabs.Tab value="comments" className={styles.tab}>Comments</Tabs.Tab>
+                        <Tabs.Tab
+                            value="response"
+                            className={styles.tab}
+                        >
+                            Response Body
+                        </Tabs.Tab>
+                        <Tabs.Tab
+                            value="headers"
+                            className={styles.tab}
+                        >
+                            Response Headers
+                        </Tabs.Tab>
+                        <Tabs.Tab
+                            value="comments"
+                            className={styles.tab}
+                        >
+                            Comments
+                        </Tabs.Tab>
                     </Tabs.List>
 
-                    <Tabs.Panel value="response" pt="xs">
+                    <Tabs.Panel
+                        value="response"
+                        pt="xs"
+                    >
                         <Response />
                     </Tabs.Panel>
 
-                    <Tabs.Panel value="headers" pt="xs">
+                    <Tabs.Panel
+                        value="headers"
+                        pt="xs"
+                    >
                         <Headers />
                     </Tabs.Panel>
 
-                    <Tabs.Panel value="comments" pt="xs">
+                    <Tabs.Panel
+                        value="comments"
+                        pt="xs"
+                    >
                         <Textarea
                             size="xs"
                             autosize
@@ -191,7 +219,11 @@ export const MockForm: FC<MockFormProps> = ({
                     </Tabs.Panel>
                 </Tabs>
 
-                <Group justify="right" mt="md" gap="xs">
+                <Group
+                    justify="right"
+                    mt="md"
+                    gap="xs"
+                >
                     <Button
                         variant="subtle"
                         color="gray"

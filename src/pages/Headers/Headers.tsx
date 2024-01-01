@@ -2,13 +2,13 @@ import React, { memo, useMemo, useReducer } from 'react';
 import { Button, Modal } from '@mantine/core';
 import { IconPlaylistAdd } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
-import { useStore } from '../../hooks/useStore';
-import { Spinner } from '../../components/Spinner';
-import { overlaySettings } from '../../contstant';
+import { useStore } from '~/hooks/useStore';
+import { Spinner } from '~/components/Spinner';
+import { overlaySettings } from '~/contstant';
+import { THeader, THeadersProfile } from '~/types';
+import { NotFound } from '~/components/NotFound';
+import { isEmpty } from '~/utils/isEmpty';
 import { AddProfileForm } from './components/AddProfileForm';
-import { THeader, THeadersProfile } from '../../types';
-import { NotFound } from '../../components/NotFound';
-import { isEmpty } from '../../utils/isEmpty';
 import { Profile } from './components/Profile';
 import { addProfile, changeProfile } from './helpers';
 import { THeaderFormAction, THeaderFormState } from './components/Profile/types';
@@ -32,7 +32,7 @@ const headerFormReducer = (state: THeaderFormState, action: THeaderFormAction): 
 
 const HeadersPage: React.FC = () => {
     const [headerForm, dispatchHeaderForm] = useReducer(headerFormReducer, initialFormState);
-    const [profiles, setProfiles] = useStore('headersProfiles', {});
+    const [profiles, setProfiles] = useStore('headersProfiles');
     const [isProfileModelOpen, profileModelActions] = useDisclosure(false);
 
     const handleAddProfile = (profile: THeadersProfile) => {
@@ -83,7 +83,7 @@ const HeadersPage: React.FC = () => {
             {profiles !== null && isEmpty(profiles) && (
                 <NotFound
                     text="No profiles to show"
-                    action={(
+                    action={
                         <Button
                             leftSection={<IconPlaylistAdd size={16} />}
                             variant="gradient"
@@ -94,7 +94,7 @@ const HeadersPage: React.FC = () => {
                         >
                             Add Profile
                         </Button>
-                    )}
+                    }
                 />
             )}
 

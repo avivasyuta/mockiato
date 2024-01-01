@@ -1,7 +1,9 @@
 import { defineConfig } from 'vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
-// bundling the content script using Vite
+// bundling the devtools script using Vite
 export default defineConfig({
+    plugins: [tsconfigPaths()],
     build: {
         outDir: 'dist',
         cssCodeSplit: false,

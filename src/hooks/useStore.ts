@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
-import { TStore, TStoreKey, TUpdateStore } from '../types';
-import { getStoreValue, getUpdatedValue, setStoreValue } from '../utils/storage';
+import { TStore, TStoreKey, TUpdateStore } from '~/types';
+import { getStoreValue, getUpdatedValue, setStoreValue } from '~/utils/storage';
 
 // eslint-disable-next-line max-len
-export const useStore = <Key extends TStoreKey>(key: Key, defaultValue: TStore[Key]): [TStore[Key], (val: TStore[Key]) => Promise<void>] => {
-    const [value, setValue] = useState<TStore[Key]>();
+export const useStore = <Key extends TStoreKey>(
+    key: Key,
+): [TStore[Key] | null, (val: TStore[Key]) => Promise<void>] => {
+    const [value, setValue] = useState<TStore[Key] | null>(null);
 
     const updateValue = async (val: TStore[Key]): Promise<void> => {
         setValue(val);
@@ -34,5 +36,5 @@ export const useStore = <Key extends TStoreKey>(key: Key, defaultValue: TStore[K
         return () => window.removeEventListener('storage', handleChangeStore);
     }, [key]);
 
-    return [value ?? defaultValue, updateValue];
+    return [value, updateValue];
 };

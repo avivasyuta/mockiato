@@ -2,13 +2,13 @@ import React, { memo, useReducer } from 'react';
 import { Drawer } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { nanoid } from 'nanoid';
-import { useStore } from '../../hooks/useStore';
-import { TMock, TMockGroup } from '../../types';
-import { NotFound } from '../../components/NotFound';
-import { MockForm } from '../../components/MockForm';
-import { trimHeaders } from '../../components/MockForm/utils';
-import { Spinner } from '../../components/Spinner';
-import { overlaySettings } from '../../contstant';
+import { useStore } from '~/hooks/useStore';
+import { TMock, TMockGroup } from '~/types';
+import { NotFound } from '~/components/NotFound';
+import { MockForm } from '~/components/MockForm';
+import { trimHeaders } from '~/components/MockForm/utils';
+import { Spinner } from '~/components/Spinner';
+import { overlaySettings } from '~/contstant';
 import { TMockFormAction, TMockFormState } from './types';
 import { TopPanel } from './components/TopPanel';
 import { Content } from './components/Content';
@@ -31,8 +31,8 @@ const mockFormReducer = (state: TMockFormState, action: TMockFormAction): TMockF
 
 const MocksPage: React.FC = () => {
     const [mockForm, dispatchMockForm] = useReducer(mockFormReducer, initialMockFormState);
-    const [mocks, setMocks] = useStore('mocks', []);
-    const [groups, setGroups] = useStore('mockGroups', []);
+    const [mocks, setMocks] = useStore('mocks');
+    const [groups, setGroups] = useStore('mockGroups');
 
     const handleCopyMock = (mock: TMock) => {
         dispatchMockForm({
@@ -63,7 +63,7 @@ const MocksPage: React.FC = () => {
         });
     };
 
-    if (!mocks) {
+    if (!mocks || !groups) {
         return <Spinner />;
     }
 

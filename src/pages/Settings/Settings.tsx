@@ -2,24 +2,19 @@ import React, { useMemo } from 'react';
 import { Button, Group, Stack, Switch, Text } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { modals } from '@mantine/modals';
-import { useStore } from '../../hooks/useStore';
-import { isEmpty } from '../../utils/isEmpty';
+import { useStore } from '~/hooks/useStore';
+import { isEmpty } from '~/utils/isEmpty';
+import { TExcludedHost } from '~/types';
+import { Header } from '~/components/Header';
+import { Card } from '~/components/Card';
 import { ExcludedHosts } from './ExcludedHosts';
-import { TExcludedHost, TStoreSettings } from '../../types';
-import { Header } from '../../components/Header';
-import { Card } from '../../components/Card';
-
-const defaultSettings: TStoreSettings = {
-    showNotifications: true,
-    excludedHosts: [],
-};
 
 export const Settings = () => {
-    const [logs, setLogs] = useStore('logs', []);
-    const [mocks, setMocks] = useStore('mocks', []);
-    const [network, setNetworks] = useStore('network', []);
-    const [headersProfiles, setHeadersProfiles] = useStore('headersProfiles', {});
-    const [settings, setSettings] = useStore('settings', defaultSettings);
+    const [logs, setLogs] = useStore('logs');
+    const [mocks, setMocks] = useStore('mocks');
+    const [network, setNetworks] = useStore('network');
+    const [headersProfiles, setHeadersProfiles] = useStore('headersProfiles');
+    const [settings, setSettings] = useStore('settings');
 
     const isClearLogsDisabled = useMemo(() => logs === null || logs.length === 0, [logs]);
     const isClearMocksDisabled = useMemo(() => mocks === null || mocks.length === 0, [mocks]);
@@ -29,11 +24,7 @@ export const Settings = () => {
     const handleClearAllLogs = () => {
         modals.openConfirmModal({
             title: 'Are you sure you want to clear logs?',
-            children: (
-                <Text size="sm">
-                    All logs for all hosts will be completely removed.
-                </Text>
-            ),
+            children: <Text size="sm">All logs for all hosts will be completely removed.</Text>,
             labels: { confirm: 'Clear logs', cancel: 'Cancel' },
             confirmProps: { color: 'red', size: 'compact-xs' },
             cancelProps: {
@@ -48,11 +39,7 @@ export const Settings = () => {
     const handleClearAllMocks = () => {
         modals.openConfirmModal({
             title: 'Are you sure you want to clear all mocks?',
-            children: (
-                <Text size="sm">
-                    All mocks will be completely removed.
-                </Text>
-            ),
+            children: <Text size="sm">All mocks will be completely removed.</Text>,
             labels: { confirm: 'Clear mocks', cancel: 'Cancel' },
             confirmProps: { color: 'red', size: 'compact-xs' },
             cancelProps: {
@@ -67,11 +54,7 @@ export const Settings = () => {
     const handleDeleteProfiles = () => {
         modals.openConfirmModal({
             title: 'Are you sure you want to remove all headers profiles?',
-            children: (
-                <Text size="sm">
-                    All headers profiles with headers will be completely removed.
-                </Text>
-            ),
+            children: <Text size="sm">All headers profiles with headers will be completely removed.</Text>,
             labels: { confirm: 'Delete', cancel: 'Cancel' },
             confirmProps: { color: 'red', size: 'compact-xs' },
             cancelProps: {
@@ -86,11 +69,7 @@ export const Settings = () => {
     const handleDeleteNetwork = () => {
         modals.openConfirmModal({
             title: 'Are you sure you want to remove all network logs?',
-            children: (
-                <Text size="sm">
-                    All network logs will be completely removed.
-                </Text>
-            ),
+            children: <Text size="sm">All network logs will be completely removed.</Text>,
             labels: { confirm: 'Delete', cancel: 'Cancel' },
             confirmProps: { color: 'red', size: 'compact-xs' },
             cancelProps: {
@@ -102,22 +81,22 @@ export const Settings = () => {
         });
     };
 
-    const handleToggleNotifications = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleToggleNotifications = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!settings) {
             return;
         }
 
-        setSettings({
+        await setSettings({
             ...settings,
             showNotifications: e.target.checked,
         });
     };
 
-    const handleChangeExcludedHosts = (hosts: TExcludedHost[]) => {
+    const handleChangeExcludedHosts = async (hosts: TExcludedHost[]) => {
         if (!settings) {
             return;
         }
-        setSettings({
+        await setSettings({
             ...settings,
             excludedHosts: hosts,
         });
@@ -130,15 +109,28 @@ export const Settings = () => {
     return (
         <>
             <Header>
-                <Text fz="sm" fw={500}>Settings</Text>
+                <Text
+                    fz="sm"
+                    fw={500}
+                >
+                    Settings
+                </Text>
             </Header>
 
             <Group justify="center">
                 <Card>
                     <Stack gap="xl">
                         <div>
-                            <Text size="sm" fw={500}>Mocks</Text>
-                            <Text size="xs" c="dimmed">
+                            <Text
+                                size="sm"
+                                fw={500}
+                            >
+                                Mocks
+                            </Text>
+                            <Text
+                                size="xs"
+                                c="dimmed"
+                            >
                                 All mocks for all hosts
                             </Text>
 
@@ -156,8 +148,16 @@ export const Settings = () => {
                         </div>
 
                         <div>
-                            <Text size="sm" fw={500}>Logs of mocks</Text>
-                            <Text size="xs" c="dimmed">
+                            <Text
+                                size="sm"
+                                fw={500}
+                            >
+                                Logs of mocks
+                            </Text>
+                            <Text
+                                size="xs"
+                                c="dimmed"
+                            >
                                 Data about requests that were intercepted and replaced with mocks for all hosts
                             </Text>
 
@@ -175,8 +175,16 @@ export const Settings = () => {
                         </div>
 
                         <div>
-                            <Text size="sm" fw={500}>Network logs</Text>
-                            <Text size="xs" c="dimmed">
+                            <Text
+                                size="sm"
+                                fw={500}
+                            >
+                                Network logs
+                            </Text>
+                            <Text
+                                size="xs"
+                                c="dimmed"
+                            >
                                 Delete all network logs
                             </Text>
 
@@ -194,8 +202,16 @@ export const Settings = () => {
                         </div>
 
                         <div>
-                            <Text size="sm" fw={500}>Headers profiles</Text>
-                            <Text size="xs" c="dimmed">
+                            <Text
+                                size="sm"
+                                fw={500}
+                            >
+                                Headers profiles
+                            </Text>
+                            <Text
+                                size="xs"
+                                c="dimmed"
+                            >
                                 Header profiles that allow you to substitute headers in requests and responses
                             </Text>
 
@@ -221,14 +237,20 @@ export const Settings = () => {
                                 checked={settings?.showNotifications}
                                 onChange={handleToggleNotifications}
                             />
-                            <Text size="xs" c="dimmed">
-                                If you enable this setting, notifications about intercepted requests will
-                                be shown on the site page.
+                            <Text
+                                size="xs"
+                                c="dimmed"
+                            >
+                                If you enable this setting, notifications about intercepted requests will be shown on
+                                the site page.
                             </Text>
                         </div>
 
                         <div>
-                            <ExcludedHosts hosts={settings.excludedHosts} onChange={handleChangeExcludedHosts} />
+                            <ExcludedHosts
+                                hosts={settings.excludedHosts}
+                                onChange={handleChangeExcludedHosts}
+                            />
                         </div>
                     </Stack>
                 </Card>

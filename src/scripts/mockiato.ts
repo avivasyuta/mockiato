@@ -9,19 +9,16 @@ import {
     TInterceptedResponseDTO,
     TMockHeader,
     TResponseType,
-} from '../types';
-import { sendMessage, listenMessage } from '../services/message';
-import { MessageBus } from '../services/messageBus';
-import { logError } from '../utils/logger';
-import { delay } from '../utils/delay';
+} from '~/types';
+import { sendMessage, listenMessage } from '~/services/message';
+import { MessageBus } from '~/services/messageBus';
+import { logError } from '~/utils/logger';
+import { delay } from '~/utils/delay';
 
 const messageBus = new MessageBus();
 const interceptor = new BatchInterceptor({
     name: 'mockiatoInterceptor',
-    interceptors: [
-        new FetchInterceptor(),
-        new XMLHttpRequestInterceptor(),
-    ],
+    interceptors: [new FetchInterceptor(), new XMLHttpRequestInterceptor()],
 });
 
 interceptor.apply();
@@ -57,18 +54,18 @@ interceptor.on('request', async ({ request }) => {
         }
 
         // Convert response headers from mock
-        const responseHeaders = mock.responseHeaders.reduce<Record<string, string>>((acc, header) => ({
-            ...acc,
-            [header.key]: header.value,
-        }), {});
-
-        const response = new Response(
-            mock.response,
-            {
-                status: mock.httpStatusCode,
-                headers: responseHeaders,
-            },
+        const responseHeaders = mock.responseHeaders.reduce<Record<string, string>>(
+            (acc, header) => ({
+                ...acc,
+                [header.key]: header.value,
+            }),
+            {},
         );
+
+        const response = new Response(mock.response, {
+            status: mock.httpStatusCode,
+            headers: responseHeaders,
+        });
 
         if (mock.delay) {
             await delay(mock.delay);
@@ -84,6 +81,7 @@ interceptor.on('response', async ({ request, response }) => {
     const headers: TMockHeader[] = [];
     const res = response.clone();
 
+    // TODO разобраться с заголовками
     // eslint-disable-next-line no-restricted-syntax
     for (const [key, value] of res.headers.entries()) {
         headers.push({
