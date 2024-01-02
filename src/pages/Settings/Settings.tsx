@@ -92,6 +92,17 @@ export const Settings = () => {
         });
     };
 
+    const handleToggleActiveStatus = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!settings) {
+            return;
+        }
+
+        await setSettings({
+            ...settings,
+            showActiveStatus: e.target.checked,
+        });
+    };
+
     const handleChangeExcludedHosts = async (hosts: TExcludedHost[]) => {
         if (!settings) {
             return;
@@ -243,6 +254,24 @@ export const Settings = () => {
                             >
                                 If you enable this setting, notifications about intercepted requests will be shown on
                                 the site page.
+                            </Text>
+                        </div>
+
+                        <div>
+                            <Switch
+                                size="xs"
+                                onLabel="ON"
+                                offLabel="OFF"
+                                label="Show active status"
+                                checked={settings?.showActiveStatus}
+                                onChange={handleToggleActiveStatus}
+                            />
+                            <Text
+                                size="xs"
+                                c="dimmed"
+                            >
+                                If you enable this setting, the page will display mockiato&apos;s running status if it
+                                is enabled.
                             </Text>
                         </div>
 

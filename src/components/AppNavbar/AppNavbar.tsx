@@ -112,6 +112,8 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                     );
                 })}
 
+                <Divider variant="dotted" />
+
                 <Group
                     p="xs"
                     justify="center"

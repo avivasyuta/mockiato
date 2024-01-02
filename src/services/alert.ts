@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { EXTENSION_NAME } from '../contstant';
+import { EXTENSION_NAME } from '~/contstant';
 
 const closeTimeout = 10000;
 const stackId = 'mockiato-alert-stack';
@@ -32,11 +32,12 @@ const createStyles = () => {
             background: #fff4e6;
             padding: 8px 16px;
             padding-right: 8px;
-            border-radius: 5px;
             gap: 8px;
             white-space: break-spaces;
             animation: fadeIn .5s;
             box-sizing: border-box;
+            border: 1px solid #fd7e14;
+            border-radius: 5px;
         }
         .mockiato-alert-text {
             flex: 1;
@@ -87,11 +88,6 @@ export const createStack = (): void => {
 
     const bodyNode = document.getElementsByTagName('body')[0];
     bodyNode.appendChild(stack);
-};
-
-export const removeStack = (): void => {
-    const stack = document.getElementById(stackId);
-    stack?.remove();
 };
 
 const handleClose = (id: string) => {

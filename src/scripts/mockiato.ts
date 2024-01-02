@@ -9,11 +9,14 @@ import {
     TInterceptedResponseDTO,
     TMockHeader,
     TResponseType,
+    TStore,
 } from '~/types';
 import { sendMessage, listenMessage } from '~/services/message';
 import { MessageBus } from '~/services/messageBus';
 import { logError } from '~/utils/logger';
 import { delay } from '~/utils/delay';
+import { isExtensionEnabled } from '~/utils/isExtensionEnabled';
+import { statusNodeId } from '~/contstant';
 
 const messageBus = new MessageBus();
 const interceptor = new BatchInterceptor({
@@ -123,6 +126,17 @@ interceptor.on('response', async ({ request, response }) => {
 
 listenMessage<TInterceptedRequestMockDTO>('requestChecked', (message) => {
     messageBus.dispatch(message.messageId, message);
+});
+
+listenMessage<TStore>('settingsChanged', (store) => {
+    const isEnabled = isExtensionEnabled(store.settings);
+
+    const statusNode = document.getElementById(statusNodeId);
+    if (!statusNode) {
+        return;
+    }
+
+    statusNode.style.opacity = isEnabled && store.settings.showActiveStatus ? '1' : '0';
 });
 
 export {};

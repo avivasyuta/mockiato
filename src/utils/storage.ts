@@ -10,6 +10,7 @@ const emptyStore: TStore = {
     network: [],
     settings: {
         showNotifications: true,
+        showActiveStatus: true,
         excludedHosts: [],
         enabledHosts: {},
     },

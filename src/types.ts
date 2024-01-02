@@ -13,7 +13,7 @@ export enum HttpMethodType {
     PURGE = 'PURGE',
 }
 
-export type MessageType = 'requestIntercepted' | 'requestChecked' | 'responseIntercepted';
+export type MessageType = 'requestIntercepted' | 'requestChecked' | 'responseIntercepted' | 'settingsChanged';
 
 export type TResponseType = 'text' | 'json' | 'none';
 
@@ -114,6 +114,7 @@ export type TMockGroup = {
 
 export type TStoreSettings = {
     showNotifications: boolean;
+    showActiveStatus: boolean;
     excludedHosts: TExcludedHost[];
     enabledHosts: Record<string, boolean>;
 };

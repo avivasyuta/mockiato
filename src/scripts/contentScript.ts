@@ -1,20 +1,21 @@
 import { listenMessage, sendMessage } from '~/services/message';
 import { createStack, showAlert } from '~/services/alert';
 import {
-    TInterceptedRequestMockDTO,
-    TLog,
     TInterceptedRequestDTO,
-    TStore,
+    TInterceptedRequestMockDTO,
+    TInterceptedResponseDTO,
+    TLog,
     TMock,
     TNetworkEvent,
-    TInterceptedResponseDTO,
-    TStoreSettings,
+    TStore,
 } from '~/types';
 import { INTERCEPTOR_ID, STORE_KEY } from '~/contstant';
 import { getValidMocks } from '~/utils/getValidMocks';
 import { getValidHeaders } from '~/utils/getValidHeaders';
 import { getStore, initStore } from '~/utils/storage';
 import { logError, logWarn } from '~/utils/logger';
+import { createStatus } from '~/services/status';
+import { isExtensionEnabled } from '~/utils/isExtensionEnabled';
 
 const logNetwork = async (store: TStore, event: TNetworkEvent) => {
     await chrome.storage.local.set({
@@ -113,13 +114,6 @@ const destroy = () => {
     script?.parentNode?.removeChild(script);
 };
 
-const isExtensionEnabled = (settings: TStoreSettings): boolean => {
-    const pageHost = window.location.host;
-    const excludedHosts = settings.excludedHosts.map((host) => host.value);
-
-    return !(excludedHosts.includes(pageHost) || !settings.enabledHosts[pageHost]);
-};
-
 export const main = async () => {
     destroy();
 
@@ -145,9 +139,27 @@ export const main = async () => {
     (document.head || document.documentElement).appendChild(s);
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+const addActiveStatus = async () => {
+    const store = await getStore();
+    const isEnabled = isExtensionEnabled(store.settings);
+
+    if (store.settings.showActiveStatus) {
+        createStatus(isEnabled);
+    }
+};
+
+document.addEventListener('DOMContentLoaded', async () => {
     // Add div for alerts when dom is ready
     createStack();
+    await addActiveStatus();
 });
 
 main();
+
+chrome.storage.onChanged.addListener((changes) => {
+    Object.entries(changes).forEach(([key, change]) => {
+        if (key === STORE_KEY) {
+            sendMessage<TStore>('settingsChanged', change.newValue as TStore);
+        }
+    });
+});
