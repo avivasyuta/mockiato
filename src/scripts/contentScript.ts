@@ -119,10 +119,7 @@ export const main = async () => {
 
     const store = await initStore();
 
-    if (!isExtensionEnabled(store.settings)) {
-        // Don't inject extension script
-        return;
-    }
+    const isEnabled = isExtensionEnabled(store.settings);
 
     // Inject mockiato script to user's DOM
     const s = document.createElement('script');
@@ -135,6 +132,10 @@ export const main = async () => {
             'The Mockiato extension has created a request interceptor! Now all requests are proxies through it to implement mocks.',
         );
     };
+
+    if (isEnabled) {
+        s.setAttribute('data-is-enabled', 'true');
+    }
 
     (document.head || document.documentElement).appendChild(s);
 };

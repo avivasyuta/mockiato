@@ -91,10 +91,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
             p="0"
             style={{ padding: 0 }}
         >
-            <AppShell.Section
-                grow
-                component={ScrollArea}
-            >
+            <AppShell.Section component={ScrollArea}>
                 {menu.map((link) => {
                     const Icon = link.icon;
                     return (
@@ -111,9 +108,11 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                         />
                     );
                 })}
+            </AppShell.Section>
 
-                <Divider variant="dotted" />
+            <Divider variant="dotted" />
 
+            <AppShell.Section grow>
                 <Group
                     p="xs"
                     justify="center"
@@ -122,11 +121,11 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                     <Button
                         variant="filled"
                         color={isEnabled ? 'red' : 'green'}
-                        leftSection={isEnabled ? <IconPlayerStop size={22} /> : <IconPlayerPlay size={22} />}
+                        leftSection={isEnabled ? <IconPlayerStop size={16} /> : <IconPlayerPlay size={16} />}
                         fullWidth
                         onClick={toggleMocking}
                     >
-                        {isEnabled ? 'Stop mocking' : 'Start mocking'}
+                        {isEnabled ? 'Disable' : 'Enable'}
                     </Button>
 
                     <Text

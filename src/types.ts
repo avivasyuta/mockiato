@@ -101,12 +101,6 @@ export type THeadersProfile = {
     headers: THeader[];
 };
 
-export type TExcludedHost = {
-    id: string;
-    type: 'scalar' | 'regexp';
-    value: string;
-};
-
 export type TMockGroup = {
     id: string;
     name: string;
@@ -115,7 +109,6 @@ export type TMockGroup = {
 export type TStoreSettings = {
     showNotifications: boolean;
     showActiveStatus: boolean;
-    excludedHosts: TExcludedHost[];
     enabledHosts: Record<string, boolean>;
 };
 

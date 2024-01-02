@@ -16,7 +16,7 @@ import { MessageBus } from '~/services/messageBus';
 import { logError } from '~/utils/logger';
 import { delay } from '~/utils/delay';
 import { isExtensionEnabled } from '~/utils/isExtensionEnabled';
-import { statusNodeId } from '~/contstant';
+import { INTERCEPTOR_ID, statusNodeId } from '~/contstant';
 
 const messageBus = new MessageBus();
 const interceptor = new BatchInterceptor({
@@ -24,7 +24,18 @@ const interceptor = new BatchInterceptor({
     interceptors: [new FetchInterceptor(), new XMLHttpRequestInterceptor()],
 });
 
-interceptor.apply();
+const run = () => {
+    const scriptElement = document.getElementById(INTERCEPTOR_ID);
+    if (!scriptElement) {
+        return;
+    }
+    const isEnabled = scriptElement.getAttribute('data-is-enabled');
+    if (isEnabled) {
+        interceptor.apply();
+    }
+};
+
+run();
 
 const getRequestMocks = (url: string, method: string): Promise<TInterceptedRequestMockDTO> => {
     const messageId = nanoid();
@@ -134,6 +145,13 @@ listenMessage<TStore>('settingsChanged', (store) => {
     const statusNode = document.getElementById(statusNodeId);
     if (!statusNode) {
         return;
+    }
+
+    if (isEnabled) {
+        interceptor.apply();
+    } else {
+        // TODO как все выключить?
+        interceptor.removeAllListeners();
     }
 
     statusNode.style.opacity = isEnabled && store.settings.showActiveStatus ? '1' : '0';

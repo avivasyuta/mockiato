@@ -21,7 +21,7 @@ const createStyles = () => {
             position: fixed;
             right: 20px;
             bottom: 20px;
-            width: 90px;
+            width: 84px;
             height: 28px;
             font-size: 14px;
             justify-content: center;

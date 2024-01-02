@@ -4,10 +4,8 @@ import { IconTrash } from '@tabler/icons-react';
 import { modals } from '@mantine/modals';
 import { useStore } from '~/hooks/useStore';
 import { isEmpty } from '~/utils/isEmpty';
-import { TExcludedHost } from '~/types';
 import { Header } from '~/components/Header';
 import { Card } from '~/components/Card';
-import { ExcludedHosts } from './ExcludedHosts';
 
 export const Settings = () => {
     const [logs, setLogs] = useStore('logs');
@@ -100,16 +98,6 @@ export const Settings = () => {
         await setSettings({
             ...settings,
             showActiveStatus: e.target.checked,
-        });
-    };
-
-    const handleChangeExcludedHosts = async (hosts: TExcludedHost[]) => {
-        if (!settings) {
-            return;
-        }
-        await setSettings({
-            ...settings,
-            excludedHosts: hosts,
         });
     };
 
@@ -273,13 +261,6 @@ export const Settings = () => {
                                 If you enable this setting, the page will display mockiato&apos;s running status if it
                                 is enabled.
                             </Text>
-                        </div>
-
-                        <div>
-                            <ExcludedHosts
-                                hosts={settings.excludedHosts}
-                                onChange={handleChangeExcludedHosts}
-                            />
                         </div>
                     </Stack>
                 </Card>

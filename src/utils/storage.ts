@@ -11,7 +11,6 @@ const emptyStore: TStore = {
     settings: {
         showNotifications: true,
         showActiveStatus: true,
-        excludedHosts: [],
         enabledHosts: {},
     },
 };
