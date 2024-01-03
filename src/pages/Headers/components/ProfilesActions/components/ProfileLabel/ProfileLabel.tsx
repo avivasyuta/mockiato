@@ -14,9 +14,9 @@ export const ProfileLabel: FC<ProfileLabelProps> = ({ name, status }) => {
 
     return (
         <Group
-            noWrap
+            wrap="nowrap"
             title={`«${name}» profile is ${status}`}
-            spacing="0.4rem"
+            gap="0.4rem"
         >
             <Box>{name}</Box>
             <ColorSwatch

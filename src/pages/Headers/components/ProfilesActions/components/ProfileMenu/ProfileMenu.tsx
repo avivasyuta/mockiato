@@ -1,46 +1,30 @@
 import React, { FC } from 'react';
-import {
-    ActionIcon, Menu, Text,
-} from '@mantine/core';
+import { ActionIcon, Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import {
-    IconDotsVertical,
-    IconUserPlus,
-    IconTrash,
-    IconUser,
-    IconUserOff,
-} from '@tabler/icons-react';
-import { THeadersProfile, THeaderStatus } from '../../../../../../types';
-import { iconSize } from '../../../../../../contstant';
+import { IconDotsVertical, IconUserPlus, IconTrash, IconUser, IconUserOff } from '@tabler/icons-react';
+import { THeadersProfile, THeaderStatus } from '~/types';
+import { iconSize } from '~/contstant';
 
 type ProfileMenuProps = Omit<THeadersProfile, 'headers' | 'lastActive'> & {
-    onAdd: () => void
-    onDelete: (id: string) => void
-    onChangeStatus: (id: string, status: THeaderStatus) => void
-}
+    onAdd: () => void;
+    onDelete: (id: string) => void;
+    onChangeStatus: (id: string, status: THeaderStatus) => void;
+};
 
-export const ProfileMenu: FC<ProfileMenuProps> = ({
-    id,
-    name,
-    status,
-    onAdd,
-    onDelete,
-    onChangeStatus,
-}) => {
+export const ProfileMenu: FC<ProfileMenuProps> = ({ id, name, status, onAdd, onDelete, onChangeStatus }) => {
     const handleDelete = (): void => {
         modals.openConfirmModal({
             title: `Delete headers profile «${name}»`,
             children: (
                 <Text size="sm">
-                    Are you sure you want to delete the profile? This action will remove all settings for headers.
+                    Are you sure you want to delete this profile? This action will remove all settings for headers.
                 </Text>
             ),
-            labels: { confirm: 'Delete profile', cancel: 'Cancel' },
-            confirmProps: { color: 'red', size: 'xs', compact: true },
+            labels: { confirm: 'Delete', cancel: 'Cancel' },
+            confirmProps: { color: 'red', size: 'xs' },
             cancelProps: {
                 size: 'xs',
                 variant: 'subtle',
-                compact: true,
                 color: 'gray',
             },
             onConfirm: () => onDelete(id),
@@ -74,14 +58,14 @@ export const ProfileMenu: FC<ProfileMenuProps> = ({
 
             <Menu.Dropdown>
                 <Menu.Item
-                    icon={<IconUserPlus size={iconSize} />}
+                    leftSection={<IconUserPlus size={iconSize} />}
                     onClick={onAdd}
                 >
                     Add new profile
                 </Menu.Item>
 
                 <Menu.Item
-                    icon={status === 'enabled' ? <IconUserOff size={iconSize} /> : <IconUser size={iconSize} />}
+                    leftSection={status === 'enabled' ? <IconUserOff size={iconSize} /> : <IconUser size={iconSize} />}
                     onClick={handleChangeStatus}
                 >
                     {status === 'enabled' ? 'Disable' : 'Enable'} profile
@@ -92,7 +76,7 @@ export const ProfileMenu: FC<ProfileMenuProps> = ({
                 <Menu.Label>Danger zone</Menu.Label>
                 <Menu.Item
                     color="red"
-                    icon={<IconTrash size={14} />}
+                    leftSection={<IconTrash size={14} />}
                     onClick={handleDelete}
                 >
                     Delete profile

@@ -1,15 +1,11 @@
 import React, { useMemo } from 'react';
-import { Button, Group, Switch, Text } from '@mantine/core';
+import { Button, Group, Stack, Switch, Text } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
 import { modals } from '@mantine/modals';
-import { useStore } from '../../hooks/useStore';
-import { Card } from '../../components/Card';
-import { isEmpty } from '../../utils/isEmpty';
-import { Content } from '../../components/Contnent';
-import styles from './Settings..module.css';
-import { Header } from '../../components/Header';
-import { ExcludedHosts } from './ExcludedHosts';
-import { TExcludedHost } from '../../types';
+import { useStore } from '~/hooks/useStore';
+import { isEmpty } from '~/utils/isEmpty';
+import { Header } from '~/components/Header';
+import { Card } from '~/components/Card';
 
 export const Settings = () => {
     const [logs, setLogs] = useStore('logs');
@@ -26,17 +22,12 @@ export const Settings = () => {
     const handleClearAllLogs = () => {
         modals.openConfirmModal({
             title: 'Are you sure you want to clear logs?',
-            children: (
-                <Text size="sm">
-                    All logs for all hosts will be completely removed.
-                </Text>
-            ),
+            children: <Text size="sm">All logs for all hosts will be completely removed.</Text>,
             labels: { confirm: 'Clear logs', cancel: 'Cancel' },
-            confirmProps: { color: 'red', size: 'xs', compact: true },
+            confirmProps: { color: 'red', size: 'xs' },
             cancelProps: {
                 size: 'xs',
                 variant: 'subtle',
-                compact: true,
                 color: 'gray',
             },
             onConfirm: () => setLogs([]),
@@ -46,17 +37,12 @@ export const Settings = () => {
     const handleClearAllMocks = () => {
         modals.openConfirmModal({
             title: 'Are you sure you want to clear all mocks?',
-            children: (
-                <Text size="sm">
-                    All mocks will be completely removed.
-                </Text>
-            ),
+            children: <Text size="sm">All mocks will be completely removed.</Text>,
             labels: { confirm: 'Clear mocks', cancel: 'Cancel' },
-            confirmProps: { color: 'red', size: 'xs', compact: true },
+            confirmProps: { color: 'red', size: 'xs' },
             cancelProps: {
                 size: 'xs',
                 variant: 'subtle',
-                compact: true,
                 color: 'gray',
             },
             onConfirm: () => setMocks([]),
@@ -66,17 +52,12 @@ export const Settings = () => {
     const handleDeleteProfiles = () => {
         modals.openConfirmModal({
             title: 'Are you sure you want to remove all headers profiles?',
-            children: (
-                <Text size="sm">
-                    All headers profiles with headers will be completely removed.
-                </Text>
-            ),
+            children: <Text size="sm">All headers profiles with headers will be completely removed.</Text>,
             labels: { confirm: 'Delete', cancel: 'Cancel' },
-            confirmProps: { color: 'red', size: 'xs', compact: true },
+            confirmProps: { color: 'red', size: 'xs' },
             cancelProps: {
                 size: 'xs',
                 variant: 'subtle',
-                compact: true,
                 color: 'gray',
             },
             onConfirm: () => setHeadersProfiles({}),
@@ -86,41 +67,37 @@ export const Settings = () => {
     const handleDeleteNetwork = () => {
         modals.openConfirmModal({
             title: 'Are you sure you want to remove all network logs?',
-            children: (
-                <Text size="sm">
-                    All network logs will be completely removed.
-                </Text>
-            ),
+            children: <Text size="sm">All network logs will be completely removed.</Text>,
             labels: { confirm: 'Delete', cancel: 'Cancel' },
-            confirmProps: { color: 'red', size: 'xs', compact: true },
+            confirmProps: { color: 'red', size: 'xs' },
             cancelProps: {
                 size: 'xs',
                 variant: 'subtle',
-                compact: true,
                 color: 'gray',
             },
             onConfirm: () => setNetworks([]),
         });
     };
 
-    const handleToggleNotifications = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleToggleNotifications = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!settings) {
             return;
         }
 
-        setSettings({
+        await setSettings({
             ...settings,
             showNotifications: e.target.checked,
         });
     };
 
-    const handleChangeExcludedHosts = (hosts: TExcludedHost[]) => {
+    const handleToggleActiveStatus = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!settings) {
             return;
         }
-        setSettings({
+
+        await setSettings({
             ...settings,
-            excludedHosts: hosts,
+            showActiveStatus: e.target.checked,
         });
     };
 
@@ -131,15 +108,28 @@ export const Settings = () => {
     return (
         <>
             <Header>
-                <Text fz="sm" fw={500}>Settings</Text>
+                <Text
+                    fz="sm"
+                    fw={500}
+                >
+                    Settings
+                </Text>
             </Header>
 
-            <Content>
-                <Group position="center">
-                    <Card className={styles.card}>
+            <Group justify="center">
+                <Card>
+                    <Stack gap="xl">
                         <div>
-                            <Text size="sm" weight={500}>Mocks</Text>
-                            <Text size="xs" c="dimmed">
+                            <Text
+                                size="sm"
+                                fw={500}
+                            >
+                                Mocks
+                            </Text>
+                            <Text
+                                size="xs"
+                                c="dimmed"
+                            >
                                 All mocks for all hosts
                             </Text>
 
@@ -148,7 +138,7 @@ export const Settings = () => {
                                 size="xs"
                                 variant="light"
                                 color="red"
-                                rightIcon={<IconTrash size={12} />}
+                                rightSection={<IconTrash size={12} />}
                                 disabled={isClearMocksDisabled}
                                 onClick={handleClearAllMocks}
                             >
@@ -157,8 +147,16 @@ export const Settings = () => {
                         </div>
 
                         <div>
-                            <Text size="sm" weight={500}>Logs of mocks</Text>
-                            <Text size="xs" c="dimmed">
+                            <Text
+                                size="sm"
+                                fw={500}
+                            >
+                                Logs of mocks
+                            </Text>
+                            <Text
+                                size="xs"
+                                c="dimmed"
+                            >
                                 Data about requests that were intercepted and replaced with mocks for all hosts
                             </Text>
 
@@ -167,7 +165,7 @@ export const Settings = () => {
                                 size="xs"
                                 variant="light"
                                 color="red"
-                                rightIcon={<IconTrash size={12} />}
+                                rightSection={<IconTrash size={12} />}
                                 disabled={isClearLogsDisabled}
                                 onClick={handleClearAllLogs}
                             >
@@ -176,8 +174,16 @@ export const Settings = () => {
                         </div>
 
                         <div>
-                            <Text size="sm" weight={500}>Network logs</Text>
-                            <Text size="xs" c="dimmed">
+                            <Text
+                                size="sm"
+                                fw={500}
+                            >
+                                Network logs
+                            </Text>
+                            <Text
+                                size="xs"
+                                c="dimmed"
+                            >
                                 Delete all network logs
                             </Text>
 
@@ -186,7 +192,7 @@ export const Settings = () => {
                                 size="xs"
                                 variant="light"
                                 color="red"
-                                rightIcon={<IconTrash size={12} />}
+                                rightSection={<IconTrash size={12} />}
                                 disabled={isClearNetworkDisabled}
                                 onClick={handleDeleteNetwork}
                             >
@@ -195,8 +201,16 @@ export const Settings = () => {
                         </div>
 
                         <div>
-                            <Text size="sm" weight={500}>Headers profiles</Text>
-                            <Text size="xs" c="dimmed">
+                            <Text
+                                size="sm"
+                                fw={500}
+                            >
+                                Headers profiles
+                            </Text>
+                            <Text
+                                size="xs"
+                                c="dimmed"
+                            >
                                 Header profiles that allow you to substitute headers in requests and responses
                             </Text>
 
@@ -205,7 +219,7 @@ export const Settings = () => {
                                 size="xs"
                                 variant="light"
                                 color="red"
-                                rightIcon={<IconTrash size={12} />}
+                                rightSection={<IconTrash size={12} />}
                                 disabled={isHeadersDisabled}
                                 onClick={handleDeleteProfiles}
                             >
@@ -222,18 +236,35 @@ export const Settings = () => {
                                 checked={settings?.showNotifications}
                                 onChange={handleToggleNotifications}
                             />
-                            <Text size="xs" c="dimmed">
-                                If you enable this setting, notifications about intercepted requests will
-                                be shown on the site page.
+                            <Text
+                                size="xs"
+                                c="dimmed"
+                            >
+                                If you enable this setting, notifications about intercepted requests will be shown on
+                                the site page.
                             </Text>
                         </div>
 
                         <div>
-                            <ExcludedHosts hosts={settings.excludedHosts} onChange={handleChangeExcludedHosts} />
+                            <Switch
+                                size="xs"
+                                onLabel="ON"
+                                offLabel="OFF"
+                                label="Show active status"
+                                checked={settings?.showActiveStatus}
+                                onChange={handleToggleActiveStatus}
+                            />
+                            <Text
+                                size="xs"
+                                c="dimmed"
+                            >
+                                If you enable this setting, the page will display mockiato&apos;s running status if it
+                                is enabled.
+                            </Text>
                         </div>
-                    </Card>
-                </Group>
-            </Content>
+                    </Stack>
+                </Card>
+            </Group>
         </>
     );
 };

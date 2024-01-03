@@ -22,7 +22,7 @@ export const HttpMethod: React.FC<HttpStatusProps> = ({ method }) => {
         <Text
             tt="uppercase"
             c={colorsMap[method] ?? grayColor}
-            weight={700}
+            fw={700}
             fz="xs"
             title="HTTP method"
         >

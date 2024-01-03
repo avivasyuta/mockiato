@@ -26,8 +26,8 @@ export const Headers: FC = () => {
         <>
             {form.values.responseHeaders.map(({ id }, index) => (
                 <Group
-                    position="left"
-                    spacing="xs"
+                    justify="left"
+                    gap="xs"
                     mb="xs"
                     key={id}
                     align="flex-start"
@@ -51,6 +51,7 @@ export const Headers: FC = () => {
 
                     <ActionIcon
                         color="red"
+                        variant="subtle"
                         onClick={() => handleDelete(index)}
                     >
                         <IconX size={16} />
@@ -62,7 +63,7 @@ export const Headers: FC = () => {
                 <Button
                     size="xs"
                     variant="outline"
-                    leftIcon={<IconPlaylistAdd size={16} />}
+                    leftSection={<IconPlaylistAdd size={16} />}
                     onClick={handleAddHeader}
                 >
                     Add header

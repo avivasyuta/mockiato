@@ -45,7 +45,7 @@ export const AddProfileForm: FC<AddProfileFormProps> = ({ onSubmit }) => {
                 {...form.getInputProps('name')}
             />
 
-            <Group position="right" mt="md">
+            <Group justify="right" mt="md">
                 <Button type="submit" size="xs">Submit</Button>
             </Group>
         </form>

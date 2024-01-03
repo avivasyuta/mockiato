@@ -1,11 +1,12 @@
 import { nanoid } from 'nanoid';
-import { EXTENSION_NAME } from '../contstant';
+import { EXTENSION_NAME } from '~/contstant';
 
 const closeTimeout = 10000;
 const stackId = 'mockiato-alert-stack';
 
-// eslint-disable-next-line max-len
-const closeSVG = '<svg role="button" tabindex="0" aria-hidden="false" data-icon="close" viewBox="0 0 24 24" class="mockiato-alert-close"><path d="M18.7 5.3a1 1 0 0 0-1.4 0L12 10.58l-5.3-5.3a1 1 0 0 0-1.4 1.42L10.58 12l-5.3 5.3a1 1 0 1 0 1.42 1.4L12 13.42l5.3 5.3a1 1 0 0 0 1.4-1.42L13.42 12l5.3-5.3a1 1 0 0 0 0-1.4Z"></path></svg>';
+const closeSVG =
+    // eslint-disable-next-line max-len
+    '<svg role="button" tabindex="0" aria-hidden="false" data-icon="close" viewBox="0 0 24 24" class="mockiato-alert-close"><path d="M18.7 5.3a1 1 0 0 0-1.4 0L12 10.58l-5.3-5.3a1 1 0 0 0-1.4 1.42L10.58 12l-5.3 5.3a1 1 0 1 0 1.42 1.4L12 13.42l5.3 5.3a1 1 0 0 0 1.4-1.42L13.42 12l5.3-5.3a1 1 0 0 0 0-1.4Z"></path></svg>';
 
 const createStyles = () => {
     const css = `
@@ -14,7 +15,7 @@ const createStyles = () => {
             100% { opacity: 1; }
         }
         .mockiato-alert-stack {
-            position: absolute;
+            position: fixed;
             top: 8px;
             right: 8px;
             display: flex;
@@ -31,11 +32,12 @@ const createStyles = () => {
             background: #fff4e6;
             padding: 8px 16px;
             padding-right: 8px;
-            border-radius: 5px;
             gap: 8px;
             white-space: break-spaces;
             animation: fadeIn .5s;
             box-sizing: border-box;
+            border: 1px solid #fd7e14;
+            border-radius: 5px;
         }
         .mockiato-alert-text {
             flex: 1;
@@ -88,17 +90,12 @@ export const createStack = (): void => {
     bodyNode.appendChild(stack);
 };
 
-export const removeStack = (): void => {
-    const stack = document.getElementById(stackId);
-    stack?.remove();
-};
-
 const handleClose = (id: string) => {
     const alert = document.getElementById(id);
     alert?.remove();
 };
 
-const createAlertNode = (url: string | URL): HTMLElementTagNameMap['div'] => {
+const createAlertNode = (url: string | URL): HTMLDivElement => {
     const id = nanoid();
 
     const alert = document.createElement('div');
@@ -118,7 +115,7 @@ const createAlertNode = (url: string | URL): HTMLElementTagNameMap['div'] => {
 };
 
 const logToConsole = (url: string | URL): void => {
-    const text = `${EXTENSION_NAME} intercepted request ${url}. See logs in the «Mockiato» tab in Dev Tools.`;
+    const text = `${EXTENSION_NAME} intercepted request to ${url}. See logs in the «Mockiato» tab in Dev Tools.`;
     // eslint-disable-next-line no-console
     console.warn(text);
 };
@@ -130,7 +127,7 @@ export const showAlert = (url: string) => {
     const stackNode = document.getElementById(stackId);
     if (!stackNode) {
         // eslint-disable-next-line no-console
-        console.warn('Mockiato stack node wasn\'t found.');
+        console.warn("Mockiato stack node wasn't found.");
         return;
     }
 

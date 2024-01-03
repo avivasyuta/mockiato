@@ -1,20 +1,20 @@
 import React, { FC } from 'react';
 import { Button, Group, Text } from '@mantine/core';
-import { IconPlaylistAdd } from '@tabler/icons-react';
+import { IconPlus } from '@tabler/icons-react';
 import { showNotification } from '@mantine/notifications';
 import { nanoid } from 'nanoid';
+import { Header } from '~/components/Header';
+import { THeader, THeadersProfile, THeaderStatus } from '~/types';
 import { ProfilesActions } from '../ProfilesActions';
-import { Header } from '../../../../components/Header';
-import { THeader, THeadersProfile, THeaderStatus } from '../../../../types';
 import { changeProfileStatus, deleteProfile, setLastActive } from '../../helpers';
 import { ProfileMenu } from '../ProfilesActions/components/ProfileMenu';
 
 interface TopPanelProps {
-    activeProfile: THeadersProfile
-    profiles: Record<string, THeadersProfile>
-    setProfiles: (val: Record<string, THeadersProfile>) => void
-    onHeaderAdd: (header: THeader) => void
-    onProfileAdd: () => void
+    activeProfile: THeadersProfile;
+    profiles: Record<string, THeadersProfile>;
+    setProfiles: (val: Record<string, THeadersProfile>) => void;
+    onHeaderAdd: (header: THeader) => void;
+    onProfileAdd: () => void;
 }
 
 export const TopPanel: FC<TopPanelProps> = (props) => {
@@ -52,8 +52,11 @@ export const TopPanel: FC<TopPanelProps> = (props) => {
 
     return (
         <Header>
-            <Group spacing="sm">
-                <Text fz="sm" fw={500}>
+            <Group gap="sm">
+                <Text
+                    fz="sm"
+                    fw={500}
+                >
                     Request Headers
                 </Text>
 
@@ -67,14 +70,11 @@ export const TopPanel: FC<TopPanelProps> = (props) => {
             </Group>
 
             {activeProfile && (
-                <Group spacing="xs">
+                <Group gap="xs">
                     <Button
-                        leftIcon={<IconPlaylistAdd size={16} />}
-                        variant="gradient"
-                        size="xs"
+                        leftSection={<IconPlus size={16} />}
+                        size="compact-xs"
                         title="Add Header"
-                        gradient={{ from: 'indigo', to: 'cyan' }}
-                        compact
                         onClick={handleAddHeader}
                     >
                         Add Header

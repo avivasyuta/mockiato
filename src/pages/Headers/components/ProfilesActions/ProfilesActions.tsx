@@ -5,20 +5,19 @@ import { THeadersProfile } from '../../../../types';
 import styles from './ProfilesActions.module.css';
 
 interface ProfilesActionsProps {
-    profiles: Record<string, THeadersProfile>
-    activeProfile: THeadersProfile
-    onChangeActive: (id: string) => void
+    profiles: Record<string, THeadersProfile>;
+    activeProfile: THeadersProfile;
+    onChangeActive: (id: string) => void;
 }
 
-export const ProfilesActions: FC<ProfilesActionsProps> = ({
-    profiles,
-    activeProfile,
-    onChangeActive,
-}) => {
+export const ProfilesActions: FC<ProfilesActionsProps> = ({ profiles, activeProfile, onChangeActive }) => {
     const profilesArray = useMemo(() => Object.values(profiles).filter((p) => p.id !== activeProfile.id), [profiles]);
 
     return (
-        <Group spacing="xs" align="center">
+        <Group
+            gap="xs"
+            align="center"
+        >
             <Menu
                 shadow="md"
                 position="bottom-end"
@@ -27,29 +26,29 @@ export const ProfilesActions: FC<ProfilesActionsProps> = ({
                 }}
             >
                 {profilesArray.length === 0 ? (
-                    <Group spacing="xs">
+                    <Group gap="xs">
                         <Divider orientation="vertical" />
                         <Text fz="sm">{activeProfile.name}</Text>
                         <Badge
                             variant="filled"
                             color={activeProfile.status === 'enabled' ? 'green' : 'gray'}
                             size="xs"
+                            radius="sm"
                         >
                             {activeProfile.status}
                         </Badge>
                     </Group>
                 ) : (
-                    <Group spacing="0.1rem">
+                    <Group gap="0.1rem">
                         <Divider orientation="vertical" />
                         <Menu.Target>
                             <Button
                                 variant="subtle"
-                                size="sm"
-                                compact
-                                rightIcon={<IconChevronDown size={14} />}
+                                size="compact-xs"
+                                rightSection={<IconChevronDown size={14} />}
                                 className={styles.profileBtn}
                             >
-                                <Group spacing="xs">
+                                <Group gap="xs">
                                     <Text fz="sm">{activeProfile.name}</Text>
                                     <Badge
                                         variant="filled"
@@ -69,7 +68,11 @@ export const ProfilesActions: FC<ProfilesActionsProps> = ({
                                     p="0.35rem 0.5rem"
                                     onClick={() => onChangeActive(p.id)}
                                 >
-                                    <Group noWrap spacing="xs" position="apart">
+                                    <Group
+                                        wrap="nowrap"
+                                        gap="xs"
+                                        justify="apart"
+                                    >
                                         <Box>{p.name}</Box>
                                         <Badge
                                             variant="filled"

@@ -1,19 +1,22 @@
-import { listenMessage, sendMessage } from '../services/message';
+import { listenMessage, sendMessage } from '~/services/message';
+import { createStack, showAlert } from '~/services/alert';
 import {
-    TInterceptedRequestMockDTO,
-    TLog,
     TInterceptedRequestDTO,
-    TStore,
+    TInterceptedRequestMockDTO,
+    TInterceptedResponseDTO,
+    TLog,
     TMock,
     TNetworkEvent,
-    TInterceptedResponseDTO,
-} from '../types';
-import { INTERCEPTOR_ID, STORE_KEY } from '../contstant';
-import { getValidMocks } from '../utils/getValidMocks';
-import { getValidHeaders } from '../utils/getValidHeaders';
-import { getStore, initStore } from '../utils/storage';
-import { createStack, showAlert } from '../services/alert';
-import { logError, logWarn } from '../utils/logger';
+    TStore,
+    TStoreSettings,
+} from '~/types';
+import { enabledAttributeName, INTERCEPTOR_ID, STORE_KEY } from '~/contstant';
+import { getValidMocks } from '~/utils/getValidMocks';
+import { getValidHeaders } from '~/utils/getValidHeaders';
+import { getStore, initStore } from '~/utils/storage';
+import { logError } from '~/utils/logger';
+import { createStatus } from '~/services/status';
+import { isExtensionEnabled } from '~/utils/isExtensionEnabled';
 
 const logNetwork = async (store: TStore, event: TNetworkEvent) => {
     await chrome.storage.local.set({
@@ -33,7 +36,7 @@ const logInterceptedRequest = async (store: TStore, message: TInterceptedRequest
         url: message.url,
         method: message.method,
         date: new Date().toISOString(),
-        host: window.location.hostname,
+        host: window.location.host,
         mock,
     };
 
@@ -117,27 +120,52 @@ export const main = async () => {
 
     const store = await initStore();
 
-    const excludedHosts = store.settings.excludedHosts.map((host) => host.value);
-    if (excludedHosts.includes(window.location.host)) {
-        // Don't inject extension script for excluded hosts
-        return;
-    }
+    const isEnabled = isExtensionEnabled(store.settings);
 
     // Inject mockiato script to user's DOM
     const s = document.createElement('script');
+    s.type = 'module';
     s.id = INTERCEPTOR_ID;
     s.src = chrome.runtime.getURL('mockiato.js');
-    s.onload = () => {
-        // eslint-disable-next-line max-len
-        logWarn('The Mockiato extension has created a request interceptor! Now all requests are proxies through it to implement mocks.');
-    };
+
+    if (isEnabled) {
+        s.setAttribute(enabledAttributeName, 'true');
+    }
 
     (document.head || document.documentElement).appendChild(s);
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+const addActiveStatus = async () => {
+    const store = await getStore();
+    const isEnabled = isExtensionEnabled(store.settings);
+
+    if (store.settings.showActiveStatus) {
+        createStatus(isEnabled);
+    }
+};
+
+document.addEventListener('DOMContentLoaded', async () => {
     // Add div for alerts when dom is ready
     createStack();
+    await addActiveStatus();
 });
 
 main();
+
+chrome.storage.onChanged.addListener((changes) => {
+    Object.entries(changes).forEach(([key, change]) => {
+        if (key === STORE_KEY) {
+            const oldSettings = (change.oldValue as TStore).settings;
+            const newSettings = (change.newValue as TStore).settings;
+
+            const oldSettingsString = JSON.stringify(oldSettings);
+            const newSettingsString = JSON.stringify(newSettings);
+
+            if (oldSettingsString === newSettingsString) {
+                return;
+            }
+
+            sendMessage<TStoreSettings>('settingsChanged', newSettings);
+        }
+    });
+});

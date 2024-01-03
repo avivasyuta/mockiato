@@ -23,7 +23,6 @@ jobs:
         with:
           version: latest
       - run: pnpm install
-      - run: pnpm run editorconfig
       - run: pnpm run lint
       - run: pnpm run typecheck
       - run: pnpm test

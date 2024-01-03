@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { testTable } from '../__fixtures__/getValidHeaders';
 import { getValidHeaders } from '../getValidHeaders';
 

@@ -1,15 +1,17 @@
-import { TStore, TStoreKey, TUpdateStore } from '../types';
-import { STORE_KEY } from '../contstant';
+import { TStore, TStoreKey, TUpdateStore } from '~/types';
+import { STORE_KEY } from '~/contstant';
 import { isObject } from './isObject';
 
 const emptyStore: TStore = {
     mocks: [],
+    mockGroups: [],
     logs: [],
     headersProfiles: {},
     network: [],
     settings: {
         showNotifications: true,
-        excludedHosts: [],
+        showActiveStatus: true,
+        enabledHosts: {},
     },
 };
 
@@ -26,7 +28,7 @@ const getExtensionStore = async (): Promise<TStore | undefined> => {
 export const getStore = async (): Promise<TStore> => {
     let store: TStore | undefined;
 
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.VITE_NODE_ENV === 'development') {
         store = getLocalStorage();
     } else {
         store = await getExtensionStore();
@@ -36,7 +38,7 @@ export const getStore = async (): Promise<TStore> => {
 };
 
 export const setStore = async (store: TStore): Promise<void> => {
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.VITE_NODE_ENV === 'development') {
         localStorage.setItem(STORE_KEY, JSON.stringify(store));
     } else {
         await chrome.storage.local.set({ [STORE_KEY]: store });

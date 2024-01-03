@@ -2,14 +2,13 @@ import React, { memo, useMemo, useReducer } from 'react';
 import { Button, Modal } from '@mantine/core';
 import { IconPlaylistAdd } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
-import { Content } from '../../components/Contnent';
-import { useStore } from '../../hooks/useStore';
-import { Spinner } from '../../components/Spinner';
-import { overlaySettings } from '../../contstant';
+import { useStore } from '~/hooks/useStore';
+import { Spinner } from '~/components/Spinner';
+import { overlaySettings } from '~/contstant';
+import { THeader, THeadersProfile } from '~/types';
+import { NotFound } from '~/components/NotFound';
+import { isEmpty } from '~/utils/isEmpty';
 import { AddProfileForm } from './components/AddProfileForm';
-import { THeader, THeadersProfile } from '../../types';
-import { NotFound } from '../../components/NotFound';
-import { isEmpty } from '../../utils/isEmpty';
 import { Profile } from './components/Profile';
 import { addProfile, changeProfile } from './helpers';
 import { THeaderFormAction, THeaderFormState } from './components/Profile/types';
@@ -79,47 +78,44 @@ const HeadersPage: React.FC = () => {
                 />
             )}
 
-            <Content>
-                {profiles === null && <Spinner />}
+            {profiles === null && <Spinner />}
 
-                {profiles !== null && isEmpty(profiles) && (
-                    <NotFound
-                        text="No profiles to show"
-                        action={(
-                            <Button
-                                leftIcon={<IconPlaylistAdd size={16} />}
-                                variant="gradient"
-                                size="xs"
-                                title="Add Profile"
-                                gradient={{ from: 'indigo', to: 'cyan' }}
-                                compact
-                                onClick={profileModelActions.open}
-                            >
-                                Add Profile
-                            </Button>
-                        )}
-                    />
-                )}
+            {profiles !== null && isEmpty(profiles) && (
+                <NotFound
+                    text="No profiles to show"
+                    action={
+                        <Button
+                            leftSection={<IconPlaylistAdd size={16} />}
+                            variant="gradient"
+                            size="compact-xs"
+                            title="Add Profile"
+                            gradient={{ from: 'indigo', to: 'cyan' }}
+                            onClick={profileModelActions.open}
+                        >
+                            Add Profile
+                        </Button>
+                    }
+                />
+            )}
 
-                {activeProfile && (
-                    <Profile
-                        headerForm={headerForm}
-                        profile={activeProfile}
-                        onChange={handleChangeProfile}
-                        onHeaderEdit={handleOpenForm}
-                        onCloseHeaderForm={handleCloseForm}
-                    />
-                )}
+            {activeProfile && (
+                <Profile
+                    headerForm={headerForm}
+                    profile={activeProfile}
+                    onChange={handleChangeProfile}
+                    onHeaderEdit={handleOpenForm}
+                    onCloseHeaderForm={handleCloseForm}
+                />
+            )}
 
-                <Modal
-                    opened={isProfileModelOpen}
-                    overlayProps={overlaySettings}
-                    title="Add new profile"
-                    onClose={profileModelActions.close}
-                >
-                    <AddProfileForm onSubmit={handleAddProfile} />
-                </Modal>
-            </Content>
+            <Modal
+                opened={isProfileModelOpen}
+                overlayProps={overlaySettings}
+                title="Add new profile"
+                onClose={profileModelActions.close}
+            >
+                <AddProfileForm onSubmit={handleAddProfile} />
+            </Modal>
         </>
     );
 };

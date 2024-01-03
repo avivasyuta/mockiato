@@ -1,0 +1,31 @@
+.root {
+    border: 1px dashed;
+    border-radius: 6px;
+}
+
+.content {
+    border-top: 1px dashed;
+    padding: 12px;
+}
+
+@media (prefers-color-scheme: light) {
+    .root {
+        background: var(--mantine-color-gray-1);
+        border-color: var(--mantine-color-gray-5);
+    }
+
+    .content {
+        border-color: var(--mantine-color-gray-5);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .root {
+        background: var(--mantine-color-dark-6);
+        border-color: var(--mantine-color-dark-4);
+    }
+
+    .content {
+        border-color: var(--mantine-color-dark-4);
+    }
+}

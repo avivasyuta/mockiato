@@ -70,6 +70,8 @@ export const Profile: FC<ProfileProps> = (props) => {
                     content: { display: 'flex', flexDirection: 'column' },
                     body: { display: 'flex', flex: 1 },
                 }}
+                offset={8}
+                radius="md"
                 onClose={onCloseHeaderForm}
             >
                 {headerForm.isOpen && headerForm.header && (
