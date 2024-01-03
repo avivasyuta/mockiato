@@ -27,8 +27,8 @@ dependencies:
     specifier: ^6.0.21
     version: 6.0.21(react@18.2.0)
   '@mswjs/interceptors':
-    specifier: 0.24.1
-    version: 0.24.1
+    specifier: 0.25.2
+    version: 0.25.2
   '@tabler/icons-react':
     specifier: ^2.44.0
     version: 2.44.0(react@18.2.0)
@@ -2360,8 +2360,8 @@ packages:
       react: 18.2.0
     dev: false
 
-  /@mswjs/interceptors@0.24.1:
-    resolution: {integrity: sha512-fCH1t3yc8JW3gMqtkmO/L+kII7GAXWw9bTmCZBsrwSFKkG1y5RmNZN9BEygmWMJGxjdjAp3JTLAQpnBqLV6wpA==}
+  /@mswjs/interceptors@0.25.2:
+    resolution: {integrity: sha512-Bv/NhbW6WlacEXGPQfYXIzcbDfbFkhxo6zc66aQb0yxVQ9Xh0qiVFP6zye6Ce0zbTe4B0hsngtDRIgjFWuqCCw==}
     engines: {node: '>=18'}
     dependencies:
       '@open-draft/deferred-promise': 2.2.0

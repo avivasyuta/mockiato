@@ -8,12 +8,13 @@ import {
     TMock,
     TNetworkEvent,
     TStore,
+    TStoreSettings,
 } from '~/types';
-import { INTERCEPTOR_ID, STORE_KEY } from '~/contstant';
+import { enabledAttributeName, INTERCEPTOR_ID, STORE_KEY } from '~/contstant';
 import { getValidMocks } from '~/utils/getValidMocks';
 import { getValidHeaders } from '~/utils/getValidHeaders';
 import { getStore, initStore } from '~/utils/storage';
-import { logError, logWarn } from '~/utils/logger';
+import { logError } from '~/utils/logger';
 import { createStatus } from '~/services/status';
 import { isExtensionEnabled } from '~/utils/isExtensionEnabled';
 
@@ -35,7 +36,7 @@ const logInterceptedRequest = async (store: TStore, message: TInterceptedRequest
         url: message.url,
         method: message.method,
         date: new Date().toISOString(),
-        host: window.location.hostname,
+        host: window.location.host,
         mock,
     };
 
@@ -126,15 +127,9 @@ export const main = async () => {
     s.type = 'module';
     s.id = INTERCEPTOR_ID;
     s.src = chrome.runtime.getURL('mockiato.js');
-    s.onload = () => {
-        logWarn(
-            // eslint-disable-next-line max-len
-            'The Mockiato extension has created a request interceptor! Now all requests are proxies through it to implement mocks.',
-        );
-    };
 
     if (isEnabled) {
-        s.setAttribute('data-is-enabled', 'true');
+        s.setAttribute(enabledAttributeName, 'true');
     }
 
     (document.head || document.documentElement).appendChild(s);
@@ -160,7 +155,17 @@ main();
 chrome.storage.onChanged.addListener((changes) => {
     Object.entries(changes).forEach(([key, change]) => {
         if (key === STORE_KEY) {
-            sendMessage<TStore>('settingsChanged', change.newValue as TStore);
+            const oldSettings = (change.oldValue as TStore).settings;
+            const newSettings = (change.newValue as TStore).settings;
+
+            const oldSettingsString = JSON.stringify(oldSettings);
+            const newSettingsString = JSON.stringify(newSettings);
+
+            if (oldSettingsString === newSettingsString) {
+                return;
+            }
+
+            sendMessage<TStoreSettings>('settingsChanged', newSettings);
         }
     });
 });

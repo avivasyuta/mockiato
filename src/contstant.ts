@@ -10,3 +10,5 @@ export const overlaySettings = {
 export const iconSize = '0.95rem';
 
 export const statusNodeId = 'mockiato-status';
+
+export const enabledAttributeName = 'data-is-enabled';

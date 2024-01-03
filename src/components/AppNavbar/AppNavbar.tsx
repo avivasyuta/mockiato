@@ -119,8 +119,8 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                     <Switch
                         size="lg"
                         color="green"
-                        onLabel="MOCKING ENABLED"
-                        offLabel="MOCKING DISABLED"
+                        onLabel="MOCKIATO ENABLED"
+                        offLabel="MOCKIATO DISABLED"
                         radius="sm"
                         checked={isEnabled}
                         onChange={toggleMocking}

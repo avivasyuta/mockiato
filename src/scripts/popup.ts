@@ -39,17 +39,17 @@ chrome?.tabs?.query(
         const url = new URL(tab.url as string);
         const store = await getStore();
 
-        update(store.settings.enabledHosts, url.hostname);
+        update(store.settings.enabledHosts, url.host);
 
         const hostNode = document.getElementById('host');
         if (hostNode) {
-            hostNode.innerText = url.hostname;
+            hostNode.innerText = url.host;
         }
 
         chrome.storage.onChanged.addListener((changes) => {
             Object.entries(changes).forEach(([key, change]) => {
                 if (key === STORE_KEY) {
-                    update((change.newValue as TStore).settings.enabledHosts, url.hostname);
+                    update((change.newValue as TStore).settings.enabledHosts, url.host);
                 }
             });
         });
@@ -63,9 +63,9 @@ chrome?.tabs?.query(
             const target = e.target as HTMLInputElement;
 
             if (target.checked) {
-                newSettings.enabledHosts[url.hostname] = true;
+                newSettings.enabledHosts[url.host] = true;
             } else {
-                delete newSettings.enabledHosts[url.hostname];
+                delete newSettings.enabledHosts[url.host];
             }
 
             await setStoreValue('settings', newSettings);

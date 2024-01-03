@@ -15,7 +15,7 @@ const createStyles = () => {
             100% { opacity: 1; }
         }
         .mockiato-alert-stack {
-            position: absolute;
+            position: fixed;
             top: 8px;
             right: 8px;
             display: flex;
@@ -95,8 +95,7 @@ const handleClose = (id: string) => {
     alert?.remove();
 };
 
-// eslint-disable-next-line no-undef
-const createAlertNode = (url: string | URL): HTMLElementTagNameMap['div'] => {
+const createAlertNode = (url: string | URL): HTMLDivElement => {
     const id = nanoid();
 
     const alert = document.createElement('div');
@@ -116,7 +115,7 @@ const createAlertNode = (url: string | URL): HTMLElementTagNameMap['div'] => {
 };
 
 const logToConsole = (url: string | URL): void => {
-    const text = `${EXTENSION_NAME} intercepted request ${url}. See logs in the «Mockiato» tab in Dev Tools.`;
+    const text = `${EXTENSION_NAME} intercepted request to ${url}. See logs in the «Mockiato» tab in Dev Tools.`;
     // eslint-disable-next-line no-console
     console.warn(text);
 };
