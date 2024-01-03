@@ -9,6 +9,7 @@
         "128": "icons/mockiato-128.png"
     },
     "action": {
+        "default_popup": "popup.html",
         "default_icon": {
             "16": "icons/mockiato-16.png",
             "128": "icons/mockiato-128.png"

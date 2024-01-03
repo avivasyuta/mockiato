@@ -1,17 +1,17 @@
 import React, { FC } from 'react';
 import { ActionIcon, Button, Group, Menu, Modal, Text } from '@mantine/core';
-import { IconDotsVertical, IconPlaylistAdd, IconSelectAll } from '@tabler/icons-react';
+import { IconDotsVertical, IconPlus, IconSelectAll } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
-import { iconSize, overlaySettings } from '../../../../contstant';
+import { iconSize, overlaySettings } from '~/contstant';
+import { TMockGroup } from '~/types';
+import { Header } from '~/components/Header';
 import { AddGroupForm } from '../AddGroupForm';
-import { TMockGroup } from '../../../../types';
-import { Header } from '../../../../components/Header';
 
 type TopPanelProps = {
-    groups: TMockGroup[]
-    onMockAdd: () => void
-    onGroupAdd: (group: TMockGroup) => void
-}
+    groups: TMockGroup[];
+    onMockAdd: () => void;
+    onGroupAdd: (group: TMockGroup) => void;
+};
 
 export const TopPanel: FC<TopPanelProps> = ({ groups, onMockAdd, onGroupAdd }) => {
     const [isGroupModalOpen, groupModalActions] = useDisclosure(false);
@@ -23,14 +23,18 @@ export const TopPanel: FC<TopPanelProps> = ({ groups, onMockAdd, onGroupAdd }) =
 
     return (
         <Header>
-            <Text fz="sm" fw={500}>Response Mocks</Text>
+            <Text
+                fz="sm"
+                fw={500}
+            >
+                Response Mocks
+            </Text>
 
             <Group gap="xs">
                 <Button
-                    leftSection={<IconPlaylistAdd size={16} />}
+                    leftSection={<IconPlus size={16} />}
                     size="compact-xs"
                     title="Add new mock"
-                    variant="light"
                     onClick={onMockAdd}
                 >
                     Add Mock
@@ -75,7 +79,10 @@ export const TopPanel: FC<TopPanelProps> = ({ groups, onMockAdd, onGroupAdd }) =
                 title="Add new group"
                 onClose={groupModalActions.close}
             >
-                <AddGroupForm groups={groups} onAdd={handleAddGroup} />
+                <AddGroupForm
+                    groups={groups}
+                    onAdd={handleAddGroup}
+                />
             </Modal>
         </Header>
     );

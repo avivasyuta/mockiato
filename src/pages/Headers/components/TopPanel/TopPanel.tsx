@@ -1,20 +1,20 @@
 import React, { FC } from 'react';
 import { Button, Group, Text } from '@mantine/core';
-import { IconPlaylistAdd } from '@tabler/icons-react';
+import { IconPlus } from '@tabler/icons-react';
 import { showNotification } from '@mantine/notifications';
 import { nanoid } from 'nanoid';
+import { Header } from '~/components/Header';
+import { THeader, THeadersProfile, THeaderStatus } from '~/types';
 import { ProfilesActions } from '../ProfilesActions';
-import { Header } from '../../../../components/Header';
-import { THeader, THeadersProfile, THeaderStatus } from '../../../../types';
 import { changeProfileStatus, deleteProfile, setLastActive } from '../../helpers';
 import { ProfileMenu } from '../ProfilesActions/components/ProfileMenu';
 
 interface TopPanelProps {
-    activeProfile: THeadersProfile
-    profiles: Record<string, THeadersProfile>
-    setProfiles: (val: Record<string, THeadersProfile>) => void
-    onHeaderAdd: (header: THeader) => void
-    onProfileAdd: () => void
+    activeProfile: THeadersProfile;
+    profiles: Record<string, THeadersProfile>;
+    setProfiles: (val: Record<string, THeadersProfile>) => void;
+    onHeaderAdd: (header: THeader) => void;
+    onProfileAdd: () => void;
 }
 
 export const TopPanel: FC<TopPanelProps> = (props) => {
@@ -53,7 +53,10 @@ export const TopPanel: FC<TopPanelProps> = (props) => {
     return (
         <Header>
             <Group gap="sm">
-                <Text fz="sm" fw={500}>
+                <Text
+                    fz="sm"
+                    fw={500}
+                >
                     Request Headers
                 </Text>
 
@@ -69,8 +72,7 @@ export const TopPanel: FC<TopPanelProps> = (props) => {
             {activeProfile && (
                 <Group gap="xs">
                     <Button
-                        leftSection={<IconPlaylistAdd size={16} />}
-                        variant="light"
+                        leftSection={<IconPlus size={16} />}
                         size="compact-xs"
                         title="Add Header"
                         onClick={handleAddHeader}

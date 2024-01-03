@@ -34,7 +34,8 @@
         "import/prefer-default-export": "off",
         "import/extensions": ["error", {
             "ts": "never",
-            "tsx": "never"
+            "tsx": "never",
+            "json": "always"
         }],
         "@typescript-eslint/no-unused-vars": "error",
         "@typescript-eslint/no-shadow": ["error"],

@@ -95,15 +95,13 @@ interceptor.on('response', async ({ request, response }) => {
     const headers: TMockHeader[] = [];
     const res = response.clone();
 
-    // TODO разобраться с заголовками
-    // eslint-disable-next-line no-restricted-syntax
-    for (const [key, value] of res.headers.entries()) {
+    res.headers.forEach((value, key) => {
         headers.push({
             id: nanoid(),
             key,
             value,
         });
-    }
+    });
 
     const body = await res.text();
     let type: TResponseType;

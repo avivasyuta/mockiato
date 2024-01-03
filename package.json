@@ -49,11 +49,12 @@
     },
     "scripts": {
         "dev": "VITE_NODE_ENV=development vite",
-        "build": "VITE_NODE_ENV=production pnpm run build:ext && pnpm run build:content && pnpm run build:mockiato && pnpm run build:devtools",
+        "build": "VITE_NODE_ENV=production pnpm run build:ext && pnpm run build:content && pnpm run build:mockiato && pnpm run build:devtools && pnpm run build:popup",
         "build:ext": "vite build",
         "build:content": "vite build --config config/vite.config.content.ts",
         "build:mockiato": "vite build --config config/vite.config.mockiato.ts",
         "build:devtools": "vite build --config config/vite.config.devtools.ts",
+        "build:popup": "vite build --config config/vite.config.popup.ts",
         "lint": "pnpm run lint:ts && pnpm run lint:css",
         "lint:ts": "eslint . --ext ts,tsx",
         "lint:css": "stylelint src/**/*.css",

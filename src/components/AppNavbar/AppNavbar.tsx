@@ -1,18 +1,16 @@
 import React, { JSX, useMemo } from 'react';
-import { Divider, Group, AppShell, NavLink, Text, ScrollArea, Button } from '@mantine/core';
+import { AppShell, Divider, Group, NavLink, ScrollArea, Switch, Text } from '@mantine/core';
 import {
     IconBrandGithub,
+    IconCodeMinus,
     IconCoin,
     IconNotebook,
     IconSettings2,
     IconShadow,
-    IconVersions,
-    IconCodeMinus,
-    TablerIconsProps,
     IconThumbUp,
+    IconVersions,
     IconWifi,
-    IconPlayerPlay,
-    IconPlayerStop,
+    TablerIconsProps,
 } from '@tabler/icons-react';
 import { TRoute } from '~/types';
 import { useStore } from '~/hooks/useStore';
@@ -67,7 +65,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
         if (!tabHost) {
             return false;
         }
-        return settings?.enabledHosts[tabHost];
+        return settings?.enabledHosts[tabHost] ?? false;
     }, [settings?.enabledHosts]);
 
     const toggleMocking = async () => {
@@ -118,15 +116,28 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                     justify="center"
                     gap="4px"
                 >
-                    <Button
-                        variant="filled"
-                        color={isEnabled ? 'red' : 'green'}
-                        leftSection={isEnabled ? <IconPlayerStop size={16} /> : <IconPlayerPlay size={16} />}
-                        fullWidth
-                        onClick={toggleMocking}
-                    >
-                        {isEnabled ? 'Disable' : 'Enable'}
-                    </Button>
+                    <Switch
+                        size="lg"
+                        color="green"
+                        onLabel="MOCKING ENABLED"
+                        offLabel="MOCKING DISABLED"
+                        radius="sm"
+                        checked={isEnabled}
+                        onChange={toggleMocking}
+                        styles={{
+                            root: {
+                                width: '100%',
+                            },
+                            track: {
+                                width: '100%',
+                            },
+                            trackLabel: {
+                                padding: '0',
+                                width: '100%',
+                                margin: '0',
+                            },
+                        }}
+                    />
 
                     <Text
                         c="dimmed"

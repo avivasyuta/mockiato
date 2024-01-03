@@ -32,7 +32,7 @@ const createStyles = () => {
             animation: pulse 2s infinite;
             color: #fd7e14;
             border: 1px solid #fd7e14;
-            border-radius: 5px;
+            border-radius: 20px;
             z-index: 9999999999;
         }
     `;

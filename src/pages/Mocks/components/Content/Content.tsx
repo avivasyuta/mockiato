@@ -1,10 +1,10 @@
 import React, { FC, useMemo } from 'react';
 import { Stack, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
+import { TMock, TMockGroup } from '~/types';
+import { filterMocks } from '~/utils/filterMocks';
 import { Mock } from './components/Mock';
-import { TMock, TMockGroup } from '../../../../types';
 import { MockGroup } from './components/MockGroup';
-import { filterMocks } from '../../../../utils/filterMocks';
 import styles from './Content.module.css';
 
 type ContentProps = {
@@ -42,10 +42,10 @@ export const Content: FC<ContentProps> = ({
             },
             confirmProps: {
                 color: 'red',
-                size: 'compact-xs',
+                size: 'xs',
             },
             cancelProps: {
-                size: 'compact-xs',
+                size: 'xs',
                 variant: 'subtle',
                 color: 'gray',
             },

@@ -1,44 +1,29 @@
 import React, { FC } from 'react';
-import {
-    ActionIcon, Menu, Text,
-} from '@mantine/core';
+import { ActionIcon, Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import {
-    IconDotsVertical,
-    IconUserPlus,
-    IconTrash,
-    IconUser,
-    IconUserOff,
-} from '@tabler/icons-react';
-import { THeadersProfile, THeaderStatus } from '../../../../../../types';
-import { iconSize } from '../../../../../../contstant';
+import { IconDotsVertical, IconUserPlus, IconTrash, IconUser, IconUserOff } from '@tabler/icons-react';
+import { THeadersProfile, THeaderStatus } from '~/types';
+import { iconSize } from '~/contstant';
 
 type ProfileMenuProps = Omit<THeadersProfile, 'headers' | 'lastActive'> & {
-    onAdd: () => void
-    onDelete: (id: string) => void
-    onChangeStatus: (id: string, status: THeaderStatus) => void
-}
+    onAdd: () => void;
+    onDelete: (id: string) => void;
+    onChangeStatus: (id: string, status: THeaderStatus) => void;
+};
 
-export const ProfileMenu: FC<ProfileMenuProps> = ({
-    id,
-    name,
-    status,
-    onAdd,
-    onDelete,
-    onChangeStatus,
-}) => {
+export const ProfileMenu: FC<ProfileMenuProps> = ({ id, name, status, onAdd, onDelete, onChangeStatus }) => {
     const handleDelete = (): void => {
         modals.openConfirmModal({
             title: `Delete headers profile «${name}»`,
             children: (
                 <Text size="sm">
-                    Are you sure you want to delete the profile? This action will remove all settings for headers.
+                    Are you sure you want to delete this profile? This action will remove all settings for headers.
                 </Text>
             ),
-            labels: { confirm: 'Delete profile', cancel: 'Cancel' },
-            confirmProps: { color: 'red', size: 'compact-xs' },
+            labels: { confirm: 'Delete', cancel: 'Cancel' },
+            confirmProps: { color: 'red', size: 'xs' },
             cancelProps: {
-                size: 'compact-xs',
+                size: 'xs',
                 variant: 'subtle',
                 color: 'gray',
             },
