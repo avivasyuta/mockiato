@@ -24,8 +24,6 @@ const interceptor = new BatchInterceptor({
     interceptors: [new FetchInterceptor(), new XMLHttpRequestInterceptor()],
 });
 
-interceptor.apply();
-
 const getRequestMocks = (url: string, method: string): Promise<TInterceptedRequestMockDTO> => {
     const messageId = nanoid();
 
@@ -122,17 +120,19 @@ const addInterceptorHandlers = () => {
 
         sendMessage<TInterceptedResponseDTO>('responseIntercepted', message);
     });
+};
 
+const enableInterceptor = () => {
+    interceptor.apply();
+    addInterceptorHandlers();
     logWarn(
-        'The Mockiato extension has created a request interceptor!\n' +
+        'The Mockiato extension has created a request interceptor! ' +
             'Now all requests are proxies through it to implement mocks.',
     );
 };
 
-const removeInterceptorHandlers = () => {
-    interceptor.removeAllListeners('request');
-    interceptor.removeAllListeners('response');
-
+const disableInterceptor = () => {
+    interceptor.dispose();
     logWarn('The Mockiato extension has removed request interceptor!');
 };
 
@@ -156,7 +156,8 @@ const setCurrentExtensionEnabledStatus = (status: boolean) => {
 const run = () => {
     const isEnabled = isCurrentExtensionEnabled();
     if (isEnabled) {
-        addInterceptorHandlers();
+        // First script load
+        enableInterceptor();
     }
 };
 
@@ -166,6 +167,7 @@ listenMessage<TInterceptedRequestMockDTO>('requestChecked', (message) => {
     messageBus.dispatch(message.messageId, message);
 });
 
+// Fires on change extension settings
 listenMessage<TStoreSettings>('settingsChanged', (settings) => {
     const isSettingEnabled = isExtensionEnabled(settings);
     const isAlreadyEnabled = isCurrentExtensionEnabled();
@@ -176,10 +178,10 @@ listenMessage<TStoreSettings>('settingsChanged', (settings) => {
     }
 
     if (isSettingEnabled && !isAlreadyEnabled) {
-        addInterceptorHandlers();
+        enableInterceptor();
         setCurrentExtensionEnabledStatus(true);
     } else {
-        removeInterceptorHandlers();
+        disableInterceptor();
         setCurrentExtensionEnabledStatus(false);
     }
 
