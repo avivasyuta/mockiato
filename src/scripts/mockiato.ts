@@ -185,5 +185,5 @@ listenMessage<TStoreSettings>('settingsChanged', (settings) => {
         setCurrentExtensionEnabledStatus(false);
     }
 
-    statusNode.style.opacity = isSettingEnabled && settings.showActiveStatus ? '1' : '0';
+    statusNode.style.display = isSettingEnabled && settings.showActiveStatus ? 'inline-flex' : 'none';
 });
