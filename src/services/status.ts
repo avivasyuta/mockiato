@@ -52,7 +52,7 @@ export const createStatus = (isEnabled: boolean): void => {
     statusNode.id = statusNodeId;
     statusNode.innerText = 'Mockiato';
     statusNode.title = 'Mockiato extension enabled for this host';
-    statusNode.style.opacity = isEnabled ? '1' : '0';
+    statusNode.style.display = isEnabled ? 'inline-flex' : 'none';
 
     const bodyNode = document.getElementsByTagName('body')[0];
     bodyNode.appendChild(statusNode);
