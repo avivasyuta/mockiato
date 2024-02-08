@@ -23,6 +23,11 @@ const createStyles = () => {
             gap: 8px;
             z-index: 99999;
             color: #000000;
+            background: transparent;
+            box-shadow: none;
+            width: auto;
+            margin: 0;
+            padding: 0;
         }
         .mockiato-alert {
             font-family: Arial, serif
