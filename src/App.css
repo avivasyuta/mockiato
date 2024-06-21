@@ -18,7 +18,3 @@ body {
 :root {
     --app-shell-padding: 0
 }
-
-.mantine-AppShell-header {
-    height: 35px;
-}

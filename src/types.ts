@@ -110,6 +110,7 @@ export type TStoreSettings = {
     showNotifications: boolean;
     showActiveStatus: boolean;
     enabledHosts: Record<string, boolean>;
+    showMobileNavBar: boolean;
 };
 
 export type TStore = {
