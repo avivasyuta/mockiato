@@ -22,14 +22,16 @@ export const TopPanel: FC<TopPanelProps> = ({ groups, onMockAdd, onGroupAdd }) =
     };
 
     return (
-        <Header>
-            <Text
-                fz="sm"
-                fw={500}
-            >
-                Response Mocks
-            </Text>
-
+        <Header
+            title={
+                <Text
+                    fz="sm"
+                    fw={500}
+                >
+                    Response Mocks
+                </Text>
+            }
+        >
             <Group gap="xs">
                 <Button
                     leftSection={<IconPlus size={16} />}

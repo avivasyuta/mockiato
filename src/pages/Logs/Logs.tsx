@@ -40,24 +40,26 @@ export const Logs: React.FC = () => {
 
     return (
         <>
-            <Header>
-                <Group gap="xs">
-                    <Text
-                        fz="sm"
-                        fw={500}
-                    >
-                        Logs
-                    </Text>
-                    <Badge
-                        size="xs"
-                        variant="filled"
-                        color="blue"
-                        radius="sm"
-                    >
-                        {tabHost}
-                    </Badge>
-                </Group>
-
+            <Header
+                title={
+                    <Group gap="xs">
+                        <Text
+                            fz="sm"
+                            fw={500}
+                        >
+                            Logs
+                        </Text>
+                        <Badge
+                            size="xs"
+                            variant="filled"
+                            color="blue"
+                            radius="sm"
+                        >
+                            {tabHost}
+                        </Badge>
+                    </Group>
+                }
+            >
                 {filteredLogs.length > 0 && (
                     <Button
                         variant="light"

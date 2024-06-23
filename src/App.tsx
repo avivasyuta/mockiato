@@ -38,7 +38,7 @@ export const App = () => {
 
                     <AppShell
                         layout="alt"
-                        header={{ height: 40 }}
+                        header={{ height: 35 }}
                         navbar={{
                             width: 200,
                             breakpoint: 'xs',
@@ -51,13 +51,7 @@ export const App = () => {
                             onRouteChange={onRouteChange}
                         />
 
-                        <AppShell.Main
-                            style={{
-                                header: {
-                                    height: '35px',
-                                },
-                            }}
-                        >
+                        <AppShell.Main>
                             {route === 'mocks' && <Mocks />}
                             {route === 'headers' && <Headers />}
                             {route === 'logs' && <Logs />}
