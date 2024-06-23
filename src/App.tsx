@@ -13,9 +13,17 @@ import { AppNavbar } from './components/AppNavbar';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import './App.css';
+import { useNavBarToggler } from './hooks/useNavbarToggler';
 
 export const App = () => {
     const [route, setRoute] = useState<TRoute>('mocks');
+    const [isNavbarVisible, {toggle: toggleNavBar}] = useNavBarToggler();
+
+    const onRouteChange = (newRoute: TRoute) => {
+        setRoute(newRoute)
+
+        toggleNavBar()
+    }
 
     useEffect(() => {
         initStore();
@@ -30,25 +38,20 @@ export const App = () => {
 
                     <AppShell
                         layout="alt"
-                        header={{ height: 40 }}
+                        header={{ height: 35 }}
                         navbar={{
                             width: 200,
-                            breakpoint: 'sm',
+                            breakpoint: 'xs',
+                            collapsed: {mobile: !isNavbarVisible}
                         }}
                         padding="md"
                     >
                         <AppNavbar
                             route={route}
-                            onRouteChange={setRoute}
+                            onRouteChange={onRouteChange}
                         />
 
-                        <AppShell.Main
-                            style={{
-                                header: {
-                                    height: '35px',
-                                },
-                            }}
-                        >
+                        <AppShell.Main>
                             {route === 'mocks' && <Mocks />}
                             {route === 'headers' && <Headers />}
                             {route === 'logs' && <Logs />}

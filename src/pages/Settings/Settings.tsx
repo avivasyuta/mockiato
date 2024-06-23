@@ -107,14 +107,16 @@ export const Settings = () => {
 
     return (
         <>
-            <Header>
-                <Text
-                    fz="sm"
-                    fw={500}
-                >
-                    Settings
-                </Text>
-            </Header>
+            <Header
+                title={
+                    <Text
+                        fz="sm"
+                        fw={500}
+                    >
+                        Settings
+                    </Text>
+                }
+            />
 
             <Group justify="center">
                 <Card>

@@ -30,7 +30,7 @@ export const Network: React.FC = () => {
 
     return (
         <>
-            <Header>
+            <Header title={
                 <Group gap="xs">
                     <Text
                         fz="sm"
@@ -46,7 +46,7 @@ export const Network: React.FC = () => {
                         {tabHost}
                     </Badge>
                 </Group>
-            </Header>
+            }/>
 
             {filteredNetwork.length === 0 ? (
                 <NotFound text="There are no requsts" />

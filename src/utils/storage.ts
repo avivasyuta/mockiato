@@ -12,6 +12,7 @@ const emptyStore: TStore = {
         showNotifications: true,
         showActiveStatus: true,
         enabledHosts: {},
+        showMobileNavBar: false,
     },
 };
 

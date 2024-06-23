@@ -51,24 +51,26 @@ export const TopPanel: FC<TopPanelProps> = (props) => {
     };
 
     return (
-        <Header>
-            <Group gap="sm">
-                <Text
-                    fz="sm"
-                    fw={500}
-                >
-                    Request Headers
-                </Text>
+        <Header
+            title={
+                <Group gap="sm">
+                    <Text
+                        fz="sm"
+                        fw={500}
+                    >
+                        Request Headers
+                    </Text>
 
-                {activeProfile && (
-                    <ProfilesActions
-                        profiles={profiles}
-                        activeProfile={activeProfile}
-                        onChangeActive={handleChangeActiveProfile}
-                    />
-                )}
-            </Group>
-
+                    {activeProfile && (
+                        <ProfilesActions
+                            profiles={profiles}
+                            activeProfile={activeProfile}
+                            onChangeActive={handleChangeActiveProfile}
+                        />
+                    )}
+                </Group>
+            }
+        >
             {activeProfile && (
                 <Group gap="xs">
                     <Button
