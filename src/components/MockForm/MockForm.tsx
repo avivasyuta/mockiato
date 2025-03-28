@@ -1,6 +1,7 @@
 import { FC, useMemo } from 'react';
 import {
     Button,
+    Divider,
     Grid,
     Group,
     NumberInput,
@@ -79,6 +80,33 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
                 className={styles.form}
                 onSubmit={form.onSubmit(onSubmit)}
             >
+                <Group justify="space-between">
+                    <Text>{mock?.id ? 'Edit mock' : 'Add new mock'}</Text>
+
+                    <Group
+                        justify="right"
+                        gap="xs"
+                    >
+                        <Button
+                            variant="subtle"
+                            color="gray"
+                            size="xs"
+                            onClick={onClose}
+                        >
+                            Cancel
+                        </Button>
+
+                        <Button
+                            type="submit"
+                            size="xs"
+                        >
+                            Save
+                        </Button>
+                    </Group>
+                </Group>
+
+                <Divider mb="xs" />
+
                 <Grid align="flex-start">
                     <Grid.Col span={8}>
                         <TextInput
@@ -218,28 +246,6 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
                         />
                     </Tabs.Panel>
                 </Tabs>
-
-                <Group
-                    justify="right"
-                    mt="md"
-                    gap="xs"
-                >
-                    <Button
-                        variant="subtle"
-                        color="gray"
-                        size="xs"
-                        onClick={onClose}
-                    >
-                        Cancel
-                    </Button>
-
-                    <Button
-                        type="submit"
-                        size="xs"
-                    >
-                        Save
-                    </Button>
-                </Group>
             </form>
         </MockFormProvider>
     );

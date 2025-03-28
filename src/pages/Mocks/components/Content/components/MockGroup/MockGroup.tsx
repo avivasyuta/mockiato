@@ -1,23 +1,34 @@
 import React, { FC } from 'react';
 import { ActionIcon, Collapse, Group, Menu, Text } from '@mantine/core';
-import { IconChevronDown, IconChevronRight, IconDots, IconTrash } from '@tabler/icons-react';
+import {
+    IconChevronDown,
+    IconChevronUp,
+    IconCircleOff,
+    IconDotsVertical,
+    IconPower,
+    IconTrash,
+} from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
-import { TMockGroup } from '../../../../../../types';
+import { TMock, TMockGroup } from '../../../../../../types';
 import styles from './MockGroup.module.css';
 
 type MockGroupProps = React.PropsWithChildren & {
-    group: TMockGroup
-    hasMocks?: boolean
-    onDeleteGroup: (group: TMockGroup) => void
-    onRemoveMocks?: (group: TMockGroup) => void
-}
+    group: TMockGroup;
+    mocks?: TMock[];
+    onDeleteGroup: (group: TMockGroup) => void;
+    onRemoveMocks?: (group: TMockGroup) => void;
+    onDisableAll?: (group: TMockGroup) => void;
+    onEnableAll?: (group: TMockGroup) => void;
+};
 
 export const MockGroup: FC<MockGroupProps> = ({
     group,
     children,
-    hasMocks = false,
+    mocks = [],
     onDeleteGroup,
     onRemoveMocks,
+    onEnableAll,
+    onDisableAll,
 }) => {
     const [isOpen, { toggle }] = useDisclosure(true);
 
@@ -25,45 +36,76 @@ export const MockGroup: FC<MockGroupProps> = ({
         onRemoveMocks?.(group);
     };
 
+    const handleEnableAll = () => {
+        onEnableAll?.(group);
+    };
+
+    const handleDisableAll = () => {
+        onDisableAll?.(group);
+    };
+
+    const allEnabled = mocks.every((item) => item.isActive);
+    const allDisabled = mocks.every((item) => !item.isActive);
+
     return (
         <div className={styles.root}>
             <Group justify="space-between">
                 <Group gap="0">
-                    {children && (
-                        <ActionIcon
-                            variant="subtle"
+                    {children ? (
+                        <Text
+                            ml="xs"
+                            className={styles.groupName}
                             onClick={toggle}
                         >
-                            {isOpen ? (
-                                <IconChevronDown size={14} />
-                            ) : (
-                                <IconChevronRight size={14} />
-                            )}
-                        </ActionIcon>
+                            {group.name} {isOpen ? <IconChevronUp size={14} /> : <IconChevronDown size={14} />}
+                        </Text>
+                    ) : (
+                        <Text ml="xs">{group.name}</Text>
                     )}
-
-                    <Text ml="sm">{group.name}</Text>
                 </Group>
 
-                <Menu withinPortal position="bottom-end" shadow="sm">
+                <Menu
+                    withinPortal
+                    position="bottom-end"
+                    shadow="sm"
+                >
                     <Menu.Target>
-                        <ActionIcon variant="subtle" color="gray">
-                            <IconDots size={14} />
+                        <ActionIcon
+                            variant="subtle"
+                            color="gray"
+                        >
+                            <IconDotsVertical size={14} />
                         </ActionIcon>
                     </Menu.Target>
 
                     <Menu.Dropdown>
-                        {hasMocks && (
+                        {mocks.length > 0 && (
                             <>
                                 <Menu.Item
-                                    leftSection={<IconTrash size={12} />}
-                                    onClick={handleRemoveMocks}
+                                    leftSection={<IconPower size={14} />}
+                                    disabled={allEnabled}
+                                    onClick={handleEnableAll}
                                 >
-                                    Remove mocks from group
+                                    Enable all
+                                </Menu.Item>
+                                <Menu.Item
+                                    leftSection={<IconCircleOff size={12} />}
+                                    disabled={allDisabled}
+                                    onClick={handleDisableAll}
+                                >
+                                    Disable all
                                 </Menu.Item>
 
                                 <Menu.Divider />
                                 <Menu.Label>Danger zone</Menu.Label>
+
+                                <Menu.Item
+                                    leftSection={<IconTrash size={12} />}
+                                    color="red"
+                                    onClick={handleRemoveMocks}
+                                >
+                                    Remove mocks from group
+                                </Menu.Item>
                             </>
                         )}
 
@@ -80,9 +122,7 @@ export const MockGroup: FC<MockGroupProps> = ({
 
             {children && (
                 <Collapse in={isOpen}>
-                    <div className={styles.content}>
-                        {children}
-                    </div>
+                    <div className={styles.content}>{children}</div>
                 </Collapse>
             )}
         </div>

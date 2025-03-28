@@ -16,6 +16,7 @@ type ContentProps = {
     onCopyMock: (mock: TMock) => void;
     onDeleteGroup: (groupId: TMockGroup['id']) => void;
     onClearGroup: (groupId: TMockGroup['id']) => void;
+    onToggleMocks: (groupId: TMockGroup['id'], status: boolean) => void;
 };
 
 export const Content: FC<ContentProps> = ({
@@ -27,6 +28,7 @@ export const Content: FC<ContentProps> = ({
     onEditMock,
     onDeleteGroup,
     onClearGroup,
+    onToggleMocks,
 }) => {
     const { emptyGroups, emptyMocks, mocksByGroups } = useMemo(() => {
         return filterMocks(mocks, groups);
@@ -63,9 +65,11 @@ export const Content: FC<ContentProps> = ({
                         <MockGroup
                             key={value.group.id}
                             group={value.group}
-                            hasMocks={mocks.length > 0}
+                            mocks={value.mocks}
                             onDeleteGroup={handleDeleteGroup}
                             onRemoveMocks={handleRemoveMocks}
+                            onEnableAll={(group) => onToggleMocks(group.id, true)}
+                            onDisableAll={(group) => onToggleMocks(group.id, false)}
                         >
                             <>
                                 <div className={styles.tableHeader}>

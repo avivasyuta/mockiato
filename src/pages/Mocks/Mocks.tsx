@@ -101,6 +101,18 @@ const MocksPage: React.FC = () => {
         await setMocks(newMocks);
     };
 
+    const handleToggleMocksInGroup = async (groupId: string, status: boolean) => {
+        const newMocks = mocks.map((mock) => {
+            const newMock = { ...mock };
+            if (mock.groupId === groupId) {
+                newMock.isActive = status;
+            }
+            return newMock;
+        });
+
+        await setMocks(newMocks);
+    };
+
     const submitForm = (values: TMock): void => {
         const mock = trimHeaders(values);
         const isNew = !mocks.find((m) => m.id === mock.id);
@@ -143,6 +155,7 @@ const MocksPage: React.FC = () => {
                     onCopyMock={handleCopyMock}
                     onDeleteGroup={handleDeleteGroup}
                     onClearGroup={handleClearGroup}
+                    onToggleMocks={handleToggleMocksInGroup}
                 />
             ) : (
                 <NotFound text="No mocks to show" />
@@ -153,7 +166,7 @@ const MocksPage: React.FC = () => {
                 padding="sm"
                 position="right"
                 size="50%"
-                title={mockForm.mock?.id ? 'Edit mock' : 'Add new mock'}
+                withCloseButton={false}
                 overlayProps={overlaySettings}
                 styles={{
                     content: { display: 'flex', flexDirection: 'column' },

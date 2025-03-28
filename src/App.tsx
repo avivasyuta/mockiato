@@ -17,13 +17,13 @@ import { useNavBarToggler } from './hooks/useNavbarToggler';
 
 export const App = () => {
     const [route, setRoute] = useState<TRoute>('mocks');
-    const [isNavbarVisible, {toggle: toggleNavBar}] = useNavBarToggler();
+    const [isNavbarVisible, { toggle: toggleNavBar }] = useNavBarToggler();
 
     const onRouteChange = (newRoute: TRoute) => {
-        setRoute(newRoute)
+        setRoute(newRoute);
 
-        toggleNavBar()
-    }
+        toggleNavBar();
+    };
 
     useEffect(() => {
         initStore();
@@ -42,7 +42,7 @@ export const App = () => {
                         navbar={{
                             width: 200,
                             breakpoint: 'xs',
-                            collapsed: {mobile: !isNavbarVisible}
+                            collapsed: { mobile: !isNavbarVisible },
                         }}
                         padding="md"
                     >

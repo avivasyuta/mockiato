@@ -8,6 +8,17 @@
     padding: 12px;
 }
 
+.groupName {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.groupName:hover {
+    text-decoration: underline;
+}
+
 @media (prefers-color-scheme: light) {
     .root {
         background: var(--mantine-color-gray-1);

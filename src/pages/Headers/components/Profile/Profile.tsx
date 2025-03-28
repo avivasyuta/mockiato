@@ -64,7 +64,7 @@ export const Profile: FC<ProfileProps> = (props) => {
                 padding="sm"
                 position="right"
                 size="40%"
-                title="Add new header"
+                withCloseButton={false}
                 overlayProps={overlaySettings}
                 styles={{
                     content: { display: 'flex', flexDirection: 'column' },
