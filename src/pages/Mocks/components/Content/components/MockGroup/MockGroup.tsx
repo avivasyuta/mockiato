@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { ActionIcon, Collapse, Group, Menu, Text } from '@mantine/core';
 import {
     IconChevronDown,
-    IconChevronRight,
+    IconChevronUp,
     IconCircleOff,
     IconDotsVertical,
     IconPower,
@@ -47,26 +47,21 @@ export const MockGroup: FC<MockGroupProps> = ({
     const allEnabled = mocks.every((item) => item.isActive);
     const allDisabled = mocks.every((item) => !item.isActive);
 
-    console.log('--- group', group.name);
-    console.log('allEnabled', allEnabled);
-    console.log('allDisabled', allDisabled);
-    console.log('mocks', mocks);
-    console.log('--- group', group.name);
-
     return (
         <div className={styles.root}>
             <Group justify="space-between">
                 <Group gap="0">
-                    {children && (
-                        <ActionIcon
-                            variant="subtle"
+                    {children ? (
+                        <Text
+                            ml="xs"
+                            className={styles.groupName}
                             onClick={toggle}
                         >
-                            {isOpen ? <IconChevronDown size={14} /> : <IconChevronRight size={14} />}
-                        </ActionIcon>
+                            {group.name} {isOpen ? <IconChevronUp size={14} /> : <IconChevronDown size={14} />}
+                        </Text>
+                    ) : (
+                        <Text ml="xs">{group.name}</Text>
                     )}
-
-                    <Text ml="xs">{group.name}</Text>
                 </Group>
 
                 <Menu
