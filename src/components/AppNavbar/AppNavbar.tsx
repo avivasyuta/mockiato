@@ -151,13 +151,16 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
             <Divider variant="dotted" />
 
             <AppShell.Section p="xs">
-                <Group justify="left">
+                <Group
+                    justify="left"
+                    gap="12px"
+                >
                     <IconVersions
                         size={16}
                         color="gray"
                     />
                     <Text
-                        size="xs"
+                        size="sm"
                         variant="link"
                         component="a"
                         target="_blank"
@@ -165,20 +168,21 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                         c="dimmed"
                         className={styles.link}
                     >
-                        Mockiato v{manifest.version}
+                        Version {manifest.version}
                     </Text>
                 </Group>
 
                 <Group
                     justify="left"
                     mt="0.4rem"
+                    gap="12px"
                 >
                     <IconBrandGithub
                         size={16}
                         color="gray"
                     />
                     <Text
-                        size="xs"
+                        size="sm"
                         variant="link"
                         component="a"
                         target="_blank"
@@ -193,17 +197,18 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                 <Group
                     justify="left"
                     mt="0.4rem"
+                    gap="12px"
                 >
                     <IconCoin
                         size={16}
                         color="gray"
                     />
                     <Text
-                        size="xs"
+                        size="sm"
                         variant="link"
                         component="a"
                         target="_blank"
-                        href="https://www.buymeacoffee.com/mockiatoexW"
+                        href="https://github.com/sponsors/avivasyuta"
                         c="dimmed"
                         className={styles.link}
                     >
@@ -214,13 +219,14 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                 <Group
                     justify="left"
                     mt="0.4rem"
+                    gap="12px"
                 >
                     <IconThumbUp
                         size={16}
                         color="gray"
                     />
                     <Text
-                        size="xs"
+                        size="sm"
                         variant="link"
                         component="a"
                         target="_blank"

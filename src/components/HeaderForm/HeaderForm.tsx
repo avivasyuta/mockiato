@@ -1,6 +1,17 @@
 import React, { FC, useState } from 'react';
 import { useForm } from '@mantine/form';
-import { Alert, Button, Checkbox, Grid, Group, SegmentedControl, Select, TextInput } from '@mantine/core';
+import {
+    Alert,
+    Button,
+    Checkbox,
+    Divider,
+    Grid,
+    Group,
+    SegmentedControl,
+    Select,
+    Text,
+    TextInput,
+} from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
 import { HttpMethodType, THeader } from '../../types';
 import styles from './HeaderForm.module.css';
@@ -52,9 +63,37 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
             className={styles.form}
             onSubmit={form.onSubmit(handleSubmit)}
         >
+            <Group justify="space-between">
+                <Text>{initialValue.id ? 'Add new header' : 'Edit header'}</Text>
+
+                <Group
+                    justify="right"
+                    gap="xs"
+                >
+                    <Button
+                        variant="subtle"
+                        color="gray"
+                        size="xs"
+                        onClick={onClose}
+                    >
+                        Cancel
+                    </Button>
+
+                    <Button
+                        type="submit"
+                        size="compact-sm"
+                        classNames={styles}
+                    >
+                        Save
+                    </Button>
+                </Group>
+            </Group>
+
+            <Divider mb="xs" />
+
             <Alert
-                mb='lg'
-                icon={<IconAlertCircle size='1rem' />}
+                mb="lg"
+                icon={<IconAlertCircle size="1rem" />}
             >
                 These header will be added to requests.
                 <br />
@@ -62,10 +101,10 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
             </Alert>
 
             <div className={styles.inputs}>
-                <Grid align='flex-end'>
+                <Grid align="flex-end">
                     <Grid.Col span={6}>
                         <SegmentedControl
-                            size='xs'
+                            size="xs"
                             fullWidth
                             color={form.values.isActive ? 'blue' : 'gray'}
                             value={form.values.isActive ? 'enabled' : 'disabled'}
@@ -82,16 +121,16 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
                     <Grid.Col span={6}>
                         <TextInput
                             required
-                            label='Key'
-                            size='xs'
+                            label="Key"
+                            size="xs"
                             {...form.getInputProps('key')}
                         />
                     </Grid.Col>
                     <Grid.Col span={6}>
                         <TextInput
                             required
-                            label='Value'
-                            size='xs'
+                            label="Value"
+                            size="xs"
                             {...form.getInputProps('value')}
                         />
                     </Grid.Col>
@@ -99,9 +138,9 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
 
                 <Checkbox
                     checked={isUrlEnabled}
-                    label='Specify URL'
-                    size='xs'
-                    mt='xs'
+                    label="Specify URL"
+                    size="xs"
+                    mt="xs"
                     onChange={handleSpecifyUrl}
                 />
 
@@ -110,9 +149,9 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
                         <Grid.Col span={3}>
                             <Select
                                 required
-                                label='Method'
+                                label="Method"
                                 data={httpMethods}
-                                size='xs'
+                                size="xs"
                                 {...form.getInputProps('httpMethod')}
                             />
                         </Grid.Col>
@@ -120,36 +159,14 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
                         <Grid.Col span={9}>
                             <TextInput
                                 required
-                                label='URL'
-                                size='xs'
+                                label="URL"
+                                size="xs"
                                 {...form.getInputProps('url')}
                             />
                         </Grid.Col>
                     </Grid>
                 )}
             </div>
-
-            <Group
-                justify='right'
-                mt='md'
-                gap='xs'
-            >
-                <Button
-                    variant='subtle'
-                    color='gray'
-                    size='xs'
-                    onClick={onClose}
-                >
-                    Cancel
-                </Button>
-
-                <Button
-                    type='submit'
-                    size='xs'
-                >
-                    Save
-                </Button>
-            </Group>
         </form>
     );
 };
