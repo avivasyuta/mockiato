@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import React, { FC, useMemo } from 'react';
 import {
     Button,
     Divider,
@@ -10,12 +10,12 @@ import {
     Tabs,
     Text,
     Textarea,
-    TextInput,
 } from '@mantine/core';
 import { nanoid } from 'nanoid';
 import { isNotEmpty } from '@mantine/form';
 import { HttpMethodType, TMock } from '~/types';
 import { useStore } from '~/hooks/useStore';
+import { UrlInput, type UrlInputProps } from '~/components/UrlInput';
 import { Response } from './components/Response';
 import { Headers } from './components/Headers';
 import { MockFormProvider, useMockForm } from './context';
@@ -30,6 +30,7 @@ type MockFormProps = {
 const initialValues: TMock = {
     id: '',
     url: '',
+    urlType: 'url',
     httpMethod: HttpMethodType.GET,
     httpStatusCode: 200,
     delay: 0,
@@ -65,6 +66,10 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
         } else {
             form.setFieldValue('isActive', false);
         }
+    };
+
+    const handleChangeUrlType: UrlInputProps['onChangeValueType'] = (valueType) => {
+        form.setFieldValue('urlType', valueType);
     };
 
     const groupsOptions = useMemo(() => {
@@ -109,9 +114,9 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
 
                 <Grid align="flex-start">
                     <Grid.Col span={8}>
-                        <TextInput
-                            label="Url"
-                            size="xs"
+                        <UrlInput
+                            valueType={form.values.urlType}
+                            onChangeValueType={handleChangeUrlType}
                             {...form.getInputProps('url')}
                         />
                     </Grid.Col>
@@ -123,6 +128,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
                         >
                             Status
                         </Text>
+
                         <SegmentedControl
                             size="xs"
                             fullWidth

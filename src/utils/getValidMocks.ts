@@ -9,18 +9,18 @@ export interface Options {
 }
 
 export const getValidMocks = (options: Options): TMock[] => {
-    const {
-        url,
-        method,
-        origin,
-        mocks,
-    } = options;
+    const { url, method, origin, mocks } = options;
 
     return mocks.filter((mock) => {
         if (!mock.isActive || mock.httpMethod !== method) {
             return false;
         }
 
-        return matchUrl(url, mock.url, origin);
+        return matchUrl({
+            requestUrl: url,
+            entityUrl: mock.url,
+            entityUrlType: mock.urlType,
+            origin,
+        });
     });
 };

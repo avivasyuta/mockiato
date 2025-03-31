@@ -4,6 +4,7 @@ export const testMocks: TMock[] = [
     {
         id: '1',
         url: '/item/load/url',
+        urlType: 'url',
         httpMethod: HttpMethodType.GET,
         httpStatusCode: 200,
         delay: 0,
@@ -14,6 +15,7 @@ export const testMocks: TMock[] = [
     {
         id: '2',
         url: '/item/load/url',
+        urlType: 'url',
         httpMethod: HttpMethodType.GET,
         httpStatusCode: 400,
         delay: 0,
@@ -24,6 +26,7 @@ export const testMocks: TMock[] = [
     {
         id: '3',
         url: 'https://www.example.ru/s/common/url',
+        urlType: 'url',
         httpMethod: HttpMethodType.GET,
         httpStatusCode: 200,
         delay: 0,
@@ -34,6 +37,7 @@ export const testMocks: TMock[] = [
     {
         id: '4',
         url: 'https://www.example.ru/s/common/url',
+        urlType: 'url',
         httpMethod: HttpMethodType.GET,
         httpStatusCode: 400,
         delay: 0,
@@ -43,7 +47,19 @@ export const testMocks: TMock[] = [
     },
     {
         id: '5',
+        urlType: 'url',
         url: '/path?param=value',
+        httpMethod: HttpMethodType.GET,
+        httpStatusCode: 200,
+        delay: 0,
+        responseType: 'json',
+        responseHeaders: [],
+        isActive: true,
+    },
+    {
+        id: '6',
+        urlType: 'regexp',
+        url: /\/path\/[a-z]+\/123/.source,
         httpMethod: HttpMethodType.GET,
         httpStatusCode: 200,
         delay: 0,
@@ -54,14 +70,14 @@ export const testMocks: TMock[] = [
 ];
 
 type Test = {
-    title: string
-    expected: TMock[]
+    title: string;
+    expected: TMock[];
     data: {
-        url: string
-        method: string
-        origin: string
-    }
-}
+        url: string;
+        method: string;
+        origin: string;
+    };
+};
 
 export const testTable: Test[] = [
     {
@@ -144,5 +160,41 @@ export const testTable: Test[] = [
             origin: 'https://www.example.ru',
         },
         expected: [testMocks[2]],
+    },
+    {
+        title: 'Relative query url matches relative mock regexp.',
+        data: {
+            url: '/path/common/123',
+            method: 'GET',
+            origin: 'https://www.example.ru',
+        },
+        expected: [testMocks[5]],
+    },
+    {
+        title: 'Relative query url does not match relative mock regexp.',
+        data: {
+            url: '/path/does/not/match',
+            method: 'GET',
+            origin: 'https://www.example.ru',
+        },
+        expected: [],
+    },
+    {
+        title: 'Absolute query url matches relative mock regexp.',
+        data: {
+            url: 'https://www.example.ru/path/common/123',
+            method: 'GET',
+            origin: 'https://www.example.ru',
+        },
+        expected: [testMocks[5]],
+    },
+    {
+        title: 'Absolute query url does not match relative mock regexp.',
+        data: {
+            url: 'https://www.example.ru/path/does/not/match',
+            method: 'GET',
+            origin: 'https://www.example.ru',
+        },
+        expected: [],
     },
 ];

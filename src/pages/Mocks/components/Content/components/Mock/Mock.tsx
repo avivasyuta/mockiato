@@ -1,18 +1,6 @@
 import React, { FC } from 'react';
-import {
-    ActionIcon,
-    Group,
-    Switch,
-    Text,
-    Tooltip,
-    useMantineTheme,
-} from '@mantine/core';
-import {
-    IconEdit,
-    IconCopy,
-    IconInfoCircle,
-    IconTrash,
-} from '@tabler/icons-react';
+import { ActionIcon, Group, Switch, Text, Tooltip, useMantineTheme } from '@mantine/core';
+import { IconEdit, IconCopy, IconInfoCircle, IconTrash, IconRegex } from '@tabler/icons-react';
 import { HttpMethod } from '../../../../../../components/HttpMethod';
 import { HttpStatus } from '../../../../../../components/HttpStatus';
 import { Card } from '../../../../../../components/Card';
@@ -21,20 +9,14 @@ import { iconSize } from '../../../../../../contstant';
 import styles from './Mock.module.css';
 
 interface MockProps {
-    mock: TMock
-    onEditClick: (mock: TMock) => void
-    onCopyClick: (mock: TMock) => void
-    onChange: (mock: TMock) => void
-    onDelete: (mockId: string) => void
+    mock: TMock;
+    onEditClick: (mock: TMock) => void;
+    onCopyClick: (mock: TMock) => void;
+    onChange: (mock: TMock) => void;
+    onDelete: (mockId: string) => void;
 }
 
-export const Mock: FC<MockProps> = ({
-    mock,
-    onDelete,
-    onChange,
-    onCopyClick,
-    onEditClick,
-}) => {
+export const Mock: FC<MockProps> = ({ mock, onDelete, onChange, onCopyClick, onEditClick }) => {
     const theme = useMantineTheme();
 
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement>): void => {
@@ -56,7 +38,10 @@ export const Mock: FC<MockProps> = ({
     const handleEditClick = (): void => onEditClick(mock);
 
     return (
-        <Card key={mock.id} p="0.2rem 0.6rem">
+        <Card
+            key={mock.id}
+            p="0.34rem 0.6rem"
+        >
             <Group gap="xs">
                 <Switch
                     onLabel="ON"
@@ -71,8 +56,34 @@ export const Mock: FC<MockProps> = ({
                     <HttpMethod method={mock.httpMethod} />
                 </div>
 
-                <Group align="center" className={styles.url}>
-                    <Text size="xs" title={mock.url} className={styles.urlText}>{mock.url}</Text>
+                <Group
+                    align="center"
+                    className={styles.url}
+                    gap="xs"
+                >
+                    <Text
+                        size="xs"
+                        title={mock.url}
+                        className={styles.urlText}
+                    >
+                        {mock.url}
+                    </Text>
+
+                    {mock.urlType === 'regexp' && (
+                        <Tooltip
+                            label="RegExp enabled"
+                            position="bottom"
+                            transitionProps={{ transition: 'scale' }}
+                            openDelay={150}
+                            withArrow
+                        >
+                            <IconRegex
+                                size={16}
+                                color="#9775fa"
+                            />
+                        </Tooltip>
+                    )}
+
                     {mock.comment && (
                         <Tooltip
                             label={mock.comment}
@@ -81,7 +92,10 @@ export const Mock: FC<MockProps> = ({
                             className={styles.comment}
                         >
                             <span>
-                                <IconInfoCircle size={16} color={theme.colors.blue[4]} />
+                                <IconInfoCircle
+                                    size={16}
+                                    color={theme.colors.blue[4]}
+                                />
                             </span>
                         </Tooltip>
                     )}

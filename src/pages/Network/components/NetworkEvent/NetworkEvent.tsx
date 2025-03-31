@@ -26,6 +26,7 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
         const mock: TMock = {
             id: nanoid(),
             url: event.request.url,
+            urlType: 'url',
             httpMethod: event.request.method,
             httpStatusCode: event.response.httpStatusCode,
             delay: 0,
