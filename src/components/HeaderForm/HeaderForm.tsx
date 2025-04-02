@@ -13,6 +13,7 @@ import {
     TextInput,
 } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons-react';
+import { UrlInput, type UrlInputProps } from '~/components/UrlInput';
 import { HttpMethodType, THeader } from '../../types';
 import styles from './HeaderForm.module.css';
 
@@ -56,6 +57,10 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
         } else {
             form.setFieldValue('isActive', false);
         }
+    };
+
+    const handleChangeUrlType: UrlInputProps['onChangeValueType'] = (valueType) => {
+        form.setFieldValue('urlType', valueType);
     };
 
     return (
@@ -157,10 +162,9 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
                         </Grid.Col>
 
                         <Grid.Col span={9}>
-                            <TextInput
-                                required
-                                label="URL"
-                                size="xs"
+                            <UrlInput
+                                valueType={form.values.urlType ?? 'url'}
+                                onChangeValueType={handleChangeUrlType}
                                 {...form.getInputProps('url')}
                             />
                         </Grid.Col>

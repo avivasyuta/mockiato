@@ -1,24 +1,51 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { ActionIcon, Button, Group, Menu, Modal, Text } from '@mantine/core';
-import { IconDotsVertical, IconPlus, IconSelectAll } from '@tabler/icons-react';
-import { useDisclosure } from '@mantine/hooks';
-import { iconSize, overlaySettings } from '~/contstant';
-import { TMockGroup } from '~/types';
+import { IconDotsVertical, IconPlus, IconSelectAll, IconUpload } from '@tabler/icons-react';
+import { TMock, TMockGroup } from '~/types';
 import { Header } from '~/components/Header';
-import { AddGroupForm } from '../AddGroupForm';
+import { iconSize, overlaySettings } from '~/contstant';
+import { ExportAction } from './components/ExportAction';
+import { type ImportMocksProps, ImportMocksForm } from './components/ImportMocksForm';
+import { AddGroupForm } from './components/AddGroupForm';
 
 type TopPanelProps = {
     groups: TMockGroup[];
+    mocks: TMock[];
     onMockAdd: () => void;
     onGroupAdd: (group: TMockGroup) => void;
+    onMocksImportSuccess: ImportMocksProps['onSuccess'];
 };
 
-export const TopPanel: FC<TopPanelProps> = ({ groups, onMockAdd, onGroupAdd }) => {
-    const [isGroupModalOpen, groupModalActions] = useDisclosure(false);
+type ModalType = 'newGroup' | 'import' | null;
+
+export const TopPanel: FC<TopPanelProps> = ({ groups, mocks, onMockAdd, onGroupAdd, onMocksImportSuccess }) => {
+    const [modalContentType, setModalContentType] = useState<ModalType>(null);
+    const [modalTitle, setModalTitle] = useState<string>('');
 
     const handleAddGroup = (group: TMockGroup) => {
         onGroupAdd(group);
-        groupModalActions.close();
+        setModalContentType(null);
+        setModalTitle('');
+    };
+
+    const handleImportMocks: ImportMocksProps['onSuccess'] = (newMocks, newGroups) => {
+        onMocksImportSuccess(newMocks, newGroups);
+    };
+
+    const getModalContent = () => {
+        switch (modalContentType) {
+            case 'import':
+                return <ImportMocksForm onSuccess={handleImportMocks} />;
+            case 'newGroup':
+                return (
+                    <AddGroupForm
+                        groups={groups}
+                        onAdd={handleAddGroup}
+                    />
+                );
+            default:
+                return null;
+        }
     };
 
     return (
@@ -67,25 +94,41 @@ export const TopPanel: FC<TopPanelProps> = ({ groups, onMockAdd, onGroupAdd }) =
                     <Menu.Dropdown>
                         <Menu.Item
                             leftSection={<IconSelectAll size={iconSize} />}
-                            onClick={groupModalActions.open}
+                            onClick={() => {
+                                setModalContentType('newGroup');
+                                setModalTitle('Add new group');
+                            }}
                         >
                             Add new group
                         </Menu.Item>
+
+                        <Menu.Item
+                            leftSection={<IconUpload size={iconSize} />}
+                            onClick={() => {
+                                setModalContentType('import');
+                                setModalTitle('Import mocks');
+                            }}
+                        >
+                            Import mocks
+                        </Menu.Item>
+
+                        <ExportAction
+                            mocks={mocks}
+                            groups={groups}
+                        />
                     </Menu.Dropdown>
                 </Menu>
-            </Group>
 
-            <Modal
-                opened={isGroupModalOpen}
-                overlayProps={overlaySettings}
-                title="Add new group"
-                onClose={groupModalActions.close}
-            >
-                <AddGroupForm
-                    groups={groups}
-                    onAdd={handleAddGroup}
-                />
-            </Modal>
+                <Modal
+                    opened={modalContentType !== null}
+                    overlayProps={overlaySettings}
+                    title={modalTitle}
+                    size={modalContentType === 'import' ? 'xl' : 'md'}
+                    onClose={() => setModalContentType(null)}
+                >
+                    {getModalContent()}
+                </Modal>
+            </Group>
         </Header>
     );
 };

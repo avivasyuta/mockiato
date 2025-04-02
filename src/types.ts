@@ -25,6 +25,8 @@ export type TMockHeader = {
     value: string;
 };
 
+export type UrlType = 'url' | 'regexp';
+
 export type THeader = {
     id: string;
     key: string;
@@ -32,12 +34,14 @@ export type THeader = {
     type: THeaderType;
     isActive: boolean;
     url?: string;
+    urlType?: UrlType;
     httpMethod?: HttpMethodType;
 };
 
 export type TMock = {
     id: string;
     url: string;
+    urlType: UrlType;
     httpMethod: HttpMethodType;
     httpStatusCode: number;
     delay: number;

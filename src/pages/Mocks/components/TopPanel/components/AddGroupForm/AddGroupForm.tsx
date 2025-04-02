@@ -2,13 +2,13 @@ import React, { FC } from 'react';
 import { Button, Group, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { nanoid } from 'nanoid';
-import { TMockGroup } from '../../../../types';
+import { TMockGroup } from '~/types';
 import { isUnique } from './utils';
 
 type AddGroupFormProps = {
-    groups: TMockGroup[]
-    onAdd: (group: TMockGroup) => void
-}
+    groups: TMockGroup[];
+    onAdd: (group: TMockGroup) => void;
+};
 
 const maxLength = 64;
 
@@ -50,8 +50,16 @@ export const AddGroupForm: FC<AddGroupFormProps> = ({ onAdd, groups }) => {
                 {...form.getInputProps('name')}
             />
 
-            <Group justify="right" mt="md">
-                <Button type="submit" size="xs">Submit</Button>
+            <Group
+                justify="right"
+                mt="md"
+            >
+                <Button
+                    type="submit"
+                    size="xs"
+                >
+                    Submit
+                </Button>
             </Group>
         </form>
     );

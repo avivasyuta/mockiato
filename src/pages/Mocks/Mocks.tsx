@@ -5,10 +5,12 @@ import { nanoid } from 'nanoid';
 import { useStore } from '~/hooks/useStore';
 import { TMock, TMockGroup } from '~/types';
 import { NotFound } from '~/components/NotFound';
-import { MockForm } from '~/components/MockForm';
-import { trimHeaders } from '~/components/MockForm/utils';
+import { trimHeaders } from '~/pages/Mocks/components/MockForm/utils';
 import { Spinner } from '~/components/Spinner';
 import { overlaySettings } from '~/contstant';
+import { mergeGroups } from '~/utils/mergeGroups';
+import { mergeMocks } from '~/utils/mergeMocks';
+import { MockForm } from './components/MockForm';
 import { TMockFormAction, TMockFormState } from './types';
 import { TopPanel } from './components/TopPanel';
 import { Content } from './components/Content';
@@ -138,13 +140,32 @@ const MocksPage: React.FC = () => {
         handleCloseForm();
     };
 
+    const handleImportMocks = (importedMocks: TMock[], importedGroups: TMockGroup[]) => {
+        const newMocks = mergeMocks(mocks, importedMocks);
+        const newGroups = mergeGroups(groups, importedGroups);
+
+        setGroups(newGroups);
+
+        setTimeout(() => {
+            setMocks(newMocks);
+
+            showNotification({
+                message: 'Mocks have been successfully imported',
+                color: 'green',
+            });
+        }, 0);
+    };
+
     return (
         <>
             <TopPanel
                 groups={groups}
+                mocks={mocks}
                 onMockAdd={handleOpenForm}
                 onGroupAdd={handleAddGroup}
+                onMocksImportSuccess={handleImportMocks}
             />
+
             {mocks.length > 0 || groups.length > 0 ? (
                 <Content
                     mocks={mocks}
