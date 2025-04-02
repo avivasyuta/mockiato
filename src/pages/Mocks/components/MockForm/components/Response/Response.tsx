@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Group, Radio, Textarea } from '@mantine/core';
-import { JSONEditor } from '../../../JSONEditor';
+import { JSONEditor } from '~/components/JSONEditor';
 import { useMockFormContext } from '../../context';
 
 export const Response: FC = () => {
@@ -19,8 +19,16 @@ export const Response: FC = () => {
                 {...form.getInputProps('responseType')}
             >
                 <Group>
-                    <Radio value="json" label="JSON" size="xs" />
-                    <Radio value="text" label="Text" size="xs" />
+                    <Radio
+                        value="json"
+                        label="JSON"
+                        size="xs"
+                    />
+                    <Radio
+                        value="text"
+                        label="Text"
+                        size="xs"
+                    />
                 </Group>
             </Radio.Group>
 

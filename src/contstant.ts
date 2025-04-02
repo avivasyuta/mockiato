@@ -3,8 +3,8 @@ export const INTERCEPTOR_ID = 'mockiato_intercept_script';
 export const STORE_KEY = 'mockiato_store';
 
 export const overlaySettings = {
-    opacity: 0.3,
-    blur: 2,
+    backgroundOpacity: 0.4,
+    blur: 3,
 };
 
 export const iconSize = '0.95rem';
