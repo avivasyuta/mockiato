@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { ActionIcon, Collapse, Group, Menu, Text } from '@mantine/core';
 import {
     IconChevronDown,
@@ -15,6 +15,8 @@ import styles from './MockGroup.module.css';
 type MockGroupProps = React.PropsWithChildren & {
     group: TMockGroup;
     mocks?: TMock[];
+    isExpanded?: boolean;
+    onToggleGroup?: (isExpanded: boolean) => void;
     onDeleteGroup: (group: TMockGroup) => void;
     onRemoveMocks?: (group: TMockGroup) => void;
     onDisableAll?: (group: TMockGroup) => void;
@@ -25,12 +27,31 @@ export const MockGroup: FC<MockGroupProps> = ({
     group,
     children,
     mocks = [],
+    isExpanded = true,
+    onToggleGroup,
     onDeleteGroup,
     onRemoveMocks,
     onEnableAll,
     onDisableAll,
 }) => {
-    const [isOpen, { toggle }] = useDisclosure(true);
+    const [isOpen, { toggle, open, close }] = useDisclosure(true);
+
+    // Sync the internal state with the external isExpanded prop
+    useEffect(() => {
+        if (isExpanded) {
+            open();
+        } else {
+            close();
+        }
+    }, [isExpanded, open, close]);
+
+    const handleToggle = () => {
+        toggle();
+        // Notify parent component about the state change
+        if (onToggleGroup) {
+            onToggleGroup(!isOpen);
+        }
+    };
 
     const handleRemoveMocks = () => {
         onRemoveMocks?.(group);
@@ -55,7 +76,7 @@ export const MockGroup: FC<MockGroupProps> = ({
                         <Text
                             ml="xs"
                             className={styles.groupName}
-                            onClick={toggle}
+                            onClick={handleToggle}
                         >
                             {group.name} {isOpen ? <IconChevronUp size={14} /> : <IconChevronDown size={14} />}
                         </Text>

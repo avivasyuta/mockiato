@@ -1,4 +1,4 @@
-import React, { memo, useReducer } from 'react';
+import React, { memo, useReducer, useState, useMemo, useEffect } from 'react';
 import { Drawer } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { nanoid } from 'nanoid';
@@ -35,6 +35,20 @@ const MocksPage: React.FC = () => {
     const [mockForm, dispatchMockForm] = useReducer(mockFormReducer, initialMockFormState);
     const [mocks, setMocks] = useStore('mocks');
     const [groups, setGroups] = useStore('mockGroups');
+    const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
+
+    // Initialize expanded groups when groups are loaded
+    useEffect(() => {
+        if (groups && groups.length > 0) {
+            setExpandedGroups(new Set(groups.map(group => group.id)));
+        }
+    }, [groups]);
+
+    // Calculate areAllGroupsExpanded based on actual group states
+    const areAllGroupsExpanded = useMemo(() => {
+        if (!groups || groups.length === 0) return false;
+        return groups.every(group => expandedGroups.has(group.id));
+    }, [groups, expandedGroups]);
 
     const handleCopyMock = (mock: TMock) => {
         dispatchMockForm({
@@ -48,6 +62,8 @@ const MocksPage: React.FC = () => {
 
     const handleAddGroup = (group: TMockGroup) => {
         setGroups([...(groups ?? []), group]);
+        // Expand newly added group
+        setExpandedGroups(prev => new Set([...prev, group.id]));
     };
 
     const handleOpenForm = () => {
@@ -115,6 +131,28 @@ const MocksPage: React.FC = () => {
         await setMocks(newMocks);
     };
 
+    const handleToggleAllGroups = () => {
+        if (areAllGroupsExpanded) {
+            // Collapse all groups
+            setExpandedGroups(new Set());
+        } else {
+            // Expand all groups
+            setExpandedGroups(new Set(groups?.map(group => group.id) || []));
+        }
+    };
+
+    const handleToggleGroup = (groupId: string, isExpanded: boolean) => {
+        setExpandedGroups(prev => {
+            const newSet = new Set(prev);
+            if (isExpanded) {
+                newSet.add(groupId);
+            } else {
+                newSet.delete(groupId);
+            }
+            return newSet;
+        });
+    };
+
     const submitForm = (values: TMock): void => {
         const mock = trimHeaders(values);
         const isNew = !mocks.find((m) => m.id === mock.id);
@@ -146,6 +184,15 @@ const MocksPage: React.FC = () => {
 
         setGroups(newGroups);
 
+        // Expand newly imported groups
+        setExpandedGroups(prev => {
+            const newSet = new Set(prev);
+            importedGroups.forEach(group => {
+                newSet.add(group.id);
+            });
+            return newSet;
+        });
+
         setTimeout(() => {
             setMocks(newMocks);
 
@@ -161,6 +208,8 @@ const MocksPage: React.FC = () => {
             <TopPanel
                 groups={groups}
                 mocks={mocks}
+                areAllGroupsExpanded={areAllGroupsExpanded}
+                onToggleAllGroups={handleToggleAllGroups}
                 onMockAdd={handleOpenForm}
                 onGroupAdd={handleAddGroup}
                 onMocksImportSuccess={handleImportMocks}
@@ -170,6 +219,9 @@ const MocksPage: React.FC = () => {
                 <Content
                     mocks={mocks}
                     groups={groups}
+                    areAllGroupsExpanded={areAllGroupsExpanded}
+                    expandedGroups={expandedGroups}
+                    onToggleGroup={handleToggleGroup}
                     onDeleteMock={handleDeleteMock}
                     onChangeMock={handleChangeMock}
                     onEditMock={handleEditMock}
