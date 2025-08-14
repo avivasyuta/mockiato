@@ -10,7 +10,6 @@ import styles from './Content.module.css';
 type ContentProps = {
     mocks: TMock[];
     groups: TMockGroup[];
-    areAllGroupsExpanded: boolean;
     expandedGroups: Set<string>;
     onToggleGroup: (groupId: string, isExpanded: boolean) => void;
     onDeleteMock: (mockId: string) => void;
@@ -25,7 +24,6 @@ type ContentProps = {
 export const Content: FC<ContentProps> = ({
     mocks,
     groups,
-    areAllGroupsExpanded,
     expandedGroups,
     onToggleGroup,
     onCopyMock,

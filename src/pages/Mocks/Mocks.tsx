@@ -219,7 +219,6 @@ const MocksPage: React.FC = () => {
                 <Content
                     mocks={mocks}
                     groups={groups}
-                    areAllGroupsExpanded={areAllGroupsExpanded}
                     expandedGroups={expandedGroups}
                     onToggleGroup={handleToggleGroup}
                     onDeleteMock={handleDeleteMock}

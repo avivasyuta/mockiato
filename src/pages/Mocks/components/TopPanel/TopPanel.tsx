@@ -1,6 +1,13 @@
 import React, { FC, useState } from 'react';
 import { ActionIcon, Button, Group, Menu, Modal, Text } from '@mantine/core';
-import { IconChevronDown, IconChevronUp, IconDotsVertical, IconPlus, IconSelectAll, IconUpload } from '@tabler/icons-react';
+import { 
+    IconChevronDown, 
+    IconChevronUp, 
+    IconDotsVertical, 
+    IconPlus, 
+    IconSelectAll, 
+    IconUpload 
+} from '@tabler/icons-react';
 import { TMock, TMockGroup } from '~/types';
 import { Header } from '~/components/Header';
 import { iconSize, overlaySettings } from '~/contstant';
@@ -75,7 +82,9 @@ export const TopPanel: FC<TopPanelProps> = ({
                         size="compact-xs"
                         color="gray"
                         variant="subtle"
-                        rightSection={areAllGroupsExpanded ? <IconChevronUp size={14} /> : <IconChevronDown size={14} />}
+                        rightSection={
+                            areAllGroupsExpanded ? <IconChevronUp size={14} /> : <IconChevronDown size={14} />
+                        }
                         onClick={onToggleAllGroups}
                     >
                         {areAllGroupsExpanded ? 'Collapse All' : 'Expand All'}
