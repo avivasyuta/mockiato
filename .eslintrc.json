@@ -27,7 +27,6 @@
     "rules": {
         "object-curly-newline": 0,
         "max-len": ["error", 120],
-        "indent": ["error", 4, { "SwitchCase": 1 }],
         "no-unused-vars": "off",
         "no-shadow": "off",
         "arrow-body-style": 0,
@@ -44,8 +43,6 @@
         "react/function-component-definition": "off",
         "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
         "react/jsx-props-no-spreading": "off",
-        "react/jsx-indent": ["error", 4],
-        "react/jsx-indent-props": ["error", 4],
         "react/jsx-one-expression-per-line": "off"
     },
     "settings": {

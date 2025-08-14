@@ -1,6 +1,13 @@
 import React, { FC, useState } from 'react';
 import { ActionIcon, Button, Group, Menu, Modal, Text } from '@mantine/core';
-import { IconDotsVertical, IconPlus, IconSelectAll, IconUpload } from '@tabler/icons-react';
+import { 
+    IconChevronDown, 
+    IconChevronUp, 
+    IconDotsVertical, 
+    IconPlus, 
+    IconSelectAll, 
+    IconUpload 
+} from '@tabler/icons-react';
 import { TMock, TMockGroup } from '~/types';
 import { Header } from '~/components/Header';
 import { iconSize, overlaySettings } from '~/contstant';
@@ -11,6 +18,8 @@ import { AddGroupForm } from './components/AddGroupForm';
 type TopPanelProps = {
     groups: TMockGroup[];
     mocks: TMock[];
+    areAllGroupsExpanded: boolean;
+    onToggleAllGroups: () => void;
     onMockAdd: () => void;
     onGroupAdd: (group: TMockGroup) => void;
     onMocksImportSuccess: ImportMocksProps['onSuccess'];
@@ -18,7 +27,15 @@ type TopPanelProps = {
 
 type ModalType = 'newGroup' | 'import' | null;
 
-export const TopPanel: FC<TopPanelProps> = ({ groups, mocks, onMockAdd, onGroupAdd, onMocksImportSuccess }) => {
+export const TopPanel: FC<TopPanelProps> = ({
+    groups,
+    mocks,
+    areAllGroupsExpanded,
+    onToggleAllGroups,
+    onMockAdd,
+    onGroupAdd,
+    onMocksImportSuccess
+}) => {
     const [modalContentType, setModalContentType] = useState<ModalType>(null);
     const [modalTitle, setModalTitle] = useState<string>('');
 
@@ -60,6 +77,20 @@ export const TopPanel: FC<TopPanelProps> = ({ groups, mocks, onMockAdd, onGroupA
             }
         >
             <Group gap="xs">
+                {groups.length > 0 && (
+                    <Button
+                        size="compact-xs"
+                        color="gray"
+                        variant="subtle"
+                        rightSection={
+                            areAllGroupsExpanded ? <IconChevronUp size={14} /> : <IconChevronDown size={14} />
+                        }
+                        onClick={onToggleAllGroups}
+                    >
+                        {areAllGroupsExpanded ? 'Collapse All' : 'Expand All'}
+                    </Button>
+                )}
+
                 <Button
                     leftSection={<IconPlus size={16} />}
                     size="compact-xs"
