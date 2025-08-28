@@ -29,7 +29,7 @@ export default defineConfig({
         },
     ],
     webServer: {
-        command: 'pnpm run build && python3 -m http.server 3000 --directory .',
+        command: 'npm run build && python3 -m http.server 3000 --directory .',
         url: 'http://localhost:3000',
         reuseExistingServer: !process.env.CI,
     },
