@@ -11,6 +11,7 @@
         "@mantine/notifications": "^7.13.4",
         "@mantine/utils": "^6.0.22",
         "@mswjs/interceptors": "0.25.2",
+        "@playwright/test": "^1.55.0",
         "@tabler/icons-react": "^2.44.0",
         "@vitejs/plugin-react": "^4.2.1",
         "classnames": "^2.3.2",
@@ -60,8 +61,11 @@
         "lint:ts": "eslint . --ext ts,tsx",
         "lint:css": "stylelint src/**/*.css",
         "typecheck": "npx tsc --noEmit --project ./tsconfig.json",
-        "test": "vitest run",
-        "test:coverage": "vitest run --coverage"
+        "test": "vitest run --exclude=node_modules/** --exclude=e2e/**",
+        "test:coverage": "vitest run --coverage",
+        "test:e2e": "playwright test",
+        "test:e2e:ui": "playwright test --ui",
+        "test:e2e:headed": "playwright test --headed"
     },
     "lint-staged": {
         "**/*": "prettier --write --ignore-unknown"

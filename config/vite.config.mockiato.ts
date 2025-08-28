@@ -18,5 +18,8 @@ export default defineConfig({
                 entryFileNames: 'mockiato.js',
             },
         },
+        // # remove comment for build debugging
+        // minify: false, // ⬅️ no JS minification
+        // cssMinify: false, // ⬅️ no CSS minification (Vite 5+)
     },
 });
