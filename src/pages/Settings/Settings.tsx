@@ -100,6 +100,17 @@ export const Settings = () => {
         });
     };
 
+    const handleToggleCommentDisplayMode = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!settings) {
+            return;
+        }
+
+        await setSettings({
+            ...settings,
+            commentDisplayMode: e.target.checked ? 'inline' : 'tooltip',
+        });
+    };
+
     if (!settings) {
         return null;
     }
@@ -259,6 +270,23 @@ export const Settings = () => {
                     >
                         If you enable this setting, the page will display mockiato&apos;s running status if it is
                         enabled.
+                    </Text>
+                </div>
+
+                <div>
+                    <Switch
+                        size="xs"
+                        onLabel="ON"
+                        offLabel="OFF"
+                        label="Show comments inline"
+                        checked={settings?.commentDisplayMode === 'inline'}
+                        onChange={handleToggleCommentDisplayMode}
+                    />
+                    <Text
+                        size="xs"
+                        c="dimmed"
+                    >
+                        Display mock comments as inline text in the mock list instead of a tooltip on hover.
                     </Text>
                 </div>
             </Stack>

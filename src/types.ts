@@ -110,11 +110,14 @@ export type TMockGroup = {
     name: string;
 };
 
+export type TCommentDisplayMode = 'tooltip' | 'inline';
+
 export type TStoreSettings = {
     showNotifications: boolean;
     showActiveStatus: boolean;
     enabledHosts: Record<string, boolean>;
     showMobileNavBar: boolean;
+    commentDisplayMode: TCommentDisplayMode;
 };
 
 export type TStore = {

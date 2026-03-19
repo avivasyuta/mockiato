@@ -222,7 +222,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
                             value="comments"
                             className={styles.tab}
                         >
-                            Comments
+                            Comment
                         </Tabs.Tab>
                     </Tabs.List>
 
