@@ -19,12 +19,16 @@ import { createStatus } from '~/services/status';
 import { isExtensionEnabled } from '~/utils/isExtensionEnabled';
 
 const logNetwork = async (store: TStore, event: TNetworkEvent) => {
-    await chrome.storage.local.set({
-        [STORE_KEY]: {
-            ...store,
-            network: [...(store.network ?? []), event],
-        },
-    });
+    try {
+        await chrome.storage.local.set({
+            [STORE_KEY]: {
+                ...store,
+                network: [...(store.network ?? []), event],
+            },
+        });
+    } catch (err) {
+        logError(err);
+    }
 };
 
 const logInterceptedRequest = async (store: TStore, message: TInterceptedRequestDTO, mock: TMock) => {
@@ -40,12 +44,16 @@ const logInterceptedRequest = async (store: TStore, message: TInterceptedRequest
         mock,
     };
 
-    await chrome.storage.local.set({
-        [STORE_KEY]: {
-            ...store,
-            logs: [...(store.logs ?? []), log],
-        },
-    });
+    try {
+        await chrome.storage.local.set({
+            [STORE_KEY]: {
+                ...store,
+                logs: [...(store.logs ?? []), log],
+            },
+        });
+    } catch (err) {
+        logError(err);
+    }
 };
 
 const getMock = (store: TStore, message: TInterceptedRequestDTO): TMock | null => {

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { showNotification } from '@mantine/notifications';
 import { TStore, TStoreKey, TUpdateStore } from '~/types';
 import { getStoreValue, getUpdatedValue, setStoreValue } from '~/utils/storage';
 
@@ -10,8 +11,15 @@ export const useStore = <Key extends TStoreKey>(
 
     const updateValue = async (val: TStore[Key]): Promise<void> => {
         setValue(val);
-        await setStoreValue(key, val);
-        window.dispatchEvent(new Event('storage'));
+        try {
+            await setStoreValue(key, val);
+            window.dispatchEvent(new Event('storage'));
+        } catch (error) {
+            showNotification({
+                message: error instanceof Error ? error.message : 'Failed to save data',
+                color: 'red',
+            });
+        }
     };
 
     if (chrome.storage) {
