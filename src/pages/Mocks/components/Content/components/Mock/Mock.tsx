@@ -5,6 +5,7 @@ import { HttpMethod } from '../../../../../../components/HttpMethod';
 import { HttpStatus } from '../../../../../../components/HttpStatus';
 import { Card } from '../../../../../../components/Card';
 import { TMock } from '../../../../../../types';
+import { useStore } from '../../../../../../hooks/useStore';
 import { iconSize } from '../../../../../../contstant';
 import styles from './Mock.module.css';
 
@@ -18,6 +19,8 @@ interface MockProps {
 
 export const Mock: FC<MockProps> = ({ mock, onDelete, onChange, onCopyClick, onEditClick }) => {
     const theme = useMantineTheme();
+    const [settings] = useStore('settings');
+    const isInlineComment = settings?.commentDisplayMode === 'inline';
 
     const handleDelete = (e: React.MouseEvent<HTMLButtonElement>): void => {
         if (e.detail < 2) {
@@ -85,19 +88,32 @@ export const Mock: FC<MockProps> = ({ mock, onDelete, onChange, onCopyClick, onE
                     )}
 
                     {mock.comment && (
-                        <Tooltip
-                            label={mock.comment}
-                            withArrow
-                            position="bottom"
-                            className={styles.comment}
-                        >
-                            <span>
-                                <IconInfoCircle
-                                    size={16}
-                                    color={theme.colors.blue[4]}
-                                />
-                            </span>
-                        </Tooltip>
+                        isInlineComment ? (
+                            <Text
+                                size="xs"
+                                c="dimmed"
+                                className={styles.commentInline}
+                                title={mock.comment}
+                            >
+                                {mock.comment}
+                            </Text>
+                        ) : (
+                            <Tooltip
+                                label={mock.comment}
+                                withArrow
+                                multiline
+                                maw={300}
+                                position="bottom"
+                                className={styles.comment}
+                            >
+                                <span>
+                                    <IconInfoCircle
+                                        size={16}
+                                        color={theme.colors.blue[4]}
+                                    />
+                                </span>
+                            </Tooltip>
+                        )
                     )}
                 </Group>
 

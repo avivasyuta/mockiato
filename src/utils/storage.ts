@@ -13,6 +13,7 @@ const emptyStore: TStore = {
         showActiveStatus: true,
         enabledHosts: {},
         showMobileNavBar: false,
+        commentDisplayMode: 'tooltip',
     },
 };
 
