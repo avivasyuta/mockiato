@@ -39,10 +39,18 @@ export const getStore = async (): Promise<TStore> => {
 };
 
 export const setStore = async (store: TStore): Promise<void> => {
-    if (import.meta.env.VITE_NODE_ENV === 'development') {
-        localStorage.setItem(STORE_KEY, JSON.stringify(store));
-    } else {
-        await chrome.storage.local.set({ [STORE_KEY]: store });
+    try {
+        if (import.meta.env.VITE_NODE_ENV === 'development') {
+            localStorage.setItem(STORE_KEY, JSON.stringify(store));
+        } else {
+            await chrome.storage.local.set({ [STORE_KEY]: store });
+        }
+    } catch (error) {
+        const message =
+            error instanceof Error && error.message.includes('QUOTA_BYTES')
+                ? 'Storage quota exceeded. Try removing unused mocks or logs to free up space.'
+                : 'Failed to save data to storage.';
+        throw new Error(message);
     }
 };
 
