@@ -1,11 +1,12 @@
+import { forwardRef } from 'react';
 import { Paper, PaperProps } from '@mantine/core';
-import { FC } from 'react';
 
 type CardProps = import('@mantine/utils').PolymorphicComponentProps<'div', PaperProps>
 
-export const Card: FC<CardProps> = ({ children, ...rest }) => {
+export const Card = forwardRef<HTMLDivElement, CardProps>(({ children, ...rest }, ref) => {
     return (
         <Paper
+            ref={ref}
             shadow="sm"
             radius="md"
             p="md"
@@ -15,4 +16,4 @@ export const Card: FC<CardProps> = ({ children, ...rest }) => {
             {children}
         </Paper>
     );
-};
+});

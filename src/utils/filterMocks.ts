@@ -1,55 +1,39 @@
 import { TMock, TMockGroup } from '../types';
 
-type GroupId = string;
-
-type MocksByGroupsRecord = Record<
-    GroupId,
-    {
-        group: TMockGroup;
-        mocks: TMock[];
-    }
->;
+type GroupWithMocks = {
+    group: TMockGroup;
+    mocks: TMock[];
+};
 
 type FilteredMocks = {
-    mocksByGroups: MocksByGroupsRecord;
-    emptyMocks: TMock[];
-    emptyGroups: TMockGroup[];
+    groupsWithMocks: GroupWithMocks[];
+    ungroupedMocks: TMock[];
 };
 
 export const filterMocks = (mocks: TMock[], groups: TMockGroup[]): FilteredMocks => {
-    const usedGroupsIds = new Set<GroupId>();
-    const mocksByGroups: MocksByGroupsRecord = {};
-    const emptyMocks: TMock[] = [];
+    const mocksByGroupId = new Map<string, TMock[]>();
 
-    const groupsById: Record<GroupId, TMockGroup> = groups.reduce((acc, group) => {
-        return {
-            ...acc,
-            [group.id]: group,
-        };
-    }, {});
+    const ungroupedMocks: TMock[] = [];
 
     mocks?.forEach((mock) => {
         if (!mock.groupId) {
-            emptyMocks.push(mock);
+            ungroupedMocks.push(mock);
         } else {
-            if (!mocksByGroups[mock.groupId]) {
-                mocksByGroups[mock.groupId] = {
-                    group: groupsById[mock.groupId],
-                    mocks: [],
-                };
+            if (!mocksByGroupId.has(mock.groupId)) {
+                mocksByGroupId.set(mock.groupId, []);
             }
-
-            mocksByGroups[mock.groupId].mocks.push(mock);
-            usedGroupsIds.add(mock.groupId);
+            mocksByGroupId.get(mock.groupId)!.push(mock);
         }
     });
 
-    // Filter groups without mocks
-    const emptyGroups = (groups ?? []).filter((group) => !usedGroupsIds.has(group.id));
+    // All groups in their original order, with their mocks (or empty array)
+    const groupsWithMocks: GroupWithMocks[] = groups.map((group) => ({
+        group,
+        mocks: mocksByGroupId.get(group.id) ?? [],
+    }));
 
     return {
-        mocksByGroups,
-        emptyMocks,
-        emptyGroups,
+        groupsWithMocks,
+        ungroupedMocks,
     };
 };

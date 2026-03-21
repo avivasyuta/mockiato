@@ -30,3 +30,12 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.dragHandle {
+    cursor: grab;
+    touch-action: none;
+}
+
+.dragHandle:active {
+    cursor: grabbing;
+}

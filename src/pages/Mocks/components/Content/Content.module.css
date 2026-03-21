@@ -4,6 +4,10 @@
     gap: .625rem;
 }
 
+.drag {
+    width: 22px;
+}
+
 .status {
     width: 35px;
 }
@@ -19,3 +23,16 @@
 .code {
     width: 134px;
 }
+
+.ungroupedDropZone {
+    min-height: 40px;
+    border-radius: 8px;
+}
+
+.ungroupedDropZoneEmpty {
+    border: 2px dashed var(--mantine-color-gray-4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
