@@ -1,4 +1,4 @@
-import React, { memo, useReducer, useState, useMemo, useEffect } from 'react';
+import React, { memo, useReducer, useState, useMemo, useEffect, useCallback } from 'react';
 import { Drawer } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { nanoid } from 'nanoid';
@@ -19,6 +19,13 @@ const initialMockFormState: TMockFormState = {
     isOpened: false,
     mock: undefined,
 };
+
+function arrayMove<T>(arr: T[], from: number, to: number): T[] {
+    const result = [...arr];
+    const [item] = result.splice(from, 1);
+    result.splice(to, 0, item);
+    return result;
+}
 
 const mockFormReducer = (state: TMockFormState, action: TMockFormAction): TMockFormState => {
     switch (action.type) {
@@ -80,6 +87,21 @@ const MocksPage: React.FC = () => {
             payload: mock,
         });
     };
+
+    const handleUpdateMocks = useCallback((newMocks: TMock[]) => {
+        setMocks(newMocks);
+    }, [setMocks]);
+
+    const handleReorderGroups = useCallback((activeId: string, overId: string) => {
+        if (!groups) return;
+
+        const oldIndex = groups.findIndex((g) => g.id === activeId);
+        const newIndex = groups.findIndex((g) => g.id === overId);
+
+        if (oldIndex === -1 || newIndex === -1) return;
+
+        setGroups(arrayMove(groups, oldIndex, newIndex));
+    }, [groups, setGroups]);
 
     if (!mocks || !groups) {
         return <Spinner />;
@@ -228,6 +250,8 @@ const MocksPage: React.FC = () => {
                     onDeleteGroup={handleDeleteGroup}
                     onClearGroup={handleClearGroup}
                     onToggleMocks={handleToggleMocksInGroup}
+                    onReorderGroups={handleReorderGroups}
+                    onUpdateMocks={handleUpdateMocks}
                 />
             ) : (
                 <NotFound text="No mocks to show" />

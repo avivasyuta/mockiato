@@ -3,6 +3,9 @@
     "private": true,
     "type": "module",
     "dependencies": {
+        "@atlaskit/pragmatic-drag-and-drop": "^1.7.9",
+        "@atlaskit/pragmatic-drag-and-drop-hitbox": "^1.1.0",
+        "@atlaskit/pragmatic-drag-and-drop-react-drop-indicator": "^3.2.12",
         "@mantine/core": "^7.13.4",
         "@mantine/form": "^7.13.4",
         "@mantine/hooks": "^7.13.4",

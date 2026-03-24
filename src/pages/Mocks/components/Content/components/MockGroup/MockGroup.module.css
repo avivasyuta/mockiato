@@ -1,3 +1,12 @@
+.dragHandle {
+    cursor: grab;
+    touch-action: none;
+}
+
+.dragHandle:active {
+    cursor: grabbing;
+}
+
 .root {
     border: 1px dashed;
     border-radius: 6px;
@@ -17,6 +26,11 @@
 
 .groupName:hover {
     text-decoration: underline;
+}
+
+.draggedOver {
+    outline: 2px solid var(--mantine-primary-color-filled);
+    outline-offset: -2px;
 }
 
 @media (prefers-color-scheme: light) {
