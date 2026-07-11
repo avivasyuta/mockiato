@@ -47,14 +47,14 @@ const MocksPage: React.FC = () => {
     // Initialize expanded groups when groups are loaded
     useEffect(() => {
         if (groups && groups.length > 0) {
-            setExpandedGroups(new Set(groups.map(group => group.id)));
+            setExpandedGroups(new Set(groups.map((group) => group.id)));
         }
     }, [groups]);
 
     // Calculate areAllGroupsExpanded based on actual group states
     const areAllGroupsExpanded = useMemo(() => {
         if (!groups || groups.length === 0) return false;
-        return groups.every(group => expandedGroups.has(group.id));
+        return groups.every((group) => expandedGroups.has(group.id));
     }, [groups, expandedGroups]);
 
     const handleCopyMock = (mock: TMock) => {
@@ -70,7 +70,7 @@ const MocksPage: React.FC = () => {
     const handleAddGroup = (group: TMockGroup) => {
         setGroups([...(groups ?? []), group]);
         // Expand newly added group
-        setExpandedGroups(prev => new Set([...prev, group.id]));
+        setExpandedGroups((prev) => new Set([...prev, group.id]));
     };
 
     const handleOpenForm = () => {
@@ -88,20 +88,26 @@ const MocksPage: React.FC = () => {
         });
     };
 
-    const handleUpdateMocks = useCallback((newMocks: TMock[]) => {
-        setMocks(newMocks);
-    }, [setMocks]);
+    const handleUpdateMocks = useCallback(
+        (newMocks: TMock[]) => {
+            setMocks(newMocks);
+        },
+        [setMocks],
+    );
 
-    const handleReorderGroups = useCallback((activeId: string, overId: string) => {
-        if (!groups) return;
+    const handleReorderGroups = useCallback(
+        (activeId: string, overId: string) => {
+            if (!groups) return;
 
-        const oldIndex = groups.findIndex((g) => g.id === activeId);
-        const newIndex = groups.findIndex((g) => g.id === overId);
+            const oldIndex = groups.findIndex((g) => g.id === activeId);
+            const newIndex = groups.findIndex((g) => g.id === overId);
 
-        if (oldIndex === -1 || newIndex === -1) return;
+            if (oldIndex === -1 || newIndex === -1) return;
 
-        setGroups(arrayMove(groups, oldIndex, newIndex));
-    }, [groups, setGroups]);
+            setGroups(arrayMove(groups, oldIndex, newIndex));
+        },
+        [groups, setGroups],
+    );
 
     if (!mocks || !groups) {
         return <Spinner />;
@@ -159,12 +165,12 @@ const MocksPage: React.FC = () => {
             setExpandedGroups(new Set());
         } else {
             // Expand all groups
-            setExpandedGroups(new Set(groups?.map(group => group.id) || []));
+            setExpandedGroups(new Set(groups?.map((group) => group.id) || []));
         }
     };
 
     const handleToggleGroup = (groupId: string, isExpanded: boolean) => {
-        setExpandedGroups(prev => {
+        setExpandedGroups((prev) => {
             const newSet = new Set(prev);
             if (isExpanded) {
                 newSet.add(groupId);
@@ -200,29 +206,26 @@ const MocksPage: React.FC = () => {
         handleCloseForm();
     };
 
-    const handleImportMocks = (importedMocks: TMock[], importedGroups: TMockGroup[]) => {
+    const handleImportMocks = async (importedMocks: TMock[], importedGroups: TMockGroup[]) => {
         const newMocks = mergeMocks(mocks, importedMocks);
         const newGroups = mergeGroups(groups, importedGroups);
 
-        setGroups(newGroups);
+        // Groups must be persisted before mocks.
+        await setGroups(newGroups);
+        await setMocks(newMocks);
 
-        // Expand newly imported groups
-        setExpandedGroups(prev => {
+        setExpandedGroups((prev) => {
             const newSet = new Set(prev);
-            importedGroups.forEach(group => {
+            importedGroups.forEach((group) => {
                 newSet.add(group.id);
             });
             return newSet;
         });
 
-        setTimeout(() => {
-            setMocks(newMocks);
-
-            showNotification({
-                message: 'Mocks have been successfully imported',
-                color: 'green',
-            });
-        }, 0);
+        showNotification({
+            message: 'Mocks have been successfully imported',
+            color: 'green',
+        });
     };
 
     return (

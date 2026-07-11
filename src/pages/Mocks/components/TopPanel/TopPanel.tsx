@@ -117,6 +117,7 @@ export const TopPanel: FC<TopPanelProps> = ({
                             color="blue"
                             size="sm"
                             radius="sm"
+                            aria-label="More actions"
                         >
                             <IconDotsVertical size={14} />
                         </ActionIcon>
