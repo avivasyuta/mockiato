@@ -1,20 +1,23 @@
 import React, { JSX, useMemo } from 'react';
-import { AppShell, Divider, Group, NavLink, ScrollArea, Switch, Text } from '@mantine/core';
+import { AppShell, Button, Divider, Group, NavLink, ScrollArea, Switch, Text } from '@mantine/core';
 import {
     IconBrandGithub,
     IconCodeMinus,
     IconCoin,
+    IconExternalLink,
     IconNotebook,
     IconSettings2,
     IconShadow,
     IconThumbUp,
     IconVersions,
     IconWifi,
+    IconBug,
     TablerIconsProps,
 } from '@tabler/icons-react';
 import { TRoute } from '~/types';
 import { useStore } from '~/hooks/useStore';
 import { useTabHost } from '~/hooks/useTab';
+import { isStandaloneTab } from '~/utils/runMode';
 import manifest from '../../../public/manifest.json';
 import styles from './AppNavbar.module.css';
 
@@ -23,6 +26,10 @@ type TMenuItem = {
     name: string;
     icon: (props: TablerIconsProps) => JSX.Element;
 };
+
+// Routes that require the context of an inspected page (current host).
+// Hidden when the app runs as a standalone browser tab.
+const hostScopedRoutes: TRoute[] = ['network', 'logs'];
 
 const menu: TMenuItem[] = [
     {
@@ -60,6 +67,26 @@ type NavbarProps = {
 export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
     const [settings, setSettings] = useStore('settings');
     const tabHost = useTabHost();
+    const standalone = isStandaloneTab();
+
+    const menuItems = useMemo(
+        () => (standalone ? menu.filter((link) => !hostScopedRoutes.includes(link.route)) : menu),
+        [standalone],
+    );
+
+    const handleOpenInTab = () => {
+        const url = chrome?.runtime?.getURL?.('index.html');
+
+        if (!url) {
+            return;
+        }
+
+        if (chrome?.tabs?.create) {
+            chrome.tabs.create({ url });
+        } else {
+            window.open(url, '_blank');
+        }
+    };
 
     const isEnabled = useMemo(() => {
         if (!tabHost) {
@@ -90,7 +117,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
             style={{ padding: 0 }}
         >
             <AppShell.Section component={ScrollArea}>
-                {menu.map((link) => {
+                {menuItems.map((link) => {
                     const Icon = link.icon;
                     return (
                         <NavLink
@@ -108,44 +135,65 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                 })}
             </AppShell.Section>
 
+            {!standalone && (
+                <>
+                    <Divider variant="dotted" />
+
+                    <AppShell.Section p="xs">
+                        <Button
+                            fullWidth
+                            variant="light"
+                            size="xs"
+                            color="gray"
+                            leftSection={<IconExternalLink size={14} />}
+                            onClick={handleOpenInTab}
+                        >
+                            Open in a browser tab
+                        </Button>
+                    </AppShell.Section>
+                </>
+            )}
+
             <Divider variant="dotted" />
 
             <AppShell.Section grow>
-                <Group
-                    p="xs"
-                    justify="center"
-                    gap="4px"
-                >
-                    <Switch
-                        size="lg"
-                        color="green"
-                        onLabel="MOCKIATO ENABLED"
-                        offLabel="MOCKIATO DISABLED"
-                        radius="sm"
-                        checked={isEnabled}
-                        onChange={toggleMocking}
-                        styles={{
-                            root: {
-                                width: '100%',
-                            },
-                            track: {
-                                width: '100%',
-                            },
-                            trackLabel: {
-                                padding: '0',
-                                width: '100%',
-                                margin: '0',
-                            },
-                        }}
-                    />
-
-                    <Text
-                        c="dimmed"
-                        size="xs"
+                {!standalone && (
+                    <Group
+                        p="xs"
+                        justify="center"
+                        gap="4px"
                     >
-                        for {tabHost}
-                    </Text>
-                </Group>
+                        <Switch
+                            size="lg"
+                            color="green"
+                            onLabel="MOCKIATO ENABLED"
+                            offLabel="MOCKIATO DISABLED"
+                            radius="sm"
+                            checked={isEnabled}
+                            onChange={toggleMocking}
+                            styles={{
+                                root: {
+                                    width: '100%',
+                                },
+                                track: {
+                                    width: '100%',
+                                },
+                                trackLabel: {
+                                    padding: '0',
+                                    width: '100%',
+                                    margin: '0',
+                                },
+                            }}
+                        />
+
+                        <Text
+                            c="dimmed"
+                            size="xs"
+                        >
+                            for {tabHost}
+                        </Text>
+                    </Group>
+                )}
             </AppShell.Section>
 
             <Divider variant="dotted" />
@@ -235,6 +283,28 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                         className={styles.link}
                     >
                         Rate extension
+                    </Text>
+                </Group>
+
+                <Group
+                    justify="left"
+                    mt="0.4rem"
+                    gap="12px"
+                >
+                    <IconBug
+                        size={16}
+                        color="gray"
+                    />
+                    <Text
+                        size="sm"
+                        variant="link"
+                        component="a"
+                        target="_blank"
+                        href="https://github.com/avivasyuta/mockiato/issues"
+                        c="dimmed"
+                        className={styles.link}
+                    >
+                        Report a bug
                     </Text>
                 </Group>
             </AppShell.Section>

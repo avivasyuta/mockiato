@@ -2,6 +2,8 @@ import { getStore, setStoreValue } from '~/utils/storage';
 import { TStore } from '~/types';
 import { STORE_KEY } from '~/contstant';
 
+let initialized = false;
+
 const update = (enabledHosts: Record<string, boolean>, host: string) => {
     const isEnabled = enabledHosts[host] ?? false;
 
@@ -23,7 +25,27 @@ const update = (enabledHosts: Record<string, boolean>, host: string) => {
     } else {
         switchNode.classList.remove('checked');
     }
+
+    // The initial state is applied asynchronously (after reading the store), so
+    // enable CSS transitions only once it's committed — otherwise an already-on
+    // toggle animates from off to on every time the popup opens.
+    if (!initialized) {
+        initialized = true;
+        // Force a style/layout flush so the current state becomes the baseline…
+        switchNode.getBoundingClientRect();
+        // then re-enable transitions on the next frames (double rAF is needed
+        // so the "no-transition" paint lands before the class is added).
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                document.body.classList.add('ready');
+            });
+        });
+    }
 };
+
+document.getElementById('open-tab')?.addEventListener('click', () => {
+    chrome.tabs.create({ url: chrome.runtime.getURL('index.html') });
+});
 
 chrome?.tabs?.query(
     {
