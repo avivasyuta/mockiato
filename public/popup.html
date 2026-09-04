@@ -1,205 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Mockiato</title>
     <script defer="defer" src="popup.js"></script>
     <style>
-        body {
-            font-size: 14px;
-            margin: 0;
+        :root {
+            --bg: #ffffff;
+            --surface: #f7f8fa;
+            --border: #e7e9ee;
+            --text: #14171f;
+            --text-dim: #6b7280;
+            --accent: #7950f2;
+            --accent-hover: #6741d9;
+            --accent-weak: rgba(121, 80, 242, 0.1);
+            --success: #37b24d;
+            --track: #d7dae0;
+            --pink: #db61a2;
+            --shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px rgba(15, 23, 42, 0.06);
+            --radius: 12px;
         }
 
-        .wrapper {
-            width: 260px;
-            padding: 16px 0;
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #1a1b1e;
+                --surface: #232428;
+                --border: #2e3036;
+                --text: #e9ecef;
+                --text-dim: #909296;
+                --accent: #9775fa;
+                --accent-hover: #a687fb;
+                --accent-weak: rgba(151, 117, 250, 0.14);
+                --success: #51cf66;
+                --track: #3a3d44;
+                --pink: #e599c1;
+                --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.4);
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 320px;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.45;
+            color: var(--text);
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 16px;
         }
 
         .header {
             display: flex;
-            align-items: end;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .title {
-            font-size: 20px;
-            font-weight: 500;
+            align-items: center;
+            gap: 10px;
         }
 
         .logo {
-            height: 36px;
+            width: 30px;
+            height: 30px;
+            flex: none;
         }
 
-        .content {
+        .brand {
+            font-size: 16px;
+            font-weight: 650;
+            letter-spacing: -0.01em;
+        }
+
+        .card {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            margin-top: 20px;
-            padding: 0 16px;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .card-text strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
         }
 
         .description {
-            text-align: center;
-            margin-top: 6px;
-            color: #828282;
+            font-size: 12px;
+            color: var(--text-dim);
         }
 
+        .card .description {
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* Toggle */
         .switch {
             position: relative;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 100px;
-            height: 30px;
-            border: 1px solid #dee2e6;
-            border-radius: 5px;
-            background: #e9ecef;
-            transition: .2s;
-            box-sizing: border-box;
-            cursor: pointer;
-        }
-
-        .label {
-            width: 100%;
-            color: #868e96;
-            font-size: 10px;
-            text-align: right;
-            padding: 0 8px;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 2px;
-            left: 2px;
-            background-color: white;
+            flex: none;
+            width: 42px;
             height: 24px;
-            width: 24px;
-            border: 1px solid #dee2e6;
-            border-radius: 5px;
-            transition: .2s;
-            box-sizing: border-box;
+            border-radius: 999px;
+            background: var(--track);
+            cursor: pointer;
+            transition: background 0.2s ease;
         }
 
         .switch input {
             display: none;
         }
 
-        .switch.checked {
-            transition: .2s;
-            background: #40c057;
-            border-color: #40c057;
+        .slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #ffffff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s ease;
         }
 
-        .switch.checked .label {
-            color: white;
-            text-align: left;
+        .switch.checked {
+            background: var(--success);
         }
 
         .switch.checked .slider {
-            transform: translate(70px, 0);
-            transition: .2s;
-            border-color: white;
+            transform: translateX(18px);
         }
 
-        .extra {
-            margin-top: 20px;
-            border-bottom: 1px solid #cecece;
-            padding: 0 16px 20px;
+        .label {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
 
-        .footer {
-            padding: 16px 16px 0;
-        }
-
-        .links {
-            margin-top: 20px;
+        /* Sections */
+        .section {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
 
+        .section-title {
+            margin: 0;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+        }
+
+        .hint {
+            margin: 0;
+            font-size: 12px;
+            color: var(--text-dim);
+            text-align: center;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 16px 0;
+        }
+
+        /* Buttons */
         .btn {
             display: inline-flex;
-            justify-content: center;
             align-items: center;
-            gap: 5px;
-            background-color: transparent;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg);
+            color: var(--text);
+            font: inherit;
+            font-size: 13px;
+            font-weight: 500;
             text-decoration: none;
-            padding: 4px;
-            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .btn svg {
+            flex: none;
+            width: 15px;
+            height: 15px;
+            pointer-events: none;
         }
 
         .btn:hover {
+            background: var(--surface);
             text-decoration: none;
         }
 
-        .btn-support {
-            background: rgba(219, 97, 162, 0.15);
-            color: rgb(219, 97, 162);
+        .btn:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
         }
 
-        .btn-support:hover {
-            background: rgba(219, 97, 162, 0.25);
+        .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #ffffff;
         }
 
-        .btn-review {
-            background: rgba(121, 80, 242, 0.15);
-            color: rgb(121, 80, 242);
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
         }
 
-        .btn-review:hover {
-            background: rgba(121, 80, 242, 0.25);
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        @media (prefers-color-scheme: dark) {
-            body {
-                background-color: #242424;
-                color: #c9c9c9;
-            }
+        .link-store svg {
+            color: var(--accent);
+        }
 
-            .switch {
-                background: #2e2e2e;
-                border-color: #424242;
-            }
-
-            .label {
-                color: #b8b8b8;
-            }
-
-            .btn-review {
-                color: rgb(177, 151, 252);
-            }
+        .link-heart svg {
+            color: var(--pink);
         }
     </style>
 </head>
 <body>
-<div class="wrapper">
-    <div class="header">
-        <img class="logo" src="icons/mockiato-128.png">
-        <div class="title">Mockiato</div>
-    </div>
+<div class="app">
+    <header class="header">
+        <img class="logo" src="icons/mockiato-128.png" alt="Mockiato">
+        <div class="brand">Mockiato</div>
+    </header>
 
-    <div class="content">
+    <div class="card">
+        <div class="card-text">
+            <strong>Request mocking</strong>
+            <span class="description">
+                Mocking is <span id="status">disabled</span> for this host
+            </span>
+        </div>
+
         <label class="switch" id="switch">
             <input type="checkbox" id="mocking-status">
             <span class="slider"></span>
             <span class="label" id="label">DISABLED</span>
         </label>
-
-        <div class="description">
-            Mocking is <span id="status">disabled</span> for host <span id="host"></span>
-        </div>
     </div>
 
-    <div class="extra">
-        Open the Mockiato tab in Developer Tools for more settings
+    <div class="section">
+        <button class="btn btn-primary" id="open-tab" type="button">
+            <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"
+                 stroke-linejoin="round" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 6H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"></path>
+                <path d="M11 13l9-9"></path>
+                <path d="M15 4h5v5"></path>
+            </svg>
+            Open Mockiato in a tab
+        </button>
+        <p class="hint">or</p>
+        <p class="hint">open the Mockiato tab in Developer Tools.</p>
     </div>
 
-    <div class="footer">
-        <span>Your support is very important and valuable to maintain the project.</span>
+    <div class="divider"></div>
+
+    <div class="section">
+        <p class="section-title">Support the project</p>
+        <p class="hint">Your support keeps Mockiato maintained and free.</p>
+
         <div class="links" id="links">
-            <a class="btn btn-review"
+            <a class="btn link-store"
                href="https://chromewebstore.google.com/detail/mockiato-mocks-on-the-fly/ilbkkhmnmnehcicempfpekgcpneeekao">
                 <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em"
                      width="1em" xmlns="http://www.w3.org/2000/svg">
@@ -211,14 +301,14 @@
                 </svg>
                 Rate in Chrome Web Store
             </a>
-            <a class="btn btn-support" href="https://github.com/sponsors/avivasyuta">
+            <a class="btn link-heart" href="https://github.com/sponsors/avivasyuta">
                 <svg aria-hidden="true" height="16" viewBox="0 0 16 16" width="16"
                      data-view-component="true"
                      fill="currentColor">
                     <path
                         d="m8 14.25.345.666a.75.75 0 0 1-.69 0l-.008-.004-.018-.01a7.152 7.152 0 0 1-.31-.17 22.055 22.055 0 0 1-3.434-2.414C2.045 10.731 0 8.35 0 5.5 0 2.836 2.086 1 4.25 1 5.797 1 7.153 1.802 8 3.02 8.847 1.802 10.203 1 11.75 1 13.914 1 16 2.836 16 5.5c0 2.85-2.045 5.231-3.885 6.818a22.066 22.066 0 0 1-3.744 2.584l-.018.01-.006.003h-.002ZM4.25 2.5c-1.336 0-2.75 1.164-2.75 3 0 2.15 1.58 4.144 3.365 5.682A20.58 20.58 0 0 0 8 13.393a20.58 20.58 0 0 0 3.135-2.211C12.92 9.644 14.5 7.65 14.5 5.5c0-1.836-1.414-3-2.75-3-1.373 0-2.609.986-3.029 2.456a.749.749 0 0 1-1.442 0C6.859 3.486 5.623 2.5 4.25 2.5Z"></path>
                 </svg>
-                Support author
+                Support the author
             </a>
         </div>
     </div>

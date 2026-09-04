@@ -25,6 +25,10 @@ const update = (enabledHosts: Record<string, boolean>, host: string) => {
     }
 };
 
+document.getElementById('open-tab')?.addEventListener('click', () => {
+    chrome.tabs.create({ url: chrome.runtime.getURL('index.html') });
+});
+
 chrome?.tabs?.query(
     {
         active: true,
