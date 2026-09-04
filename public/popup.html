@@ -11,14 +11,22 @@
             --border: #e7e9ee;
             --text: #14171f;
             --text-dim: #6b7280;
-            --accent: #7950f2;
-            --accent-hover: #6741d9;
-            --accent-weak: rgba(121, 80, 242, 0.1);
+            /* Matches the app's Mantine primary (blue.6, hover blue.7). */
+            --accent: #228be6;
+            --accent-hover: #1c7ed6;
+            --accent-weak: rgba(34, 139, 230, 0.1);
             --success: #37b24d;
             --track: #d7dae0;
             --pink: #db61a2;
             --shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px rgba(15, 23, 42, 0.06);
             --radius: 12px;
+
+            /* Header reacts to the mocking toggle. Kept low-saturation so the
+               vivid green toggle never blends into the background. */
+            --header-off: #eef0f4;
+            --header-off-border: #e2e5ec;
+            --header-on: #e4f3e7;
+            --header-on-border: #bfe3c6;
         }
 
         @media (prefers-color-scheme: dark) {
@@ -28,18 +36,31 @@
                 --border: #2e3036;
                 --text: #e9ecef;
                 --text-dim: #909296;
-                --accent: #9775fa;
-                --accent-hover: #a687fb;
-                --accent-weak: rgba(151, 117, 250, 0.14);
+                --accent: #1971c2;
+                --accent-hover: #1864ab;
+                --accent-weak: rgba(34, 139, 230, 0.16);
                 --success: #51cf66;
                 --track: #3a3d44;
                 --pink: #e599c1;
                 --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.4);
+
+                --header-off: #26272c;
+                --header-off-border: #33353c;
+                --header-on: rgba(81, 207, 102, 0.14);
+                --header-on-border: rgba(81, 207, 102, 0.34);
             }
         }
 
         * {
             box-sizing: border-box;
+        }
+
+        /* Suppress transitions until JS has applied the stored state (adds
+           .ready), so an already-enabled toggle doesn't animate on open. */
+        body:not(.ready) .header,
+        body:not(.ready) .switch,
+        body:not(.ready) .slider {
+            transition: none;
         }
 
         body {
@@ -64,11 +85,22 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            padding: 12px 14px;
+            border: 1px solid var(--header-off-border);
+            border-radius: var(--radius);
+            background: var(--header-off);
+            box-shadow: var(--shadow);
+            transition: background 0.25s ease, border-color 0.25s ease;
+        }
+
+        .header:has(.switch.checked) {
+            background: var(--header-on);
+            border-color: var(--header-on-border);
         }
 
         .logo {
-            width: 30px;
-            height: 30px;
+            width: 28px;
+            height: 28px;
             flex: none;
         }
 
@@ -78,32 +110,18 @@
             letter-spacing: -0.01em;
         }
 
-        .card {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 14px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
+        .header .switch {
+            margin-left: auto;
         }
 
-        .card-text strong {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
+        .status-line {
+            margin: 0 0 12px;
+            text-align: center;
         }
 
         .description {
             font-size: 12px;
             color: var(--text-dim);
-        }
-
-        .card .description {
-            display: block;
-            margin-top: 2px;
         }
 
         /* Toggle */
@@ -221,6 +239,8 @@
         }
 
         .btn-primary {
+            width: auto;
+            align-self: center;
             background: var(--accent);
             border-color: var(--accent);
             color: #ffffff;
@@ -251,22 +271,17 @@
     <header class="header">
         <img class="logo" src="icons/mockiato-128.png" alt="Mockiato">
         <div class="brand">Mockiato</div>
-    </header>
-
-    <div class="card">
-        <div class="card-text">
-            <strong>Request mocking</strong>
-            <span class="description">
-                Mocking is <span id="status">disabled</span> for this host
-            </span>
-        </div>
 
         <label class="switch" id="switch">
             <input type="checkbox" id="mocking-status">
             <span class="slider"></span>
             <span class="label" id="label">DISABLED</span>
         </label>
-    </div>
+    </header>
+
+    <p class="description status-line">
+        Mocking is <span id="status">disabled</span> for this host
+    </p>
 
     <div class="section">
         <button class="btn btn-primary" id="open-tab" type="button">
