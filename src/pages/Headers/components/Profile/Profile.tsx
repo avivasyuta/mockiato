@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Drawer } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { THeader } from '../../../../types';

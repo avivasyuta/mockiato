@@ -3,7 +3,6 @@ import { showNotification } from '@mantine/notifications';
 import { TStore, TStoreKey, TUpdateStore } from '~/types';
 import { getStoreValue, getUpdatedValue, setStoreValue } from '~/utils/storage';
 
-// eslint-disable-next-line max-len
 export const useStore = <Key extends TStoreKey>(
     key: Key,
 ): [TStore[Key] | null, (val: TStore[Key]) => Promise<void>] => {

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Loader } from '@mantine/core';
 import styles from './Spinner.module.css';
 

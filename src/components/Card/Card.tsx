@@ -17,3 +17,5 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(({ children, ...rest }
         </Paper>
     );
 });
+
+Card.displayName = 'Card';

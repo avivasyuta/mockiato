@@ -103,7 +103,7 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
                     </Group>
                 </Group>
 
-                <Collapse in={isOpen}>
+                <Collapse expanded={isOpen}>
                     <Text size="xs">
                         <strong>Response type:</strong> {event.response.type}
                     </Text>

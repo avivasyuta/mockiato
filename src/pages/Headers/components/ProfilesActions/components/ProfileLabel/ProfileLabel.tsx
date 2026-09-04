@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import {
     Box, ColorSwatch, Group, useMantineTheme,
 } from '@mantine/core';

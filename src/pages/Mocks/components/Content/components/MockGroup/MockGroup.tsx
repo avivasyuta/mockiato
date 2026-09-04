@@ -227,7 +227,7 @@ export const MockGroup: FC<MockGroupProps> = ({
                 </Group>
 
                 {children && (
-                    <Collapse key={mocks.length} in={isOpen}>
+                    <Collapse key={mocks.length} expanded={isOpen}>
                         <div className={styles.content}>{children}</div>
                     </Collapse>
                 )}

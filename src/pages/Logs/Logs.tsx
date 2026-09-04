@@ -79,7 +79,7 @@ export const Logs: React.FC = () => {
             ) : (
                 <div className={styles.logs}>
                     {filteredLogs.map((log) => (
-                        <Log log={log} />
+                        <Log key={log.date} log={log} />
                     ))}
                 </div>
             )}

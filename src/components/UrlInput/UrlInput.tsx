@@ -1,4 +1,4 @@
-import React, { ChangeEventHandler, FC } from 'react';
+import { ChangeEventHandler, FC } from 'react';
 import { Checkbox, TextInput, Tooltip } from '@mantine/core';
 import { IconRegex } from '@tabler/icons-react';
 import { type UrlType } from '~/types';

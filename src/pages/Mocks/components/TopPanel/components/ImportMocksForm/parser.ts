@@ -97,7 +97,7 @@ export function parseMocks(data: string): ValidationResult {
         const errors: string[] = [];
 
         if (e instanceof ZodError) {
-            e.errors.forEach((issue) => {
+            e.issues.forEach((issue) => {
                 errors.push(`Field path: [${issue.path}], Message: ${issue.message}`);
             });
         } else {

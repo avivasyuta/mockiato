@@ -1,5 +1,20 @@
 import { test, expect } from '@playwright/test';
 
+interface MockiatoMessage {
+    extensionName: string;
+    type: string;
+    message: {
+        messageId: string;
+        [key: string]: unknown;
+    };
+}
+
+declare global {
+    interface Window {
+        receivedEvents: MockiatoMessage[];
+    }
+}
+
 test.describe('Pub Sub', () => {
     test('Interceptor post event to extension context and receive response back', async ({ page }) => {
         // Navigate to our test page
@@ -10,10 +25,10 @@ test.describe('Pub Sub', () => {
 
         // Set up message listener in the browser context and collect events
         await page.evaluate(() => {
-            (window as any).receivedEvents = [];
+            window.receivedEvents = [];
 
             window.addEventListener('message', (event) => {
-                (window as any).receivedEvents.push(event.data);
+                window.receivedEvents.push(event.data as MockiatoMessage);
             });
         });
 
@@ -25,8 +40,8 @@ test.describe('Pub Sub', () => {
 
         // Emulate response from extension context
         await page.evaluate(() => {
-            const receivedEvents = (window as any).receivedEvents || [];
-            
+            const receivedEvents = window.receivedEvents ?? [];
+
             if (receivedEvents.length === 0) {
                 throw new Error('No events received from extension. Extension is not working.');
             }
@@ -48,7 +63,7 @@ test.describe('Pub Sub', () => {
 
         // Retrieve all event data from the browser context
         const receivedEvents = await page.evaluate(() => {
-            return (window as any).receivedEvents || [];
+            return window.receivedEvents ?? [];
         });
 
         // Verify that network requests were intercepted

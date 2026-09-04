@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { IconDownload } from '@tabler/icons-react';
 import { iconSize } from '~/contstant';
 import { Menu } from '@mantine/core';

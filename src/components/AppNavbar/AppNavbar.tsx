@@ -1,4 +1,4 @@
-import React, { JSX, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { AppShell, Button, Divider, Group, NavLink, ScrollArea, Switch, Text } from '@mantine/core';
 import {
     IconBrandGithub,
@@ -12,7 +12,7 @@ import {
     IconVersions,
     IconWifi,
     IconBug,
-    TablerIconsProps,
+    TablerIcon,
 } from '@tabler/icons-react';
 import { TRoute } from '~/types';
 import { useStore } from '~/hooks/useStore';
@@ -24,7 +24,7 @@ import styles from './AppNavbar.module.css';
 type TMenuItem = {
     route: TRoute;
     name: string;
-    icon: (props: TablerIconsProps) => JSX.Element;
+    icon: TablerIcon;
 };
 
 // Routes that require the context of an inspected page (current host).

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Button, Group, Text } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import { showNotification } from '@mantine/notifications';

@@ -18,7 +18,7 @@ import { delay } from '~/utils/delay';
 import { isExtensionEnabled } from '~/utils/isExtensionEnabled';
 import { enabledAttributeName, INTERCEPTOR_ID, statusNodeId } from '~/contstant';
 
-const messageBus = new MessageBus();
+const messageBus = new MessageBus<TInterceptedRequestMockDTO>();
 const interceptor = new BatchInterceptor({
     name: 'mockiatoInterceptor',
     interceptors: [new FetchInterceptor(), new XMLHttpRequestInterceptor()],

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Code, Text } from '@mantine/core';
 import styles from './ResponseBody.module.css';
 

@@ -54,7 +54,7 @@ export const Log: React.FC<LogProps> = ({ log }) => {
                     <Text size="xs">{log.url}</Text>
                 </Group>
 
-                <Collapse in={isOpen}>
+                <Collapse expanded={isOpen}>
                     <Text size="xs">Request was intercepted and response mocked.</Text>
 
                     <Text
