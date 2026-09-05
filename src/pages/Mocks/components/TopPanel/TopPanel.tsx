@@ -1,12 +1,12 @@
 import { FC, useState } from 'react';
 import { ActionIcon, Button, Group, Menu, Modal, Text } from '@mantine/core';
-import { 
-    IconChevronDown, 
-    IconChevronUp, 
-    IconDotsVertical, 
-    IconPlus, 
-    IconSelectAll, 
-    IconUpload 
+import {
+    IconChevronDown,
+    IconChevronUp,
+    IconDotsVertical,
+    IconPlus,
+    IconSelectAll,
+    IconUpload,
 } from '@tabler/icons-react';
 import { TMock, TMockGroup } from '~/types';
 import { Header } from '~/components/Header';
@@ -18,8 +18,8 @@ import { AddGroupForm } from './components/AddGroupForm';
 type TopPanelProps = {
     groups: TMockGroup[];
     mocks: TMock[];
-    areAllGroupsExpanded: boolean;
-    onToggleAllGroups: () => void;
+    areAllExpanded: boolean;
+    onToggleAll: () => void;
     onMockAdd: () => void;
     onGroupAdd: (group: TMockGroup) => void;
     onMocksImportSuccess: ImportMocksProps['onSuccess'];
@@ -30,11 +30,11 @@ type ModalType = 'newGroup' | 'import' | null;
 export const TopPanel: FC<TopPanelProps> = ({
     groups,
     mocks,
-    areAllGroupsExpanded,
-    onToggleAllGroups,
+    areAllExpanded,
+    onToggleAll,
     onMockAdd,
     onGroupAdd,
-    onMocksImportSuccess
+    onMocksImportSuccess,
 }) => {
     const [modalContentType, setModalContentType] = useState<ModalType>(null);
     const [modalTitle, setModalTitle] = useState<string>('');
@@ -82,18 +82,18 @@ export const TopPanel: FC<TopPanelProps> = ({
                         size="compact-xs"
                         color="gray"
                         variant="subtle"
-                        rightSection={
-                            areAllGroupsExpanded ? <IconChevronUp size={14} /> : <IconChevronDown size={14} />
-                        }
-                        onClick={onToggleAllGroups}
+                        radius="sm"
+                        rightSection={areAllExpanded ? <IconChevronUp size={14} /> : <IconChevronDown size={14} />}
+                        onClick={onToggleAll}
                     >
-                        {areAllGroupsExpanded ? 'Collapse All' : 'Expand All'}
+                        {areAllExpanded ? 'Collapse All' : 'Expand All'}
                     </Button>
                 )}
 
                 <Button
                     leftSection={<IconPlus size={16} />}
                     size="compact-xs"
+                    radius="sm"
                     title="Add new mock"
                     onClick={onMockAdd}
                 >

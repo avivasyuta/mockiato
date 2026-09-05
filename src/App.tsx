@@ -13,6 +13,7 @@ import { AppNavbar } from './components/AppNavbar';
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import './App.css';
+import classes from './App.module.css';
 import { useNavBarToggler } from './hooks/useNavbarToggler';
 
 export const App = () => {
@@ -40,11 +41,17 @@ export const App = () => {
                         layout="alt"
                         header={{ height: 35 }}
                         navbar={{
-                            width: 200,
+                            width: 220,
                             breakpoint: 'xs',
                             collapsed: { mobile: !isNavbarVisible },
                         }}
                         padding="md"
+                        classNames={{
+                            root: classes.root,
+                            navbar: classes.navbar,
+                            header: classes.header,
+                            main: classes.main,
+                        }}
                     >
                         <AppNavbar
                             route={route}

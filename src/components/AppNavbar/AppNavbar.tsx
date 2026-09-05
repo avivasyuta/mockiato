@@ -168,7 +168,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
                             color="green"
                             onLabel="MOCKIATO ENABLED"
                             offLabel="MOCKIATO DISABLED"
-                            radius="sm"
+                            radius="md"
                             checked={isEnabled}
                             onChange={toggleMocking}
                             styles={{

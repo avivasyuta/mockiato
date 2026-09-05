@@ -1,0 +1,19 @@
+/*
+ * Mantine's Paper sets background/border via classes of the same specificity,
+ * and its stylesheet loads after this module, so it wins a plain class override.
+ * These custom properties are only ever read from an inline style (see Card.tsx),
+ * which always wins over any stylesheet rule regardless of specificity.
+ */
+@media (prefers-color-scheme: light) {
+    .card {
+        --card-bg: var(--mantine-color-gray-0);
+        --card-border-color: var(--mantine-color-blue-1);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .card {
+        --card-bg: var(--mantine-color-dark-6);
+        --card-border-color: var(--mantine-color-dark-4);
+    }
+}

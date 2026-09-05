@@ -1,0 +1,12 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.url {
+    display: inline-flex;
+    flex: 1;
+    min-width: 0;
+    gap: 4px;
+}

@@ -13,7 +13,9 @@ type ContentProps = {
     mocks: TMock[];
     groups: TMockGroup[];
     expandedGroups: Set<string>;
+    expandedMocks: Set<string>;
     onToggleGroup: (groupId: string, isExpanded: boolean) => void;
+    onToggleMock: (mockId: string, isExpanded: boolean) => void;
     onDeleteMock: (mockId: string) => void;
     onChangeMock: (newMock: TMock) => void;
     onEditMock: (mock: TMock) => void;
@@ -24,16 +26,6 @@ type ContentProps = {
     onReorderGroups: (activeId: string, overId: string) => void;
     onUpdateMocks: (mocks: TMock[]) => void;
 };
-
-const TableHeader = () => (
-    <div className={styles.tableHeader}>
-        <Text size="xs" c="dimmed" className={styles.drag}>{' '}</Text>
-        <Text size="xs" c="dimmed" className={styles.status}>{' '}</Text>
-        <Text size="xs" c="dimmed" className={styles.method}>Method</Text>
-        <Text size="xs" c="dimmed" className={styles.url}>URL</Text>
-        <Text size="xs" c="dimmed" className={styles.code}>Code</Text>
-    </div>
-);
 
 const UngroupedDropZone: FC<React.PropsWithChildren<{ isEmpty: boolean }>> = ({ children, isEmpty }) => {
     const ref = useRef<HTMLDivElement>(null);
@@ -54,17 +46,24 @@ const UngroupedDropZone: FC<React.PropsWithChildren<{ isEmpty: boolean }>> = ({ 
         });
     }, []);
 
-    const className = [
-        styles.ungroupedDropZone,
-        isEmpty ? styles.ungroupedDropZoneEmpty : '',
-    ].filter(Boolean).join(' ');
+    const className = [styles.ungroupedDropZone, isEmpty ? styles.ungroupedDropZoneEmpty : '']
+        .filter(Boolean)
+        .join(' ');
 
     return (
         <div
             ref={ref}
             className={className}
-            style={isDraggedOver && isEmpty ? { borderColor: 'var(--mantine-color-blue-5)' } : undefined}>
-            {isEmpty && isDraggedOver && <Text size="sm" c="dimmed">Drop here to ungroup</Text>}
+            style={isDraggedOver && isEmpty ? { borderColor: 'var(--mantine-color-blue-5)' } : undefined}
+        >
+            {isEmpty && isDraggedOver && (
+                <Text
+                    size="sm"
+                    c="dimmed"
+                >
+                    Drop here to ungroup
+                </Text>
+            )}
             {children}
         </div>
     );
@@ -81,7 +80,9 @@ export const Content: FC<ContentProps> = ({
     mocks,
     groups,
     expandedGroups,
+    expandedMocks,
     onToggleGroup,
+    onToggleMock,
     onCopyMock,
     onDeleteMock,
     onChangeMock,
@@ -201,9 +202,7 @@ export const Content: FC<ContentProps> = ({
 
                     if (sourceGroupId === targetGroupId) {
                         // Same group reorder
-                        const subset = mocks.filter((m) =>
-                            sourceGroupId ? m.groupId === sourceGroupId : !m.groupId,
-                        );
+                        const subset = mocks.filter((m) => (sourceGroupId ? m.groupId === sourceGroupId : !m.groupId));
                         const oldIdx = subset.findIndex((m) => m.id === sourceMockId);
                         const newIdx = subset.findIndex((m) => m.id === targetMockId);
 
@@ -263,13 +262,14 @@ export const Content: FC<ContentProps> = ({
                             onEnableAll={(group) => onToggleMocks(group.id, true)}
                             onDisableAll={(group) => onToggleMocks(group.id, false)}
                         >
-                            {value.mocks.length > 0 && <TableHeader />}
-                            <Stack gap="xs">
+                            <Stack gap="0.5rem">
                                 {value.mocks.map((mock, mockIndex) => (
                                     <Mock
                                         key={mock.id}
                                         mock={mock}
                                         isLast={mockIndex === value.mocks.length - 1}
+                                        isExpanded={expandedMocks.has(mock.id)}
+                                        onToggleExpand={(isExpanded) => onToggleMock(mock.id, isExpanded)}
                                         onEditClick={onEditMock}
                                         onCopyClick={onCopyMock}
                                         onDelete={onDeleteMock}
@@ -284,22 +284,21 @@ export const Content: FC<ContentProps> = ({
 
             <UngroupedDropZone isEmpty={ungroupedMocks.length === 0}>
                 {ungroupedMocks.length > 0 && (
-                    <>
-                        <TableHeader />
-                        <Stack gap="xs">
-                            {ungroupedMocks.map((mock, idx) => (
-                                <Mock
-                                    key={mock.id}
-                                    mock={mock}
-                                    isLast={idx === ungroupedMocks.length - 1}
-                                    onEditClick={onEditMock}
-                                    onCopyClick={onCopyMock}
-                                    onDelete={onDeleteMock}
-                                    onChange={onChangeMock}
-                                />
-                            ))}
-                        </Stack>
-                    </>
+                    <Stack gap="0.5rem">
+                        {ungroupedMocks.map((mock, idx) => (
+                            <Mock
+                                key={mock.id}
+                                mock={mock}
+                                isLast={idx === ungroupedMocks.length - 1}
+                                isExpanded={expandedMocks.has(mock.id)}
+                                onToggleExpand={(isExpanded) => onToggleMock(mock.id, isExpanded)}
+                                onEditClick={onEditMock}
+                                onCopyClick={onCopyMock}
+                                onDelete={onDeleteMock}
+                                onChange={onChangeMock}
+                            />
+                        ))}
+                    </Stack>
                 )}
             </UngroupedDropZone>
         </Stack>

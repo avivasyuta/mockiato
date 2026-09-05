@@ -4,7 +4,7 @@ import { showNotification } from '@mantine/notifications';
 import { THeader } from '../../../../types';
 import { overlaySettings } from '../../../../contstant';
 import { HeaderForm } from '../../../../components/HeaderForm';
-import { HeadersTable } from './components/HeadersTable';
+import { HeaderList } from './components/HeaderList';
 import { ProfileProps } from './types';
 
 export const Profile: FC<ProfileProps> = (props) => {
@@ -52,7 +52,7 @@ export const Profile: FC<ProfileProps> = (props) => {
 
     return (
         <>
-            <HeadersTable
+            <HeaderList
                 headers={requestHeaders}
                 onEdit={onHeaderEdit}
                 onDelete={handleDeleteHeader}

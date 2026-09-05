@@ -10,6 +10,7 @@ import {
     Tabs,
     Text,
     Textarea,
+    TextInput,
 } from '@mantine/core';
 import { nanoid } from 'nanoid';
 import { isNotEmpty } from '@mantine/form';
@@ -30,6 +31,7 @@ type MockFormProps = {
 const initialValues: TMock = {
     id: '',
     url: '',
+    name: '',
     urlType: 'url',
     httpMethod: HttpMethodType.GET,
     httpStatusCode: 200,
@@ -112,12 +114,18 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
 
                 <Divider mb="xs" />
 
+                <UrlInput
+                    valueType={form.values.urlType}
+                    onChangeValueType={handleChangeUrlType}
+                    {...form.getInputProps('url')}
+                />
+
                 <Grid align="flex-start">
                     <Grid.Col span={8}>
-                        <UrlInput
-                            valueType={form.values.urlType}
-                            onChangeValueType={handleChangeUrlType}
-                            {...form.getInputProps('url')}
+                        <TextInput
+                            label="Name"
+                            size="xs"
+                            {...form.getInputProps('name')}
                         />
                     </Grid.Col>
 
