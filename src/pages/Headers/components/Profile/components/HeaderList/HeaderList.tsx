@@ -84,6 +84,7 @@ export const HeaderList: FC<HeaderListProps> = ({ headers, onDelete, onEdit, onC
                 radius="sm"
                 onLabel="ON"
                 offLabel="OFF"
+                color="green"
                 checked={header.isActive}
                 onChange={(e) => handleChangeStatus(e, header)}
               />

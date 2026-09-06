@@ -41,6 +41,7 @@ export const Headers: FC = () => {
               <TextInput
                 size="xs"
                 title="HTTP header key"
+                placeholder="Header key"
                 {...form.getInputProps(`${fieldName}.${index}.key`)}
               />
             </Grid.Col>
@@ -48,6 +49,7 @@ export const Headers: FC = () => {
             <Grid.Col span={6}>
               <TextInput
                 size="xs"
+                placeholder="Header value"
                 {...form.getInputProps(`${fieldName}.${index}.value`)}
               />
             </Grid.Col>
@@ -66,7 +68,6 @@ export const Headers: FC = () => {
       <div>
         <Button
           size="xs"
-          radius="sm"
           variant="outline"
           leftSection={<IconPlaylistAdd size={16} />}
           onClick={handleAddHeader}

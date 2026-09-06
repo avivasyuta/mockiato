@@ -255,6 +255,7 @@ export const Mock: FC<MockProps> = ({
               offLabel="OFF"
               size="xs"
               radius="sm"
+              color="green"
               checked={mock.isActive}
               title="Enable/disable mock"
               onChange={handleChangeStatus}
