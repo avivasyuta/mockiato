@@ -1,25 +1,3 @@
-.tableHeader {
-  display: flex;
-  padding: 0 0.6rem;
-  gap: 0.625rem;
-}
-
-.drag {
-  width: 22px;
-}
-
-.status {
-  width: 35px;
-}
-
-.method {
-  width: 60px;
-}
-
-.url {
-  flex: 1;
-}
-
 .code {
   width: 134px;
 }

@@ -2,6 +2,10 @@
   border: none;
 }
 
+.ace-jsoneditor.ace_editor {
+  font-size: 12px !important;
+}
+
 @media (prefers-color-scheme: dark) {
   .jsoneditor {
     border: none;
