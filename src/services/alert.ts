@@ -1,15 +1,16 @@
 import { nanoid } from 'nanoid';
+
 import { EXTENSION_NAME } from '~/contstant';
 
 const closeTimeout = 10000;
 const stackId = 'mockiato-alert-stack';
 
 const closeSVG =
-    // eslint-disable-next-line max-len
-    '<svg role="button" tabindex="0" aria-hidden="false" data-icon="close" viewBox="0 0 24 24" class="mockiato-alert-close"><path d="M18.7 5.3a1 1 0 0 0-1.4 0L12 10.58l-5.3-5.3a1 1 0 0 0-1.4 1.42L10.58 12l-5.3 5.3a1 1 0 1 0 1.42 1.4L12 13.42l5.3 5.3a1 1 0 0 0 1.4-1.42L13.42 12l5.3-5.3a1 1 0 0 0 0-1.4Z"></path></svg>';
+  // eslint-disable-next-line max-len
+  '<svg role="button" tabindex="0" aria-hidden="false" data-icon="close" viewBox="0 0 24 24" class="mockiato-alert-close"><path d="M18.7 5.3a1 1 0 0 0-1.4 0L12 10.58l-5.3-5.3a1 1 0 0 0-1.4 1.42L10.58 12l-5.3 5.3a1 1 0 1 0 1.42 1.4L12 13.42l5.3 5.3a1 1 0 0 0 1.4-1.42L13.42 12l5.3-5.3a1 1 0 0 0 0-1.4Z"></path></svg>';
 
 const createStyles = () => {
-    const css = `
+  const css = `
         @keyframes mockiatoDFadeIn {
             0% { opacity: 0; }
             100% { opacity: 1; }
@@ -76,69 +77,69 @@ const createStyles = () => {
             font-size: 12px;
         }
     `;
-    const head = document.head || document.getElementsByTagName('head')[0];
-    const style = document.createElement('style');
+  const head = document.head || document.getElementsByTagName('head')[0];
+  const style = document.createElement('style');
 
-    head.appendChild(style);
-    style.appendChild(document.createTextNode(css));
+  head.appendChild(style);
+  style.appendChild(document.createTextNode(css));
 };
 
 export const createStack = (): void => {
-    createStyles();
+  createStyles();
 
-    const stack = document.createElement('div');
+  const stack = document.createElement('div');
 
-    stack.id = stackId;
-    stack.className = 'mockiato-alert-stack';
+  stack.id = stackId;
+  stack.className = 'mockiato-alert-stack';
 
-    const bodyNode = document.getElementsByTagName('body')[0];
-    bodyNode.appendChild(stack);
+  const bodyNode = document.getElementsByTagName('body')[0];
+  bodyNode.appendChild(stack);
 };
 
 const handleClose = (id: string) => {
-    const alert = document.getElementById(id);
-    alert?.remove();
+  const alert = document.getElementById(id);
+  alert?.remove();
 };
 
 const createAlertNode = (url: string | URL): HTMLDivElement => {
-    const id = nanoid();
+  const id = nanoid();
 
-    const alert = document.createElement('div');
-    const close = document.createElement('div');
+  const alert = document.createElement('div');
+  const close = document.createElement('div');
 
-    // eslint-disable-next-line max-len
-    alert.innerHTML = `<div class="mockiato-alert-text"><span>Mockiato intercepted request</span><div class="mockiato-alert-url" title="${url}">${url}</div><div class="mockiato-alert-spoiler">See logs in the «Mockiato» tab in Dev Tools.</div></div>`;
-    alert.className = 'mockiato-alert';
-    alert.id = id;
+  // eslint-disable-next-line max-len
+  alert.innerHTML = `<div class="mockiato-alert-text"><span>Mockiato intercepted request</span><div class="mockiato-alert-url" title="${url}">${url}</div><div class="mockiato-alert-spoiler">See logs in the «Mockiato» tab in Dev Tools.</div></div>`;
+  alert.className = 'mockiato-alert';
+  alert.id = id;
 
-    close.innerHTML = closeSVG;
-    close.onclick = () => handleClose(id);
+  close.innerHTML = closeSVG;
+  close.onclick = () => handleClose(id);
 
-    alert.appendChild(close);
+  alert.appendChild(close);
 
-    return alert;
+  return alert;
 };
 
 const logToConsole = (url: string | URL): void => {
-    const text = `${EXTENSION_NAME} intercepted request to ${url}. See logs in the «Mockiato» tab in Dev Tools.`;
-    // eslint-disable-next-line no-console
-    console.warn(text);
+  const text = `${EXTENSION_NAME} intercepted request to ${url}. See logs in the «Mockiato» tab in Dev Tools.`;
+  // eslint-disable-next-line no-console
+  console.warn(text);
 };
 
 export const showAlert = (url: string) => {
-    logToConsole(url);
-    const alert = createAlertNode(url);
+  logToConsole(url);
+  const alert = createAlertNode(url);
 
-    const stackNode = document.getElementById(stackId);
-    if (!stackNode) {
-        // eslint-disable-next-line no-console
-        console.warn("Mockiato stack node wasn't found.");
-        return;
-    }
+  const stackNode = document.getElementById(stackId);
+  if (!stackNode) {
+    // eslint-disable-next-line no-console
+    console.warn("Mockiato stack node wasn't found.");
+    return;
+  }
 
-    stackNode.appendChild(alert);
+  stackNode.appendChild(alert);
 
-    setTimeout(() => {
-        handleClose(alert.id);
-    }, closeTimeout);
+  setTimeout(() => {
+    handleClose(alert.id);
+  }, closeTimeout);
 };

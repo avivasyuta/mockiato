@@ -1,28 +1,27 @@
 import { FC } from 'react';
-import {
-    Box, ColorSwatch, Group, useMantineTheme,
-} from '@mantine/core';
+import { Box, ColorSwatch, Group, useMantineTheme } from '@mantine/core';
+
 import { THeadersProfileStatus } from '../../../../../../types';
 
 interface ProfileLabelProps {
-    name: string
-    status: THeadersProfileStatus
+  name: string;
+  status: THeadersProfileStatus;
 }
 
 export const ProfileLabel: FC<ProfileLabelProps> = ({ name, status }) => {
-    const theme = useMantineTheme();
+  const theme = useMantineTheme();
 
-    return (
-        <Group
-            wrap="nowrap"
-            title={`«${name}» profile is ${status}`}
-            gap="0.4rem"
-        >
-            <Box>{name}</Box>
-            <ColorSwatch
-                color={status === 'enabled' ? theme.colors.green[6] : theme.colors.gray[6]}
-                size={8}
-            />
-        </Group>
-    );
+  return (
+    <Group
+      wrap="nowrap"
+      title={`«${name}» profile is ${status}`}
+      gap="0.4rem"
+    >
+      <Box>{name}</Box>
+      <ColorSwatch
+        color={status === 'enabled' ? theme.colors.green[6] : theme.colors.gray[6]}
+        size={8}
+      />
+    </Group>
+  );
 };

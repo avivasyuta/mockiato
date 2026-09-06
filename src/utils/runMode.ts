@@ -7,9 +7,9 @@
  * so that the whole UI stays visible during local development.
  */
 export const isStandaloneTab = (): boolean => {
-    if (import.meta.env.VITE_NODE_ENV === 'development') {
-        return false;
-    }
+  if (import.meta.env.VITE_NODE_ENV === 'development') {
+    return false;
+  }
 
-    return !(typeof chrome !== 'undefined' && !!chrome.devtools?.inspectedWindow);
+  return !(typeof chrome !== 'undefined' && !!chrome.devtools?.inspectedWindow);
 };

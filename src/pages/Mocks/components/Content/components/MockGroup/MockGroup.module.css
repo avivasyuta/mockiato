@@ -1,56 +1,56 @@
 .dragHandle {
-    cursor: grab;
-    touch-action: none;
+  cursor: grab;
+  touch-action: none;
 }
 
 .dragHandle:active {
-    cursor: grabbing;
+  cursor: grabbing;
 }
 
 .root {
-    border: 1px dashed;
-    border-radius: 6px;
+  border: 1px dashed;
+  border-radius: 6px;
 }
 
 .content {
-    border-top: 1px dashed;
-    padding: 12px;
+  border-top: 1px dashed;
+  padding: 12px;
 }
 
 .groupName {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
 }
 
 .groupName:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .draggedOver {
-    outline: 2px solid var(--mantine-primary-color-filled);
-    outline-offset: -2px;
+  outline: 2px solid var(--mantine-primary-color-filled);
+  outline-offset: -2px;
 }
 
 @media (prefers-color-scheme: light) {
-    .root {
-        background: var(--mantine-color-gray-1);
-        border-color: var(--mantine-color-gray-5);
-    }
+  .root {
+    background: var(--mantine-color-gray-1);
+    border-color: var(--mantine-color-gray-5);
+  }
 
-    .content {
-        border-color: var(--mantine-color-gray-5);
-    }
+  .content {
+    border-color: var(--mantine-color-gray-5);
+  }
 }
 
 @media (prefers-color-scheme: dark) {
-    .root {
-        background: var(--mantine-color-dark-6);
-        border-color: var(--mantine-color-dark-4);
-    }
+  .root {
+    background: var(--mantine-color-dark-6);
+    border-color: var(--mantine-color-dark-4);
+  }
 
-    .content {
-        border-color: var(--mantine-color-dark-4);
-    }
+  .content {
+    border-color: var(--mantine-color-dark-4);
+  }
 }

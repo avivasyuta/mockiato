@@ -1,12 +1,13 @@
-.form, .tabs {
-    display: flex !important;
-    flex-direction: column !important;
-    flex: 1;
-    min-height: 0;
-    gap: 8px;
+.form,
+.tabs {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1;
+  min-height: 0;
+  gap: 8px;
 }
 
 .tab {
-    padding: 0.5rem 0.8rem;
-    font-size: 0.75rem;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.75rem;
 }

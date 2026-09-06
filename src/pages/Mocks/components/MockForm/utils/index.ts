@@ -1,11 +1,11 @@
-import { TMockHeader, TMock } from '~/types';
+import { TMock, TMockHeader } from '~/types';
 
 export const trimHeaders = (mock: TMock): TMock => ({
-    ...mock,
-    responseHeaders: mock.responseHeaders.reduce((acc: TMockHeader[], header: TMockHeader) => {
-        if (header.key !== '') {
-            return [...acc, header];
-        }
-        return acc;
-    }, []),
+  ...mock,
+  responseHeaders: mock.responseHeaders.reduce((acc: TMockHeader[], header: TMockHeader) => {
+    if (header.key !== '') {
+      return [...acc, header];
+    }
+    return acc;
+  }, []),
 });

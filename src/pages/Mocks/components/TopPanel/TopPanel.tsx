@@ -1,166 +1,168 @@
 import { FC, useState } from 'react';
 import { ActionIcon, Button, Group, Menu, Modal, Text } from '@mantine/core';
 import {
-    IconChevronDown,
-    IconChevronUp,
-    IconDotsVertical,
-    IconPlus,
-    IconSelectAll,
-    IconUpload,
+  IconChevronDown,
+  IconChevronUp,
+  IconDotsVertical,
+  IconPlus,
+  IconSelectAll,
+  IconUpload,
 } from '@tabler/icons-react';
-import { TMock, TMockGroup } from '~/types';
+
 import { Header } from '~/components/Header';
 import { iconSize, overlaySettings } from '~/contstant';
-import { ExportAction } from './components/ExportAction';
-import { type ImportMocksProps, ImportMocksForm } from './components/ImportMocksForm';
+import { TMock, TMockGroup } from '~/types';
+
 import { AddGroupForm } from './components/AddGroupForm';
+import { ExportAction } from './components/ExportAction';
+import { ImportMocksForm, type ImportMocksProps } from './components/ImportMocksForm';
 
 type TopPanelProps = {
-    groups: TMockGroup[];
-    mocks: TMock[];
-    areAllExpanded: boolean;
-    onToggleAll: () => void;
-    onMockAdd: () => void;
-    onGroupAdd: (group: TMockGroup) => void;
-    onMocksImportSuccess: ImportMocksProps['onSuccess'];
+  groups: TMockGroup[];
+  mocks: TMock[];
+  areAllExpanded: boolean;
+  onToggleAll: () => void;
+  onMockAdd: () => void;
+  onGroupAdd: (group: TMockGroup) => void;
+  onMocksImportSuccess: ImportMocksProps['onSuccess'];
 };
 
 type ModalType = 'newGroup' | 'import' | null;
 
 export const TopPanel: FC<TopPanelProps> = ({
-    groups,
-    mocks,
-    areAllExpanded,
-    onToggleAll,
-    onMockAdd,
-    onGroupAdd,
-    onMocksImportSuccess,
+  groups,
+  mocks,
+  areAllExpanded,
+  onToggleAll,
+  onMockAdd,
+  onGroupAdd,
+  onMocksImportSuccess,
 }) => {
-    const [modalContentType, setModalContentType] = useState<ModalType>(null);
-    const [modalTitle, setModalTitle] = useState<string>('');
+  const [modalContentType, setModalContentType] = useState<ModalType>(null);
+  const [modalTitle, setModalTitle] = useState<string>('');
 
-    const handleAddGroup = (group: TMockGroup) => {
-        onGroupAdd(group);
-        setModalContentType(null);
-        setModalTitle('');
-    };
+  const handleAddGroup = (group: TMockGroup) => {
+    onGroupAdd(group);
+    setModalContentType(null);
+    setModalTitle('');
+  };
 
-    const handleImportMocks: ImportMocksProps['onSuccess'] = (newMocks, newGroups) => {
-        onMocksImportSuccess(newMocks, newGroups);
-    };
+  const handleImportMocks: ImportMocksProps['onSuccess'] = (newMocks, newGroups) => {
+    onMocksImportSuccess(newMocks, newGroups);
+  };
 
-    const getModalContent = () => {
-        switch (modalContentType) {
-            case 'import':
-                return <ImportMocksForm onSuccess={handleImportMocks} />;
-            case 'newGroup':
-                return (
-                    <AddGroupForm
-                        groups={groups}
-                        onAdd={handleAddGroup}
-                    />
-                );
-            default:
-                return null;
-        }
-    };
+  const getModalContent = () => {
+    switch (modalContentType) {
+      case 'import':
+        return <ImportMocksForm onSuccess={handleImportMocks} />;
+      case 'newGroup':
+        return (
+          <AddGroupForm
+            groups={groups}
+            onAdd={handleAddGroup}
+          />
+        );
+      default:
+        return null;
+    }
+  };
 
-    return (
-        <Header
-            title={
-                <Text
-                    fz="sm"
-                    fw={500}
-                >
-                    Response Mocks
-                </Text>
-            }
+  return (
+    <Header
+      title={
+        <Text
+          fz="sm"
+          fw={500}
         >
-            <Group gap="xs">
-                {groups.length > 0 && (
-                    <Button
-                        size="compact-xs"
-                        color="gray"
-                        variant="subtle"
-                        radius="sm"
-                        rightSection={areAllExpanded ? <IconChevronUp size={14} /> : <IconChevronDown size={14} />}
-                        onClick={onToggleAll}
-                    >
-                        {areAllExpanded ? 'Collapse All' : 'Expand All'}
-                    </Button>
-                )}
+          Response Mocks
+        </Text>
+      }
+    >
+      <Group gap="xs">
+        {groups.length > 0 && (
+          <Button
+            size="compact-xs"
+            color="gray"
+            variant="subtle"
+            radius="sm"
+            rightSection={areAllExpanded ? <IconChevronUp size={14} /> : <IconChevronDown size={14} />}
+            onClick={onToggleAll}
+          >
+            {areAllExpanded ? 'Collapse All' : 'Expand All'}
+          </Button>
+        )}
 
-                <Button
-                    leftSection={<IconPlus size={16} />}
-                    size="compact-xs"
-                    radius="sm"
-                    title="Add new mock"
-                    onClick={onMockAdd}
-                >
-                    Add Mock
-                </Button>
+        <Button
+          leftSection={<IconPlus size={16} />}
+          size="compact-xs"
+          radius="sm"
+          title="Add new mock"
+          onClick={onMockAdd}
+        >
+          Add Mock
+        </Button>
 
-                <Menu
-                    shadow="md"
-                    width={200}
-                    position="bottom-end"
-                    styles={{
-                        item: {
-                            fontSize: '0.75rem',
-                            padding: '0.5rem',
-                        },
-                    }}
-                >
-                    <Menu.Target>
-                        <ActionIcon
-                            variant="default"
-                            color="blue"
-                            size="sm"
-                            radius="sm"
-                            aria-label="More actions"
-                        >
-                            <IconDotsVertical size={14} />
-                        </ActionIcon>
-                    </Menu.Target>
+        <Menu
+          shadow="md"
+          width={200}
+          position="bottom-end"
+          styles={{
+            item: {
+              fontSize: '0.75rem',
+              padding: '0.5rem',
+            },
+          }}
+        >
+          <Menu.Target>
+            <ActionIcon
+              variant="default"
+              color="blue"
+              size="sm"
+              radius="sm"
+              aria-label="More actions"
+            >
+              <IconDotsVertical size={14} />
+            </ActionIcon>
+          </Menu.Target>
 
-                    <Menu.Dropdown>
-                        <Menu.Item
-                            leftSection={<IconSelectAll size={iconSize} />}
-                            onClick={() => {
-                                setModalContentType('newGroup');
-                                setModalTitle('Add new group');
-                            }}
-                        >
-                            Add new group
-                        </Menu.Item>
+          <Menu.Dropdown>
+            <Menu.Item
+              leftSection={<IconSelectAll size={iconSize} />}
+              onClick={() => {
+                setModalContentType('newGroup');
+                setModalTitle('Add new group');
+              }}
+            >
+              Add new group
+            </Menu.Item>
 
-                        <Menu.Item
-                            leftSection={<IconUpload size={iconSize} />}
-                            onClick={() => {
-                                setModalContentType('import');
-                                setModalTitle('Import mocks');
-                            }}
-                        >
-                            Import mocks
-                        </Menu.Item>
+            <Menu.Item
+              leftSection={<IconUpload size={iconSize} />}
+              onClick={() => {
+                setModalContentType('import');
+                setModalTitle('Import mocks');
+              }}
+            >
+              Import mocks
+            </Menu.Item>
 
-                        <ExportAction
-                            mocks={mocks}
-                            groups={groups}
-                        />
-                    </Menu.Dropdown>
-                </Menu>
+            <ExportAction
+              mocks={mocks}
+              groups={groups}
+            />
+          </Menu.Dropdown>
+        </Menu>
 
-                <Modal
-                    opened={modalContentType !== null}
-                    overlayProps={overlaySettings}
-                    title={modalTitle}
-                    size={modalContentType === 'import' ? 'xl' : 'md'}
-                    onClose={() => setModalContentType(null)}
-                >
-                    {getModalContent()}
-                </Modal>
-            </Group>
-        </Header>
-    );
+        <Modal
+          opened={modalContentType !== null}
+          overlayProps={overlaySettings}
+          title={modalTitle}
+          size={modalContentType === 'import' ? 'xl' : 'md'}
+          onClose={() => setModalContentType(null)}
+        >
+          {getModalContent()}
+        </Modal>
+      </Group>
+    </Header>
+  );
 };

@@ -1,19 +1,19 @@
 .log {
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .headers {
-    display: grid;
-    grid-template-columns: auto 1.5fr;
-    gap: 2px 12px;
-    align-items: center;
-    font-size: 12px;
-    line-height: 12px;
+  display: grid;
+  grid-template-columns: auto 1.5fr;
+  gap: 2px 12px;
+  align-items: center;
+  font-size: 12px;
+  line-height: 12px;
 }
 
 .code {
-    max-height: 300px;
+  max-height: 300px;
 }

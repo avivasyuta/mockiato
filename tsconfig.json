@@ -1,33 +1,33 @@
 {
-    "compilerOptions": {
-        "allowJs": false,
-        "allowUnreachableCode": false,
-        "allowSyntheticDefaultImports": true,
-        "alwaysStrict": true,
-        "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
-        "isolatedModules": true,
-        "jsx": "react-jsx",
-        "lib": ["esnext", "dom"],
-        "module": "ESNext",
-        "moduleResolution": "bundler",
-        "resolveJsonModule": true,
-        "skipLibCheck": true,
-        "sourceMap": true,
-        "strict": true,
-        "target": "ES2020",
-        "paths": {
-            "~/*": ["./src/*"]
-        },
-        "noFallthroughCasesInSwitch": true
+  "compilerOptions": {
+    "allowJs": false,
+    "allowUnreachableCode": false,
+    "allowSyntheticDefaultImports": true,
+    "alwaysStrict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "lib": ["esnext", "dom"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES2020",
+    "paths": {
+      "~/*": ["./src/*"]
     },
-    "include": ["src/**/*"],
-    "exclude": [
-        "node_modules",
-        "node_modules/*",
-        "node_modules/**",
-        "./node_modules",
-        "./node_modules/*",
-        "./node_modules/**"
-    ]
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules",
+    "node_modules/*",
+    "node_modules/**",
+    "./node_modules",
+    "./node_modules/*",
+    "./node_modules/**"
+  ]
 }
