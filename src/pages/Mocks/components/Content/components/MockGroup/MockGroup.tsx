@@ -45,7 +45,7 @@ export const MockGroup: FC<MockGroupProps> = ({
   onEnableAll,
   onDisableAll,
 }) => {
-  const [isOpen, { toggle, open, close }] = useDisclosure(true);
+  const [isOpen, { toggle, open, close }] = useDisclosure(isExpanded);
   const ref = useRef<HTMLDivElement>(null);
   const dragHandleRef = useRef<HTMLButtonElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -177,7 +177,6 @@ export const MockGroup: FC<MockGroupProps> = ({
               <Text ml="xs">{group.name}</Text>
             )}
           </Group>
-
           <Menu
             withinPortal
             position="bottom-end"
