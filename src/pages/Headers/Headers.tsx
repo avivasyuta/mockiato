@@ -15,109 +15,109 @@ import { THeaderFormAction, THeaderFormState } from './components/Profile/types'
 import { TopPanel } from './components/TopPanel';
 
 const initialFormState: THeaderFormState = {
-    isOpen: false,
-    header: undefined,
+  isOpen: false,
+  header: undefined,
 };
 
 const headerFormReducer = (state: THeaderFormState, action: THeaderFormAction): THeaderFormState => {
-    switch (action.type) {
-        case 'open':
-            return { isOpen: true, header: action.payload };
-        case 'close':
-            return { isOpen: false, header: undefined };
-        default:
-            return state;
-    }
+  switch (action.type) {
+    case 'open':
+      return { isOpen: true, header: action.payload };
+    case 'close':
+      return { isOpen: false, header: undefined };
+    default:
+      return state;
+  }
 };
 
 const HeadersPage: React.FC = () => {
-    const [headerForm, dispatchHeaderForm] = useReducer(headerFormReducer, initialFormState);
-    const [profiles, setProfiles] = useStore('headersProfiles');
-    const [isProfileModelOpen, profileModelActions] = useDisclosure(false);
+  const [headerForm, dispatchHeaderForm] = useReducer(headerFormReducer, initialFormState);
+  const [profiles, setProfiles] = useStore('headersProfiles');
+  const [isProfileModelOpen, profileModelActions] = useDisclosure(false);
 
-    const handleAddProfile = (profile: THeadersProfile) => {
-        profileModelActions.close();
-        setProfiles(addProfile(profiles, profile));
-    };
+  const handleAddProfile = (profile: THeadersProfile) => {
+    profileModelActions.close();
+    setProfiles(addProfile(profiles, profile));
+  };
 
-    const handleChangeProfile = (profile: THeadersProfile): void => {
-        setProfiles(changeProfile(profiles, profile));
-    };
+  const handleChangeProfile = (profile: THeadersProfile): void => {
+    setProfiles(changeProfile(profiles, profile));
+  };
 
-    const handleCloseForm = (): void => {
-        dispatchHeaderForm({ type: 'close' });
-    };
+  const handleCloseForm = (): void => {
+    dispatchHeaderForm({ type: 'close' });
+  };
 
-    const handleOpenForm = (header: THeader) => {
-        dispatchHeaderForm({
-            type: 'open',
-            payload: header,
-        });
-    };
+  const handleOpenForm = (header: THeader) => {
+    dispatchHeaderForm({
+      type: 'open',
+      payload: header,
+    });
+  };
 
-    const activeProfileId = useMemo(() => {
-        const arr = Object.values(profiles ?? {});
-        if (arr.length === 0) {
-            return '';
-        }
-        const lastActiveProfile = arr.find((p) => p.lastActive);
-        return lastActiveProfile ? lastActiveProfile.id : arr[0].id;
-    }, [profiles]);
+  const activeProfileId = useMemo(() => {
+    const arr = Object.values(profiles ?? {});
+    if (arr.length === 0) {
+      return '';
+    }
+    const lastActiveProfile = arr.find((p) => p.lastActive);
+    return lastActiveProfile ? lastActiveProfile.id : arr[0].id;
+  }, [profiles]);
 
-    const activeProfile = useMemo(() => (profiles ?? {})[activeProfileId] ?? null, [activeProfileId, profiles]);
+  const activeProfile = useMemo(() => (profiles ?? {})[activeProfileId] ?? null, [activeProfileId, profiles]);
 
-    return (
-        <>
-            {profiles !== null && (
-                <TopPanel
-                    profiles={profiles}
-                    activeProfile={activeProfile}
-                    setProfiles={setProfiles}
-                    onHeaderAdd={handleOpenForm}
-                    onProfileAdd={profileModelActions.open}
-                />
-            )}
+  return (
+    <>
+      {profiles !== null && (
+        <TopPanel
+          profiles={profiles}
+          activeProfile={activeProfile}
+          setProfiles={setProfiles}
+          onHeaderAdd={handleOpenForm}
+          onProfileAdd={profileModelActions.open}
+        />
+      )}
 
-            {profiles === null && <Spinner />}
+      {profiles === null && <Spinner />}
 
-            {profiles !== null && isEmpty(profiles) && (
-                <NotFound
-                    text="No profiles to show"
-                    action={
-                        <Button
-                            leftSection={<IconPlaylistAdd size={16} />}
-                            variant="gradient"
-                            size="compact-xs"
-                            title="Add Profile"
-                            gradient={{ from: 'indigo', to: 'cyan' }}
-                            onClick={profileModelActions.open}
-                        >
-                            Add Profile
-                        </Button>
-                    }
-                />
-            )}
-
-            {activeProfile && (
-                <Profile
-                    headerForm={headerForm}
-                    profile={activeProfile}
-                    onChange={handleChangeProfile}
-                    onHeaderEdit={handleOpenForm}
-                    onCloseHeaderForm={handleCloseForm}
-                />
-            )}
-
-            <Modal
-                opened={isProfileModelOpen}
-                overlayProps={overlaySettings}
-                title="Add new profile"
-                onClose={profileModelActions.close}
+      {profiles !== null && isEmpty(profiles) && (
+        <NotFound
+          text="No profiles to show"
+          action={
+            <Button
+              leftSection={<IconPlaylistAdd size={16} />}
+              variant="gradient"
+              size="compact-xs"
+              title="Add Profile"
+              gradient={{ from: 'indigo', to: 'cyan' }}
+              onClick={profileModelActions.open}
             >
-                <AddProfileForm onSubmit={handleAddProfile} />
-            </Modal>
-        </>
-    );
+              Add Profile
+            </Button>
+          }
+        />
+      )}
+
+      {activeProfile && (
+        <Profile
+          headerForm={headerForm}
+          profile={activeProfile}
+          onChange={handleChangeProfile}
+          onHeaderEdit={handleOpenForm}
+          onCloseHeaderForm={handleCloseForm}
+        />
+      )}
+
+      <Modal
+        opened={isProfileModelOpen}
+        overlayProps={overlaySettings}
+        title="Add new profile"
+        onClose={profileModelActions.close}
+      >
+        <AddProfileForm onSubmit={handleAddProfile} />
+      </Modal>
+    </>
+  );
 };
 
 export const Headers = memo(HeadersPage);

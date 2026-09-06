@@ -6,8 +6,8 @@ import { TMockGroup } from '~/types';
 import { isUnique } from './utils';
 
 type AddGroupFormProps = {
-    groups: TMockGroup[];
-    onAdd: (group: TMockGroup) => void;
+  groups: TMockGroup[];
+  onAdd: (group: TMockGroup) => void;
 };
 
 const maxLength = 64;
@@ -15,52 +15,52 @@ const maxLength = 64;
 type Form = Omit<TMockGroup, 'id'>;
 
 const initialValues: Form = {
-    name: '',
+  name: '',
 };
 
 export const AddGroupForm: FC<AddGroupFormProps> = ({ onAdd, groups }) => {
-    const form = useForm<Form>({
-        initialValues,
-    });
+  const form = useForm<Form>({
+    initialValues,
+  });
 
-    const handleSubmit = (values: Form) => {
-        const unique = isUnique(values.name, groups);
+  const handleSubmit = (values: Form) => {
+    const unique = isUnique(values.name, groups);
 
-        if (!unique) {
-            form.setFieldError('name', 'Group already exists');
-        } else {
-            onAdd({
-                id: nanoid(),
-                ...values,
-            });
-            form.reset();
-        }
-    };
+    if (!unique) {
+      form.setFieldError('name', 'Group already exists');
+    } else {
+      onAdd({
+        id: nanoid(),
+        ...values,
+      });
+      form.reset();
+    }
+  };
 
-    return (
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-            <TextInput
-                data-autofocus
-                label="Group name"
-                maxLength={maxLength}
-                placeholder="Mocks for testing authentication"
-                description={`Maximum ${maxLength} symbols`}
-                required
-                size="xs"
-                {...form.getInputProps('name')}
-            />
+  return (
+    <form onSubmit={form.onSubmit(handleSubmit)}>
+      <TextInput
+        data-autofocus
+        label="Group name"
+        maxLength={maxLength}
+        placeholder="Mocks for testing authentication"
+        description={`Maximum ${maxLength} symbols`}
+        required
+        size="xs"
+        {...form.getInputProps('name')}
+      />
 
-            <Group
-                justify="right"
-                mt="md"
-            >
-                <Button
-                    type="submit"
-                    size="xs"
-                >
-                    Submit
-                </Button>
-            </Group>
-        </form>
-    );
+      <Group
+        justify="right"
+        mt="md"
+      >
+        <Button
+          type="submit"
+          size="xs"
+        >
+          Submit
+        </Button>
+      </Group>
+    </form>
+  );
 };

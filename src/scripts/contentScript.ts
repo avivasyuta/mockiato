@@ -1,14 +1,14 @@
 import { listenMessage, sendMessage } from '~/services/message';
 import { createStack, showAlert } from '~/services/alert';
 import {
-    TInterceptedRequestDTO,
-    TInterceptedRequestMockDTO,
-    TInterceptedResponseDTO,
-    TLog,
-    TMock,
-    TNetworkEvent,
-    TStore,
-    TStoreSettings,
+  TInterceptedRequestDTO,
+  TInterceptedRequestMockDTO,
+  TInterceptedResponseDTO,
+  TLog,
+  TMock,
+  TNetworkEvent,
+  TStore,
+  TStoreSettings,
 } from '~/types';
 import { enabledAttributeName, INTERCEPTOR_ID, STORE_KEY } from '~/contstant';
 import { getValidMocks } from '~/utils/getValidMocks';
@@ -19,161 +19,161 @@ import { createStatus } from '~/services/status';
 import { isExtensionEnabled } from '~/utils/isExtensionEnabled';
 
 const logNetwork = async (store: TStore, event: TNetworkEvent) => {
-    try {
-        await chrome.storage.local.set({
-            [STORE_KEY]: {
-                ...store,
-                network: [...(store.network ?? []), event],
-            },
-        });
-    } catch (err) {
-        logError(err);
-    }
+  try {
+    await chrome.storage.local.set({
+      [STORE_KEY]: {
+        ...store,
+        network: [...(store.network ?? []), event],
+      },
+    });
+  } catch (err) {
+    logError(err);
+  }
 };
 
 const logInterceptedRequest = async (store: TStore, message: TInterceptedRequestDTO, mock: TMock) => {
-    if (store.settings.showNotifications) {
-        showAlert(message.url);
-    }
+  if (store.settings.showNotifications) {
+    showAlert(message.url);
+  }
 
-    const log: TLog = {
-        url: message.url,
-        method: message.method,
-        date: new Date().toISOString(),
-        host: window.location.host,
-        mock,
-    };
+  const log: TLog = {
+    url: message.url,
+    method: message.method,
+    date: new Date().toISOString(),
+    host: window.location.host,
+    mock,
+  };
 
-    try {
-        await chrome.storage.local.set({
-            [STORE_KEY]: {
-                ...store,
-                logs: [...(store.logs ?? []), log],
-            },
-        });
-    } catch (err) {
-        logError(err);
-    }
+  try {
+    await chrome.storage.local.set({
+      [STORE_KEY]: {
+        ...store,
+        logs: [...(store.logs ?? []), log],
+      },
+    });
+  } catch (err) {
+    logError(err);
+  }
 };
 
 const getMock = (store: TStore, message: TInterceptedRequestDTO): TMock | null => {
-    const { origin } = window.location;
+  const { origin } = window.location;
 
-    if (!store?.mocks) {
-        return null;
-    }
+  if (!store?.mocks) {
+    return null;
+  }
 
-    const mocks = getValidMocks({
-        mocks: store.mocks,
-        url: message.url,
-        method: message.method,
-        origin,
-    });
+  const mocks = getValidMocks({
+    mocks: store.mocks,
+    url: message.url,
+    method: message.method,
+    origin,
+  });
 
-    if (mocks.length === 0) {
-        return null;
-    }
+  if (mocks.length === 0) {
+    return null;
+  }
 
-    return mocks[0];
+  return mocks[0];
 };
 
 listenMessage<TInterceptedRequestDTO>('requestIntercepted', async (message) => {
-    try {
-        const store = await getStore();
+  try {
+    const store = await getStore();
 
-        const headers = getValidHeaders({
-            headerProfiles: store.headersProfiles,
-            origin: window.location.origin,
-            url: message.url,
-            method: message.method,
-            type: 'request',
-        });
+    const headers = getValidHeaders({
+      headerProfiles: store.headersProfiles,
+      origin: window.location.origin,
+      url: message.url,
+      method: message.method,
+      type: 'request',
+    });
 
-        const mock = getMock(store, message);
+    const mock = getMock(store, message);
 
-        sendMessage<TInterceptedRequestMockDTO>('requestChecked', {
-            messageId: message.messageId,
-            headers,
-            mock,
-        });
+    sendMessage<TInterceptedRequestMockDTO>('requestChecked', {
+      messageId: message.messageId,
+      headers,
+      mock,
+    });
 
-        if (mock) {
-            await logInterceptedRequest(store, message, mock);
-        }
-    } catch (err) {
-        logError(err);
-        sendMessage<TInterceptedRequestMockDTO>('requestChecked', {
-            messageId: message.messageId,
-            headers: {},
-        });
+    if (mock) {
+      await logInterceptedRequest(store, message, mock);
     }
+  } catch (err) {
+    logError(err);
+    sendMessage<TInterceptedRequestMockDTO>('requestChecked', {
+      messageId: message.messageId,
+      headers: {},
+    });
+  }
 });
 
 listenMessage<TInterceptedResponseDTO>('responseIntercepted', async (message) => {
-    try {
-        const store = await getStore();
-        await logNetwork(store, message.event);
-    } catch (err) {
-        logError(err);
-    }
+  try {
+    const store = await getStore();
+    await logNetwork(store, message.event);
+  } catch (err) {
+    logError(err);
+  }
 });
 
 const destroy = () => {
-    const script = document.getElementById(INTERCEPTOR_ID);
-    script?.parentNode?.removeChild(script);
+  const script = document.getElementById(INTERCEPTOR_ID);
+  script?.parentNode?.removeChild(script);
 };
 
 export const main = async () => {
-    destroy();
+  destroy();
 
-    const store = await initStore();
+  const store = await initStore();
 
-    const isEnabled = isExtensionEnabled(store.settings);
+  const isEnabled = isExtensionEnabled(store.settings);
 
-    // Inject mockiato script to user's DOM
-    const s = document.createElement('script');
-    s.type = 'module';
-    s.id = INTERCEPTOR_ID;
-    s.src = chrome.runtime.getURL('mockiato.js');
+  // Inject mockiato script to user's DOM
+  const s = document.createElement('script');
+  s.type = 'module';
+  s.id = INTERCEPTOR_ID;
+  s.src = chrome.runtime.getURL('mockiato.js');
 
-    if (isEnabled) {
-        s.setAttribute(enabledAttributeName, 'true');
-    }
+  if (isEnabled) {
+    s.setAttribute(enabledAttributeName, 'true');
+  }
 
-    (document.head || document.documentElement).appendChild(s);
+  (document.head || document.documentElement).appendChild(s);
 };
 
 const addActiveStatus = async () => {
-    const store = await getStore();
-    const isEnabled = isExtensionEnabled(store.settings);
+  const store = await getStore();
+  const isEnabled = isExtensionEnabled(store.settings);
 
-    if (store.settings.showActiveStatus) {
-        createStatus(isEnabled);
-    }
+  if (store.settings.showActiveStatus) {
+    createStatus(isEnabled);
+  }
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // Add div for alerts when dom is ready
-    createStack();
-    await addActiveStatus();
+  // Add div for alerts when dom is ready
+  createStack();
+  await addActiveStatus();
 });
 
 main();
 
 chrome.storage.onChanged.addListener((changes) => {
-    Object.entries(changes).forEach(([key, change]) => {
-        if (key === STORE_KEY) {
-            const oldSettings = (change.oldValue as TStore).settings;
-            const newSettings = (change.newValue as TStore).settings;
+  Object.entries(changes).forEach(([key, change]) => {
+    if (key === STORE_KEY) {
+      const oldSettings = (change.oldValue as TStore).settings;
+      const newSettings = (change.newValue as TStore).settings;
 
-            const oldSettingsString = JSON.stringify(oldSettings);
-            const newSettingsString = JSON.stringify(newSettings);
+      const oldSettingsString = JSON.stringify(oldSettings);
+      const newSettingsString = JSON.stringify(newSettings);
 
-            if (oldSettingsString === newSettingsString) {
-                return;
-            }
+      if (oldSettingsString === newSettingsString) {
+        return;
+      }
 
-            sendMessage<TStoreSettings>('settingsChanged', newSettings);
-        }
-    });
+      sendMessage<TStoreSettings>('settingsChanged', newSettings);
+    }
+  });
 });

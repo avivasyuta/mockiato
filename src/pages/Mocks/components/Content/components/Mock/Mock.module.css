@@ -1,42 +1,42 @@
 .mockRow {
-    container-type: inline-size;
+  container-type: inline-size;
 }
 
 .url {
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
-    flex-wrap: nowrap;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  flex-wrap: nowrap;
 }
 
 .urlGroup {
-    flex: 1;
-    min-width: 0;
+  flex: 1;
+  min-width: 0;
 }
 
 .comment {
-    display: flex;
+  display: flex;
 }
 
 .commentBadge {
-    max-width: 30cqw;
+  max-width: 30cqw;
 }
 
 .dragHandle {
-    cursor: grab;
-    touch-action: none;
+  cursor: grab;
+  touch-action: none;
 }
 
 .dragHandle:active {
-    cursor: grabbing;
+  cursor: grabbing;
 }
 
 .details {
-    border-top: 1px solid var(--mantine-color-gray-1);
+  border-top: 1px solid var(--mantine-color-gray-1);
 }
 
 .detailLabel {
-    flex-shrink: 0;
-    width: 8rem;
-    white-space: nowrap;
+  flex-shrink: 0;
+  width: 8rem;
+  white-space: nowrap;
 }

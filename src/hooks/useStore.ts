@@ -4,44 +4,44 @@ import { TStore, TStoreKey, TUpdateStore } from '~/types';
 import { getStoreValue, getUpdatedValue, setStoreValue } from '~/utils/storage';
 
 export const useStore = <Key extends TStoreKey>(
-    key: Key,
+  key: Key,
 ): [TStore[Key] | null, (val: TStore[Key]) => Promise<void>] => {
-    const [value, setValue] = useState<TStore[Key] | null>(null);
+  const [value, setValue] = useState<TStore[Key] | null>(null);
 
-    const updateValue = async (val: TStore[Key]): Promise<void> => {
-        setValue(val);
-        try {
-            await setStoreValue(key, val);
-            window.dispatchEvent(new Event('storage'));
-        } catch (error) {
-            showNotification({
-                message: error instanceof Error ? error.message : 'Failed to save data',
-                color: 'red',
-            });
-        }
-    };
-
-    if (chrome.storage) {
-        chrome.storage.onChanged.addListener(async (data) => {
-            const newValue = getUpdatedValue(data as TUpdateStore, key);
-            if (newValue) {
-                setValue(newValue);
-            }
-        });
+  const updateValue = async (val: TStore[Key]): Promise<void> => {
+    setValue(val);
+    try {
+      await setStoreValue(key, val);
+      window.dispatchEvent(new Event('storage'));
+    } catch (error) {
+      showNotification({
+        message: error instanceof Error ? error.message : 'Failed to save data',
+        color: 'red',
+      });
     }
+  };
 
-    const handleChangeStore = () => {
-        getStoreValue(key).then((data) => {
-            setValue(data);
-        });
-    };
+  if (chrome.storage) {
+    chrome.storage.onChanged.addListener(async (data) => {
+      const newValue = getUpdatedValue(data as TUpdateStore, key);
+      if (newValue) {
+        setValue(newValue);
+      }
+    });
+  }
 
-    useEffect(() => {
-        handleChangeStore();
+  const handleChangeStore = () => {
+    getStoreValue(key).then((data) => {
+      setValue(data);
+    });
+  };
 
-        window.addEventListener('storage', handleChangeStore);
-        return () => window.removeEventListener('storage', handleChangeStore);
-    }, [key]);
+  useEffect(() => {
+    handleChangeStore();
 
-    return [value, updateValue];
+    window.addEventListener('storage', handleChangeStore);
+    return () => window.removeEventListener('storage', handleChangeStore);
+  }, [key]);
+
+  return [value, updateValue];
 };

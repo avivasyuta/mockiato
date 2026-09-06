@@ -1,27 +1,27 @@
 .events {
-    display: grid;
-    row-gap: 8px;
+  display: grid;
+  row-gap: 8px;
 }
 
 .tableHeader {
-    display: flex;
-    padding: 0 .6rem;
-    gap: .625rem;
+  display: flex;
+  padding: 0 0.6rem;
+  gap: 0.625rem;
 }
 
 .date {
-    padding-left: 30px;
-    width: 154px;
+  padding-left: 30px;
+  width: 154px;
 }
 
 .method {
-    width: 66px;
+  width: 66px;
 }
 
 .url {
-    flex: 1;
+  flex: 1;
 }
 
 .code {
-    width: 74px;
+  width: 74px;
 }

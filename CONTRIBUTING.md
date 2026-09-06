@@ -2,12 +2,12 @@ Hi there 👋
 
 # Setup
 
-* Install [Node](http://nodejs.org)
+- Install [Node](http://nodejs.org)
 
-* Fork and clone repo
+- Fork and clone repo
 
-* Enter project `cd mockiato`
+- Enter project `cd mockiato`
 
-* Install dependencies with `npm install`
+- Install dependencies with `npm install`
 
-* Run `npm run start`
+- Run `npm run start`

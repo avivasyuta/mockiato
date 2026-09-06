@@ -5,32 +5,32 @@ import { Menu } from '@mantine/core';
 import { TMock, TMockGroup } from '~/types';
 
 type ExportActionProps = {
-    mocks: TMock[];
-    groups: TMockGroup[];
+  mocks: TMock[];
+  groups: TMockGroup[];
 };
 
 export const ExportAction: FC<ExportActionProps> = ({ mocks, groups }) => {
-    const handleDownload = () => {
-        const data = { mocks, groups };
+  const handleDownload = () => {
+    const data = { mocks, groups };
 
-        const json = JSON.stringify(data, null, 2);
-        const blob = new Blob([json], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
 
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'mockiato-mocks.json';
-        a.click();
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'mockiato-mocks.json';
+    a.click();
 
-        URL.revokeObjectURL(url);
-    };
+    URL.revokeObjectURL(url);
+  };
 
-    return (
-        <Menu.Item
-            leftSection={<IconDownload size={iconSize} />}
-            onClick={handleDownload}
-        >
-            Export mocks
-        </Menu.Item>
-    );
+  return (
+    <Menu.Item
+      leftSection={<IconDownload size={iconSize} />}
+      onClick={handleDownload}
+    >
+      Export mocks
+    </Menu.Item>
+  );
 };

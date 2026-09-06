@@ -9,87 +9,92 @@ import { NetworkEvent } from './components/NetworkEvent';
 import styles from './Network.module.css';
 
 export const Network: React.FC = () => {
-    const tabHost = useTabHost();
-    const [events] = useStore('network');
+  const tabHost = useTabHost();
+  const [events] = useStore('network');
 
-    const filteredNetwork = useMemo(() => {
-        if (!events) {
-            return null;
+  const filteredNetwork = useMemo(() => {
+    if (!events) {
+      return null;
+    }
+
+    return events?.filter((event) => event.host === tabHost);
+  }, [tabHost, events]);
+
+  if (!tabHost) {
+    return null;
+  }
+
+  if (!filteredNetwork) {
+    return <Spinner />;
+  }
+
+  return (
+    <>
+      <Header
+        title={
+          <Group gap="xs">
+            <Text
+              fz="sm"
+              fw={500}
+            >
+              Network
+            </Text>
+            <Badge
+              size="xs"
+              variant="filled"
+              radius="sm"
+            >
+              {tabHost}
+            </Badge>
+          </Group>
         }
+      />
 
-        return events?.filter((event) => event.host === tabHost);
-    }, [tabHost, events]);
-
-    if (!tabHost) {
-        return null;
-    }
-
-    if (!filteredNetwork) {
-        return <Spinner />;
-    }
-
-    return (
+      {filteredNetwork.length === 0 ? (
+        <NotFound text="There are no requsts" />
+      ) : (
         <>
-            <Header title={
-                <Group gap="xs">
-                    <Text
-                        fz="sm"
-                        fw={500}
-                    >
-                        Network
-                    </Text>
-                    <Badge
-                        size="xs"
-                        variant="filled"
-                        radius="sm"
-                    >
-                        {tabHost}
-                    </Badge>
-                </Group>
-            }/>
+          <div className={styles.tableHeader}>
+            <Text
+              size="xs"
+              c="dimmed"
+              className={styles.date}
+            >
+              Date
+            </Text>
+            <Text
+              size="xs"
+              c="dimmed"
+              className={styles.method}
+            >
+              Method
+            </Text>
+            <Text
+              size="xs"
+              c="dimmed"
+              className={styles.url}
+            >
+              URL
+            </Text>
+            <Text
+              size="xs"
+              c="dimmed"
+              className={styles.code}
+            >
+              Status
+            </Text>
+          </div>
 
-            {filteredNetwork.length === 0 ? (
-                <NotFound text="There are no requsts" />
-            ) : (
-                <>
-                    <div className={styles.tableHeader}>
-                        <Text
-                            size="xs"
-                            c="dimmed"
-                            className={styles.date}
-                        >
-                            Date
-                        </Text>
-                        <Text
-                            size="xs"
-                            c="dimmed"
-                            className={styles.method}
-                        >
-                            Method
-                        </Text>
-                        <Text
-                            size="xs"
-                            c="dimmed"
-                            className={styles.url}
-                        >
-                            URL
-                        </Text>
-                        <Text
-                            size="xs"
-                            c="dimmed"
-                            className={styles.code}
-                        >
-                            Status
-                        </Text>
-                    </div>
-
-                    <div className={styles.events}>
-                        {filteredNetwork.map((event) => (
-                            <NetworkEvent key={event.date} event={event} />
-                        ))}
-                    </div>
-                </>
-            )}
+          <div className={styles.events}>
+            {filteredNetwork.map((event) => (
+              <NetworkEvent
+                key={event.date}
+                event={event}
+              />
+            ))}
+          </div>
         </>
-    );
+      )}
+    </>
+  );
 };

@@ -13,24 +13,24 @@ and all of this can be controlled through a sleek, user-friendly interface.
 - **Response Customization**: Define custom response bodies and status codes for different HTTP requests. This is ideal
   for testing different scenarios, including success, error states, and partial responses.
 - **Delay Responses**: Introduce artificial delays to simulate slow responses and test how your application handles different
-loading states.
+  loading states.
 - **Header Management**: Customize request and response headers effortlessly. You can also create different header profiles
-for various environments, such as development, staging, and production, making it easy to switch configurations based on
-your testing needs.
-**DevTools Integration**: Mockiato integrates seamlessly with Chrome's Developer Tools, adding itself as a tab in the
-DevTools panel. From this tab, you can easily view network logs, create and manage mocks, and monitor requests in real
-time.
-**User-Friendly Interface**: Mockiato features a sleek, intuitive UI that makes setting up and managing mocks simple, even
-for those new to testing. All configurations can be managed visually, without any need for complex scripting.
+  for various environments, such as development, staging, and production, making it easy to switch configurations based on
+  your testing needs.
+  **DevTools Integration**: Mockiato integrates seamlessly with Chrome's Developer Tools, adding itself as a tab in the
+  DevTools panel. From this tab, you can easily view network logs, create and manage mocks, and monitor requests in real
+  time.
+  **User-Friendly Interface**: Mockiato features a sleek, intuitive UI that makes setting up and managing mocks simple, even
+  for those new to testing. All configurations can be managed visually, without any need for complex scripting.
 
 ## Use Cases
 
 - **Test Edge Cases**: Simulate slow-loading requests, incorrect data, or error statuses to see how your application behaves
-in real-world scenarios.
+  in real-world scenarios.
 - **Environment-Based Testing**: Create profiles for different environments, such as development, staging, and production, to
-switch between setups easily.
+  switch between setups easily.
 - **API Response Testing**: Mock different types of API responses, such as success, errors, or empty payloads, without having
-to rely on the actual backend or making modifications to it.
+  to rely on the actual backend or making modifications to it.
 
 ## Installation
 
@@ -44,9 +44,9 @@ Once installed, you can access Mockiato from the DevTools panel in your browser.
 ## Getting Started
 
 - **Open DevTools**: press F12 or right-click on a page and select "Inspect" to open Chrome DevTools.
-Navigate to the Mockiato Tab: You will see a new tab named "Mockiato" in the DevTools panel.
+  Navigate to the Mockiato Tab: You will see a new tab named "Mockiato" in the DevTools panel.
 - **Create a Mock**: Click `Add Mock` to start configuring a new mock. You can specify request URLs, response bodies, status
-codes, delays, and headers.
+  codes, delays, and headers.
 - **Group mocks**: group your mock configurations for different use cases.
 
 ## Privacy Policy

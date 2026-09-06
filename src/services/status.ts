@@ -1,7 +1,7 @@
 import { statusNodeId } from '~/contstant';
 
 const createStyles = () => {
-    const css = `
+  const css = `
         @keyframes pulse {
             0% {
                 transform: scale(0.95);
@@ -36,24 +36,24 @@ const createStyles = () => {
             z-index: 9999999999;
         }
     `;
-    const head = document.head || document.getElementsByTagName('head')[0];
-    const style = document.createElement('style');
+  const head = document.head || document.getElementsByTagName('head')[0];
+  const style = document.createElement('style');
 
-    head.appendChild(style);
-    style.appendChild(document.createTextNode(css));
+  head.appendChild(style);
+  style.appendChild(document.createTextNode(css));
 };
 
 export const createStatus = (isEnabled: boolean): void => {
-    createStyles();
+  createStyles();
 
-    const statusNode = document.createElement('div');
+  const statusNode = document.createElement('div');
 
-    statusNode.className = 'mockiato-status';
-    statusNode.id = statusNodeId;
-    statusNode.innerText = 'Mockiato';
-    statusNode.title = 'Mockiato extension enabled for this host';
-    statusNode.style.display = isEnabled ? 'inline-flex' : 'none';
+  statusNode.className = 'mockiato-status';
+  statusNode.id = statusNodeId;
+  statusNode.innerText = 'Mockiato';
+  statusNode.title = 'Mockiato extension enabled for this host';
+  statusNode.style.display = isEnabled ? 'inline-flex' : 'none';
 
-    const bodyNode = document.getElementsByTagName('body')[0];
-    bodyNode.appendChild(statusNode);
+  const bodyNode = document.getElementsByTagName('body')[0];
+  bodyNode.appendChild(statusNode);
 };

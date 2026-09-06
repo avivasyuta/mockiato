@@ -3,109 +3,109 @@ import { STORE_KEY } from '~/contstant';
 import { isObject } from './isObject';
 
 const emptyStore: TStore = {
-    mocks: [],
-    mockGroups: [],
-    logs: [],
-    headersProfiles: {},
-    network: [],
-    settings: {
-        showNotifications: true,
-        showActiveStatus: true,
-        enabledHosts: {},
-        showMobileNavBar: false,
-        commentDisplayMode: 'tooltip',
-    },
+  mocks: [],
+  mockGroups: [],
+  logs: [],
+  headersProfiles: {},
+  network: [],
+  settings: {
+    showNotifications: true,
+    showActiveStatus: true,
+    enabledHosts: {},
+    showMobileNavBar: false,
+    commentDisplayMode: 'tooltip',
+  },
 };
 
 const getLocalStorage = (): TStore | undefined => {
-    const data = localStorage.getItem(STORE_KEY);
-    return data ? JSON.parse(data) : undefined;
+  const data = localStorage.getItem(STORE_KEY);
+  return data ? JSON.parse(data) : undefined;
 };
 
 const getExtensionStore = async (): Promise<TStore | undefined> => {
-    const response = await chrome.storage.local.get(STORE_KEY);
-    return response[STORE_KEY] as TStore;
+  const response = await chrome.storage.local.get(STORE_KEY);
+  return response[STORE_KEY] as TStore;
 };
 
 export const getStore = async (): Promise<TStore> => {
-    let store: TStore | undefined;
+  let store: TStore | undefined;
 
-    if (import.meta.env.VITE_NODE_ENV === 'development') {
-        store = getLocalStorage();
-    } else {
-        store = await getExtensionStore();
-    }
+  if (import.meta.env.VITE_NODE_ENV === 'development') {
+    store = getLocalStorage();
+  } else {
+    store = await getExtensionStore();
+  }
 
-    return store ?? emptyStore;
+  return store ?? emptyStore;
 };
 
 export const setStore = async (store: TStore): Promise<void> => {
-    try {
-        if (import.meta.env.VITE_NODE_ENV === 'development') {
-            localStorage.setItem(STORE_KEY, JSON.stringify(store));
-        } else {
-            await chrome.storage.local.set({ [STORE_KEY]: store });
-        }
-    } catch (error) {
-        const message =
-            error instanceof Error && error.message.includes('QUOTA_BYTES')
-                ? 'Storage quota exceeded. Try removing unused mocks or logs to free up space.'
-                : 'Failed to save data to storage.';
-        throw new Error(message);
+  try {
+    if (import.meta.env.VITE_NODE_ENV === 'development') {
+      localStorage.setItem(STORE_KEY, JSON.stringify(store));
+    } else {
+      await chrome.storage.local.set({ [STORE_KEY]: store });
     }
+  } catch (error) {
+    const message =
+      error instanceof Error && error.message.includes('QUOTA_BYTES')
+        ? 'Storage quota exceeded. Try removing unused mocks or logs to free up space.'
+        : 'Failed to save data to storage.';
+    throw new Error(message);
+  }
 };
 
 export const getUpdatedValue = <StoreKey extends TStoreKey>(
-    update: TUpdateStore,
-    key: StoreKey,
+  update: TUpdateStore,
+  key: StoreKey,
 ): TStore[StoreKey] | null => {
-    const { newValue, oldValue } = update[STORE_KEY];
-    const oldValString = JSON.stringify(oldValue[key]);
-    const newValString = JSON.stringify(newValue[key]);
+  const { newValue, oldValue } = update[STORE_KEY];
+  const oldValString = JSON.stringify(oldValue[key]);
+  const newValString = JSON.stringify(newValue[key]);
 
-    if (oldValString === newValString) {
-        return null;
-    }
+  if (oldValString === newValString) {
+    return null;
+  }
 
-    return newValue[key];
+  return newValue[key];
 };
 
 export const getStoreValue = async <StoreKey extends TStoreKey>(key: StoreKey): Promise<TStore[StoreKey]> => {
-    const store = await getStore();
-    return store[key];
+  const store = await getStore();
+  return store[key];
 };
 
 export const setStoreValue = async <StoreKey extends TStoreKey>(
-    key: StoreKey,
-    value: TStore[StoreKey],
+  key: StoreKey,
+  value: TStore[StoreKey],
 ): Promise<void> => {
-    const store = await getStore();
+  const store = await getStore();
 
-    const newStore: TStore = {
-        ...store,
-        [key]: value,
-    };
+  const newStore: TStore = {
+    ...store,
+    [key]: value,
+  };
 
-    await setStore(newStore);
+  await setStore(newStore);
 };
 
 export const initStore = async <StoreKey extends TStoreKey>(): Promise<TStore> => {
-    const initialStore = structuredClone(emptyStore);
-    const store = await getStore();
+  const initialStore = structuredClone(emptyStore);
+  const store = await getStore();
 
-    Object.keys(initialStore).forEach((key) => {
-        const k = key as StoreKey;
-        const existingValue = store[k];
+  Object.keys(initialStore).forEach((key) => {
+    const k = key as StoreKey;
+    const existingValue = store[k];
 
-        if (existingValue && k !== 'network') {
-            if (isObject(existingValue)) {
-                initialStore[k] = { ...initialStore[k], ...existingValue };
-            } else {
-                initialStore[k] = existingValue;
-            }
-        }
-    });
+    if (existingValue && k !== 'network') {
+      if (isObject(existingValue)) {
+        initialStore[k] = { ...initialStore[k], ...existingValue };
+      } else {
+        initialStore[k] = existingValue;
+      }
+    }
+  });
 
-    await setStore(initialStore);
-    return initialStore;
+  await setStore(initialStore);
+  return initialStore;
 };

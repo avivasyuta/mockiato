@@ -1,16 +1,16 @@
 .editor {
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    overflow: hidden;
-    flex: 1;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  overflow: hidden;
+  flex: 1;
 }
 
 .editor:focus-within {
-    border-color: #339af0;
+  border-color: #339af0;
 }
 
 @media (prefers-color-scheme: dark) {
-    .editor {
-        border-color: #2C2E33;
-    }
+  .editor {
+    border-color: #2c2e33;
+  }
 }

@@ -1,6 +1,6 @@
 {
-    "extends": "stylelint-config-standard",
-    "rules": {
-        "selector-class-pattern": "[a-zA-Z-_]+"
-    }
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "selector-class-pattern": "[a-zA-Z-_]+"
+  }
 }

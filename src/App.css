@@ -1,20 +1,19 @@
 body {
-    min-height: 100vh;
+  min-height: 100vh;
 }
 
 @media (prefers-color-scheme: light) {
-    body {
-        background-color: var(--mantine-color-gray-2);
-
-    }
+  body {
+    background-color: var(--mantine-color-gray-2);
+  }
 }
 
 @media (prefers-color-scheme: dark) {
-    body {
-        background-color: var(--mantine-color-dark-9);
-    }
+  body {
+    background-color: var(--mantine-color-dark-9);
+  }
 }
 
 :root {
-    --app-shell-padding: 0
+  --app-shell-padding: 0;
 }
