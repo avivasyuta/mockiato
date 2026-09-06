@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActionIcon, Code, Collapse, Group, Text } from '@mantine/core';
+import { ActionIcon, Code, Collapse, Group, Stack, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconChevronDown, IconChevronRight } from '@tabler/icons-react';
 
@@ -34,14 +34,16 @@ export const Log: React.FC<LogProps> = ({ log }) => {
     <Card
       key={log.date}
       className={styles.log}
-      p="0.2rem 0.6rem"
+      p="0.34rem"
     >
       <>
         <Group>
           <ActionIcon
             variant="subtle"
-            onClick={toggle}
             size="sm"
+            radius="sm"
+            color="gray"
+            onClick={toggle}
           >
             {isOpen ? <IconChevronDown size={14} /> : <IconChevronRight size={14} />}
           </ActionIcon>
@@ -57,70 +59,78 @@ export const Log: React.FC<LogProps> = ({ log }) => {
         </Group>
 
         <Collapse expanded={isOpen}>
-          <Text size="xs">Request was intercepted and response mocked.</Text>
-
-          <Text
-            size="xs"
-            mt="sm"
+          <Stack
+            gap="0.1rem"
+            pt="0.3rem"
+            px="0.45rem"
+            mt="0.3rem"
+            className={styles.details}
           >
-            <strong>Response status code:</strong> <HttpStatus status={log.mock.httpStatusCode} />
-          </Text>
+            <Text size="xs">Request was intercepted and response mocked.</Text>
 
-          <Text size="xs">
-            <strong>Response type:</strong> {log.mock.responseType}
-          </Text>
-
-          {log.mock.responseHeaders.length > 0 ? (
-            <>
-              <Text
-                size="xs"
-                mt="sm"
-                fw={700}
-              >
-                Response headers
-              </Text>
-              <Code
-                block
-                className={styles.code}
-              >
-                <div className={styles.headers}>
-                  {log.mock.responseHeaders.map((header) => (
-                    <>
-                      <Text size="xs">{header.key}:</Text>
-                      <Text size="xs">{header.value}</Text>
-                    </>
-                  ))}
-                </div>
-              </Code>
-            </>
-          ) : (
-            <Text size="xs">
-              <strong>Response headers:</strong> empty
+            <Text
+              size="xs"
+              mt="sm"
+            >
+              <strong>Response status code:</strong> <HttpStatus status={log.mock.httpStatusCode} />
             </Text>
-          )}
 
-          {log.mock.response ? (
-            <>
-              <Text
-                size="xs"
-                mt="sm"
-                fw={700}
-              >
-                Response body
-              </Text>
-
-              <Code
-                block
-                className={styles.code}
-              >
-                {getBodyText(log.mock.responseType, log.mock.response)}
-              </Code>
-            </>
-          ) : (
             <Text size="xs">
-              <strong>Response body:</strong> empty
+              <strong>Response type:</strong> {log.mock.responseType}
             </Text>
-          )}
+
+            {log.mock.responseHeaders.length > 0 ? (
+              <>
+                <Text
+                  size="xs"
+                  mt="sm"
+                  fw={700}
+                >
+                  Response headers
+                </Text>
+                <Code
+                  block
+                  className={styles.code}
+                >
+                  <div className={styles.headers}>
+                    {log.mock.responseHeaders.map((header) => (
+                      <>
+                        <Text size="xs">{header.key}:</Text>
+                        <Text size="xs">{header.value}</Text>
+                      </>
+                    ))}
+                  </div>
+                </Code>
+              </>
+            ) : (
+              <Text size="xs">
+                <strong>Response headers:</strong> empty
+              </Text>
+            )}
+
+            {log.mock.response ? (
+              <>
+                <Text
+                  size="xs"
+                  mt="sm"
+                  fw={700}
+                >
+                  Response body
+                </Text>
+
+                <Code
+                  block
+                  className={styles.code}
+                >
+                  {getBodyText(log.mock.responseType, log.mock.response)}
+                </Code>
+              </>
+            ) : (
+              <Text size="xs">
+                <strong>Response body:</strong> empty
+              </Text>
+            )}
+          </Stack>
         </Collapse>
       </>
     </Card>

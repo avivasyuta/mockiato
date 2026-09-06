@@ -19,7 +19,7 @@ export const Logs: React.FC = () => {
     const logsArray = logs ?? [];
     const filtered = logsArray.filter((log) => log.host !== tabHost);
     setLogs(filtered);
-  }, [logs, tabHost]);
+  }, [logs, setLogs, tabHost]);
 
   const filteredLogs = useMemo(() => {
     if (!logs) {
@@ -66,12 +66,13 @@ export const Logs: React.FC = () => {
           <Button
             variant="light"
             size="compact-xs"
-            rightSection={<IconTrash size={12} />}
+            radius="sm"
+            leftSection={<IconTrash size={12} />}
             color="red"
-            title={`Clear logs for host ${tabHost}`}
+            title={`Erase all logs for host ${tabHost}`}
             onClick={handleClearMocks}
           >
-            Clear logs
+            Erase all logs
           </Button>
         )}
       </Header>

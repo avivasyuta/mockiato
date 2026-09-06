@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { ActionIcon, Code, Collapse, Group, Text, Tooltip } from '@mantine/core';
+import { ActionIcon, Code, Collapse, Group, Stack, Text, Tooltip } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { showNotification } from '@mantine/notifications';
 import { IconChevronDown, IconChevronRight, IconSquarePlus } from '@tabler/icons-react';
@@ -49,7 +49,7 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
     <Card
       key={event.date}
       className={styles.log}
-      p="0.2rem 0.6rem"
+      p="0.34rem"
     >
       <>
         <Group>
@@ -82,9 +82,7 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
             {event.request.url}
           </Text>
 
-          <Text size="xs">
-            <HttpStatus status={event.response.httpStatusCode} />
-          </Text>
+          <HttpStatus status={event.response.httpStatusCode} />
 
           <Group gap="0.4rem">
             <Tooltip
@@ -108,40 +106,48 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
         </Group>
 
         <Collapse expanded={isOpen}>
-          <Text size="xs">
-            <strong>Response type:</strong> {event.response.type}
-          </Text>
-
-          {event.response.headers.length > 0 ? (
-            <>
-              <Text
-                size="xs"
-                mt="sm"
-                fw={700}
-              >
-                Response headers
-              </Text>
-              <Code
-                block
-                className={styles.code}
-              >
-                <div className={styles.headers}>
-                  {event.response.headers.map((header) => (
-                    <>
-                      <Text size="xs">{header.key}:</Text>
-                      <Text size="xs">{header.value}</Text>
-                    </>
-                  ))}
-                </div>
-              </Code>
-            </>
-          ) : (
+          <Stack
+            gap="0.1rem"
+            pt="0.3rem"
+            px="0.45rem"
+            mt="0.3rem"
+            className={styles.details}
+          >
             <Text size="xs">
-              <strong>Response headers:</strong> empty
+              <strong>Response type:</strong> {event.response.type}
             </Text>
-          )}
 
-          <ResponseBody body={event.response.body} />
+            {event.response.headers.length > 0 ? (
+              <>
+                <Text
+                  size="xs"
+                  mt="sm"
+                  fw={700}
+                >
+                  Response headers
+                </Text>
+                <Code
+                  block
+                  className={styles.code}
+                >
+                  <div className={styles.headers}>
+                    {event.response.headers.map((header) => (
+                      <>
+                        <Text size="xs">{header.key}:</Text>
+                        <Text size="xs">{header.value}</Text>
+                      </>
+                    ))}
+                  </div>
+                </Code>
+              </>
+            ) : (
+              <Text size="xs">
+                <strong>Response headers:</strong> empty
+              </Text>
+            )}
+
+            <ResponseBody body={event.response.body} />
+          </Stack>
         </Collapse>
       </>
     </Card>

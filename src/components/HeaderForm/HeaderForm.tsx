@@ -88,7 +88,7 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
 
           <Button
             type="submit"
-            size="compact-sm"
+            size="xs"
           >
             Save
           </Button>

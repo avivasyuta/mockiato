@@ -7,6 +7,7 @@ import {
   NumberInput,
   SegmentedControl,
   Select,
+  Stack,
   Tabs,
   Text,
   Textarea,
@@ -116,96 +117,11 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
 
         <Divider mb="xs" />
 
-        <UrlInput
-          valueType={form.values.urlType}
-          onChangeValueType={handleChangeUrlType}
-          {...form.getInputProps('url')}
-        />
-
-        <Grid align="flex-start">
-          <Grid.Col span={8}>
-            <TextInput
-              label="Name"
-              size="xs"
-              {...form.getInputProps('name')}
-            />
-          </Grid.Col>
-
-          <Grid.Col span={4}>
-            <Text
-              size="xs"
-              mb="0.3rem"
-            >
-              Status
-            </Text>
-
-            <SegmentedControl
-              size="xs"
-              fullWidth
-              color={form.values.isActive ? 'blue' : 'gray'}
-              value={form.values.isActive ? 'enabled' : 'disabled'}
-              data={[
-                {
-                  label: 'Enabled',
-                  value: 'enabled',
-                },
-                {
-                  label: 'Disabled',
-                  value: 'disabled',
-                },
-              ]}
-              onChange={handleChangeStatus}
-            />
-          </Grid.Col>
-        </Grid>
-
-        <Grid>
-          <Grid.Col span={4}>
-            <Select
-              required
-              label="Request method"
-              data={httpMethods}
-              size="xs"
-              {...form.getInputProps('httpMethod')}
-            />
-          </Grid.Col>
-
-          <Grid.Col span={4}>
-            <NumberInput
-              required
-              label="Response status code"
-              min={100}
-              max={599}
-              size="xs"
-              {...form.getInputProps('httpStatusCode')}
-            />
-          </Grid.Col>
-
-          <Grid.Col span={4}>
-            <NumberInput
-              label="Delay, ms"
-              min={0}
-              max={maxDelay}
-              size="xs"
-              {...form.getInputProps('delay')}
-            />
-          </Grid.Col>
-        </Grid>
-
-        <Select
-          label="Group"
-          size="xs"
-          data={groupsOptions}
-          searchable
-          disabled={groups?.length === 0}
-          {...form.getInputProps('groupId')}
-        />
-
         <Tabs
           mt="xs"
-          variant="outline"
           className={styles.tabs}
-          defaultValue="response"
+          defaultValue="general"
+          variant="pills"
           styles={() => ({
             panel: {
               flex: 1,
@@ -217,27 +133,130 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
         >
           <Tabs.List>
             <Tabs.Tab
-              value="response"
+              value="general"
+              className={styles.tab}
+            >
+              General
+            </Tabs.Tab>
+
+            <Tabs.Tab
+              value="body"
               className={styles.tab}
             >
               Response Body
             </Tabs.Tab>
+
             <Tabs.Tab
               value="headers"
               className={styles.tab}
             >
               Response Headers
             </Tabs.Tab>
-            <Tabs.Tab
-              value="comments"
-              className={styles.tab}
-            >
-              Comment
-            </Tabs.Tab>
           </Tabs.List>
 
           <Tabs.Panel
-            value="response"
+            value="general"
+            pt="xs"
+          >
+            <Stack gap="sm">
+              <UrlInput
+                valueType={form.values.urlType}
+                onChangeValueType={handleChangeUrlType}
+                {...form.getInputProps('url')}
+              />
+
+              <Grid align="flex-start">
+                <Grid.Col span={8}>
+                  <TextInput
+                    label="Name"
+                    size="xs"
+                    {...form.getInputProps('name')}
+                  />
+                </Grid.Col>
+
+                <Grid.Col span={4}>
+                  <Text
+                    size="xs"
+                    mb="0.3rem"
+                    fw={600}
+                  >
+                    Status
+                  </Text>
+
+                  <SegmentedControl
+                    size="xs"
+                    fullWidth
+                    color={form.values.isActive ? 'green' : 'gray'}
+                    value={form.values.isActive ? 'enabled' : 'disabled'}
+                    data={[
+                      {
+                        label: 'Enabled',
+                        value: 'enabled',
+                      },
+                      {
+                        label: 'Disabled',
+                        value: 'disabled',
+                      },
+                    ]}
+                    onChange={handleChangeStatus}
+                  />
+                </Grid.Col>
+              </Grid>
+
+              <Grid>
+                <Grid.Col span={4}>
+                  <Select
+                    required
+                    label="Request method"
+                    data={httpMethods}
+                    size="xs"
+                    {...form.getInputProps('httpMethod')}
+                  />
+                </Grid.Col>
+
+                <Grid.Col span={4}>
+                  <NumberInput
+                    required
+                    label="Response status code"
+                    min={100}
+                    max={599}
+                    size="xs"
+                    {...form.getInputProps('httpStatusCode')}
+                  />
+                </Grid.Col>
+
+                <Grid.Col span={4}>
+                  <NumberInput
+                    label="Delay, ms"
+                    min={0}
+                    max={maxDelay}
+                    size="xs"
+                    {...form.getInputProps('delay')}
+                  />
+                </Grid.Col>
+              </Grid>
+
+              <Select
+                label="Group"
+                size="xs"
+                data={groupsOptions}
+                searchable
+                disabled={groups?.length === 0}
+                {...form.getInputProps('groupId')}
+              />
+
+              <Textarea
+                label="Comment"
+                size="xs"
+                autosize
+                minRows={5}
+                {...form.getInputProps('comment')}
+              />
+            </Stack>
+          </Tabs.Panel>
+
+          <Tabs.Panel
+            value="body"
             pt="xs"
           >
             <Response />
@@ -248,18 +267,6 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
             pt="xs"
           >
             <Headers />
-          </Tabs.Panel>
-
-          <Tabs.Panel
-            value="comments"
-            pt="xs"
-          >
-            <Textarea
-              size="xs"
-              autosize
-              minRows={5}
-              {...form.getInputProps('comment')}
-            />
           </Tabs.Panel>
         </Tabs>
       </form>
