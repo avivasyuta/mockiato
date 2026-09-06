@@ -93,7 +93,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
             return false;
         }
         return settings?.enabledHosts[tabHost] ?? false;
-    }, [settings?.enabledHosts]);
+    }, [settings?.enabledHosts, tabHost]);
 
     const toggleMocking = async () => {
         if (!settings || !tabHost) {
