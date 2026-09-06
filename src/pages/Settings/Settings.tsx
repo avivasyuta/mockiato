@@ -119,6 +119,17 @@ export const Settings = () => {
     });
   };
 
+  const handleToggleDisplayHttpMethodInline = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!settings) {
+      return;
+    }
+
+    await setSettings({
+      ...settings,
+      displayHttpMethodInline: e.target.checked,
+    });
+  };
+
   if (!settings) {
     return null;
   }
@@ -219,6 +230,23 @@ export const Settings = () => {
               c="dimmed"
             >
               Display mock comments as inline text in the mock list instead of a tooltip on hover.
+            </Text>
+          </Stack>
+
+          <Stack gap="0.4rem">
+            <Switch
+              size="xs"
+              onLabel="ON"
+              offLabel="OFF"
+              label="Show http method inline"
+              checked={settings?.displayHttpMethodInline}
+              onChange={handleToggleDisplayHttpMethodInline}
+            />
+            <Text
+              size="xs"
+              c="dimmed"
+            >
+              Display the HTTP method as inline text in the mock snippet.
             </Text>
           </Stack>
 

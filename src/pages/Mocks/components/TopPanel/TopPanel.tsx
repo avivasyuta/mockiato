@@ -11,16 +11,20 @@ import {
 
 import { Header } from '~/components/Header';
 import { iconSize, overlaySettings } from '~/contstant';
+import { TMockFilters } from '~/pages/Mocks/types';
 import { TMock, TMockGroup } from '~/types';
 
 import { AddGroupForm } from './components/AddGroupForm';
 import { ExportAction } from './components/ExportAction';
 import { ImportMocksForm, type ImportMocksProps } from './components/ImportMocksForm';
+import { MockFilters } from './components/MockFilters';
 
 type TopPanelProps = {
   groups: TMockGroup[];
   mocks: TMock[];
   areAllExpanded: boolean;
+  filters: TMockFilters;
+  onFiltersChange: (filters: TMockFilters) => void;
   onToggleAll: () => void;
   onMockAdd: () => void;
   onGroupAdd: (group: TMockGroup) => void;
@@ -33,6 +37,8 @@ export const TopPanel: FC<TopPanelProps> = ({
   groups,
   mocks,
   areAllExpanded,
+  filters,
+  onFiltersChange,
   onToggleAll,
   onMockAdd,
   onGroupAdd,
@@ -78,6 +84,12 @@ export const TopPanel: FC<TopPanelProps> = ({
         </Text>
       }
     >
+      <MockFilters
+        mocks={mocks}
+        filters={filters}
+        onChange={onFiltersChange}
+      />
+
       <Group gap="xs">
         {groups.length > 0 && (
           <Button

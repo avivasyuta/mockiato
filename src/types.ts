@@ -119,6 +119,7 @@ export type TStoreSettings = {
   enabledHosts: Record<string, boolean>;
   showMobileNavBar: boolean;
   commentDisplayMode: TCommentDisplayMode;
+  displayHttpMethodInline: boolean;
 };
 
 export type TStore = {

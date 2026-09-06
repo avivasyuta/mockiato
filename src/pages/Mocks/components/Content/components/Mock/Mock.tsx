@@ -188,36 +188,40 @@ export const Mock: FC<MockProps> = ({
               </>
             )}
 
-            <Group
-              gap="0.2rem"
-              className={styles.urlGroup}
-              wrap="nowrap"
-            >
-              {mock.urlType === 'regexp' && (
-                <Tooltip
-                  label="RegExp enabled"
-                  position="bottom"
-                  transitionProps={{ transition: 'scale' }}
-                  openDelay={150}
-                  withArrow
-                >
-                  <IconRegex
-                    size={12}
-                    color="#9775fa"
-                    style={{ flexShrink: 0 }}
-                  />
-                </Tooltip>
-              )}
+            <Group gap="sm">
+              {settings?.displayHttpMethodInline && <HttpMethod method={mock.httpMethod} />}
 
-              <Text
-                size="xs"
-                truncate="end"
-                c="gray.6"
-                flex={1}
-                miw={0}
+              <Group
+                gap="0.4rem"
+                className={styles.urlGroup}
+                wrap="nowrap"
               >
-                {mock.url}
-              </Text>
+                {mock.urlType === 'regexp' && (
+                  <Tooltip
+                    label="RegExp enabled"
+                    position="bottom"
+                    transitionProps={{ transition: 'scale' }}
+                    openDelay={150}
+                    withArrow
+                  >
+                    <IconRegex
+                      size={12}
+                      color="#9775fa"
+                      style={{ flexShrink: 0 }}
+                    />
+                  </Tooltip>
+                )}
+
+                <Text
+                  size="xs"
+                  truncate="end"
+                  c="gray.6"
+                  flex={1}
+                  miw={0}
+                >
+                  {mock.url}
+                </Text>
+              </Group>
             </Group>
           </Group>
 

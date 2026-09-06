@@ -43,7 +43,7 @@ export const App = () => {
 
           <AppShell
             layout="alt"
-            header={{ height: 35 }}
+            header={{ height: 40 }}
             navbar={{
               width: 220,
               breakpoint: 'xs',
