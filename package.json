@@ -10,7 +10,6 @@
     "@mantine/form": "^9.6.0",
     "@mantine/hooks": "^9.6.0",
     "@mantine/modals": "^9.6.0",
-    "@mantine/next": "^6.0.22",
     "@mantine/notifications": "^9.6.0",
     "@mantine/utils": "^6.0.22",
     "@mswjs/interceptors": "0.25.2",
