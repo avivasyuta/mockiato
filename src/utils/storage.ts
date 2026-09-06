@@ -15,6 +15,7 @@ const emptyStore: TStore = {
     enabledHosts: {},
     showMobileNavBar: false,
     commentDisplayMode: 'tooltip',
+    displayHttpMethodInline: false,
   },
 };
 

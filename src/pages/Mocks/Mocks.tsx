@@ -15,7 +15,7 @@ import { mergeMocks } from '~/utils/mergeMocks';
 import { Content } from './components/Content';
 import { MockForm } from './components/MockForm';
 import { TopPanel } from './components/TopPanel';
-import { TMockFormAction, TMockFormState } from './types';
+import { TMockFilters, TMockFormAction, TMockFormState } from './types';
 
 const initialMockFormState: TMockFormState = {
   isOpened: false,
@@ -40,12 +40,19 @@ const mockFormReducer = (state: TMockFormState, action: TMockFormAction): TMockF
   }
 };
 
+const emptyMockFilters: TMockFilters = {
+  search: '',
+  httpMethod: null,
+  httpStatusCode: null,
+};
+
 const MocksPage: React.FC = () => {
   const [mockForm, dispatchMockForm] = useReducer(mockFormReducer, initialMockFormState);
   const [mocks, setMocks] = useStore('mocks');
   const [groups, setGroups] = useStore('mockGroups');
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
   const [expandedMocks, setExpandedMocks] = useState<Set<string>>(new Set());
+  const [filters, setFilters] = useState<TMockFilters>(emptyMockFilters);
 
   // Initialize expanded groups when groups are loaded
   useEffect(() => {
@@ -256,6 +263,8 @@ const MocksPage: React.FC = () => {
         groups={groups}
         mocks={mocks}
         areAllExpanded={areAllExpanded}
+        filters={filters}
+        onFiltersChange={setFilters}
         onToggleAll={handleToggleAll}
         onMockAdd={handleOpenForm}
         onGroupAdd={handleAddGroup}
@@ -266,6 +275,7 @@ const MocksPage: React.FC = () => {
         <Content
           mocks={mocks}
           groups={groups}
+          filters={filters}
           expandedGroups={expandedGroups}
           expandedMocks={expandedMocks}
           onToggleGroup={handleToggleGroup}

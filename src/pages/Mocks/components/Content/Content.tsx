@@ -4,9 +4,12 @@ import { dropTargetForElements, monitorForElements } from '@atlaskit/pragmatic-d
 import { Stack, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
 
+import { NotFound } from '~/components/NotFound';
 import { TMock, TMockGroup } from '~/types';
 import { filterMocks } from '~/utils/filterMocks';
+import { isMockFiltersActive, matchMockFilters } from '~/utils/matchMockFilters';
 
+import { TMockFilters } from '../../types';
 import { Mock } from './components/Mock';
 import { MockGroup } from './components/MockGroup';
 import styles from './Content.module.css';
@@ -14,6 +17,7 @@ import styles from './Content.module.css';
 type ContentProps = {
   mocks: TMock[];
   groups: TMockGroup[];
+  filters: TMockFilters;
   expandedGroups: Set<string>;
   expandedMocks: Set<string>;
   onToggleGroup: (groupId: string, isExpanded: boolean) => void;
@@ -79,6 +83,7 @@ function arrayMove<T>(arr: T[], from: number, to: number): T[] {
 export const Content: FC<ContentProps> = ({
   mocks,
   groups,
+  filters,
   expandedGroups,
   expandedMocks,
   onToggleGroup,
@@ -93,9 +98,20 @@ export const Content: FC<ContentProps> = ({
   onReorderGroups,
   onUpdateMocks,
 }) => {
+  const isFiltering = isMockFiltersActive(filters);
+
   const { ungroupedMocks, groupsWithMocks } = useMemo(() => {
-    return filterMocks(mocks, groups);
-  }, [mocks, groups]);
+    const visibleMocks = isFiltering ? mocks.filter((mock) => matchMockFilters(mock, filters)) : mocks;
+    const result = filterMocks(visibleMocks, groups);
+
+    if (isFiltering) {
+      result.groupsWithMocks = result.groupsWithMocks.filter((item) => item.mocks.length > 0);
+    }
+
+    return result;
+  }, [mocks, groups, filters, isFiltering]);
+
+  const isEmptyResult = isFiltering && groupsWithMocks.length === 0 && ungroupedMocks.length === 0;
 
   const handleDeleteGroup = (group: TMockGroup) => {
     modals.openConfirmModal({
@@ -244,6 +260,10 @@ export const Content: FC<ContentProps> = ({
       },
     });
   }, [mocks, groups, onReorderGroups, onUpdateMocks]);
+
+  if (isEmptyResult) {
+    return <NotFound text="No mocks match the current filters" />;
+  }
 
   return (
     <Stack gap="xl">
