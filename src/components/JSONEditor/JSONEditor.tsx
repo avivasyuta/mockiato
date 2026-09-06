@@ -1,7 +1,9 @@
 import { FC, useEffect, useRef } from 'react';
-import JSONComponent from 'jsoneditor';
 import cn from 'classnames';
+import JSONComponent from 'jsoneditor';
+
 import 'jsoneditor/dist/jsoneditor.min.css';
+
 import styles from './JSONEditor.module.css';
 
 import('./JSONEditor.css');

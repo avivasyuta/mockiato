@@ -1,6 +1,7 @@
-import { describe, test, expect } from 'vitest';
-import { mergeGroups } from '~/utils/mergeGroups';
+import { describe, expect, test } from 'vitest';
+
 import { TMockGroup } from '~/types';
+import { mergeGroups } from '~/utils/mergeGroups';
 
 type TestSuit = {
   name: string;

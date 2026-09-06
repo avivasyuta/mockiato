@@ -1,4 +1,5 @@
 import { TStore } from '~/types';
+
 import { useStore } from './useStore';
 
 export const useNavBarToggler = (): [TStore['settings']['showMobileNavBar'], { toggle: () => void }] => {

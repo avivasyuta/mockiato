@@ -1,32 +1,34 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { ActionIcon, Badge, Collapse, Group, Stack, Switch, Text, Tooltip, useMantineTheme } from '@mantine/core';
-import {
-  IconEdit,
-  IconCopy,
-  IconInfoCircle,
-  IconTrash,
-  IconRegex,
-  IconGripVertical,
-  IconChevronDown,
-  IconChevronRight,
-} from '@tabler/icons-react';
-import { draggable, dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import {
   attachClosestEdge,
   extractClosestEdge,
   type Edge,
 } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import { DropIndicator } from '@atlaskit/pragmatic-drag-and-drop-react-drop-indicator/box';
+import { draggable, dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+import { ActionIcon, Badge, Collapse, Group, Stack, Switch, Text, Tooltip, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import {
+  IconChevronDown,
+  IconChevronRight,
+  IconCopy,
+  IconEdit,
+  IconGripVertical,
+  IconInfoCircle,
+  IconRegex,
+  IconTrash,
+} from '@tabler/icons-react';
+
+import { Dot } from '~/components/Dot/Dot';
 import { getStatusCodeColor } from '~/utils/getHttpStatusColor';
+
+import { Card } from '../../../../../../components/Card';
 import { HttpMethod } from '../../../../../../components/HttpMethod';
 import { HttpStatus } from '../../../../../../components/HttpStatus';
-import { Card } from '../../../../../../components/Card';
-import { TMock } from '../../../../../../types';
-import { useStore } from '../../../../../../hooks/useStore';
 import { iconSize } from '../../../../../../contstant';
+import { useStore } from '../../../../../../hooks/useStore';
+import { TMock } from '../../../../../../types';
 import styles from './Mock.module.css';
-import { Dot } from '~/components/Dot/Dot';
 
 interface MockProps {
   mock: TMock;

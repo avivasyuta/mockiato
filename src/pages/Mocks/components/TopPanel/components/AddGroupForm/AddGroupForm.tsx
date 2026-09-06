@@ -2,7 +2,9 @@ import { FC } from 'react';
 import { Button, Group, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { nanoid } from 'nanoid';
+
 import { TMockGroup } from '~/types';
+
 import { isUnique } from './utils';
 
 type AddGroupFormProps = {

@@ -1,18 +1,20 @@
 import React, { memo, useMemo, useReducer } from 'react';
 import { Button, Modal } from '@mantine/core';
-import { IconPlaylistAdd } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
-import { useStore } from '~/hooks/useStore';
+import { IconPlaylistAdd } from '@tabler/icons-react';
+
+import { NotFound } from '~/components/NotFound';
 import { Spinner } from '~/components/Spinner';
 import { overlaySettings } from '~/contstant';
+import { useStore } from '~/hooks/useStore';
 import { THeader, THeadersProfile } from '~/types';
-import { NotFound } from '~/components/NotFound';
 import { isEmpty } from '~/utils/isEmpty';
+
 import { AddProfileForm } from './components/AddProfileForm';
 import { Profile } from './components/Profile';
-import { addProfile, changeProfile } from './helpers';
 import { THeaderFormAction, THeaderFormState } from './components/Profile/types';
 import { TopPanel } from './components/TopPanel';
+import { addProfile, changeProfile } from './helpers';
 
 const initialFormState: THeaderFormState = {
   isOpen: false,

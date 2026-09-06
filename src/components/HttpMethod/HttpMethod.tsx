@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, useMantineTheme } from '@mantine/core';
+
 import { HttpMethodType } from '../../types';
 
 const colorsMap: { [key in HttpMethodType]?: string } = {

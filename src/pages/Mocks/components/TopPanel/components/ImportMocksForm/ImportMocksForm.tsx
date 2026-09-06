@@ -1,8 +1,10 @@
 import { FC, useState } from 'react';
 import { Button, Code, FileButton, Group, Stack, Text } from '@mantine/core';
+
 import { TMock, TMockGroup } from '~/types';
-import { ParsedData, parseMocks } from './parser';
+
 import styles from './ImportMocksForm.module.css';
+import { ParsedData, parseMocks } from './parser';
 
 export type ImportMocksProps = {
   onSuccess: (mocks: TMock[], groups: TMockGroup[]) => void;

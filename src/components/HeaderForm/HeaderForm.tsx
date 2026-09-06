@@ -1,5 +1,4 @@
 import { FC, useState } from 'react';
-import { useForm } from '@mantine/form';
 import {
   Alert,
   Button,
@@ -12,8 +11,11 @@ import {
   Text,
   TextInput,
 } from '@mantine/core';
+import { useForm } from '@mantine/form';
 import { IconAlertCircle } from '@tabler/icons-react';
+
 import { UrlInput, type UrlInputProps } from '~/components/UrlInput';
+
 import { HttpMethodType, THeader } from '../../types';
 import styles from './HeaderForm.module.css';
 

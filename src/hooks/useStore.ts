@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { showNotification } from '@mantine/notifications';
+
 import { TStore, TStoreKey, TUpdateStore } from '~/types';
 import { getStoreValue, getUpdatedValue, setStoreValue } from '~/utils/storage';
 

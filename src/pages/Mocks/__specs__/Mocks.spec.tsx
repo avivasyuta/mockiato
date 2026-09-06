@@ -1,12 +1,15 @@
 // @vitest-environment jsdom
-import { describe, test, expect, beforeEach, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+
 import '@testing-library/jest-dom/vitest';
+
 import { AppShell, MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
-import { getStore } from '~/utils/storage';
+
 import { Mocks } from '~/pages/Mocks';
+import { getStore } from '~/utils/storage';
 
 // jsdom doesn't implement these, but Mantine's Menu/Modal popovers need them.
 window.matchMedia =

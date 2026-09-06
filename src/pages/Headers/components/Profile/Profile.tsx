@@ -1,9 +1,10 @@
 import { FC } from 'react';
 import { Drawer } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
-import { THeader } from '../../../../types';
-import { overlaySettings } from '../../../../contstant';
+
 import { HeaderForm } from '../../../../components/HeaderForm';
+import { overlaySettings } from '../../../../contstant';
+import { THeader } from '../../../../types';
 import { HeaderList } from './components/HeaderList';
 import { ProfileProps } from './types';
 

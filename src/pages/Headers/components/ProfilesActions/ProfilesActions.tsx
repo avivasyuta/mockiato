@@ -1,6 +1,7 @@
 import { FC, useMemo } from 'react';
 import { Badge, Box, Button, Divider, Group, Menu, Text } from '@mantine/core';
 import { IconChevronDown } from '@tabler/icons-react';
+
 import { THeadersProfile } from '../../../../types';
 import styles from './ProfilesActions.module.css';
 

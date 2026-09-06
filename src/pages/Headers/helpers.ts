@@ -1,4 +1,4 @@
-import { THeaderStatus, THeadersProfile } from '../../types';
+import { THeadersProfile, THeaderStatus } from '../../types';
 
 type ProfilesMap = Record<string, THeadersProfile>;
 

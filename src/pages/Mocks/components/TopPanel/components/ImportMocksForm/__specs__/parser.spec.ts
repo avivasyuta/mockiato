@@ -1,5 +1,7 @@
 import { describe, expect, test } from 'vitest';
+
 import { HttpMethodType, TMock, TMockGroup } from '~/types';
+
 import { parseMocks, ValidationResult } from '../parser';
 
 type TestSuit = {

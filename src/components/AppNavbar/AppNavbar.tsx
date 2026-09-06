@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { AppShell, Button, Divider, Group, NavLink, ScrollArea, Switch, Text } from '@mantine/core';
 import {
   IconBrandGithub,
+  IconBug,
   IconCodeMinus,
   IconCoin,
   IconExternalLink,
@@ -11,13 +12,14 @@ import {
   IconThumbUp,
   IconVersions,
   IconWifi,
-  IconBug,
   TablerIcon,
 } from '@tabler/icons-react';
-import { TRoute } from '~/types';
+
 import { useStore } from '~/hooks/useStore';
 import { useTabHost } from '~/hooks/useTab';
+import { TRoute } from '~/types';
 import { isStandaloneTab } from '~/utils/runMode';
+
 import manifest from '../../../public/manifest.json';
 import styles from './AppNavbar.module.css';
 

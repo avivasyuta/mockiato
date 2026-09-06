@@ -2,8 +2,9 @@ import { FC } from 'react';
 import { ActionIcon, Button, Grid, Group, TextInput } from '@mantine/core';
 import { IconPlaylistAdd, IconX } from '@tabler/icons-react';
 import { nanoid } from 'nanoid';
-import styles from './Headers.module.css';
+
 import { useMockFormContext } from '../../context';
+import styles from './Headers.module.css';
 
 const fieldName = 'responseHeaders';
 

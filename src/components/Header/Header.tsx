@@ -1,5 +1,6 @@
 import React, { FC, ReactNode } from 'react';
-import { Group, AppShell, Burger } from '@mantine/core';
+import { AppShell, Burger, Group } from '@mantine/core';
+
 import { useNavBarToggler } from '~/hooks/useNavbarToggler';
 
 export const Header: FC<React.PropsWithChildren & { title: ReactNode }> = ({ title, children }) => {

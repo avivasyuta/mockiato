@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react';
 import { Button, Stack, Switch, Text } from '@mantine/core';
-import { IconTrash } from '@tabler/icons-react';
 import { modals } from '@mantine/modals';
+import { IconTrash } from '@tabler/icons-react';
+
+import { Header } from '~/components/Header';
 import { useStore } from '~/hooks/useStore';
 import { isEmpty } from '~/utils/isEmpty';
-import { Header } from '~/components/Header';
 
 export const Settings = () => {
   const [logs, setLogs] = useStore('logs');

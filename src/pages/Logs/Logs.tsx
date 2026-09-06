@@ -1,11 +1,13 @@
 import React, { useCallback, useMemo } from 'react';
 import { Badge, Button, Group, Text } from '@mantine/core';
 import { IconTrash } from '@tabler/icons-react';
+
+import { Header } from '~/components/Header';
 import { NotFound } from '~/components/NotFound';
+import { Spinner } from '~/components/Spinner';
 import { useStore } from '~/hooks/useStore';
 import { useTabHost } from '~/hooks/useTab';
-import { Header } from '~/components/Header';
-import { Spinner } from '~/components/Spinner';
+
 import { Log } from './components/Log';
 import styles from './Logs.module.css';
 

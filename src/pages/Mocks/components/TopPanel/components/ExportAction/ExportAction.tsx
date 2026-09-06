@@ -1,7 +1,8 @@
 import { FC } from 'react';
-import { IconDownload } from '@tabler/icons-react';
-import { iconSize } from '~/contstant';
 import { Menu } from '@mantine/core';
+import { IconDownload } from '@tabler/icons-react';
+
+import { iconSize } from '~/contstant';
 import { TMock, TMockGroup } from '~/types';
 
 type ExportActionProps = {

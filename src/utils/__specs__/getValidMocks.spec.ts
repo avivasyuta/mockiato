@@ -1,4 +1,5 @@
-import { describe, test, expect } from 'vitest';
+import { describe, expect, test } from 'vitest';
+
 import { testMocks, testTable } from '../__fixtures__/getValidMocks';
 import { getValidMocks } from '../getValidMocks';
 

@@ -1,9 +1,10 @@
 import { FC } from 'react';
 import { ActionIcon, Menu, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import { IconDotsVertical, IconUserPlus, IconTrash, IconUser, IconUserOff } from '@tabler/icons-react';
-import { THeadersProfile, THeaderStatus } from '~/types';
+import { IconDotsVertical, IconTrash, IconUser, IconUserOff, IconUserPlus } from '@tabler/icons-react';
+
 import { iconSize } from '~/contstant';
+import { THeadersProfile, THeaderStatus } from '~/types';
 
 type ProfileMenuProps = Omit<THeadersProfile, 'headers' | 'lastActive'> & {
   onAdd: () => void;

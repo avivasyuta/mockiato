@@ -1,19 +1,21 @@
-import React, { memo, useReducer, useState, useMemo, useEffect, useCallback } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import { Drawer } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { nanoid } from 'nanoid';
-import { useStore } from '~/hooks/useStore';
-import { TMock, TMockGroup } from '~/types';
+
 import { NotFound } from '~/components/NotFound';
-import { trimHeaders } from '~/pages/Mocks/components/MockForm/utils';
 import { Spinner } from '~/components/Spinner';
 import { overlaySettings } from '~/contstant';
+import { useStore } from '~/hooks/useStore';
+import { trimHeaders } from '~/pages/Mocks/components/MockForm/utils';
+import { TMock, TMockGroup } from '~/types';
 import { mergeGroups } from '~/utils/mergeGroups';
 import { mergeMocks } from '~/utils/mergeMocks';
-import { MockForm } from './components/MockForm';
-import { TMockFormAction, TMockFormState } from './types';
-import { TopPanel } from './components/TopPanel';
+
 import { Content } from './components/Content';
+import { MockForm } from './components/MockForm';
+import { TopPanel } from './components/TopPanel';
+import { TMockFormAction, TMockFormState } from './types';
 
 const initialMockFormState: TMockFormState = {
   isOpened: false,

@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Box, ColorSwatch, Group, useMantineTheme } from '@mantine/core';
+
 import { THeadersProfileStatus } from '../../../../../../types';
 
 interface ProfileLabelProps {

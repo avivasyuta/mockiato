@@ -1,12 +1,14 @@
 import { FC } from 'react';
 import { Button, Group, Text } from '@mantine/core';
-import { IconPlus } from '@tabler/icons-react';
 import { showNotification } from '@mantine/notifications';
+import { IconPlus } from '@tabler/icons-react';
 import { nanoid } from 'nanoid';
+
 import { Header } from '~/components/Header';
 import { THeader, THeadersProfile, THeaderStatus } from '~/types';
-import { ProfilesActions } from '../ProfilesActions';
+
 import { changeProfileStatus, deleteProfile, setLastActive } from '../../helpers';
+import { ProfilesActions } from '../ProfilesActions';
 import { ProfileMenu } from '../ProfilesActions/components/ProfileMenu';
 
 interface TopPanelProps {

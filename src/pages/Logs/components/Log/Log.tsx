@@ -1,11 +1,13 @@
 import React from 'react';
 import { ActionIcon, Code, Collapse, Group, Text } from '@mantine/core';
-import { IconChevronDown, IconChevronRight } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
-import { TLog, TResponseType } from '~/types';
-import { HttpMethod } from '~/components/HttpMethod';
+import { IconChevronDown, IconChevronRight } from '@tabler/icons-react';
+
 import { Card } from '~/components/Card';
+import { HttpMethod } from '~/components/HttpMethod';
 import { HttpStatus } from '~/components/HttpStatus';
+import { TLog, TResponseType } from '~/types';
+
 import styles from './Log.module.css';
 
 type LogProps = {

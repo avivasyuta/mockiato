@@ -1,5 +1,13 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
+import {
+  attachClosestEdge,
+  extractClosestEdge,
+  type Edge,
+} from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
+import { DropIndicator } from '@atlaskit/pragmatic-drag-and-drop-react-drop-indicator/box';
+import { draggable, dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { ActionIcon, Collapse, Group, Menu, Text } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import {
   IconChevronDown,
   IconChevronUp,
@@ -9,14 +17,7 @@ import {
   IconPower,
   IconTrash,
 } from '@tabler/icons-react';
-import { useDisclosure } from '@mantine/hooks';
-import { draggable, dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
-import {
-  attachClosestEdge,
-  extractClosestEdge,
-  type Edge,
-} from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
-import { DropIndicator } from '@atlaskit/pragmatic-drag-and-drop-react-drop-indicator/box';
+
 import { TMock, TMockGroup } from '../../../../../../types';
 import styles from './MockGroup.module.css';
 

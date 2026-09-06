@@ -1,4 +1,4 @@
-import { TMockHeader, TMock } from '~/types';
+import { TMock, TMockHeader } from '~/types';
 
 export const trimHeaders = (mock: TMock): TMock => ({
   ...mock,

@@ -1,6 +1,7 @@
 import { ChangeEventHandler, FC } from 'react';
 import { Checkbox, Stack, TextInput, Tooltip } from '@mantine/core';
 import { IconRegex } from '@tabler/icons-react';
+
 import { type UrlType } from '~/types';
 
 export type UrlInputProps = {

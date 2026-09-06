@@ -1,6 +1,8 @@
 import { FC } from 'react';
 import { Group, Radio, Textarea } from '@mantine/core';
+
 import { JSONEditor } from '~/components/JSONEditor';
+
 import { useMockFormContext } from '../../context';
 
 export const Response: FC = () => {

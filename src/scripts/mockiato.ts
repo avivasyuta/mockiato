@@ -1,7 +1,11 @@
-import { nanoid } from 'nanoid';
 import { BatchInterceptor } from '@mswjs/interceptors';
 import { FetchInterceptor } from '@mswjs/interceptors/fetch';
 import { XMLHttpRequestInterceptor } from '@mswjs/interceptors/XMLHttpRequest';
+import { nanoid } from 'nanoid';
+
+import { enabledAttributeName, INTERCEPTOR_ID, statusNodeId } from '~/contstant';
+import { listenMessage, sendMessage } from '~/services/message';
+import { MessageBus } from '~/services/messageBus';
 import {
   HttpMethodType,
   TInterceptedRequestDTO,
@@ -11,12 +15,9 @@ import {
   TResponseType,
   TStoreSettings,
 } from '~/types';
-import { listenMessage, sendMessage } from '~/services/message';
-import { MessageBus } from '~/services/messageBus';
-import { logError, logWarn } from '~/utils/logger';
 import { delay } from '~/utils/delay';
 import { isExtensionEnabled } from '~/utils/isExtensionEnabled';
-import { enabledAttributeName, INTERCEPTOR_ID, statusNodeId } from '~/contstant';
+import { logError, logWarn } from '~/utils/logger';
 
 const messageBus = new MessageBus<TInterceptedRequestMockDTO>();
 const interceptor = new BatchInterceptor({

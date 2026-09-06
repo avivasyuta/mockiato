@@ -12,13 +12,15 @@ import {
   Textarea,
   TextInput,
 } from '@mantine/core';
-import { nanoid } from 'nanoid';
 import { isNotEmpty } from '@mantine/form';
-import { HttpMethodType, TMock } from '~/types';
-import { useStore } from '~/hooks/useStore';
+import { nanoid } from 'nanoid';
+
 import { UrlInput, type UrlInputProps } from '~/components/UrlInput';
-import { Response } from './components/Response';
+import { useStore } from '~/hooks/useStore';
+import { HttpMethodType, TMock } from '~/types';
+
 import { Headers } from './components/Headers';
+import { Response } from './components/Response';
 import { MockFormProvider, useMockForm } from './context';
 import styles from './MockForm.module.css';
 

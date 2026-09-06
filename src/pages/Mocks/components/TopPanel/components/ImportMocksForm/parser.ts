@@ -1,5 +1,6 @@
-import { HttpMethodType, TMock, TMockGroup } from '~/types';
 import { z, ZodError } from 'zod';
+
+import { HttpMethodType, TMock, TMockGroup } from '~/types';
 
 const groupSchema = z.object({
   id: z.string(),

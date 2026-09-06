@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
-import { mergeMocks } from '~/utils/mergeMocks';
+
 import { HttpMethodType, TMock } from '~/types';
+import { mergeMocks } from '~/utils/mergeMocks';
 
 type TestSuit = {
   name: string;

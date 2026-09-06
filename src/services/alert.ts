@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid';
+
 import { EXTENSION_NAME } from '~/contstant';
 
 const closeTimeout = 10000;

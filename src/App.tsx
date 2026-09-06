@@ -1,18 +1,22 @@
 import { useEffect, useState } from 'react';
 import { AppShell, ColorSchemeScript, MantineProvider } from '@mantine/core';
-import { Notifications } from '@mantine/notifications';
 import { ModalsProvider } from '@mantine/modals';
+import { Notifications } from '@mantine/notifications';
+
 import { initStore } from '~/utils/storage';
-import { Mocks } from './pages/Mocks';
-import { Logs } from './pages/Logs';
-import { Settings } from './pages/Settings';
-import { Headers } from './pages/Headers';
-import { Network } from './pages/Network';
-import { TRoute } from './types';
+
 import { AppNavbar } from './components/AppNavbar';
+import { Headers } from './pages/Headers';
+import { Logs } from './pages/Logs';
+import { Mocks } from './pages/Mocks';
+import { Network } from './pages/Network';
+import { Settings } from './pages/Settings';
+import { TRoute } from './types';
+
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import './App.css';
+
 import classes from './App.module.css';
 import { useNavBarToggler } from './hooks/useNavbarToggler';
 

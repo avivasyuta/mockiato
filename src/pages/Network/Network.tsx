@@ -1,10 +1,12 @@
 import React, { useMemo } from 'react';
 import { Badge, Group, Text } from '@mantine/core';
-import { useStore } from '~/hooks/useStore';
-import { NotFound } from '~/components/NotFound';
-import { useTabHost } from '~/hooks/useTab';
+
 import { Header } from '~/components/Header';
+import { NotFound } from '~/components/NotFound';
 import { Spinner } from '~/components/Spinner';
+import { useStore } from '~/hooks/useStore';
+import { useTabHost } from '~/hooks/useTab';
+
 import { NetworkEvent } from './components/NetworkEvent';
 import styles from './Network.module.css';
 

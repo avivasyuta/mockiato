@@ -1,6 +1,6 @@
-import { getStore, setStoreValue } from '~/utils/storage';
-import { TStore } from '~/types';
 import { STORE_KEY } from '~/contstant';
+import { TStore } from '~/types';
+import { getStore, setStoreValue } from '~/utils/storage';
 
 let initialized = false;
 

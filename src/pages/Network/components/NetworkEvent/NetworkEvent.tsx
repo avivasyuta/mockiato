@@ -1,16 +1,18 @@
 import React, { memo } from 'react';
 import { ActionIcon, Code, Collapse, Group, Text, Tooltip } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { showNotification } from '@mantine/notifications';
 import { IconChevronDown, IconChevronRight, IconSquarePlus } from '@tabler/icons-react';
 import { nanoid } from 'nanoid';
-import { showNotification } from '@mantine/notifications';
-import { useDisclosure } from '@mantine/hooks';
-import { TMock, TNetworkEvent } from '~/types';
+
 import { Card } from '~/components/Card';
 import { HttpMethod } from '~/components/HttpMethod';
-import { ResponseBody } from '~/components/ResponseBody';
 import { HttpStatus } from '~/components/HttpStatus';
+import { ResponseBody } from '~/components/ResponseBody';
 import { iconSize } from '~/contstant';
 import { useStore } from '~/hooks/useStore';
+import { TMock, TNetworkEvent } from '~/types';
+
 import styles from './NetworkEvent.module.css';
 
 type NetworkEventProps = {

@@ -8,12 +8,14 @@ import {
   IconSelectAll,
   IconUpload,
 } from '@tabler/icons-react';
-import { TMock, TMockGroup } from '~/types';
+
 import { Header } from '~/components/Header';
 import { iconSize, overlaySettings } from '~/contstant';
-import { ExportAction } from './components/ExportAction';
-import { type ImportMocksProps, ImportMocksForm } from './components/ImportMocksForm';
+import { TMock, TMockGroup } from '~/types';
+
 import { AddGroupForm } from './components/AddGroupForm';
+import { ExportAction } from './components/ExportAction';
+import { ImportMocksForm, type ImportMocksProps } from './components/ImportMocksForm';
 
 type TopPanelProps = {
   groups: TMockGroup[];

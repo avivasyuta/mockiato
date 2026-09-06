@@ -1,5 +1,7 @@
-import { listenMessage, sendMessage } from '~/services/message';
+import { enabledAttributeName, INTERCEPTOR_ID, STORE_KEY } from '~/contstant';
 import { createStack, showAlert } from '~/services/alert';
+import { listenMessage, sendMessage } from '~/services/message';
+import { createStatus } from '~/services/status';
 import {
   TInterceptedRequestDTO,
   TInterceptedRequestMockDTO,
@@ -10,13 +12,11 @@ import {
   TStore,
   TStoreSettings,
 } from '~/types';
-import { enabledAttributeName, INTERCEPTOR_ID, STORE_KEY } from '~/contstant';
-import { getValidMocks } from '~/utils/getValidMocks';
 import { getValidHeaders } from '~/utils/getValidHeaders';
-import { getStore, initStore } from '~/utils/storage';
-import { logError } from '~/utils/logger';
-import { createStatus } from '~/services/status';
+import { getValidMocks } from '~/utils/getValidMocks';
 import { isExtensionEnabled } from '~/utils/isExtensionEnabled';
+import { logError } from '~/utils/logger';
+import { getStore, initStore } from '~/utils/storage';
 
 const logNetwork = async (store: TStore, event: TNetworkEvent) => {
   try {

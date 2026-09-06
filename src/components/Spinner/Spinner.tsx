@@ -1,4 +1,5 @@
 import { Loader } from '@mantine/core';
+
 import styles from './Spinner.module.css';
 
 export const Spinner = () => (

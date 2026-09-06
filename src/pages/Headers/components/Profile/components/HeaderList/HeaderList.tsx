@@ -1,11 +1,12 @@
-import { ActionIcon, Group, Switch, Text, Tooltip } from '@mantine/core';
 import React, { FC } from 'react';
+import { ActionIcon, Group, Switch, Text, Tooltip } from '@mantine/core';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
-import { THeader } from '../../../../../../types';
+
 import { Card } from '../../../../../../components/Card';
-import { iconSize } from '../../../../../../contstant';
 import { HttpMethod } from '../../../../../../components/HttpMethod';
 import { NotFound } from '../../../../../../components/NotFound';
+import { iconSize } from '../../../../../../contstant';
+import { THeader } from '../../../../../../types';
 import styles from './HeaderList.module.css';
 
 interface HeaderListProps {

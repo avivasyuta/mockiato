@@ -1,10 +1,12 @@
 import React, { FC, useEffect, useMemo, useRef } from 'react';
+import { extractClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
+import { dropTargetForElements, monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { Stack, Text } from '@mantine/core';
 import { modals } from '@mantine/modals';
-import { monitorForElements, dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
-import { extractClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
+
 import { TMock, TMockGroup } from '~/types';
 import { filterMocks } from '~/utils/filterMocks';
+
 import { Mock } from './components/Mock';
 import { MockGroup } from './components/MockGroup';
 import styles from './Content.module.css';
