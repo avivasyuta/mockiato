@@ -32,7 +32,10 @@ export const Headers: FC = () => {
                     key={id}
                     align="flex-start"
                 >
-                    <Grid key={id} className={styles.inputs}>
+                    <Grid
+                        key={id}
+                        className={styles.inputs}
+                    >
                         <Grid.Col span={6}>
                             <TextInput
                                 size="xs"
@@ -62,6 +65,7 @@ export const Headers: FC = () => {
             <div>
                 <Button
                     size="xs"
+                    radius="sm"
                     variant="outline"
                     leftSection={<IconPlaylistAdd size={16} />}
                     onClick={handleAddHeader}

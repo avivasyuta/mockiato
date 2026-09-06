@@ -12,7 +12,9 @@ import {
 import { useDisclosure } from '@mantine/hooks';
 import { draggable, dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import {
-    attachClosestEdge, extractClosestEdge, type Edge,
+    attachClosestEdge,
+    extractClosestEdge,
+    type Edge,
 } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import { DropIndicator } from '@atlaskit/pragmatic-drag-and-drop-react-drop-indicator/box';
 import { TMock, TMockGroup } from '../../../../../../types';
@@ -145,7 +147,10 @@ export const MockGroup: FC<MockGroupProps> = ({
                 ref={ref}
                 style={{ opacity: isDragging ? 0.4 : undefined }}
             >
-                <Group justify="space-between">
+                <Group
+                    justify="space-between"
+                    p="0.25rem"
+                >
                     <Group gap="0">
                         <ActionIcon
                             ref={dragHandleRef}
@@ -153,14 +158,16 @@ export const MockGroup: FC<MockGroupProps> = ({
                             variant="subtle"
                             color="gray"
                             size="sm"
+                            radius="sm"
                         >
                             <IconGripVertical size={14} />
                         </ActionIcon>
-                        
+
                         {children ? (
                             <Text
                                 ml="xs"
                                 className={styles.groupName}
+                                size="sm"
                                 onClick={handleToggle}
                             >
                                 {group.name} {isOpen ? <IconChevronUp size={14} /> : <IconChevronDown size={14} />}
@@ -179,6 +186,8 @@ export const MockGroup: FC<MockGroupProps> = ({
                             <ActionIcon
                                 variant="subtle"
                                 color="gray"
+                                size="sm"
+                                radius="sm"
                             >
                                 <IconDotsVertical size={14} />
                             </ActionIcon>
@@ -227,13 +236,21 @@ export const MockGroup: FC<MockGroupProps> = ({
                 </Group>
 
                 {children && (
-                    <Collapse key={mocks.length} in={isOpen}>
+                    <Collapse
+                        key={mocks.length}
+                        expanded={isOpen}
+                    >
                         <div className={styles.content}>{children}</div>
                     </Collapse>
                 )}
             </div>
-            
-            {closestEdge && <DropIndicator edge={closestEdge} gap="0.25rem" />}
+
+            {closestEdge && (
+                <DropIndicator
+                    edge={closestEdge}
+                    gap="0.25rem"
+                />
+            )}
         </div>
     );
 };

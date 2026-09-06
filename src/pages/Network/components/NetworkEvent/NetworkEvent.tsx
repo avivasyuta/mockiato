@@ -54,6 +54,8 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
                     <ActionIcon
                         variant="subtle"
                         onClick={toggle}
+                        color="gray"
+                        radius="sm"
                         size="sm"
                     >
                         {isOpen ? <IconChevronDown size={14} /> : <IconChevronRight size={14} />}
@@ -92,7 +94,7 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
                         >
                             <ActionIcon
                                 variant="subtle"
-                                color="blue"
+                                color="gray"
                                 size="sm"
                                 radius="sm"
                                 onClick={handleCreate}
@@ -103,7 +105,7 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
                     </Group>
                 </Group>
 
-                <Collapse in={isOpen}>
+                <Collapse expanded={isOpen}>
                     <Text size="xs">
                         <strong>Response type:</strong> {event.response.type}
                     </Text>

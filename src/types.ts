@@ -41,6 +41,7 @@ export type THeader = {
 export type TMock = {
     id: string;
     url: string;
+    name?: string;
     urlType: UrlType;
     httpMethod: HttpMethodType;
     httpStatusCode: number;

@@ -1,6 +1,5 @@
 import * as path from 'path';
 import react from '@vitejs/plugin-react';
-// eslint-disable-next-line import/no-unresolved
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig(() => {
@@ -8,7 +7,7 @@ export default defineConfig(() => {
         plugins: [react()],
         resolve: {
             alias: {
-                '~': path.resolve(__dirname, 'src'),
+                '~': path.resolve(import.meta.dirname, 'src'),
             },
         },
     };

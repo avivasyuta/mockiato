@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import { Badge, Box, Button, Divider, Group, Menu, Text } from '@mantine/core';
 import { IconChevronDown } from '@tabler/icons-react';
 import { THeadersProfile } from '../../../../types';
@@ -45,6 +45,8 @@ export const ProfilesActions: FC<ProfilesActionsProps> = ({ profiles, activeProf
                             <Button
                                 variant="subtle"
                                 size="compact-xs"
+                                color="gray"
+                                radius="sm"
                                 rightSection={<IconChevronDown size={14} />}
                                 className={styles.profileBtn}
                             >
@@ -54,6 +56,7 @@ export const ProfilesActions: FC<ProfilesActionsProps> = ({ profiles, activeProf
                                         variant="filled"
                                         color={activeProfile.status === 'enabled' ? 'green' : 'gray'}
                                         size="xs"
+                                        radius="sm"
                                     >
                                         {activeProfile.status}
                                     </Badge>

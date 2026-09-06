@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, useMantineTheme } from '@mantine/core';
 import { HttpMethodType } from '../../types';
 
-const colorsMap: {[key in HttpMethodType]?: string} = {
+const colorsMap: { [key in HttpMethodType]?: string } = {
     [HttpMethodType.GET]: 'green',
     [HttpMethodType.DELETE]: 'red',
     [HttpMethodType.PUT]: 'blue',
@@ -12,14 +12,16 @@ const colorsMap: {[key in HttpMethodType]?: string} = {
 };
 
 type HttpStatusProps = {
-    method: HttpMethodType
-}
+    method: HttpMethodType;
+};
 
 export const HttpMethod: React.FC<HttpStatusProps> = ({ method }) => {
     const theme = useMantineTheme();
     const grayColor = theme.colors.gray[5];
+
     return (
         <Text
+            span
             tt="uppercase"
             c={colorsMap[method] ?? grayColor}
             fw={700}

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Button, Group, Text } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import { showNotification } from '@mantine/notifications';
@@ -75,6 +75,7 @@ export const TopPanel: FC<TopPanelProps> = (props) => {
                 <Group gap="xs">
                     <Button
                         leftSection={<IconPlus size={16} />}
+                        radius="sm"
                         size="compact-xs"
                         title="Add Header"
                         onClick={handleAddHeader}

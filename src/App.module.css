@@ -1,0 +1,51 @@
+/*
+ * "Floating island" AppShell: each surface (navbar, header, main) is inset from
+ * the viewport edges and from each other by --island-gap, with a light border
+ * and rounded corners. Mantine keeps these sections `position: fixed`, so the
+ * layout is driven by overriding their offsets rather than by wrapping markup.
+ */
+.root {
+    --island-gap: 0.5rem;
+
+    overflow: hidden;
+}
+
+/* Left column, spans the full height between the top and bottom gaps. */
+.root .navbar {
+    top: var(--island-gap);
+    bottom: var(--island-gap);
+    inset-inline-start: var(--island-gap);
+    height: auto;
+    width: calc(var(--app-shell-navbar-width) - var(--island-gap) * 2);
+    overflow: hidden;
+    border: 1px solid var(--app-shell-border-color);
+    border-radius: var(--mantine-radius-md);
+}
+
+/* Top bar, sits to the right of the navbar island. */
+.root .header {
+    top: var(--island-gap);
+    inset-inline-end: var(--island-gap);
+    margin-inline-start: max(var(--island-gap), var(--app-shell-navbar-offset, 0rem));
+    overflow: hidden;
+    border: 1px solid var(--app-shell-border-color);
+    border-radius: var(--mantine-radius-md);
+}
+
+/* Content island: fills the space under the header island; never grows past it,
+ * overflowing content scrolls inside instead of scrolling the whole page. */
+.root .main {
+    box-sizing: border-box;
+
+    /* Overrides Mantine's own `min-height: 100dvh` on this element, which
+     * otherwise wins over the smaller `height` below and ignores the header. */
+    min-height: 0;
+    height: calc(100dvh - var(--app-shell-header-offset, 0rem) - var(--island-gap) * 3);
+    margin-block: calc(var(--app-shell-header-offset, 0rem) + var(--island-gap) * 2) var(--island-gap);
+    margin-inline: max(var(--island-gap), var(--app-shell-navbar-offset, 0rem)) var(--island-gap);
+    padding: var(--app-shell-padding);
+    overflow-y: auto;
+    border: 1px solid var(--app-shell-border-color);
+    border-radius: var(--mantine-radius-md);
+    background-color: var(--mantine-color-body);
+}

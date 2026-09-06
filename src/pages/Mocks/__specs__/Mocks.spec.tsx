@@ -19,11 +19,18 @@ window.matchMedia = window.matchMedia || ((query: string) => ({
     removeEventListener: () => {},
     dispatchEvent: () => false,
 })) as typeof window.matchMedia;
-window.ResizeObserver = window.ResizeObserver || vi.fn().mockImplementation(() => ({
-    observe: () => {},
-    unobserve: () => {},
-    disconnect: () => {},
-}));
+class MockObserver {
+    observe = () => {};
+
+    unobserve = () => {};
+
+    disconnect = () => {};
+
+    takeRecords = () => [];
+}
+
+window.ResizeObserver = window.ResizeObserver || (MockObserver as unknown as typeof ResizeObserver);
+window.IntersectionObserver = window.IntersectionObserver || (MockObserver as unknown as typeof IntersectionObserver);
 
 const delay = (ms: number) => new Promise((resolve) => {
     setTimeout(resolve, ms);

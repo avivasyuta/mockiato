@@ -27,7 +27,7 @@ const testTable: TestSuitGroup[] = [
                 },
                 expected: {
                     parsed: null,
-                    errors: ['Field path: [mocks], Message: Required'],
+                    errors: ['Field path: [mocks], Message: Invalid input: expected array, received undefined'],
                 },
             },
             {
@@ -37,7 +37,7 @@ const testTable: TestSuitGroup[] = [
                 },
                 expected: {
                     parsed: null,
-                    errors: ['Field path: [groups], Message: Required'],
+                    errors: ['Field path: [groups], Message: Invalid input: expected array, received undefined'],
                 },
             },
         ],
@@ -89,7 +89,7 @@ const testTable: TestSuitGroup[] = [
                 },
                 expected: {
                     parsed: null,
-                    errors: ['Field path: [groups,0,id], Message: Required'],
+                    errors: ['Field path: [groups,0,id], Message: Invalid input: expected string, received undefined'],
                 },
             },
             {
@@ -101,8 +101,8 @@ const testTable: TestSuitGroup[] = [
                 expected: {
                     parsed: null,
                     errors: [
-                        'Field path: [groups,0,id], Message: Required',
-                        'Field path: [groups,0,name], Message: Required',
+                        'Field path: [groups,0,id], Message: Invalid input: expected string, received undefined',
+                        'Field path: [groups,0,name], Message: Invalid input: expected string, received undefined',
                     ],
                 },
             },
@@ -111,7 +111,7 @@ const testTable: TestSuitGroup[] = [
                 data: {
                     groups: [
                         {
-                            // @ts-ignore
+                            // @ts-expect-error intentionally invalid input for validation test
                             id: 123,
                             name: 'group1',
                         },
@@ -120,7 +120,7 @@ const testTable: TestSuitGroup[] = [
                 },
                 expected: {
                     parsed: null,
-                    errors: ['Field path: [groups,0,id], Message: Expected string, received number'],
+                    errors: ['Field path: [groups,0,id], Message: Invalid input: expected string, received number'],
                 },
             },
         ],
@@ -147,7 +147,7 @@ const testTable: TestSuitGroup[] = [
                 },
                 expected: {
                     parsed: null,
-                    errors: ['Field path: [mocks,0,urlType], Message: Required'],
+                    errors: ['Field path: [mocks,0,urlType], Message: Invalid option: expected one of "url"|"regexp"'],
                 },
             },
             {
@@ -156,7 +156,7 @@ const testTable: TestSuitGroup[] = [
                     mocks: [
                         {
                             id: 'id_1',
-                            // @ts-ignore
+                            // @ts-expect-error intentionally invalid input for validation test
                             url: [],
                             urlType: 'regexp',
                             httpMethod: HttpMethodType.GET,
@@ -171,7 +171,7 @@ const testTable: TestSuitGroup[] = [
                 },
                 expected: {
                     parsed: null,
-                    errors: ['Field path: [mocks,0,url], Message: Expected string, received array'],
+                    errors: ['Field path: [mocks,0,url], Message: Invalid input: expected string, received array'],
                 },
             },
             {
@@ -181,7 +181,7 @@ const testTable: TestSuitGroup[] = [
                         {
                             id: 'id_1',
                             url: 'some_url',
-                            // @ts-ignore
+                            // @ts-expect-error intentionally invalid input for validation test
                             urlType: 'unknown',
                             httpMethod: HttpMethodType.GET,
                             httpStatusCode: 2000,
@@ -196,8 +196,7 @@ const testTable: TestSuitGroup[] = [
                 expected: {
                     parsed: null,
                     errors: [
-                        // eslint-disable-next-line max-len
-                        "Field path: [mocks,0,urlType], Message: Invalid enum value. Expected 'url' | 'regexp', received 'unknown'",
+                        'Field path: [mocks,0,urlType], Message: Invalid option: expected one of "url"|"regexp"',
                     ],
                 },
             },

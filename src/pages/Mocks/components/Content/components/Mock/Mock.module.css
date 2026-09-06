@@ -1,34 +1,25 @@
-.method {
-    display: flex;
-    align-items: center;
-    min-width: 60px;
+.mockRow {
+    container-type: inline-size;
 }
 
 .url {
     flex: 1;
+    min-width: 0;
     overflow: hidden;
     flex-wrap: nowrap;
 }
 
-.urlText {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.code {
-    width: 45px;
+.urlGroup {
+    flex: 1;
+    min-width: 0;
 }
 
 .comment {
     display: flex;
 }
 
-.commentInline {
-    flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.commentBadge {
+    max-width: 30cqw;
 }
 
 .dragHandle {
@@ -38,4 +29,14 @@
 
 .dragHandle:active {
     cursor: grabbing;
+}
+
+.details {
+    border-top: 1px solid var(--mantine-color-gray-1);
+}
+
+.detailLabel {
+    flex-shrink: 0;
+    width: 8rem;
+    white-space: nowrap;
 }

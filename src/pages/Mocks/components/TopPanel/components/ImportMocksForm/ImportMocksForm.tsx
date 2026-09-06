@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { Button, Code, FileButton, Group, Stack, Text } from '@mantine/core';
 import { TMock, TMockGroup } from '~/types';
 import { ParsedData, parseMocks } from './parser';

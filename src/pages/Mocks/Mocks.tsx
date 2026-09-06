@@ -43,6 +43,7 @@ const MocksPage: React.FC = () => {
     const [mocks, setMocks] = useStore('mocks');
     const [groups, setGroups] = useStore('mockGroups');
     const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
+    const [expandedMocks, setExpandedMocks] = useState<Set<string>>(new Set());
 
     // Initialize expanded groups when groups are loaded
     useEffect(() => {
@@ -51,11 +52,16 @@ const MocksPage: React.FC = () => {
         }
     }, [groups]);
 
-    // Calculate areAllGroupsExpanded based on actual group states
-    const areAllGroupsExpanded = useMemo(() => {
-        if (!groups || groups.length === 0) return false;
-        return groups.every((group) => expandedGroups.has(group.id));
-    }, [groups, expandedGroups]);
+    // Calculate areAllExpanded based on actual group and mock states
+    const areAllExpanded = useMemo(() => {
+        const groupList = groups ?? [];
+        const mockList = mocks ?? [];
+        if (groupList.length === 0 && mockList.length === 0) return false;
+
+        const allGroupsExpanded = groupList.every((group) => expandedGroups.has(group.id));
+        const allMocksExpanded = mockList.every((mock) => expandedMocks.has(mock.id));
+        return allGroupsExpanded && allMocksExpanded;
+    }, [groups, mocks, expandedGroups, expandedMocks]);
 
     const handleCopyMock = (mock: TMock) => {
         dispatchMockForm({
@@ -159,13 +165,15 @@ const MocksPage: React.FC = () => {
         await setMocks(newMocks);
     };
 
-    const handleToggleAllGroups = () => {
-        if (areAllGroupsExpanded) {
-            // Collapse all groups
+    const handleToggleAll = () => {
+        if (areAllExpanded) {
+            // Collapse all groups and mocks
             setExpandedGroups(new Set());
+            setExpandedMocks(new Set());
         } else {
-            // Expand all groups
+            // Expand all groups and mocks
             setExpandedGroups(new Set(groups?.map((group) => group.id) || []));
+            setExpandedMocks(new Set(mocks?.map((mock) => mock.id) || []));
         }
     };
 
@@ -176,6 +184,18 @@ const MocksPage: React.FC = () => {
                 newSet.add(groupId);
             } else {
                 newSet.delete(groupId);
+            }
+            return newSet;
+        });
+    };
+
+    const handleToggleMock = (mockId: string, isExpanded: boolean) => {
+        setExpandedMocks((prev) => {
+            const newSet = new Set(prev);
+            if (isExpanded) {
+                newSet.add(mockId);
+            } else {
+                newSet.delete(mockId);
             }
             return newSet;
         });
@@ -233,8 +253,8 @@ const MocksPage: React.FC = () => {
             <TopPanel
                 groups={groups}
                 mocks={mocks}
-                areAllGroupsExpanded={areAllGroupsExpanded}
-                onToggleAllGroups={handleToggleAllGroups}
+                areAllExpanded={areAllExpanded}
+                onToggleAll={handleToggleAll}
                 onMockAdd={handleOpenForm}
                 onGroupAdd={handleAddGroup}
                 onMocksImportSuccess={handleImportMocks}
@@ -245,7 +265,9 @@ const MocksPage: React.FC = () => {
                     mocks={mocks}
                     groups={groups}
                     expandedGroups={expandedGroups}
+                    expandedMocks={expandedMocks}
                     onToggleGroup={handleToggleGroup}
+                    onToggleMock={handleToggleMock}
                     onDeleteMock={handleDeleteMock}
                     onChangeMock={handleChangeMock}
                     onEditMock={handleEditMock}

@@ -1,5 +1,5 @@
-import React, { ChangeEventHandler, FC } from 'react';
-import { Checkbox, TextInput, Tooltip } from '@mantine/core';
+import { ChangeEventHandler, FC } from 'react';
+import { Checkbox, Stack, TextInput, Tooltip } from '@mantine/core';
 import { IconRegex } from '@tabler/icons-react';
 import { type UrlType } from '~/types';
 
@@ -16,12 +16,12 @@ export const UrlInput: FC<UrlInputProps> = ({ value, valueType, onChange, onChan
     };
 
     return (
-        <>
+        <Stack gap="xs">
             <TextInput
                 label="URL"
                 size="xs"
                 value={value}
-                leftSection={
+                rightSection={
                     valueType === 'regexp' ? (
                         <Tooltip
                             label="RegExp enabled"
@@ -45,9 +45,8 @@ export const UrlInput: FC<UrlInputProps> = ({ value, valueType, onChange, onChan
                 checked={valueType === 'regexp'}
                 label="Use as regular expression"
                 size="xs"
-                mt="xs"
                 onChange={handleChangeValueType}
             />
-        </>
+        </Stack>
     );
 };

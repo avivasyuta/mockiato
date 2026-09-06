@@ -85,7 +85,7 @@ export const Network: React.FC = () => {
 
                     <div className={styles.events}>
                         {filteredNetwork.map((event) => (
-                            <NetworkEvent event={event} />
+                            <NetworkEvent key={event.date} event={event} />
                         ))}
                     </div>
                 </>
