@@ -20,7 +20,6 @@ import {
 } from '@tabler/icons-react';
 
 import { Dot } from '~/components/Dot/Dot';
-import { getStatusCodeColor } from '~/utils/getHttpStatusColor';
 
 import { Card } from '../../../../../../components/Card';
 import { HttpMethod } from '../../../../../../components/HttpMethod';
@@ -139,7 +138,6 @@ export const Mock: FC<MockProps> = ({
         key={mock.id}
         p="0.34rem"
         ref={ref}
-        statusColor={getStatusCodeColor(mock.httpStatusCode)}
         style={{ opacity: isDragging ? 0.4 : undefined, cursor: isDragging ? 'grabbing' : 'pointer' }}
       >
         <Group
