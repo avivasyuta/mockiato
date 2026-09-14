@@ -10,5 +10,11 @@ export default defineConfig(() => {
         '~': path.resolve(import.meta.dirname, 'src'),
       },
     },
+    test: {
+      coverage: {
+        provider: 'v8',
+        reporter: ['text', 'html', 'json-summary'],
+      },
+    },
   };
 });

@@ -2,6 +2,8 @@
 
 > Mocks on the Fly!
 
+![Coverage](https://raw.githubusercontent.com/avivasyuta/mockiato/badges/coverage.svg)
+
 Mockiato is a powerful and easy-to-use browser extension designed for developers and testers working with Google Chrome
 or other Chromium-based browsers.
 It enables users to effortlessly mock HTTP requests, modify responses, and simulate various network conditions.
