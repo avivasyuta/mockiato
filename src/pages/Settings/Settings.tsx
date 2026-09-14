@@ -28,7 +28,7 @@ export const Settings = () => {
       title: 'Are you sure you want to clear logs?',
       children: <Text size="sm">All logs for all hosts will be completely removed.</Text>,
       labels: { confirm: 'Clear logs', cancel: 'Cancel' },
-      confirmProps: { color: 'red', size: 'xs' },
+      confirmProps: { color: 'red', size: 'xs', 'data-testid': 'confirm-erase-button' },
       cancelProps: {
         size: 'xs',
         variant: 'subtle',
@@ -43,15 +43,17 @@ export const Settings = () => {
       title: 'Are you sure you want to clear all mocks?',
       children: <Text size="sm">All mocks and mock groups will be completely removed.</Text>,
       labels: { confirm: 'Clear mocks', cancel: 'Cancel' },
-      confirmProps: { color: 'red', size: 'xs' },
+      confirmProps: { color: 'red', size: 'xs', 'data-testid': 'confirm-erase-button' },
       cancelProps: {
         size: 'xs',
         variant: 'subtle',
         color: 'gray',
       },
-      onConfirm: () => {
-        setMocks([]);
-        setMockGroups([]);
+      onConfirm: async () => {
+        // setStoreValue does a read-modify-write, so concurrent writes race and
+        // clobber each other - they must be persisted sequentially.
+        await setMocks([]);
+        await setMockGroups([]);
       },
     });
   };
@@ -61,7 +63,7 @@ export const Settings = () => {
       title: 'Are you sure you want to remove all headers profiles?',
       children: <Text size="sm">All headers profiles with headers will be completely removed.</Text>,
       labels: { confirm: 'Delete', cancel: 'Cancel' },
-      confirmProps: { color: 'red', size: 'xs' },
+      confirmProps: { color: 'red', size: 'xs', 'data-testid': 'confirm-erase-button' },
       cancelProps: {
         size: 'xs',
         variant: 'subtle',
@@ -76,7 +78,7 @@ export const Settings = () => {
       title: 'Are you sure you want to remove all network logs?',
       children: <Text size="sm">All network logs will be completely removed.</Text>,
       labels: { confirm: 'Delete', cancel: 'Cancel' },
-      confirmProps: { color: 'red', size: 'xs' },
+      confirmProps: { color: 'red', size: 'xs', 'data-testid': 'confirm-erase-button' },
       cancelProps: {
         size: 'xs',
         variant: 'subtle',
@@ -202,6 +204,7 @@ export const Settings = () => {
               leftSection={<IconTrash size={12} />}
               disabled={isClearNetworkDisabled}
               onClick={handleDeleteNetwork}
+              data-testid="erase-network-logs-button"
             >
               Erase all data
             </Button>
@@ -262,6 +265,7 @@ export const Settings = () => {
               leftSection={<IconTrash size={12} />}
               disabled={isClearMocksDisabled}
               onClick={handleClearAllMocks}
+              data-testid="erase-mocks-button"
             >
               Erase all data
             </Button>
@@ -279,6 +283,7 @@ export const Settings = () => {
               leftSection={<IconTrash size={12} />}
               disabled={isClearLogsDisabled}
               onClick={handleClearAllLogs}
+              data-testid="erase-logs-button"
             >
               Erase all data
             </Button>
@@ -305,6 +310,7 @@ export const Settings = () => {
               leftSection={<IconTrash size={12} />}
               disabled={isHeadersDisabled}
               onClick={handleDeleteProfiles}
+              data-testid="erase-headers-button"
             >
               Erase all data
             </Button>
