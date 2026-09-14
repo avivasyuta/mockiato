@@ -69,6 +69,7 @@
     "typecheck": "npx tsc --noEmit --project ./tsconfig.json",
     "test": "vitest run src",
     "test:coverage": "vitest run src --coverage",
+    "badge:coverage": "node scripts/generate-coverage-badge.mjs",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed"
