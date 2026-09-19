@@ -87,6 +87,7 @@ export default tseslint.config(
                     devDependencies: [
                         'test/**',
                         'tests/**',
+                        'src/test/**',
                         'spec/**',
                         '**/__tests__/**',
                         '**/__specs__/**',

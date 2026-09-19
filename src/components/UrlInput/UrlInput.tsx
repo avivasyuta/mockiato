@@ -9,12 +9,16 @@ export type UrlInputProps = {
   value?: string;
   onChange?: ChangeEventHandler;
   onChangeValueType: (value: UrlType) => void;
+  /** Parent-supplied scope (e.g. "mock-form") prefixed onto this component's own testids. */
+  testIdScope?: string;
 };
 
-export const UrlInput: FC<UrlInputProps> = ({ value, valueType, onChange, onChangeValueType }) => {
+export const UrlInput: FC<UrlInputProps> = ({ value, valueType, onChange, onChangeValueType, testIdScope }) => {
   const handleChangeValueType = () => {
     onChangeValueType(valueType === 'url' ? 'regexp' : 'url');
   };
+
+  const getTestId = (name: string): string => (testIdScope ? `${testIdScope}/url-input/${name}` : `url-input/${name}`);
 
   return (
     <Stack gap="xs">
@@ -22,6 +26,7 @@ export const UrlInput: FC<UrlInputProps> = ({ value, valueType, onChange, onChan
         label="URL"
         size="xs"
         value={value}
+        data-testid={getTestId('value')}
         rightSection={
           valueType === 'regexp' ? (
             <Tooltip
@@ -46,6 +51,7 @@ export const UrlInput: FC<UrlInputProps> = ({ value, valueType, onChange, onChan
         checked={valueType === 'regexp'}
         label="Use as regular expression"
         size="xs"
+        data-testid={getTestId('regexp-checkbox')}
         onChange={handleChangeValueType}
       />
     </Stack>

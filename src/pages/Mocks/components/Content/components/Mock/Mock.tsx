@@ -138,6 +138,7 @@ export const Mock: FC<MockProps> = ({
         key={mock.id}
         p="0.34rem"
         ref={ref}
+        data-testid="mock-row"
         style={{ opacity: isDragging ? 0.4 : undefined, cursor: isDragging ? 'grabbing' : 'pointer' }}
       >
         <Group
@@ -152,6 +153,7 @@ export const Mock: FC<MockProps> = ({
               color="gray"
               size="sm"
               radius="sm"
+              data-testid="mock-row/drag-handle"
             >
               <IconGripVertical size={14} />
             </ActionIcon>
@@ -161,6 +163,7 @@ export const Mock: FC<MockProps> = ({
               color="gray"
               radius="sm"
               size="sm"
+              data-testid="mock-row/toggle-expand"
               onClick={handleToggleExpand}
             >
               {isOpen ? <IconChevronDown size={14} /> : <IconChevronRight size={14} />}
@@ -260,6 +263,7 @@ export const Mock: FC<MockProps> = ({
               color="green"
               checked={mock.isActive}
               title="Enable/disable mock"
+              data-testid="mock-row/status-switch"
               onChange={handleChangeStatus}
             />
 
@@ -270,6 +274,7 @@ export const Mock: FC<MockProps> = ({
                 size="sm"
                 radius="sm"
                 title="Clone mock"
+                data-testid="mock-row/clone"
                 onClick={handleCopy}
               >
                 <IconCopy size={iconSize} />
@@ -281,6 +286,7 @@ export const Mock: FC<MockProps> = ({
                 size="sm"
                 radius="sm"
                 title="Edit mock"
+                data-testid="mock-row/edit"
                 onClick={handleEditClick}
               >
                 <IconEdit size={iconSize} />
@@ -298,6 +304,7 @@ export const Mock: FC<MockProps> = ({
                   color="red"
                   size="sm"
                   radius="sm"
+                  data-testid="mock-row/delete"
                   onClick={handleDelete}
                 >
                   <IconTrash size={iconSize} />
