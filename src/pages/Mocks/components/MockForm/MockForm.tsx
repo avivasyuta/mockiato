@@ -101,6 +101,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
               variant="subtle"
               color="gray"
               size="xs"
+              data-testid="mock-form/cancel"
               onClick={onClose}
             >
               Cancel
@@ -109,6 +110,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
             <Button
               type="submit"
               size="xs"
+              data-testid="mock-form/save"
             >
               Save
             </Button>
@@ -135,6 +137,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
             <Tabs.Tab
               value="general"
               className={styles.tab}
+              data-testid="mock-form/tab-general"
             >
               General
             </Tabs.Tab>
@@ -142,6 +145,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
             <Tabs.Tab
               value="body"
               className={styles.tab}
+              data-testid="mock-form/tab-body"
             >
               Response Body
             </Tabs.Tab>
@@ -149,6 +153,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
             <Tabs.Tab
               value="headers"
               className={styles.tab}
+              data-testid="mock-form/tab-headers"
             >
               Response Headers
             </Tabs.Tab>
@@ -162,6 +167,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
               <UrlInput
                 valueType={form.values.urlType}
                 onChangeValueType={handleChangeUrlType}
+                testIdScope="mock-form"
                 {...form.getInputProps('url')}
               />
 
@@ -170,6 +176,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
                   <TextInput
                     label="Name"
                     size="xs"
+                    data-testid="mock-form/name"
                     {...form.getInputProps('name')}
                   />
                 </Grid.Col>
@@ -188,6 +195,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
                     fullWidth
                     color={form.values.isActive ? 'green' : 'gray'}
                     value={form.values.isActive ? 'enabled' : 'disabled'}
+                    data-testid="mock-form/status"
                     data={[
                       {
                         label: 'Enabled',
@@ -210,6 +218,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
                     label="Request method"
                     data={httpMethods}
                     size="xs"
+                    data-testid="mock-form/method"
                     {...form.getInputProps('httpMethod')}
                   />
                 </Grid.Col>
@@ -221,6 +230,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
                     min={100}
                     max={599}
                     size="xs"
+                    data-testid="mock-form/status-code"
                     {...form.getInputProps('httpStatusCode')}
                   />
                 </Grid.Col>
@@ -231,6 +241,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
                     min={0}
                     max={maxDelay}
                     size="xs"
+                    data-testid="mock-form/delay"
                     {...form.getInputProps('delay')}
                   />
                 </Grid.Col>
@@ -242,6 +253,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
                 data={groupsOptions}
                 searchable
                 disabled={groups?.length === 0}
+                data-testid="mock-form/group"
                 {...form.getInputProps('groupId')}
               />
 
@@ -250,6 +262,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
                 size="xs"
                 autosize
                 minRows={5}
+                data-testid="mock-form/comment"
                 {...form.getInputProps('comment')}
               />
             </Stack>

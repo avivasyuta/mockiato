@@ -146,11 +146,13 @@ export const MockGroup: FC<MockGroupProps> = ({
       <div
         className={`${styles.root} ${isMockDraggedOver ? styles.draggedOver : ''}`}
         ref={ref}
+        data-testid="mock-group"
         style={{ opacity: isDragging ? 0.4 : undefined }}
       >
         <Group
           justify="space-between"
           p="0.25rem"
+          data-testid="mock-group/header"
         >
           <Group gap="0">
             <ActionIcon
@@ -160,6 +162,7 @@ export const MockGroup: FC<MockGroupProps> = ({
               color="gray"
               size="sm"
               radius="sm"
+              data-testid="mock-group/drag-handle"
             >
               <IconGripVertical size={14} />
             </ActionIcon>
@@ -188,6 +191,7 @@ export const MockGroup: FC<MockGroupProps> = ({
                 color="gray"
                 size="sm"
                 radius="sm"
+                data-testid="mock-group/menu-trigger"
               >
                 <IconDotsVertical size={14} />
               </ActionIcon>
