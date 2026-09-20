@@ -45,6 +45,7 @@ export const HeaderList: FC<HeaderListProps> = ({ headers, onDelete, onEdit, onC
         <Card
           key={header.id}
           p="0.2rem 0.6rem"
+          data-testid="header-row"
         >
           <Group
             gap="xs"
@@ -86,6 +87,7 @@ export const HeaderList: FC<HeaderListProps> = ({ headers, onDelete, onEdit, onC
                 offLabel="OFF"
                 color="green"
                 checked={header.isActive}
+                data-testid="header-row/status-switch"
                 onChange={(e) => handleChangeStatus(e, header)}
               />
 
@@ -95,6 +97,7 @@ export const HeaderList: FC<HeaderListProps> = ({ headers, onDelete, onEdit, onC
                   color="gray"
                   size="sm"
                   radius="sm"
+                  data-testid="header-row/edit"
                   onClick={(): void => onEdit(header)}
                 >
                   <IconEdit size={iconSize} />
@@ -112,6 +115,7 @@ export const HeaderList: FC<HeaderListProps> = ({ headers, onDelete, onEdit, onC
                     color="red"
                     size="sm"
                     radius="sm"
+                    data-testid="header-row/delete"
                     onClick={handleDelete(header.id)}
                   >
                     <IconTrash size={iconSize} />

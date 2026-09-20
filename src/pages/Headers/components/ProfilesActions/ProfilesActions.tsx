@@ -50,6 +50,7 @@ export const ProfilesActions: FC<ProfilesActionsProps> = ({ profiles, activeProf
                 radius="sm"
                 rightSection={<IconChevronDown size={14} />}
                 className={styles.profileBtn}
+                data-testid="profiles-actions/switcher"
               >
                 <Group gap="xs">
                   <Text fz="sm">{activeProfile.name}</Text>

@@ -43,6 +43,7 @@ export const AddProfileForm: FC<AddProfileFormProps> = ({ onSubmit }) => {
         description={`Maximum ${maxLength} symbols`}
         required
         size="xs"
+        data-testid="add-profile-form/name"
         {...form.getInputProps('name')}
       />
 
@@ -53,6 +54,7 @@ export const AddProfileForm: FC<AddProfileFormProps> = ({ onSubmit }) => {
         <Button
           type="submit"
           size="xs"
+          data-testid="add-profile-form/submit"
         >
           Submit
         </Button>
