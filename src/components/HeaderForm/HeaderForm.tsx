@@ -42,6 +42,7 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
         form.setFieldValue('httpMethod', undefined);
       } else {
         form.setFieldValue('httpMethod', HttpMethodType.GET);
+        form.setFieldValue('urlType', form.values.urlType ?? 'url');
       }
 
       return newVal;
@@ -81,6 +82,7 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
             variant="subtle"
             color="gray"
             size="xs"
+            data-testid="header-form/cancel"
             onClick={onClose}
           >
             Cancel
@@ -89,6 +91,7 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
           <Button
             type="submit"
             size="xs"
+            data-testid="header-form/save"
           >
             Save
           </Button>
@@ -118,6 +121,7 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
                 { label: 'Enabled', value: 'enabled' },
                 { label: 'Disabled', value: 'disabled' },
               ]}
+              data-testid="header-form/status"
               onChange={handleChangeStatus}
             />
           </Grid.Col>
@@ -129,6 +133,7 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
               required
               label="Key"
               size="xs"
+              data-testid="header-form/key"
               {...form.getInputProps('key')}
             />
           </Grid.Col>
@@ -137,6 +142,7 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
               required
               label="Value"
               size="xs"
+              data-testid="header-form/value"
               {...form.getInputProps('value')}
             />
           </Grid.Col>
@@ -147,6 +153,7 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
           label="Specify URL"
           size="xs"
           mt="xs"
+          data-testid="header-form/specify-url"
           onChange={handleSpecifyUrl}
         />
 
@@ -158,6 +165,7 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
                 label="Method"
                 data={httpMethods}
                 size="xs"
+                data-testid="header-form/method"
                 {...form.getInputProps('httpMethod')}
               />
             </Grid.Col>
@@ -166,6 +174,7 @@ export const HeaderForm: FC<HeaderFormProps> = ({ initialValue, onSubmit, onClos
               <UrlInput
                 valueType={form.values.urlType ?? 'url'}
                 onChangeValueType={handleChangeUrlType}
+                testIdScope="header-form"
                 {...form.getInputProps('url')}
               />
             </Grid.Col>

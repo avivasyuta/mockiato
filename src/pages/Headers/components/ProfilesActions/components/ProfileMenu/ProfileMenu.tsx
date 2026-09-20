@@ -52,6 +52,7 @@ export const ProfileMenu: FC<ProfileMenuProps> = ({ id, name, status, onAdd, onD
           color="blue"
           size="sm"
           radius="sm"
+          data-testid="profile-menu/trigger"
         >
           <IconDotsVertical size={14} />
         </ActionIcon>
