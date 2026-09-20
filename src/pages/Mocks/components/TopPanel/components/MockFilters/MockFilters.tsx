@@ -32,6 +32,7 @@ export const MockFilters: FC<MockFiltersProps> = ({ mocks, filters, onChange }) 
         flex={1}
         w={500}
         placeholder="Filter by name or URL"
+        data-testid="mock-filters/search"
         leftSection={<IconSearch size={14} />}
         rightSection={
           filters.search ? (
@@ -52,6 +53,7 @@ export const MockFilters: FC<MockFiltersProps> = ({ mocks, filters, onChange }) 
         placeholder="Method"
         data={methodOptions}
         value={filters.httpMethod}
+        data-testid="mock-filters/method"
         onChange={(value) => onChange({ ...filters, httpMethod: value as TMockFilters['httpMethod'] })}
       />
 
@@ -62,6 +64,7 @@ export const MockFilters: FC<MockFiltersProps> = ({ mocks, filters, onChange }) 
         placeholder="Status code"
         data={statusCodeOptions}
         value={filters.httpStatusCode}
+        data-testid="mock-filters/status-code"
         onChange={(value) => onChange({ ...filters, httpStatusCode: value })}
       />
     </Group>
