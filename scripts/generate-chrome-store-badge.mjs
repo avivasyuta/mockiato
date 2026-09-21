@@ -68,7 +68,7 @@ const main = async () => {
   const { rating, count } = await scrapeRating();
   const value = count !== null ? `${rating} ★ (${count})` : `${rating} ★`;
 
-  const svg = renderBadge('Chrome rating', value, getColor(rating));
+  const svg = renderBadge('chrome rating', value, getColor(rating));
 
   await mkdir(OUTPUT_DIR, { recursive: true });
   await writeFile(OUTPUT_PATH, svg, 'utf-8');
