@@ -10,6 +10,7 @@
   <a href="https://chromewebstore.google.com/u/2/detail/mockiato-mocks-on-the-fly/ilbkkhmnmnehcicempfpekgcpneeekao"><img src="https://raw.githubusercontent.com/avivasyuta/mockiato/badges/chrome-store-rating.svg" alt="Chrome Web Store rating" /></a>
   <img src="https://raw.githubusercontent.com/avivasyuta/mockiato/badges/coverage.svg" alt="Test coverage" />
   <a href="LICENSE"><img src="https://img.shields.io/github/license/avivasyuta/mockiato.svg" alt="MIT License" /></a>
+  <a href="https://github.com/sponsors/avivasyuta"><img src="https://img.shields.io/badge/sponsor-%E2%9D%A4-db61a2.svg" alt="Sponsor" /></a>
 </p>
 
 <p align="center">
@@ -36,6 +37,7 @@ With Mockiato you can rewrite response bodies and status codes, add artificial d
 - [License](#license)
 - [Support](#support)
 - [Feedback](#feedback)
+- [Sponsor](#sponsor)
 
 ## Features
 
@@ -97,6 +99,10 @@ If you encounter any issues or have questions, please reach out by opening an [i
 ## Feedback
 
 I am constantly striving to improve Mockiato. If you have any suggestions or feedback, I'd love to hear from you!
+
+## Sponsor
+
+Mockiato is free and maintained in my spare time. If it saves you time, consider [sponsoring me on GitHub](https://github.com/sponsors/avivasyuta) to support ongoing development.
 
 ---
 
