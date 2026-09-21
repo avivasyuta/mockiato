@@ -1,11 +1,12 @@
-name: Coverage Badge
+name: Chrome Web Store Badge
 
 on:
-  push:
-    branches: [main]
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
 
 jobs:
-  coverage-badge:
+  chrome-store-badge:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -19,11 +20,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests with coverage
-        run: npm run test:coverage
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
 
-      - name: Generate coverage badge
-        run: npm run badge:coverage
+      - name: Generate Chrome Web Store rating badge
+        run: npm run badge:chrome-store
 
       - name: Publish badge to the badges branch
         uses: peaceiris/actions-gh-pages@v4
