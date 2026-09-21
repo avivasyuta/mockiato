@@ -56,8 +56,6 @@ With Mockiato you can rewrite response bodies and status codes, add artificial d
   <img src="./public//screenshots/network.png" width="49%" alt="Mockiato live request log" />
 </p>
 
-> Placeholder images — replace with real screenshots or a short demo GIF of the extension in action.
-
 ## Use Cases
 
 - **Test Edge Cases**: simulate slow-loading requests, malformed data, or error statuses to see how your application behaves in real-world scenarios.
