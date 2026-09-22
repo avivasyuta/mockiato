@@ -1,53 +1,18 @@
 import { STORE_KEY } from '~/contstant';
-import { TStore, TStoreKey, TUpdateStore } from '~/types';
+import { TLog, TNetworkEvent, TStore, TStoreKey, TStoreMessage, TStoreMessageResponse, TUpdateStore } from '~/types';
+import { createMutex } from '~/utils/createMutex';
+import { emptyStore, mergeStoreWithDefaults, readStoreFromChromeStorage } from '~/utils/storeCore';
 
-import { isObject } from './isObject';
-
-const emptyStore: TStore = {
-  mocks: [],
-  mockGroups: [],
-  logs: [],
-  headersProfiles: {},
-  network: [],
-  settings: {
-    showNotifications: true,
-    showActiveStatus: true,
-    enabledHosts: {},
-    showMobileNavBar: false,
-    commentDisplayMode: 'tooltip',
-    displayHttpMethodInline: false,
-  },
-};
+const isDevelopment = import.meta.env.VITE_NODE_ENV === 'development';
 
 const getLocalStorage = (): TStore | undefined => {
   const data = localStorage.getItem(STORE_KEY);
   return data ? JSON.parse(data) : undefined;
 };
 
-const getExtensionStore = async (): Promise<TStore | undefined> => {
-  const response = await chrome.storage.local.get(STORE_KEY);
-  return response[STORE_KEY] as TStore;
-};
-
-export const getStore = async (): Promise<TStore> => {
-  let store: TStore | undefined;
-
-  if (import.meta.env.VITE_NODE_ENV === 'development') {
-    store = getLocalStorage();
-  } else {
-    store = await getExtensionStore();
-  }
-
-  return store ?? emptyStore;
-};
-
-export const setStore = async (store: TStore): Promise<void> => {
+const writeStoreToLocalStorage = (store: TStore): void => {
   try {
-    if (import.meta.env.VITE_NODE_ENV === 'development') {
-      localStorage.setItem(STORE_KEY, JSON.stringify(store));
-    } else {
-      await chrome.storage.local.set({ [STORE_KEY]: store });
-    }
+    localStorage.setItem(STORE_KEY, JSON.stringify(store));
   } catch (error) {
     const message =
       error instanceof Error && error.message.includes('QUOTA_BYTES')
@@ -55,6 +20,31 @@ export const setStore = async (store: TStore): Promise<void> => {
         : 'Failed to save data to storage.';
     throw new Error(message);
   }
+};
+
+// Dev mode (`npm run dev`) has no chrome.runtime/background worker to arbitrate writes,
+// so concurrent read-modify-write cycles to localStorage are serialized locally instead.
+const devMutex = createMutex();
+
+const mutateLocalStorage = (mutate: (store: TStore) => TStore): Promise<TStore> =>
+  devMutex(() => {
+    const store = getLocalStorage() ?? emptyStore;
+    const newStore = mutate(store);
+    writeStoreToLocalStorage(newStore);
+    return newStore;
+  });
+
+const sendStoreMessage = async (message: TStoreMessage): Promise<TStoreMessageResponse> => {
+  const response = (await chrome.runtime.sendMessage(message)) as TStoreMessageResponse | undefined;
+  return response ?? { ok: false, error: 'Failed to save data to storage.' };
+};
+
+export const getStore = async (): Promise<TStore> => {
+  if (isDevelopment) {
+    return getLocalStorage() ?? emptyStore;
+  }
+
+  return readStoreFromChromeStorage();
 };
 
 export const getUpdatedValue = <StoreKey extends TStoreKey>(
@@ -81,33 +71,53 @@ export const setStoreValue = async <StoreKey extends TStoreKey>(
   key: StoreKey,
   value: TStore[StoreKey],
 ): Promise<void> => {
-  const store = await getStore();
+  if (isDevelopment) {
+    await mutateLocalStorage((store) => ({ ...store, [key]: value }));
+    return;
+  }
 
-  const newStore: TStore = {
-    ...store,
-    [key]: value,
-  };
-
-  await setStore(newStore);
+  const response = await sendStoreMessage({ type: 'store/setValue', key, value });
+  if (!response.ok) {
+    throw new Error(response.error);
+  }
 };
 
-export const initStore = async <StoreKey extends TStoreKey>(): Promise<TStore> => {
-  const initialStore = structuredClone(emptyStore);
-  const store = await getStore();
+// Atomic append primitives: the write is computed inside the (locked) background worker
+// rather than by the caller, so concurrent appends from overlapping intercepted requests
+// can never clobber each other.
+export const appendLog = async (log: TLog): Promise<void> => {
+  if (isDevelopment) {
+    await mutateLocalStorage((store) => ({ ...store, logs: [...store.logs, log] }));
+    return;
+  }
 
-  Object.keys(initialStore).forEach((key) => {
-    const k = key as StoreKey;
-    const existingValue = store[k];
+  const response = await sendStoreMessage({ type: 'store/appendLog', log });
+  if (!response.ok) {
+    throw new Error(response.error);
+  }
+};
 
-    if (existingValue && k !== 'network') {
-      if (isObject(existingValue)) {
-        initialStore[k] = { ...initialStore[k], ...existingValue };
-      } else {
-        initialStore[k] = existingValue;
-      }
-    }
-  });
+export const appendNetworkEvent = async (event: TNetworkEvent): Promise<void> => {
+  if (isDevelopment) {
+    await mutateLocalStorage((store) => ({ ...store, network: [...store.network, event] }));
+    return;
+  }
 
-  await setStore(initialStore);
-  return initialStore;
+  const response = await sendStoreMessage({ type: 'store/appendNetworkEvent', event });
+  if (!response.ok) {
+    throw new Error(response.error);
+  }
+};
+
+export const initStore = async (): Promise<TStore> => {
+  if (isDevelopment) {
+    return mutateLocalStorage((store) => mergeStoreWithDefaults(store));
+  }
+
+  const response = await sendStoreMessage({ type: 'store/init' });
+  if (!response.ok) {
+    throw new Error(response.error);
+  }
+
+  return response.store ?? emptyStore;
 };

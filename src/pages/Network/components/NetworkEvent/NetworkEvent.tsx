@@ -48,6 +48,7 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
   return (
     <Card
       key={event.date}
+      data-testid="network-row"
       className={styles.log}
       p="0.34rem"
     >
@@ -59,6 +60,7 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
             color="gray"
             radius="sm"
             size="sm"
+            data-testid="network-row/toggle-expand"
           >
             {isOpen ? <IconChevronDown size={14} /> : <IconChevronRight size={14} />}
           </ActionIcon>
@@ -98,6 +100,7 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
                 size="sm"
                 radius="sm"
                 onClick={handleCreate}
+                data-testid="network-row/create-mock"
               >
                 <IconSquarePlus size={iconSize} />
               </ActionIcon>
@@ -132,10 +135,10 @@ const NetworkEventComponent: React.FC<NetworkEventProps> = ({ event }) => {
                 >
                   <div className={styles.headers}>
                     {event.response.headers.map((header) => (
-                      <>
+                      <React.Fragment key={header.id}>
                         <Text size="xs">{header.key}:</Text>
                         <Text size="xs">{header.value}</Text>
-                      </>
+                      </React.Fragment>
                     ))}
                   </div>
                 </Code>

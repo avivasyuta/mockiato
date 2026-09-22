@@ -1,3 +1,5 @@
+import { nanoid } from 'nanoid';
+
 import { enabledAttributeName, INTERCEPTOR_ID, STORE_KEY } from '~/contstant';
 import { createStack, showAlert } from '~/services/alert';
 import { listenMessage, sendMessage } from '~/services/message';
@@ -16,27 +18,23 @@ import { getValidHeaders } from '~/utils/getValidHeaders';
 import { getValidMocks } from '~/utils/getValidMocks';
 import { isExtensionEnabled } from '~/utils/isExtensionEnabled';
 import { logError } from '~/utils/logger';
-import { getStore, initStore } from '~/utils/storage';
+import { appendLog, appendNetworkEvent, getStore, initStore } from '~/utils/storage';
 
-const logNetwork = async (store: TStore, event: TNetworkEvent) => {
+const logNetwork = async (event: TNetworkEvent) => {
   try {
-    await chrome.storage.local.set({
-      [STORE_KEY]: {
-        ...store,
-        network: [...(store.network ?? []), event],
-      },
-    });
+    await appendNetworkEvent(event);
   } catch (err) {
     logError(err);
   }
 };
 
-const logInterceptedRequest = async (store: TStore, message: TInterceptedRequestDTO, mock: TMock) => {
-  if (store.settings.showNotifications) {
+const logInterceptedRequest = async (showNotifications: boolean, message: TInterceptedRequestDTO, mock: TMock) => {
+  if (showNotifications) {
     showAlert(message.url);
   }
 
   const log: TLog = {
+    id: nanoid(),
     url: message.url,
     method: message.method,
     date: new Date().toISOString(),
@@ -45,12 +43,7 @@ const logInterceptedRequest = async (store: TStore, message: TInterceptedRequest
   };
 
   try {
-    await chrome.storage.local.set({
-      [STORE_KEY]: {
-        ...store,
-        logs: [...(store.logs ?? []), log],
-      },
-    });
+    await appendLog(log);
   } catch (err) {
     logError(err);
   }
@@ -98,7 +91,7 @@ listenMessage<TInterceptedRequestDTO>('requestIntercepted', async (message) => {
     });
 
     if (mock) {
-      await logInterceptedRequest(store, message, mock);
+      await logInterceptedRequest(store.settings.showNotifications, message, mock);
     }
   } catch (err) {
     logError(err);
@@ -111,8 +104,7 @@ listenMessage<TInterceptedRequestDTO>('requestIntercepted', async (message) => {
 
 listenMessage<TInterceptedResponseDTO>('responseIntercepted', async (message) => {
   try {
-    const store = await getStore();
-    await logNetwork(store, message.event);
+    await logNetwork(message.event);
   } catch (err) {
     logError(err);
   }

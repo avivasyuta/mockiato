@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
-import { Badge, Button, Group, Text } from '@mantine/core';
-import { IconTrash } from '@tabler/icons-react';
+import { ActionIcon, Badge, Group, Menu, Text } from '@mantine/core';
+import { IconDotsVertical, IconTrash } from '@tabler/icons-react';
 
 import { Header } from '~/components/Header';
 import { NotFound } from '~/components/NotFound';
@@ -15,7 +15,7 @@ export const Logs: React.FC = () => {
   const tabHost = useTabHost();
   const [logs, setLogs] = useStore('logs');
 
-  const handleClearMocks = useCallback(() => {
+  const handleClearLogs = useCallback(() => {
     const logsArray = logs ?? [];
     const filtered = logsArray.filter((log) => log.host !== tabHost);
     setLogs(filtered);
@@ -62,19 +62,37 @@ export const Logs: React.FC = () => {
           </Group>
         }
       >
-        {filteredLogs.length > 0 && (
-          <Button
-            variant="light"
-            size="compact-xs"
-            radius="sm"
-            leftSection={<IconTrash size={12} />}
-            color="red"
-            title={`Erase all logs for host ${tabHost}`}
-            onClick={handleClearMocks}
-          >
-            Erase all logs
-          </Button>
-        )}
+        <Menu
+          shadow="md"
+          width={200}
+          position="bottom-end"
+          styles={{
+            item: { fontSize: '0.75rem', padding: '0.5rem' },
+          }}
+        >
+          <Menu.Target>
+            <ActionIcon
+              variant="default"
+              color="blue"
+              size="sm"
+              radius="sm"
+              data-testid="profile-menu/trigger"
+            >
+              <IconDotsVertical size={14} />
+            </ActionIcon>
+          </Menu.Target>
+
+          <Menu.Dropdown>
+            <Menu.Item
+              color="red"
+              leftSection={<IconTrash size={14} />}
+              disabled={filteredLogs.length === 0}
+              onClick={handleClearLogs}
+            >
+              Erase all logs
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
       </Header>
 
       {filteredLogs.length === 0 ? (
@@ -83,7 +101,7 @@ export const Logs: React.FC = () => {
         <div className={styles.logs}>
           {filteredLogs.map((log) => (
             <Log
-              key={log.date}
+              key={log.id ?? log.date}
               log={log}
             />
           ))}

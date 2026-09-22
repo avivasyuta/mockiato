@@ -1,12 +1,9 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { beforeEach, describe, expect, test } from 'vitest';
 
+import { setupChromeStorageMock } from '~/test/chromeStorageMock';
 import { HttpMethodType, TMock, TMockGroup } from '~/types';
-import { getStore, setStoreValue } from '~/utils/storage';
-
-const delay = (ms: number) =>
-  new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
+import { delay } from '~/utils/delay';
+import { appendLog, appendNetworkEvent, getStore, setStoreValue } from '~/utils/storage';
 
 const mockGroup: TMockGroup = {
   id: 'group_1',
@@ -26,41 +23,20 @@ const mockMock: TMock = {
   groupId: 'group_1',
 };
 
-// Simulates real chrome.storage.local latency: get/set don't resolve instantly,
-// so overlapping read-modify-write cycles can interleave and clobber each other.
-const setupChromeStorageMock = () => {
-  let backingStore: Record<string, unknown> = {};
-
-  (global as unknown as { chrome: unknown }).chrome = {
-    storage: {
-      local: {
-        get: vi.fn(async (key: string) => {
-          await delay(10);
-          return { [key]: backingStore[key] };
-        }),
-        set: vi.fn(async (items: Record<string, unknown>) => {
-          await delay(10);
-          backingStore = { ...backingStore, ...items };
-        }),
-      },
-    },
-  };
-};
-
 describe('storage', () => {
   beforeEach(() => {
-    setupChromeStorageMock();
+    setupChromeStorageMock({}, { delayMs: 10 });
   });
 
-  test('concurrent unawaited writes can lose data', async () => {
+  test('concurrent unawaited writes to different keys both survive', async () => {
     setStoreValue('mockGroups', [mockGroup]);
     setStoreValue('mocks', [mockMock]);
 
-    await delay(50);
+    await delay(100);
 
     const store = await getStore();
 
-    expect(store.mockGroups).toEqual([]);
+    expect(store.mockGroups).toEqual([mockGroup]);
     expect(store.mocks).toEqual([mockMock]);
   });
 
@@ -72,5 +48,34 @@ describe('storage', () => {
 
     expect(store.mockGroups).toEqual([mockGroup]);
     expect(store.mocks).toEqual([mockMock]);
+  });
+
+  test('concurrent unawaited appendLog calls do not lose entries', async () => {
+    const logs = Array.from({ length: 8 }, (_, i) => ({
+      url: `/url-${i}`,
+      method: 'GET',
+      date: new Date().toISOString(),
+      host: 'example.com',
+      mock: mockMock,
+    }));
+
+    await Promise.all(logs.map((log) => appendLog(log)));
+
+    const store = await getStore();
+    expect(store.logs).toHaveLength(logs.length);
+  });
+
+  test('concurrent unawaited appendNetworkEvent calls do not lose entries', async () => {
+    const events = Array.from({ length: 8 }, (_, i) => ({
+      host: 'example.com',
+      date: new Date().toISOString(),
+      request: { url: `/url-${i}`, method: HttpMethodType.GET },
+      response: { type: 'json' as const, headers: [], httpStatusCode: 200 },
+    }));
+
+    await Promise.all(events.map((event) => appendNetworkEvent(event)));
+
+    const store = await getStore();
+    expect(store.network).toHaveLength(events.length);
   });
 });

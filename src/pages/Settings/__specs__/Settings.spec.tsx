@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, test } from 'vitest';
 
 import '@testing-library/jest-dom/vitest';
 
@@ -9,8 +9,8 @@ import { AppShell, MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 
-import { STORE_KEY } from '~/contstant';
 import { Settings } from '~/pages/Settings';
+import { setupChromeStorageMock } from '~/test/chromeStorageMock';
 import { HttpMethodType, TStore } from '~/types';
 import { getStore } from '~/utils/storage';
 
@@ -101,35 +101,6 @@ const seededStore: TStore = {
   },
 };
 
-const delay = (ms: number) =>
-  new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-
-// Simulates real chrome.storage.local latency, matching the pattern used by
-// Mocks.spec.tsx to reliably expose read-modify-write races between concurrent writes.
-const setupChromeStorageMock = () => {
-  let backingStore: Record<string, unknown> = { [STORE_KEY]: seededStore };
-
-  (global as unknown as { chrome: unknown }).chrome = {
-    storage: {
-      local: {
-        get: vi.fn(async (key: string) => {
-          await delay(10);
-          return { [key]: backingStore[key] };
-        }),
-        set: vi.fn(async (items: Record<string, unknown>) => {
-          await delay(10);
-          backingStore = { ...backingStore, ...items };
-        }),
-      },
-      onChanged: {
-        addListener: vi.fn(),
-      },
-    },
-  };
-};
-
 const renderSettings = () =>
   render(
     <MantineProvider>
@@ -146,7 +117,7 @@ const renderSettings = () =>
 
 describe('Settings page - erasing data', () => {
   beforeEach(() => {
-    setupChromeStorageMock();
+    setupChromeStorageMock(seededStore, { delayMs: 10 });
   });
 
   afterEach(() => {
