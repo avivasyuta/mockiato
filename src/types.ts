@@ -55,6 +55,8 @@ export type TMock = {
 };
 
 export type TNetworkEvent = {
+  // Optional for backward compatibility with entries persisted before this field existed.
+  id?: string;
   host: string;
   date: string;
   request: {
@@ -88,6 +90,8 @@ export type TInterceptedRequestMockDTO = {
 export type TRoute = 'logs' | 'mocks' | 'settings' | 'headers' | 'network';
 
 export type TLog = {
+  // Optional for backward compatibility with entries persisted before this field existed.
+  id?: string;
   url: string;
   method: string;
   mock: TMock;
@@ -140,3 +144,11 @@ export type TUpdateStore = Record<
 >;
 
 export type TStoreKey = keyof TStore;
+
+export type TStoreMessage =
+  | { type: 'store/setValue'; key: TStoreKey; value: TStore[TStoreKey] }
+  | { type: 'store/appendLog'; log: TLog }
+  | { type: 'store/appendNetworkEvent'; event: TNetworkEvent }
+  | { type: 'store/init' };
+
+export type TStoreMessageResponse = { ok: true; store?: TStore } | { ok: false; error: string };

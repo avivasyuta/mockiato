@@ -104,6 +104,7 @@ const addInterceptorHandlers = () => {
 
     const message: TInterceptedResponseDTO = {
       event: {
+        id: nanoid(),
         date: new Date().toISOString(),
         host: window.location.host,
         request: {

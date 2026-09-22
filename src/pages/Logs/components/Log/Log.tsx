@@ -33,6 +33,7 @@ export const Log: React.FC<LogProps> = ({ log }) => {
   return (
     <Card
       key={log.date}
+      data-testid="log-row"
       className={styles.log}
       p="0.34rem"
     >
@@ -44,6 +45,7 @@ export const Log: React.FC<LogProps> = ({ log }) => {
             radius="sm"
             color="gray"
             onClick={toggle}
+            data-testid="log-row/toggle-expand"
           >
             {isOpen ? <IconChevronDown size={14} /> : <IconChevronRight size={14} />}
           </ActionIcon>
@@ -69,6 +71,7 @@ export const Log: React.FC<LogProps> = ({ log }) => {
             <Text size="xs">Request was intercepted and response mocked.</Text>
 
             <Text
+              component="div"
               size="xs"
               mt="sm"
             >
@@ -94,10 +97,10 @@ export const Log: React.FC<LogProps> = ({ log }) => {
                 >
                   <div className={styles.headers}>
                     {log.mock.responseHeaders.map((header) => (
-                      <>
+                      <React.Fragment key={header.id}>
                         <Text size="xs">{header.key}:</Text>
                         <Text size="xs">{header.value}</Text>
-                      </>
+                      </React.Fragment>
                     ))}
                   </div>
                 </Code>

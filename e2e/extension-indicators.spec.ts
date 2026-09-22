@@ -1,7 +1,13 @@
 import { expect, Page, test } from '@playwright/test';
 
+type MessageListener = (message: unknown, sender: unknown, sendResponse: (response?: unknown) => void) => unknown;
+
 interface ChromeStub {
-  runtime: { getURL: (path: string) => string };
+  runtime: {
+    getURL: (path: string) => string;
+    sendMessage: (message: unknown) => Promise<unknown>;
+    onMessage: { addListener: (listener: MessageListener) => void };
+  };
   storage: {
     local: {
       get: (key: string) => Promise<Record<string, unknown>>;
@@ -72,10 +78,36 @@ const gotoWithExtension = async (page: Page, options: FullExtensionOptions) => {
     };
 
     const listeners: Array<(changes: Record<string, { oldValue: unknown; newValue: unknown }>) => void> = [];
+    const messageListeners: MessageListener[] = [];
 
     window.chrome = {
       runtime: {
         getURL: (path: string) => `/dist/${path}`,
+        // Faithfully emulates chrome.runtime's promise/callback bridging: the promise
+        // resolves once some listener calls sendResponse, and only waits for an async
+        // response if that listener returned `true` (the real MV3 contract background.js
+        // relies on).
+        sendMessage: (message: unknown) =>
+          new Promise((resolve) => {
+            let responded = false;
+            const sendResponse = (response?: unknown) => {
+              if (!responded) {
+                responded = true;
+                resolve(response);
+              }
+            };
+
+            const willRespondAsync = messageListeners
+              .map((listener) => listener(message, {}, sendResponse) === true)
+              .some(Boolean);
+
+            if (!willRespondAsync && !responded) {
+              resolve(undefined);
+            }
+          }),
+        onMessage: {
+          addListener: (listener: MessageListener) => messageListeners.push(listener),
+        },
       },
       storage: {
         local: {

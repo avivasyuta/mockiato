@@ -22,26 +22,33 @@ export const useStore = <Key extends TStoreKey>(
     }
   };
 
-  if (chrome.storage) {
-    chrome.storage.onChanged.addListener(async (data) => {
+  useEffect(() => {
+    const handleChangeStore = () => {
+      getStoreValue(key).then((data) => {
+        setValue(data);
+      });
+    };
+
+    const handleStorageChanged = (data: Record<string, unknown>) => {
       const newValue = getUpdatedValue(data as TUpdateStore, key);
       if (newValue) {
         setValue(newValue);
       }
-    });
-  }
+    };
 
-  const handleChangeStore = () => {
-    getStoreValue(key).then((data) => {
-      setValue(data);
-    });
-  };
-
-  useEffect(() => {
     handleChangeStore();
 
     window.addEventListener('storage', handleChangeStore);
-    return () => window.removeEventListener('storage', handleChangeStore);
+    if (chrome.storage) {
+      chrome.storage.onChanged.addListener(handleStorageChanged);
+    }
+
+    return () => {
+      window.removeEventListener('storage', handleChangeStore);
+      if (chrome.storage) {
+        chrome.storage.onChanged.removeListener(handleStorageChanged);
+      }
+    };
   }, [key]);
 
   return [value, updateValue];

@@ -12,7 +12,12 @@
       script tag. Instead it loads the real content script, which injects
       the interceptor, the active-status badge, and the alert stack itself,
       driven by the (stubbed) chrome.storage settings - see extension_toggle.spec.ts.
+
+      background.js is loaded first (script order is synchronous here, neither
+      script is type="module"/async/defer) so its chrome.runtime.onMessage
+      listener is registered before contentScript.js can call sendMessage.
     -->
+    <script src="/dist/background.js"></script>
     <script src="/dist/contentScript.js"></script>
   </head>
   <body>

@@ -2,8 +2,11 @@
   "manifest_version": 3,
   "name": "Mockiato: Mock API Requests in DevTools",
   "description": "Intercept HTTP requests and mock responses in DevTools. Change status, body and headers. No proxy, no code changes.",
-  "version": "1.15.1",
+  "version": "1.16.0",
   "devtools_page": "devtools.html",
+  "background": {
+    "service_worker": "background.js"
+  },
   "icons": {
     "16": "icons/mockiato-16.png",
     "128": "icons/mockiato-128.png"
