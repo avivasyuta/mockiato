@@ -14,6 +14,7 @@ import {
   TextInput,
 } from '@mantine/core';
 import { isNotEmpty } from '@mantine/form';
+import { IconCode, IconCodeMinus, IconFileDescription } from '@tabler/icons-react';
 import { nanoid } from 'nanoid';
 
 import { UrlInput, type UrlInputProps } from '~/components/UrlInput';
@@ -120,7 +121,6 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
         <Divider mb="xs" />
 
         <Tabs
-          mt="xs"
           className={styles.tabs}
           defaultValue="general"
           variant="pills"
@@ -137,6 +137,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
             <Tabs.Tab
               value="general"
               className={styles.tab}
+              leftSection={<IconCode size={16} />}
               data-testid="mock-form/tab-general"
             >
               General
@@ -145,6 +146,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
             <Tabs.Tab
               value="body"
               className={styles.tab}
+              leftSection={<IconFileDescription size={16} />}
               data-testid="mock-form/tab-body"
             >
               Response Body
@@ -153,6 +155,7 @@ export const MockForm: FC<MockFormProps> = ({ mock, onClose, onSubmit }) => {
             <Tabs.Tab
               value="headers"
               className={styles.tab}
+              leftSection={<IconCodeMinus size={16} />}
               data-testid="mock-form/tab-headers"
             >
               Response Headers

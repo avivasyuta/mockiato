@@ -13,6 +13,7 @@ import { Settings } from '~/pages/Settings';
 import { setupChromeStorageMock } from '~/test/chromeStorageMock';
 import { HttpMethodType, TStore } from '~/types';
 import { getStore } from '~/utils/storage';
+import { emptyStore } from '~/utils/storeCore';
 
 // jsdom doesn't implement these, but Mantine's Modal popovers need them.
 window.matchMedia =
@@ -41,6 +42,7 @@ window.ResizeObserver = window.ResizeObserver || (MockObserver as unknown as typ
 window.IntersectionObserver = window.IntersectionObserver || (MockObserver as unknown as typeof IntersectionObserver);
 
 const seededStore: TStore = {
+  ...emptyStore,
   mocks: [
     {
       id: 'mock_1',

@@ -2,22 +2,7 @@ import { STORE_KEY } from '~/contstant';
 import { handleStoreMessage } from '~/scripts/background';
 import { TStore, TStoreMessage } from '~/types';
 import { delay } from '~/utils/delay';
-
-const emptyStore: TStore = {
-  mocks: [],
-  mockGroups: [],
-  logs: [],
-  headersProfiles: {},
-  network: [],
-  settings: {
-    showNotifications: true,
-    showActiveStatus: true,
-    enabledHosts: {},
-    showMobileNavBar: false,
-    commentDisplayMode: 'tooltip',
-    displayHttpMethodInline: false,
-  },
-};
+import { emptyStore } from '~/utils/storeCore';
 
 type SetupChromeStorageMockOptions = {
   // Simulates real chrome.storage.local latency: with a non-zero delay, get/set don't resolve

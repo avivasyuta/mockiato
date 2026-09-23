@@ -75,6 +75,8 @@ const addInterceptorHandlers = () => {
       }
 
       request.respondWith(response);
+
+      sendMessage<undefined>('mockApplied', undefined);
     } catch (err) {
       logError(err);
     }

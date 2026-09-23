@@ -13,7 +13,8 @@ export enum HttpMethodType {
   PURGE = 'PURGE',
 }
 
-export type MessageType = 'requestIntercepted' | 'requestChecked' | 'responseIntercepted' | 'settingsChanged';
+export type MessageType =
+  'requestIntercepted' | 'requestChecked' | 'responseIntercepted' | 'settingsChanged' | 'mockApplied';
 
 export type TResponseType = 'text' | 'json' | 'none';
 
@@ -126,6 +127,17 @@ export type TStoreSettings = {
   displayHttpMethodInline: boolean;
 };
 
+export type RatingPromptStatus = 'pending' | 'rated' | 'dismissed';
+
+export type RatingPrompt = {
+  status: RatingPromptStatus;
+  mockHits: number;
+  dismissCount: number;
+  installedAt?: number;
+  updatedAt?: number;
+  nextShowAt?: number;
+};
+
 export type TStore = {
   mocks: TMock[];
   mockGroups: TMockGroup[];
@@ -133,6 +145,7 @@ export type TStore = {
   headersProfiles: Record<string, THeadersProfile>;
   network: TNetworkEvent[];
   settings: TStoreSettings;
+  ratingPrompt: RatingPrompt;
 };
 
 export type TUpdateStore = Record<
@@ -149,6 +162,7 @@ export type TStoreMessage =
   | { type: 'store/setValue'; key: TStoreKey; value: TStore[TStoreKey] }
   | { type: 'store/appendLog'; log: TLog }
   | { type: 'store/appendNetworkEvent'; event: TNetworkEvent }
+  | { type: 'store/addMockHits'; count: number }
   | { type: 'store/init' };
 
 export type TStoreMessageResponse = { ok: true; store?: TStore } | { ok: false; error: string };

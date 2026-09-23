@@ -17,6 +17,12 @@ export const emptyStore: TStore = {
     commentDisplayMode: 'tooltip',
     displayHttpMethodInline: false,
   },
+  ratingPrompt: {
+    mockHits: 0,
+    status: 'pending',
+    dismissCount: 0,
+    installedAt: Date.now(),
+  },
 };
 
 export const readStoreFromChromeStorage = async (): Promise<TStore> => {

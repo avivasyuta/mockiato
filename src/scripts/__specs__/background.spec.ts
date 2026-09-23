@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { HttpMethodType, TLog, TMock, TMockGroup, TNetworkEvent } from '~/types';
 import { setupChromeStorageMock } from '~/test/chromeStorageMock';
+import { HttpMethodType, TLog, TMock, TMockGroup, TNetworkEvent } from '~/types';
 import { delay } from '~/utils/delay';
 import { readStoreFromChromeStorage } from '~/utils/storeCore';
 
-import { handleStoreMessage } from '../background';
+import { handleInstalled, handleStoreMessage } from '../background';
 
 const buildMock = (id: string): TMock => ({
   id,
@@ -92,6 +92,53 @@ describe('background / handleStoreMessage', () => {
       expect(response.store?.mocks).toEqual([mockMock]);
       expect(response.store?.settings.showNotifications).toBe(true);
     }
+  });
+
+  test('N concurrent unawaited addMockHits messages all survive', async () => {
+    const perMessage = 2;
+    const messageCount = 10;
+
+    await Promise.all(
+      Array.from({ length: messageCount }, () => handleStoreMessage({ type: 'store/addMockHits', count: perMessage })),
+    );
+
+    const response = await handleStoreMessage({ type: 'store/init' });
+    expect(response.ok).toBe(true);
+    if (response.ok) {
+      expect(response.store?.ratingPrompt.mockHits).toBe(perMessage * messageCount);
+    }
+  });
+
+  test('addMockHits stops counting once the prompt is rated or dismissed', async () => {
+    await handleStoreMessage({ type: 'store/addMockHits', count: 3 });
+    await handleStoreMessage({
+      type: 'store/setValue',
+      key: 'ratingPrompt',
+      value: { ...(await readStoreFromChromeStorage()).ratingPrompt, status: 'rated' },
+    });
+
+    await handleStoreMessage({ type: 'store/addMockHits', count: 5 });
+
+    const store = await readStoreFromChromeStorage();
+    expect(store.ratingPrompt.mockHits).toBe(3);
+  });
+
+  test('handleInstalled(install) sets installedAt only once', async () => {
+    await handleInstalled('install');
+    const store = await readStoreFromChromeStorage();
+    const firstInstalledAt = store.ratingPrompt.installedAt;
+    expect(firstInstalledAt).toBeDefined();
+
+    await handleInstalled('install');
+    const storeAfterSecondInstall = await readStoreFromChromeStorage();
+    expect(storeAfterSecondInstall.ratingPrompt.installedAt).toBe(firstInstalledAt);
+  });
+
+  test('handleInstalled(update) sets updatedAt and backfills installedAt for existing users', async () => {
+    await handleInstalled('update');
+    const store = await readStoreFromChromeStorage();
+    expect(store.ratingPrompt.updatedAt).toBeDefined();
+    expect(store.ratingPrompt.installedAt).toBeDefined();
   });
 
   test('a failing write resolves { ok: false } but does not break the queue for the next message', async () => {
