@@ -1,0 +1,1 @@
+export { RatingPrompt } from './RatingPrompt';

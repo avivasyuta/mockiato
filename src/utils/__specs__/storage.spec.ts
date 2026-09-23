@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, test } from 'vitest';
 import { setupChromeStorageMock } from '~/test/chromeStorageMock';
 import { HttpMethodType, TMock, TMockGroup } from '~/types';
 import { delay } from '~/utils/delay';
-import { appendLog, appendNetworkEvent, getStore, setStoreValue } from '~/utils/storage';
+import { addMockHits, appendLog, appendNetworkEvent, getStore, setStoreValue } from '~/utils/storage';
 
 const mockGroup: TMockGroup = {
   id: 'group_1',
@@ -77,5 +77,14 @@ describe('storage', () => {
 
     const store = await getStore();
     expect(store.network).toHaveLength(events.length);
+  });
+
+  test('concurrent unawaited addMockHits calls do not lose hits', async () => {
+    const hits = 15;
+
+    await Promise.all(Array.from({ length: hits }, () => addMockHits(1)));
+
+    const store = await getStore();
+    expect(store.ratingPrompt.mockHits).toBe(hits);
   });
 });

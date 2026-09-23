@@ -1,0 +1,8 @@
+.root {
+  position: absolute !important;
+  z-index: 1000;
+  inset-inline: 0;
+  bottom: 0.75rem;
+  width: min(600px, calc(100% - 2rem));
+  margin-inline: auto;
+}

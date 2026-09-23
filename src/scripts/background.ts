@@ -1,6 +1,7 @@
 import { TStoreMessage, TStoreMessageResponse } from '~/types';
 import { createMutex } from '~/utils/createMutex';
 import { isObject } from '~/utils/isObject';
+import { withInstallRecorded, withMockHitsAdded, withUpdateRecorded } from '~/utils/ratingPrompt';
 import { mergeStoreWithDefaults, readStoreFromChromeStorage, writeStoreToChromeStorage } from '~/utils/storeCore';
 
 const withStoreLock = createMutex();
@@ -27,6 +28,14 @@ const dispatchStoreMessage = async (message: TStoreMessage): Promise<TStoreMessa
       await writeStoreToChromeStorage({ ...store, network: [...store.network, message.event] });
       return { ok: true };
     }
+    case 'store/addMockHits': {
+      const store = await readStoreFromChromeStorage();
+      await writeStoreToChromeStorage({
+        ...store,
+        ratingPrompt: withMockHitsAdded(store.ratingPrompt, message.count),
+      });
+      return { ok: true };
+    }
     case 'store/init': {
       const merged = mergeStoreWithDefaults(await readStoreFromChromeStorage());
       await writeStoreToChromeStorage(merged);
@@ -41,13 +50,23 @@ const dispatchStoreMessage = async (message: TStoreMessage): Promise<TStoreMessa
 // without needing a real chrome.runtime message channel.
 export const handleStoreMessage = (message: TStoreMessage): Promise<TStoreMessageResponse> =>
   withStoreLock(() =>
-    dispatchStoreMessage(message).catch(
-      (error): TStoreMessageResponse => ({
-        ok: false,
-        error: error instanceof Error ? error.message : 'Failed to save data to storage.',
-      }),
-    ),
+    dispatchStoreMessage(message).catch((error): TStoreMessageResponse => ({
+      ok: false,
+      error: error instanceof Error ? error.message : 'Failed to save data to storage.',
+    })),
   );
+
+// Reads/writes the store directly (under the same lock as `handleStoreMessage`) rather than
+// going through a TStoreMessage: `onInstalled` only ever fires here, in the background
+// context itself, so there's no cross-context call to route through chrome.runtime.
+export const handleInstalled = (reason: 'install' | 'update'): Promise<void> =>
+  withStoreLock(async () => {
+    const store = await readStoreFromChromeStorage();
+    const ratingPrompt =
+      reason === 'install' ? withInstallRecorded(store.ratingPrompt) : withUpdateRecorded(store.ratingPrompt);
+
+    await writeStoreToChromeStorage({ ...store, ratingPrompt });
+  });
 
 // `typeof` (not optional chaining) is required here: this module is imported directly in
 // tests to drive `handleStoreMessage` without a real `chrome` global existing yet, and
@@ -61,6 +80,12 @@ if (typeof chrome !== 'undefined' && chrome.runtime) {
 
     handleStoreMessage(message).then(sendResponse);
     return true;
+  });
+
+  chrome.runtime.onInstalled.addListener((details) => {
+    if (details.reason === 'install' || details.reason === 'update') {
+      handleInstalled(details.reason);
+    }
   });
 }
 

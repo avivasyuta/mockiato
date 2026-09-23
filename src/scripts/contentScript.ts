@@ -14,11 +14,12 @@ import {
   TStore,
   TStoreSettings,
 } from '~/types';
+import { createMockHitsBatcher } from '~/utils/createMockHitsBatcher';
 import { getValidHeaders } from '~/utils/getValidHeaders';
 import { getValidMocks } from '~/utils/getValidMocks';
 import { isExtensionEnabled } from '~/utils/isExtensionEnabled';
 import { logError } from '~/utils/logger';
-import { appendLog, appendNetworkEvent, getStore, initStore } from '~/utils/storage';
+import { addMockHits, appendLog, appendNetworkEvent, getStore, initStore } from '~/utils/storage';
 
 const logNetwork = async (event: TNetworkEvent) => {
   try {
@@ -109,6 +110,12 @@ listenMessage<TInterceptedResponseDTO>('responseIntercepted', async (message) =>
     logError(err);
   }
 });
+
+const notifyMockApplied = createMockHitsBatcher((count) => {
+  addMockHits(count).catch(logError);
+});
+
+listenMessage<undefined>('mockApplied', notifyMockApplied);
 
 const destroy = () => {
   const script = document.getElementById(INTERCEPTOR_ID);

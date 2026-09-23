@@ -1,6 +1,7 @@
 import { STORE_KEY } from '~/contstant';
 import { TLog, TNetworkEvent, TStore, TStoreKey, TStoreMessage, TStoreMessageResponse, TUpdateStore } from '~/types';
 import { createMutex } from '~/utils/createMutex';
+import { withMockHitsAdded } from '~/utils/ratingPrompt';
 import { emptyStore, mergeStoreWithDefaults, readStoreFromChromeStorage } from '~/utils/storeCore';
 
 const isDevelopment = import.meta.env.VITE_NODE_ENV === 'development';
@@ -120,4 +121,23 @@ export const initStore = async (): Promise<TStore> => {
   }
 
   return response.store ?? emptyStore;
+};
+
+export const addMockHits = async (count: number): Promise<void> => {
+  if (count <= 0) {
+    return;
+  }
+
+  if (isDevelopment) {
+    await mutateLocalStorage((store) => ({
+      ...store,
+      ratingPrompt: withMockHitsAdded(store.ratingPrompt, count),
+    }));
+    return;
+  }
+
+  const response = await sendStoreMessage({ type: 'store/addMockHits', count });
+  if (!response.ok) {
+    throw new Error(response.error);
+  }
 };

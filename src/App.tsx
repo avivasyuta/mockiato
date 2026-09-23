@@ -6,6 +6,7 @@ import { Notifications } from '@mantine/notifications';
 import { initStore } from '~/utils/storage';
 
 import { AppNavbar } from './components/AppNavbar';
+import { RatingPrompt } from './components/RatingPrompt';
 import { Headers } from './pages/Headers';
 import { Logs } from './pages/Logs';
 import { Mocks } from './pages/Mocks';
@@ -40,6 +41,7 @@ export const App = () => {
       <MantineProvider defaultColorScheme="auto">
         <ModalsProvider>
           <Notifications position="bottom-center" />
+          <RatingPrompt />
 
           <AppShell
             layout="alt"
