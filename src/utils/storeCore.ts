@@ -16,6 +16,7 @@ export const emptyStore: TStore = {
     showMobileNavBar: false,
     commentDisplayMode: 'tooltip',
     displayHttpMethodInline: false,
+    expandableMockDetails: true,
   },
   ratingPrompt: {
     mockHits: 0,

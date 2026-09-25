@@ -1,0 +1,11 @@
+.container {
+  flex: 1;
+  max-width: 680px;
+  container-type: inline-size;
+}
+
+@container (max-width: 399px) {
+  .filters {
+    display: none;
+  }
+}

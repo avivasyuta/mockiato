@@ -20,6 +20,11 @@
   overflow: hidden;
   border: 1px solid var(--app-shell-border-color);
   border-radius: var(--mantine-radius-md);
+
+  /* Mantine collapses the navbar by shifting it by its own width, which leaves the
+     * island inset peeking out. The extra shift hides it fully; while the navbar is
+     * open the variable is unset, so the declaration is invalid and falls back to none. */
+  transform: var(--app-shell-navbar-transform) translateX(calc(var(--island-gap) * -1));
 }
 
 /* Top bar, sits to the right of the navbar island. */

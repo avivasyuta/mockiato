@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
-import { Drawer } from '@mantine/core';
+import { Drawer, useMatches } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { nanoid } from 'nanoid';
 
@@ -53,6 +53,7 @@ const MocksPage: React.FC = () => {
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
   const [expandedMocks, setExpandedMocks] = useState<Set<string>>(new Set());
   const [filters, setFilters] = useState<TMockFilters>(emptyMockFilters);
+  const drawerSize = useMatches({ base: '100%', md: '50%' });
 
   // Initialize expanded groups when groups are loaded
   useEffect(() => {
@@ -298,7 +299,7 @@ const MocksPage: React.FC = () => {
         opened={mockForm.isOpened}
         padding="sm"
         position="right"
-        size="50%"
+        size={drawerSize}
         withCloseButton={false}
         overlayProps={overlaySettings}
         styles={{

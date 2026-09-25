@@ -22,10 +22,10 @@ describe('Headers page [Header rows]', () => {
     const user = userEvent.setup();
     const profile = buildProfile('Default', { lastActive: true, headers: [] });
     setupChromeStorageMock({ headersProfiles: profilesMap(profile) });
-    const { findByTestId, findByText, findByTitle } = renderWithProviders(<Headers />);
+    const { findByTestId, findByText } = renderWithProviders(<Headers />);
 
     await findByText('No headers to show');
-    await user.click(await findByTitle('Add Header'));
+    await user.click(await findByTestId('headers-top-panel/add-header'));
 
     await user.type(await findByTestId('header-form/key'), 'X-Custom');
     await user.type(await findByTestId('header-form/value'), 'my-value');
@@ -47,10 +47,10 @@ describe('Headers page [Header rows]', () => {
     const user = userEvent.setup();
     const profile = buildProfile('Default', { lastActive: true, headers: [] });
     setupChromeStorageMock({ headersProfiles: profilesMap(profile) });
-    const { findByTestId, findByText, findByTitle } = renderWithProviders(<Headers />);
+    const { findByTestId, findByText } = renderWithProviders(<Headers />);
 
     await findByText('No headers to show');
-    await user.click(await findByTitle('Add Header'));
+    await user.click(await findByTestId('headers-top-panel/add-header'));
 
     await user.type(await findByTestId('header-form/key'), 'X-Custom');
     await user.type(await findByTestId('header-form/value'), 'my-value');
@@ -78,10 +78,10 @@ describe('Headers page [Header rows]', () => {
     const user = userEvent.setup();
     const profile = buildProfile('Default', { lastActive: true, headers: [] });
     setupChromeStorageMock({ headersProfiles: profilesMap(profile) });
-    const { findByTestId, findByText, findByTitle } = renderWithProviders(<Headers />);
+    const { findByTestId, findByText } = renderWithProviders(<Headers />);
 
     await findByText('No headers to show');
-    await user.click(await findByTitle('Add Header'));
+    await user.click(await findByTestId('headers-top-panel/add-header'));
 
     await user.type(await findByTestId('header-form/key'), 'X-Custom');
     await user.type(await findByTestId('header-form/value'), 'my-value');

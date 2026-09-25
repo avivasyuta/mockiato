@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Button, Group, Text } from '@mantine/core';
+import { ActionIcon, Button, Group, Text } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { IconPlus } from '@tabler/icons-react';
 import { nanoid } from 'nanoid';
@@ -79,11 +79,24 @@ export const TopPanel: FC<TopPanelProps> = (props) => {
             leftSection={<IconPlus size={16} />}
             radius="sm"
             size="compact-xs"
-            title="Add Header"
+            title="Add new header"
+            visibleFrom="md"
+            data-testid="headers-top-panel/add-header"
             onClick={handleAddHeader}
           >
             Add Header
           </Button>
+
+          <ActionIcon
+            size="sm"
+            radius="sm"
+            title="Add new mock"
+            aria-label="Add new header"
+            hiddenFrom="md"
+            onClick={handleAddHeader}
+          >
+            <IconPlus size={16} />
+          </ActionIcon>
 
           <ProfileMenu
             id={activeProfile.id}

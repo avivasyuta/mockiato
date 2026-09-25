@@ -17,7 +17,7 @@ export const Header: FC<React.PropsWithChildren & { title: ReactNode }> = ({ tit
           <Burger
             opened={isNavbarVisible}
             onClick={toggle}
-            hiddenFrom="xs"
+            hiddenFrom="sm"
             size="xs"
           />
           {title}

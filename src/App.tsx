@@ -48,7 +48,7 @@ export const App = () => {
             header={{ height: 40 }}
             navbar={{
               width: 220,
-              breakpoint: 'xs',
+              breakpoint: 'sm',
               collapsed: { mobile: !isNavbarVisible },
             }}
             padding="md"

@@ -125,6 +125,7 @@ export type TStoreSettings = {
   showMobileNavBar: boolean;
   commentDisplayMode: TCommentDisplayMode;
   displayHttpMethodInline: boolean;
+  expandableMockDetails: boolean;
 };
 
 export type RatingPromptStatus = 'pending' | 'rated' | 'dismissed';

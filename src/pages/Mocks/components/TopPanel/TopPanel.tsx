@@ -92,16 +92,30 @@ export const TopPanel: FC<TopPanelProps> = ({
 
       <Group gap="xs">
         {groups.length > 0 && (
-          <Button
-            size="compact-xs"
-            color="gray"
-            variant="subtle"
-            radius="sm"
-            rightSection={areAllExpanded ? <IconChevronUp size={14} /> : <IconChevronDown size={14} />}
-            onClick={onToggleAll}
-          >
-            {areAllExpanded ? 'Collapse All' : 'Expand All'}
-          </Button>
+          <>
+            <Button
+              size="compact-xs"
+              color="gray"
+              variant="subtle"
+              radius="sm"
+              rightSection={areAllExpanded ? <IconChevronUp size={14} /> : <IconChevronDown size={14} />}
+              visibleFrom="md"
+              onClick={onToggleAll}
+            >
+              {areAllExpanded ? 'Collapse All' : 'Expand All'}
+            </Button>
+
+            <ActionIcon
+              size="sm"
+              radius="sm"
+              color="gray"
+              variant="subtle"
+              hiddenFrom="md"
+              onClick={onToggleAll}
+            >
+              {areAllExpanded ? <IconChevronUp size={14} /> : <IconChevronDown size={14} />}
+            </ActionIcon>
+          </>
         )}
 
         <Button
@@ -109,10 +123,22 @@ export const TopPanel: FC<TopPanelProps> = ({
           size="compact-xs"
           radius="sm"
           title="Add new mock"
+          visibleFrom="md"
           onClick={onMockAdd}
         >
           Add Mock
         </Button>
+
+        <ActionIcon
+          size="sm"
+          radius="sm"
+          title="Add new mock"
+          aria-label="Add new mock"
+          hiddenFrom="md"
+          onClick={onMockAdd}
+        >
+          <IconPlus size={16} />
+        </ActionIcon>
 
         <Menu
           shadow="md"
