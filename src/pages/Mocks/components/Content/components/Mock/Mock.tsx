@@ -19,8 +19,6 @@ import {
   IconTrash,
 } from '@tabler/icons-react';
 
-import { Dot } from '~/components/Dot/Dot';
-
 import { Card } from '../../../../../../components/Card';
 import { HttpMethod } from '../../../../../../components/HttpMethod';
 import { HttpStatus } from '../../../../../../components/HttpStatus';
@@ -136,7 +134,7 @@ export const Mock: FC<MockProps> = ({
     <div style={{ position: 'relative' }}>
       <Card
         key={mock.id}
-        p="0.34rem"
+        p="0.35rem 0.7rem"
         ref={ref}
         data-testid="mock-row"
         style={{ opacity: isDragging ? 0.4 : undefined, cursor: isDragging ? 'grabbing' : 'pointer' }}
@@ -158,38 +156,41 @@ export const Mock: FC<MockProps> = ({
               <IconGripVertical size={14} />
             </ActionIcon>
 
-            <ActionIcon
-              variant="subtle"
-              color="gray"
-              radius="sm"
-              size="sm"
-              data-testid="mock-row/toggle-expand"
-              onClick={handleToggleExpand}
-            >
-              {isOpen ? <IconChevronDown size={14} /> : <IconChevronRight size={14} />}
-            </ActionIcon>
+            {settings?.expandableMockDetails && (
+              <ActionIcon
+                variant="subtle"
+                color="gray"
+                radius="sm"
+                size="sm"
+                data-testid="mock-row/toggle-expand"
+                onClick={handleToggleExpand}
+              >
+                {isOpen ? <IconChevronDown size={14} /> : <IconChevronRight size={14} />}
+              </ActionIcon>
+            )}
           </Group>
 
-          <Group
-            align="center"
+          <Stack
+            align="left"
             className={styles.url}
-            gap="xs"
-            wrap="nowrap"
+            gap="0"
           >
             {mock.name && (
               <>
                 <Text
                   size="xs"
-                  truncate="end"
+                  className={styles.name}
                 >
                   {mock.name}
                 </Text>
-
-                <Dot />
               </>
             )}
 
-            <Group gap="sm">
+            <Group
+              gap="sm"
+              className={styles.urlWrapper}
+              wrap="nowrap"
+            >
               {settings?.displayHttpMethodInline && <HttpMethod method={mock.httpMethod} />}
 
               <Group
@@ -197,22 +198,6 @@ export const Mock: FC<MockProps> = ({
                 className={styles.urlGroup}
                 wrap="nowrap"
               >
-                {mock.urlType === 'regexp' && (
-                  <Tooltip
-                    label="RegExp enabled"
-                    position="bottom"
-                    transitionProps={{ transition: 'scale' }}
-                    openDelay={150}
-                    withArrow
-                  >
-                    <IconRegex
-                      size={12}
-                      color="#9775fa"
-                      style={{ flexShrink: 0 }}
-                    />
-                  </Tooltip>
-                )}
-
                 <Text
                   size="xs"
                   truncate="end"
@@ -224,7 +209,7 @@ export const Mock: FC<MockProps> = ({
                 </Text>
               </Group>
             </Group>
-          </Group>
+          </Stack>
 
           <Group gap="1.5rem">
             {mock.comment && (
@@ -252,6 +237,22 @@ export const Mock: FC<MockProps> = ({
                     />
                   </span>
                 )}
+              </Tooltip>
+            )}
+
+            {mock.urlType === 'regexp' && (
+              <Tooltip
+                label="RegExp enabled"
+                position="bottom"
+                transitionProps={{ transition: 'scale' }}
+                openDelay={150}
+                withArrow
+              >
+                <IconRegex
+                  size={16}
+                  color="#9775fa"
+                  style={{ flexShrink: 0 }}
+                />
               </Tooltip>
             )}
 
@@ -314,88 +315,90 @@ export const Mock: FC<MockProps> = ({
           </Group>
         </Group>
 
-        <Collapse expanded={isOpen}>
-          <Stack
-            gap="0.1rem"
-            pt="0.3rem"
-            px="0.45rem"
-            mt="0.3rem"
-            className={styles.details}
-          >
-            <Group gap="0.5rem">
-              <Text
-                size="xs"
-                fw={600}
-                className={styles.detailLabel}
-              >
-                Method:
-              </Text>
-              <HttpMethod method={mock.httpMethod} />
-            </Group>
-
-            <Group gap="0.5rem">
-              <Text
-                size="xs"
-                fw={600}
-                className={styles.detailLabel}
-              >
-                Status code:
-              </Text>
-              <HttpStatus status={mock.httpStatusCode} />
-            </Group>
-
-            <Group gap="0.5rem">
-              <Text
-                size="xs"
-                fw={600}
-                className={styles.detailLabel}
-              >
-                Delay:
-              </Text>
-              <Text size="xs">{mock.delay} ms</Text>
-            </Group>
-
-            <Group gap="0.5rem">
-              <Text
-                size="xs"
-                fw={600}
-                className={styles.detailLabel}
-              >
-                Response Headers:
-              </Text>
-
-              {mock.responseHeaders.length > 0 ? (
-                <Group gap="0.5rem">
-                  {mock.responseHeaders.map((header, index) => (
-                    <Text
-                      key={header.id}
-                      size="xs"
-                      color={theme.colors.gray[7]}
-                    >
-                      {header.key}: {header.value}
-                      {index < mock.responseHeaders.length - 1 && ','}
-                    </Text>
-                  ))}
-                </Group>
-              ) : (
-                <Text size="xs">empty</Text>
-              )}
-            </Group>
-
-            {mock.comment && (
+        {settings?.expandableMockDetails && (
+          <Collapse expanded={isOpen}>
+            <Stack
+              gap="0.1rem"
+              pt="0.3rem"
+              px="0.45rem"
+              mt="0.3rem"
+              className={styles.details}
+            >
               <Group gap="0.5rem">
                 <Text
                   size="xs"
                   fw={600}
                   className={styles.detailLabel}
                 >
-                  Comment:
+                  Method:
                 </Text>
-                <Text size="xs">{mock.comment}</Text>
+                <HttpMethod method={mock.httpMethod} />
               </Group>
-            )}
-          </Stack>
-        </Collapse>
+
+              <Group gap="0.5rem">
+                <Text
+                  size="xs"
+                  fw={600}
+                  className={styles.detailLabel}
+                >
+                  Status code:
+                </Text>
+                <HttpStatus status={mock.httpStatusCode} />
+              </Group>
+
+              <Group gap="0.5rem">
+                <Text
+                  size="xs"
+                  fw={600}
+                  className={styles.detailLabel}
+                >
+                  Delay:
+                </Text>
+                <Text size="xs">{mock.delay} ms</Text>
+              </Group>
+
+              <Group gap="0.5rem">
+                <Text
+                  size="xs"
+                  fw={600}
+                  className={styles.detailLabel}
+                >
+                  Response Headers:
+                </Text>
+
+                {mock.responseHeaders.length > 0 ? (
+                  <Group gap="0.5rem">
+                    {mock.responseHeaders.map((header, index) => (
+                      <Text
+                        key={header.id}
+                        size="xs"
+                        color={theme.colors.gray[7]}
+                      >
+                        {header.key}: {header.value}
+                        {index < mock.responseHeaders.length - 1 && ','}
+                      </Text>
+                    ))}
+                  </Group>
+                ) : (
+                  <Text size="xs">empty</Text>
+                )}
+              </Group>
+
+              {mock.comment && (
+                <Group gap="0.5rem">
+                  <Text
+                    size="xs"
+                    fw={600}
+                    className={styles.detailLabel}
+                  >
+                    Comment:
+                  </Text>
+                  <Text size="xs">{mock.comment}</Text>
+                </Group>
+              )}
+            </Stack>
+          </Collapse>
+        )}
       </Card>
 
       {closestEdge && (

@@ -1,9 +1,11 @@
 import { FC, useMemo } from 'react';
-import { Group, Input, Select, TextInput } from '@mantine/core';
+import { Box, Group, Input, Select, TextInput } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
 
 import { TMockFilters } from '~/pages/Mocks/types';
 import { TMock } from '~/types';
+
+import styles from './MockFilters.module.css';
 
 type MockFiltersProps = {
   mocks: TMock[];
@@ -23,50 +25,53 @@ export const MockFilters: FC<MockFiltersProps> = ({ mocks, filters, onChange }) 
   );
 
   return (
-    <Group
-      gap="xs"
-      wrap="nowrap"
-    >
-      <TextInput
-        size="xs"
+    <Box className={styles.container}>
+      <Group
+        gap="xs"
+        wrap="nowrap"
+        visibleFrom="sm"
         flex={1}
-        w={500}
-        placeholder="Filter by name or URL"
-        data-testid="mock-filters/search"
-        leftSection={<IconSearch size={14} />}
-        rightSection={
-          filters.search ? (
-            <Input.ClearButton
-              aria-label="Clear input"
-              onClick={() => onChange({ ...filters, search: '' })}
-            />
-          ) : null
-        }
-        value={filters.search}
-        onChange={(event) => onChange({ ...filters, search: event.currentTarget.value })}
-      />
+      >
+        <TextInput
+          size="xs"
+          flex={1}
+          placeholder="Filter by name or URL"
+          data-testid="mock-filters/search"
+          leftSection={<IconSearch size={14} />}
+          rightSection={
+            filters.search ? (
+              <Input.ClearButton
+                aria-label="Clear input"
+                onClick={() => onChange({ ...filters, search: '' })}
+              />
+            ) : null
+          }
+          value={filters.search}
+          onChange={(event) => onChange({ ...filters, search: event.currentTarget.value })}
+        />
 
-      <Select
-        size="xs"
-        w={130}
-        clearable
-        placeholder="Method"
-        data={methodOptions}
-        value={filters.httpMethod}
-        data-testid="mock-filters/method"
-        onChange={(value) => onChange({ ...filters, httpMethod: value as TMockFilters['httpMethod'] })}
-      />
+        <Select
+          size="xs"
+          w={120}
+          clearable
+          placeholder="Method"
+          data={methodOptions}
+          value={filters.httpMethod}
+          data-testid="mock-filters/method"
+          onChange={(value) => onChange({ ...filters, httpMethod: value as TMockFilters['httpMethod'] })}
+        />
 
-      <Select
-        size="xs"
-        w={130}
-        clearable
-        placeholder="Status code"
-        data={statusCodeOptions}
-        value={filters.httpStatusCode}
-        data-testid="mock-filters/status-code"
-        onChange={(value) => onChange({ ...filters, httpStatusCode: value })}
-      />
-    </Group>
+        <Select
+          size="xs"
+          w={120}
+          clearable
+          placeholder="Status code"
+          data={statusCodeOptions}
+          value={filters.httpStatusCode}
+          data-testid="mock-filters/status-code"
+          onChange={(value) => onChange({ ...filters, httpStatusCode: value })}
+        />
+      </Group>
+    </Box>
   );
 };

@@ -9,6 +9,11 @@
   flex-wrap: nowrap;
 }
 
+.name {
+  flex-shrink: 0;
+}
+
+.urlWrapper,
 .urlGroup {
   flex: 1;
   min-width: 0;

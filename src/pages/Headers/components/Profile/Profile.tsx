@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Drawer } from '@mantine/core';
+import { Drawer, useMatches } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 
 import { HeaderForm } from '../../../../components/HeaderForm';
@@ -10,6 +10,8 @@ import { ProfileProps } from './types';
 
 export const Profile: FC<ProfileProps> = (props) => {
   const { profile, headerForm, onChange, onCloseHeaderForm, onHeaderEdit } = props;
+
+  const drawerSize = useMatches({ base: '100%', md: '40%' });
 
   const requestHeaders = profile.headers.filter((h) => h.type === 'request');
 
@@ -64,7 +66,7 @@ export const Profile: FC<ProfileProps> = (props) => {
         opened={headerForm.isOpen}
         padding="sm"
         position="right"
-        size="40%"
+        size={drawerSize}
         withCloseButton={false}
         overlayProps={overlaySettings}
         styles={{

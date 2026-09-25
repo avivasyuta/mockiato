@@ -132,6 +132,17 @@ export const Settings = () => {
     });
   };
 
+  const handleToggleAllowExtendMock = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!settings) {
+      return;
+    }
+
+    await setSettings({
+      ...settings,
+      expandableMockDetails: e.target.checked,
+    });
+  };
+
   if (!settings) {
     return null;
   }
@@ -250,6 +261,24 @@ export const Settings = () => {
               c="dimmed"
             >
               Display the HTTP method as inline text in the mock snippet.
+            </Text>
+          </Stack>
+
+          <Stack gap="0.4rem">
+            <Switch
+              size="xs"
+              onLabel="ON"
+              offLabel="OFF"
+              label="Expandable mock details"
+              checked={settings?.expandableMockDetails}
+              onChange={handleToggleAllowExtendMock}
+            />
+            <Text
+              size="xs"
+              c="dimmed"
+            >
+              Allow mock snippets to be expanded to show detailed information. When disabled, the expand toggle is
+              hidden.
             </Text>
           </Stack>
 
