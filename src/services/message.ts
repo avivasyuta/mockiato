@@ -1,4 +1,4 @@
-import { EXTENSION_NAME } from '../contstant';
+import { EXTENSION_NAME } from '../constant';
 import { MessageType } from '../types';
 
 export const sendMessage = <T>(type: MessageType, message: T): void => {

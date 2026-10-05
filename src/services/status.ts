@@ -1,4 +1,4 @@
-import { statusNodeId } from '~/contstant';
+import { statusNodeId } from '~/constant';
 
 const createStyles = () => {
   const css = `

@@ -9,7 +9,7 @@ import { Card } from '~/components/Card';
 import { HttpMethod } from '~/components/HttpMethod';
 import { HttpStatus } from '~/components/HttpStatus';
 import { ResponseBody } from '~/components/ResponseBody';
-import { iconSize } from '~/contstant';
+import { iconSize } from '~/constant';
 import { useStore } from '~/hooks/useStore';
 import { TMock, TNetworkEvent } from '~/types';
 

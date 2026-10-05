@@ -5,7 +5,7 @@ import { IconEdit, IconTrash } from '@tabler/icons-react';
 import { Card } from '../../../../../../components/Card';
 import { HttpMethod } from '../../../../../../components/HttpMethod';
 import { NotFound } from '../../../../../../components/NotFound';
-import { iconSize } from '../../../../../../contstant';
+import { iconSize } from '../../../../../../constant';
 import { THeader } from '../../../../../../types';
 import styles from './HeaderList.module.css';
 

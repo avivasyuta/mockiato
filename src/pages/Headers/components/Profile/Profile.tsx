@@ -3,7 +3,7 @@ import { Drawer, useMatches } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 
 import { HeaderForm } from '../../../../components/HeaderForm';
-import { overlaySettings } from '../../../../contstant';
+import { overlaySettings } from '../../../../constant';
 import { THeader } from '../../../../types';
 import { HeaderList } from './components/HeaderList';
 import { ProfileProps } from './types';

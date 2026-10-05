@@ -1,4 +1,4 @@
-import { STORE_KEY } from '~/contstant';
+import { STORE_KEY } from '~/constant';
 import { handleStoreMessage } from '~/scripts/background';
 import { TStore, TStoreMessage } from '~/types';
 import { delay } from '~/utils/delay';

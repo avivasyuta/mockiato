@@ -22,7 +22,7 @@ import {
 import { Card } from '../../../../../../components/Card';
 import { HttpMethod } from '../../../../../../components/HttpMethod';
 import { HttpStatus } from '../../../../../../components/HttpStatus';
-import { iconSize } from '../../../../../../contstant';
+import { iconSize } from '../../../../../../constant';
 import { useStore } from '../../../../../../hooks/useStore';
 import { TMock } from '../../../../../../types';
 import styles from './Mock.module.css';

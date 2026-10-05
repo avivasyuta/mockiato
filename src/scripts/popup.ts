@@ -1,4 +1,4 @@
-import { STORE_KEY } from '~/contstant';
+import { STORE_KEY } from '~/constant';
 import { TStore } from '~/types';
 import { getStore, setStoreValue } from '~/utils/storage';
 

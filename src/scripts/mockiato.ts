@@ -3,7 +3,7 @@ import { FetchInterceptor } from '@mswjs/interceptors/fetch';
 import { XMLHttpRequestInterceptor } from '@mswjs/interceptors/XMLHttpRequest';
 import { nanoid } from 'nanoid';
 
-import { enabledAttributeName, INTERCEPTOR_ID, statusNodeId } from '~/contstant';
+import { enabledAttributeName, INTERCEPTOR_ID, statusNodeId } from '~/constant';
 import { listenMessage, sendMessage } from '~/services/message';
 import { MessageBus } from '~/services/messageBus';
 import {

@@ -5,7 +5,7 @@ import { IconPlaylistAdd } from '@tabler/icons-react';
 
 import { NotFound } from '~/components/NotFound';
 import { Spinner } from '~/components/Spinner';
-import { overlaySettings } from '~/contstant';
+import { overlaySettings } from '~/constant';
 import { useStore } from '~/hooks/useStore';
 import { THeader, THeadersProfile } from '~/types';
 import { isEmpty } from '~/utils/isEmpty';

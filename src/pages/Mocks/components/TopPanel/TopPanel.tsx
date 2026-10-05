@@ -10,7 +10,7 @@ import {
 } from '@tabler/icons-react';
 
 import { Header } from '~/components/Header';
-import { iconSize, overlaySettings } from '~/contstant';
+import { iconSize, overlaySettings } from '~/constant';
 import { TMockFilters } from '~/pages/Mocks/types';
 import { TMock, TMockGroup } from '~/types';
 
