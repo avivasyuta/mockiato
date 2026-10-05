@@ -15,6 +15,8 @@ export const enabledAttributeName = 'data-is-enabled';
 
 export const extensionUrl = 'https://chrome.google.com/webstore/detail/mockiato/ilbkkhmnmnehcicempfpekgcpneeekao';
 
+export const extensionReviewsUrl = `${extensionUrl}/reviews`;
+
 export const newIssueUrl = 'https://github.com/avivasyuta/mockiato/issues/new';
 
 const DAY_MS = 24 * 60 * 60 * 1000;

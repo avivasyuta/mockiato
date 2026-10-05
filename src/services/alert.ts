@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 
-import { EXTENSION_NAME } from '~/contstant';
+import { EXTENSION_NAME } from '~/constant';
 
 const closeTimeout = 10000;
 const stackId = 'mockiato-alert-stack';

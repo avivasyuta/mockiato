@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { RATING_PROMPT_CONFIG } from '~/contstant';
+import { RATING_PROMPT_CONFIG } from '~/constant';
 import { getRatingPromptDebugForceShow } from '~/utils/getRatingPromptDebugForceShow';
 import { logError } from '~/utils/logger';
 import { shouldShowRatingPrompt } from '~/utils/shouldShowRatingPrompt';

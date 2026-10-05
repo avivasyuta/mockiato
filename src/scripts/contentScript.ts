@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 
-import { enabledAttributeName, INTERCEPTOR_ID, STORE_KEY } from '~/contstant';
+import { enabledAttributeName, INTERCEPTOR_ID, STORE_KEY } from '~/constant';
 import { createStack, showAlert } from '~/services/alert';
 import { listenMessage, sendMessage } from '~/services/message';
 import { createStatus } from '~/services/status';

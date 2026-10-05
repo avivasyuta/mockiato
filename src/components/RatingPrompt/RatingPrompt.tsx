@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Alert, Button, Group, Text } from '@mantine/core';
 import { IconAlertCircle, IconBug, IconThumbUp } from '@tabler/icons-react';
 
-import { extensionUrl, newIssueUrl } from '~/contstant';
+import { extensionReviewsUrl, newIssueUrl } from '~/constant';
 
 import classes from './RatingPrompt.module.css';
 import { useRatingPrompt } from './useRatingPrompt';
@@ -33,7 +33,7 @@ export const RatingPrompt: FC = () => {
       >
         <Button
           component="a"
-          href={extensionUrl}
+          href={extensionReviewsUrl}
           target="_blank"
           rel="noopener noreferrer"
           size="xs"

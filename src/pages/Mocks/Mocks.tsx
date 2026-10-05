@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid';
 
 import { NotFound } from '~/components/NotFound';
 import { Spinner } from '~/components/Spinner';
-import { overlaySettings } from '~/contstant';
+import { overlaySettings } from '~/constant';
 import { useStore } from '~/hooks/useStore';
 import { trimHeaders } from '~/pages/Mocks/components/MockForm/utils';
 import { TMock, TMockGroup } from '~/types';

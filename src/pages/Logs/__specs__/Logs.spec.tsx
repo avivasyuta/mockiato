@@ -2,7 +2,7 @@ import { act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, test } from 'vitest';
 
-import { STORE_KEY } from '~/contstant';
+import { STORE_KEY } from '~/constant';
 import { setupChromeStorageMock } from '~/test/chromeStorageMock';
 import { renderWithProviders } from '~/test/renderWithProviders';
 import { stubTabHost } from '~/test/stubTabHost';

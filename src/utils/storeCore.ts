@@ -1,4 +1,4 @@
-import { STORE_KEY } from '~/contstant';
+import { STORE_KEY } from '~/constant';
 import { TStore, TStoreKey } from '~/types';
 
 import { isObject } from './isObject';

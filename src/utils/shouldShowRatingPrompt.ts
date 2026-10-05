@@ -1,4 +1,4 @@
-import { RATING_PROMPT_CONFIG } from '~/contstant';
+import { RATING_PROMPT_CONFIG } from '~/constant';
 import { RatingPrompt } from '~/types';
 
 export const shouldShowRatingPrompt = (ratingPrompt: RatingPrompt, mocksCount: number, now: number): boolean => {

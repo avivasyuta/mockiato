@@ -1,4 +1,4 @@
-import { STORE_KEY } from '~/contstant';
+import { STORE_KEY } from '~/constant';
 import { TLog, TNetworkEvent, TStore, TStoreKey, TStoreMessage, TStoreMessageResponse, TUpdateStore } from '~/types';
 import { createMutex } from '~/utils/createMutex';
 import { withMockHitsAdded } from '~/utils/ratingPrompt';

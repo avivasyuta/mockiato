@@ -15,7 +15,7 @@ import {
   TablerIcon,
 } from '@tabler/icons-react';
 
-import { extensionUrl, newIssueUrl } from '~/contstant';
+import { extensionReviewsUrl, newIssueUrl } from '~/constant';
 import { useStore } from '~/hooks/useStore';
 import { useTabHost } from '~/hooks/useTab';
 import { TRoute } from '~/types';
@@ -281,7 +281,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
             variant="link"
             component="a"
             target="_blank"
-            href={extensionUrl}
+            href={extensionReviewsUrl}
             c="dimmed"
             className={styles.link}
           >
