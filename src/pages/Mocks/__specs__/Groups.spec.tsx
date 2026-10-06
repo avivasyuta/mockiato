@@ -1,3 +1,4 @@
+import { waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, test } from 'vitest';
 
@@ -6,7 +7,7 @@ import { renderWithProviders } from '~/test/renderWithProviders';
 import { getStore } from '~/utils/storage';
 
 import { Mocks } from '../Mocks';
-import { getMockStatusSwitch, openGroupMenu } from './domHelpers';
+import { getGroupContainer, getMockStatusSwitch, openGroupMenu } from './domHelpers';
 import { buildGroup, buildMock } from './fixtures';
 
 describe('Mocks page [Groups]', () => {
@@ -69,6 +70,51 @@ describe('Mocks page [Groups]', () => {
 
     store = await getStore();
     expect(store.mocks.every((m) => !m.isActive)).toBe(true);
+  });
+
+  test('keeps a collapsed group collapsed when another group is changed', async () => {
+    const user = userEvent.setup();
+    const collapsedGroup = buildGroup({ name: 'Collapsed group' });
+    const otherGroup = buildGroup({ name: 'Other group' });
+    const mockA = buildMock({ url: 'https://example.com/a', groupId: collapsedGroup.id });
+    const mockB = buildMock({ url: 'https://example.com/b', groupId: otherGroup.id, isActive: false });
+    setupChromeStorageMock({ mockGroups: [collapsedGroup, otherGroup], mocks: [mockA, mockB] });
+    const { findByText } = renderWithProviders(<Mocks />);
+
+    await user.click(await findByText(collapsedGroup.name));
+    const isCollapsed = () =>
+      getGroupContainer(collapsedGroup.name).querySelector('.tabler-icon-chevron-down') !== null;
+    expect(isCollapsed()).toBe(true);
+
+    await openGroupMenu(user, otherGroup.name);
+    await user.click(await findByText('Enable all'));
+
+    await waitFor(() => expect(getMockStatusSwitch(mockB.url)).toBeChecked());
+    expect(isCollapsed()).toBe(true);
+  });
+
+  test('restores collapsed groups after the page is reopened', async () => {
+    const user = userEvent.setup();
+    const collapsedGroup = buildGroup({ name: 'Collapsed group' });
+    const expandedGroup = buildGroup({ name: 'Expanded group' });
+    const mockA = buildMock({ url: 'https://example.com/a', groupId: collapsedGroup.id });
+    const mockB = buildMock({ url: 'https://example.com/b', groupId: expandedGroup.id });
+    setupChromeStorageMock({ mockGroups: [collapsedGroup, expandedGroup], mocks: [mockA, mockB] });
+    const isCollapsed = (groupName: string) =>
+      getGroupContainer(groupName).querySelector('.tabler-icon-chevron-down') !== null;
+
+    const firstRender = renderWithProviders(<Mocks />);
+    await user.click(await firstRender.findByText(collapsedGroup.name));
+    await waitFor(async () => {
+      expect((await getStore()).mocksView.collapsedGroups).toEqual([collapsedGroup.id]);
+    });
+    firstRender.unmount();
+
+    const secondRender = renderWithProviders(<Mocks />);
+    await secondRender.findByText(collapsedGroup.name);
+
+    expect(isCollapsed(collapsedGroup.name)).toBe(true);
+    expect(isCollapsed(expandedGroup.name)).toBe(false);
   });
 
   test('removes mocks from a group without deleting them', async () => {

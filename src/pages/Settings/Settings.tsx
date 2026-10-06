@@ -5,7 +5,12 @@ import { IconTrash } from '@tabler/icons-react';
 
 import { Header } from '~/components/Header';
 import { useStore } from '~/hooks/useStore';
+import { TStoreSettings } from '~/types';
 import { isEmpty } from '~/utils/isEmpty';
+
+type TBooleanSettingKey = {
+  [K in keyof TStoreSettings]: TStoreSettings[K] extends boolean ? K : never;
+}[keyof TStoreSettings];
 
 export const Settings = () => {
   const [logs, setLogs] = useStore('logs');
@@ -88,60 +93,22 @@ export const Settings = () => {
     });
   };
 
-  const handleToggleNotifications = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const updateSettings = async (patch: Partial<TStoreSettings>) => {
     if (!settings) {
       return;
     }
 
     await setSettings({
       ...settings,
-      showNotifications: e.target.checked,
+      ...patch,
     });
   };
 
-  const handleToggleActiveStatus = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!settings) {
-      return;
-    }
+  const handleToggle = (key: TBooleanSettingKey) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    updateSettings({ [key]: e.target.checked });
 
-    await setSettings({
-      ...settings,
-      showActiveStatus: e.target.checked,
-    });
-  };
-
-  const handleToggleCommentDisplayMode = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!settings) {
-      return;
-    }
-
-    await setSettings({
-      ...settings,
-      commentDisplayMode: e.target.checked ? 'inline' : 'tooltip',
-    });
-  };
-
-  const handleToggleDisplayHttpMethodInline = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!settings) {
-      return;
-    }
-
-    await setSettings({
-      ...settings,
-      displayHttpMethodInline: e.target.checked,
-    });
-  };
-
-  const handleToggleAllowExtendMock = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!settings) {
-      return;
-    }
-
-    await setSettings({
-      ...settings,
-      expandableMockDetails: e.target.checked,
-    });
-  };
+  const handleToggleCommentDisplayMode = (e: React.ChangeEvent<HTMLInputElement>) =>
+    updateSettings({ commentDisplayMode: e.target.checked ? 'inline' : 'tooltip' });
 
   if (!settings) {
     return null;
@@ -172,11 +139,9 @@ export const Settings = () => {
           <Stack gap="0.4rem">
             <Switch
               size="xs"
-              onLabel="ON"
-              offLabel="OFF"
               label="Show notifications"
               checked={settings?.showNotifications}
-              onChange={handleToggleNotifications}
+              onChange={handleToggle('showNotifications')}
             />
             <Text
               size="xs"
@@ -189,11 +154,9 @@ export const Settings = () => {
           <Stack gap="0.4rem">
             <Switch
               size="xs"
-              onLabel="ON"
-              offLabel="OFF"
               label="Show active status"
               checked={settings?.showActiveStatus}
-              onChange={handleToggleActiveStatus}
+              onChange={handleToggle('showActiveStatus')}
             />
             <Text
               size="xs"
@@ -233,8 +196,6 @@ export const Settings = () => {
           <Stack gap="0.4rem">
             <Switch
               size="xs"
-              onLabel="ON"
-              offLabel="OFF"
               label="Show comments inline"
               checked={settings?.commentDisplayMode === 'inline'}
               onChange={handleToggleCommentDisplayMode}
@@ -250,11 +211,9 @@ export const Settings = () => {
           <Stack gap="0.4rem">
             <Switch
               size="xs"
-              onLabel="ON"
-              offLabel="OFF"
               label="Show http method inline"
               checked={settings?.displayHttpMethodInline}
-              onChange={handleToggleDisplayHttpMethodInline}
+              onChange={handleToggle('displayHttpMethodInline')}
             />
             <Text
               size="xs"
@@ -267,11 +226,24 @@ export const Settings = () => {
           <Stack gap="0.4rem">
             <Switch
               size="xs"
-              onLabel="ON"
-              offLabel="OFF"
+              label="Show response status code"
+              checked={settings?.displayResponseStatusCodeInline}
+              onChange={handleToggle('displayResponseStatusCodeInline')}
+            />
+            <Text
+              size="xs"
+              c="dimmed"
+            >
+              Display mock response HTTP status code.
+            </Text>
+          </Stack>
+
+          <Stack gap="0.4rem">
+            <Switch
+              size="xs"
               label="Expandable mock details"
               checked={settings?.expandableMockDetails}
-              onChange={handleToggleAllowExtendMock}
+              onChange={handleToggle('expandableMockDetails')}
             />
             <Text
               size="xs"
@@ -279,6 +251,21 @@ export const Settings = () => {
             >
               Allow mock snippets to be expanded to show detailed information. When disabled, the expand toggle is
               hidden.
+            </Text>
+          </Stack>
+
+          <Stack gap="0.4rem">
+            <Switch
+              size="xs"
+              label="Collapse mock actions into menu"
+              checked={settings?.collapseMockActions}
+              onChange={handleToggle('collapseMockActions')}
+            />
+            <Text
+              size="xs"
+              c="dimmed"
+            >
+              Hide the clone, edit and delete buttons of a mock under a dropdown menu to save space.
             </Text>
           </Stack>
 

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/icons/mockiato.png" width="164" height="164" alt="Mockiato logo — mock API requests in Chrome DevTools" />
+  <img src="public/icons/icon256.png" width="164" height="164" alt="Mockiato logo — mock API requests in Chrome DevTools" />
 </p>
 
 <h1 align="center">Mockiato</h1>

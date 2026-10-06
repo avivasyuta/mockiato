@@ -100,7 +100,9 @@ const seededStore: TStore = {
     showMobileNavBar: false,
     commentDisplayMode: 'tooltip',
     displayHttpMethodInline: false,
+    displayResponseStatusCodeInline: true,
     expandableMockDetails: false,
+    collapseMockActions: false,
   },
 };
 

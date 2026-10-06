@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { AppShell, Button, Divider, Group, NavLink, ScrollArea, Switch, Text } from '@mantine/core';
 import {
-  IconBrandGithub,
   IconBug,
   IconCodeMinus,
   IconCoin,
@@ -126,7 +125,7 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
             <NavLink
               key={link.name}
               label={link.name}
-              variant="light"
+              variant="filled"
               active={route === link.route}
               onClick={() => onRouteChange(link.route)}
               leftSection={<Icon size={16} />}
@@ -220,28 +219,6 @@ export const AppNavbar: React.FC<NavbarProps> = ({ onRouteChange, route }) => {
             className={styles.link}
           >
             Version {manifest.version}
-          </Text>
-        </Group>
-
-        <Group
-          justify="left"
-          mt="0.4rem"
-          gap="12px"
-        >
-          <IconBrandGithub
-            size={16}
-            color="gray"
-          />
-          <Text
-            size="sm"
-            variant="link"
-            component="a"
-            target="_blank"
-            href="https://github.com/avivasyuta/mockiato"
-            c="dimmed"
-            className={styles.link}
-          >
-            View source code
           </Text>
         </Group>
 

@@ -3,13 +3,15 @@ import { Text, useMantineTheme } from '@mantine/core';
 
 import { HttpMethodType } from '../../types';
 
+// Colors are grouped by semantics: read, create, update, delete.
+// Service and rare methods (HEAD, OPTIONS, LINK, LOCK, ...) fall back to gray.
 const colorsMap: { [key in HttpMethodType]?: string } = {
   [HttpMethodType.GET]: 'green',
-  [HttpMethodType.DELETE]: 'red',
+  [HttpMethodType.POST]: 'orange',
   [HttpMethodType.PUT]: 'blue',
-  [HttpMethodType.POST]: 'yellow',
-  [HttpMethodType.OPTIONS]: 'cyan',
-  [HttpMethodType.HEAD]: 'cyan',
+  [HttpMethodType.PATCH]: 'blue',
+  [HttpMethodType.DELETE]: 'red',
+  [HttpMethodType.PURGE]: 'red',
 };
 
 type HttpStatusProps = {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { AppShell, ColorSchemeScript, MantineProvider } from '@mantine/core';
+import { AppShell, ColorSchemeScript, createTheme, MantineProvider } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import { Notifications } from '@mantine/notifications';
 
@@ -21,6 +21,10 @@ import './App.css';
 import classes from './App.module.css';
 import { useNavBarToggler } from './hooks/useNavbarToggler';
 
+const theme = createTheme({
+  cursorType: 'pointer',
+});
+
 export const App = () => {
   const [route, setRoute] = useState<TRoute>('mocks');
   const [isNavbarVisible, { toggle: toggleNavBar }] = useNavBarToggler();
@@ -38,7 +42,10 @@ export const App = () => {
   return (
     <>
       <ColorSchemeScript defaultColorScheme="auto" />
-      <MantineProvider defaultColorScheme="auto">
+      <MantineProvider
+        defaultColorScheme="auto"
+        theme={theme}
+      >
         <ModalsProvider>
           <Notifications position="bottom-center" />
           <RatingPrompt />

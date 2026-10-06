@@ -36,13 +36,15 @@ export const setupChromeStorageMock = (
       local: {
         get: async () => {
           if (delayMs) await delay(delayMs);
-          return { [STORE_KEY]: backingStore };
+          return { [STORE_KEY]: structuredClone(backingStore) };
         },
         set: async (items: Record<string, unknown>) => {
           if (delayMs) await delay(delayMs);
           const oldValue = backingStore;
           backingStore = items[STORE_KEY] as TStore;
-          listeners.forEach((listener) => listener({ [STORE_KEY]: { newValue: backingStore, oldValue } }));
+          listeners.forEach((listener) =>
+            listener({ [STORE_KEY]: { newValue: structuredClone(backingStore), oldValue } }),
+          );
         },
       },
       onChanged: {

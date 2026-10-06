@@ -16,13 +16,19 @@ export const emptyStore: TStore = {
     showMobileNavBar: false,
     commentDisplayMode: 'tooltip',
     displayHttpMethodInline: false,
+    displayResponseStatusCodeInline: true,
     expandableMockDetails: true,
+    collapseMockActions: false,
   },
   ratingPrompt: {
     mockHits: 0,
     status: 'pending',
     dismissCount: 0,
     installedAt: Date.now(),
+  },
+  mocksView: {
+    collapsedGroups: [],
+    expandedMocks: [],
   },
 };
 
