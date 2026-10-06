@@ -24,7 +24,7 @@ type HttpStatusProps = {
 export const HttpStatus: React.FC<HttpStatusProps> = ({ status }) => (
   <Badge
     size="xs"
-    variant="dot"
+    variant="light"
     color={getStatusCodeColor(status)}
     radius="sm"
     title="HTTP status code"

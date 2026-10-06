@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo, useReducer, useState } from 'react';
+import React, { memo, useCallback, useMemo, useReducer, useState } from 'react';
 import { Drawer, useMatches } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { nanoid } from 'nanoid';
@@ -8,7 +8,7 @@ import { Spinner } from '~/components/Spinner';
 import { overlaySettings } from '~/constant';
 import { useStore } from '~/hooks/useStore';
 import { trimHeaders } from '~/pages/Mocks/components/MockForm/utils';
-import { TMock, TMockGroup } from '~/types';
+import { TMock, TMockGroup, TMocksViewState } from '~/types';
 import { mergeGroups } from '~/utils/mergeGroups';
 import { mergeMocks } from '~/utils/mergeMocks';
 
@@ -50,17 +50,17 @@ const MocksPage: React.FC = () => {
   const [mockForm, dispatchMockForm] = useReducer(mockFormReducer, initialMockFormState);
   const [mocks, setMocks] = useStore('mocks');
   const [groups, setGroups] = useStore('mockGroups');
-  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
-  const [expandedMocks, setExpandedMocks] = useState<Set<string>>(new Set());
+  const [mocksView, setMocksView] = useStore('mocksView');
   const [filters, setFilters] = useState<TMockFilters>(emptyMockFilters);
   const drawerSize = useMatches({ base: '100%', md: '50%' });
 
-  // Initialize expanded groups when groups are loaded
-  useEffect(() => {
-    if (groups && groups.length > 0) {
-      setExpandedGroups(new Set(groups.map((group) => group.id)));
-    }
-  }, [groups]);
+  // Collapsed (not expanded) groups are persisted, so newly created or imported groups are expanded by default.
+  const expandedGroups = useMemo(() => {
+    const collapsedGroups = new Set(mocksView?.collapsedGroups ?? []);
+    return new Set((groups ?? []).map((group) => group.id).filter((id) => !collapsedGroups.has(id)));
+  }, [groups, mocksView]);
+
+  const expandedMocks = useMemo(() => new Set(mocksView?.expandedMocks ?? []), [mocksView]);
 
   // Calculate areAllExpanded based on actual group and mock states
   const areAllExpanded = useMemo(() => {
@@ -85,8 +85,6 @@ const MocksPage: React.FC = () => {
 
   const handleAddGroup = (group: TMockGroup) => {
     setGroups([...(groups ?? []), group]);
-    // Expand newly added group
-    setExpandedGroups((prev) => new Set([...prev, group.id]));
   };
 
   const handleOpenForm = () => {
@@ -125,7 +123,8 @@ const MocksPage: React.FC = () => {
     [groups, setGroups],
   );
 
-  if (!mocks || !groups) {
+  // `undefined` means the key is missing in an older store, `null` - not loaded yet.
+  if (!mocks || !groups || mocksView === null) {
     return <Spinner />;
   }
 
@@ -175,40 +174,46 @@ const MocksPage: React.FC = () => {
     await setMocks(newMocks);
   };
 
+  // Ids of deleted groups and mocks are dropped on every write so the persisted state doesn't grow forever.
+  const updateMocksView = (collapsedGroups: Iterable<string>, expandedMockIds: Iterable<string>) => {
+    const groupIds = new Set(groups.map((group) => group.id));
+    const mockIds = new Set(mocks.map((mock) => mock.id));
+    const view: TMocksViewState = {
+      collapsedGroups: [...new Set(collapsedGroups)].filter((id) => groupIds.has(id)),
+      expandedMocks: [...new Set(expandedMockIds)].filter((id) => mockIds.has(id)),
+    };
+
+    return setMocksView(view);
+  };
+
+  const collapsedGroups = mocksView?.collapsedGroups ?? [];
+
   const handleToggleAll = () => {
     if (areAllExpanded) {
-      // Collapse all groups and mocks
-      setExpandedGroups(new Set());
-      setExpandedMocks(new Set());
+      updateMocksView(
+        groups.map((group) => group.id),
+        [],
+      );
     } else {
-      // Expand all groups and mocks
-      setExpandedGroups(new Set(groups?.map((group) => group.id) || []));
-      setExpandedMocks(new Set(mocks?.map((mock) => mock.id) || []));
+      updateMocksView(
+        [],
+        mocks.map((mock) => mock.id),
+      );
     }
   };
 
   const handleToggleGroup = (groupId: string, isExpanded: boolean) => {
-    setExpandedGroups((prev) => {
-      const newSet = new Set(prev);
-      if (isExpanded) {
-        newSet.add(groupId);
-      } else {
-        newSet.delete(groupId);
-      }
-      return newSet;
-    });
+    const newCollapsedGroups = isExpanded
+      ? collapsedGroups.filter((id) => id !== groupId)
+      : [...collapsedGroups, groupId];
+
+    updateMocksView(newCollapsedGroups, expandedMocks);
   };
 
   const handleToggleMock = (mockId: string, isExpanded: boolean) => {
-    setExpandedMocks((prev) => {
-      const newSet = new Set(prev);
-      if (isExpanded) {
-        newSet.add(mockId);
-      } else {
-        newSet.delete(mockId);
-      }
-      return newSet;
-    });
+    const newExpandedMocks = isExpanded ? [...expandedMocks, mockId] : [...expandedMocks].filter((id) => id !== mockId);
+
+    updateMocksView(collapsedGroups, newExpandedMocks);
   };
 
   const submitForm = (values: TMock): void => {
@@ -244,12 +249,10 @@ const MocksPage: React.FC = () => {
     await setGroups(newGroups);
     await setMocks(newMocks);
 
-    setExpandedGroups((prev) => {
-      const newSet = new Set(prev);
-      importedGroups.forEach((group) => {
-        newSet.add(group.id);
-      });
-      return newSet;
+    const importedGroupIds = new Set(importedGroups.map((group) => group.id));
+    await setMocksView({
+      collapsedGroups: collapsedGroups.filter((id) => !importedGroupIds.has(id)),
+      expandedMocks: [...expandedMocks],
     });
 
     showNotification({

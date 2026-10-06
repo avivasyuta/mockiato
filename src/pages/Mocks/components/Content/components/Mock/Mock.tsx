@@ -6,12 +6,14 @@ import {
 } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import { DropIndicator } from '@atlaskit/pragmatic-drag-and-drop-react-drop-indicator/box';
 import { draggable, dropTargetForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
-import { ActionIcon, Badge, Collapse, Group, Stack, Switch, Text, Tooltip, useMantineTheme } from '@mantine/core';
+import { ActionIcon, Badge, Collapse, Group, Menu, Stack, Switch, Text, Tooltip, useMantineTheme } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { modals } from '@mantine/modals';
 import {
   IconChevronDown,
   IconChevronRight,
   IconCopy,
+  IconDotsVertical,
   IconEdit,
   IconGripVertical,
   IconInfoCircle,
@@ -120,6 +122,28 @@ export const Mock: FC<MockProps> = ({
     onDelete(mock.id);
   };
 
+  const handleMenuDelete = (): void => {
+    modals.openConfirmModal({
+      title: 'Delete mock',
+      children: <Text size="sm">Are you sure you want to delete mock «{mock.name || mock.url}»?</Text>,
+      labels: {
+        confirm: 'Delete',
+        cancel: 'Cancel',
+      },
+      confirmProps: {
+        color: 'red',
+        size: 'xs',
+        'data-testid': 'confirm-delete-mock-button',
+      },
+      cancelProps: {
+        size: 'xs',
+        variant: 'subtle',
+        color: 'gray',
+      },
+      onConfirm: () => onDelete(mock.id),
+    });
+  };
+
   const handleChangeStatus = (e: React.ChangeEvent<HTMLInputElement>): void => {
     onChange({
       ...mock,
@@ -137,7 +161,7 @@ export const Mock: FC<MockProps> = ({
         p="0.35rem 0.7rem"
         ref={ref}
         data-testid="mock-row"
-        style={{ opacity: isDragging ? 0.4 : undefined, cursor: isDragging ? 'grabbing' : 'pointer' }}
+        style={{ opacity: isDragging ? 0.4 : undefined, cursor: isDragging ? 'grabbing' : 'default' }}
       >
         <Group
           gap="xs"
@@ -211,7 +235,7 @@ export const Mock: FC<MockProps> = ({
             </Group>
           </Stack>
 
-          <Group gap="1.5rem">
+          <Group gap="1.2rem">
             {mock.comment && (
               <Tooltip
                 label={mock.comment}
@@ -256,11 +280,11 @@ export const Mock: FC<MockProps> = ({
               </Tooltip>
             )}
 
+            {settings?.displayResponseStatusCodeInline && <HttpStatus status={mock.httpStatusCode} />}
+
             <Switch
-              onLabel="ON"
-              offLabel="OFF"
               size="xs"
-              radius="sm"
+              radius="md"
               color="green"
               checked={mock.isActive}
               title="Enable/disable mock"
@@ -268,50 +292,99 @@ export const Mock: FC<MockProps> = ({
               onChange={handleChangeStatus}
             />
 
-            <Group gap="0.4rem">
-              <ActionIcon
-                variant="subtle"
-                color="gray"
-                size="sm"
-                radius="sm"
-                title="Clone mock"
-                data-testid="mock-row/clone"
-                onClick={handleCopy}
+            {settings?.collapseMockActions ? (
+              <Menu
+                withinPortal
+                position="bottom-end"
+                shadow="sm"
               >
-                <IconCopy size={iconSize} />
-              </ActionIcon>
+                <Menu.Target>
+                  <ActionIcon
+                    variant="subtle"
+                    color="gray"
+                    size="sm"
+                    radius="sm"
+                    title="Mock actions"
+                    data-testid="mock-row/menu-trigger"
+                  >
+                    <IconDotsVertical size={iconSize} />
+                  </ActionIcon>
+                </Menu.Target>
 
-              <ActionIcon
-                variant="subtle"
-                color="gray"
-                size="sm"
-                radius="sm"
-                title="Edit mock"
-                data-testid="mock-row/edit"
-                onClick={handleEditClick}
-              >
-                <IconEdit size={iconSize} />
-              </ActionIcon>
+                <Menu.Dropdown>
+                  <Menu.Item
+                    leftSection={<IconCopy size={12} />}
+                    data-testid="mock-row/menu-clone"
+                    onClick={handleCopy}
+                  >
+                    Clone
+                  </Menu.Item>
+                  <Menu.Item
+                    leftSection={<IconEdit size={12} />}
+                    data-testid="mock-row/menu-edit"
+                    onClick={handleEditClick}
+                  >
+                    Edit
+                  </Menu.Item>
 
-              <Tooltip
-                label="Double click to delete"
-                position="bottom"
-                transitionProps={{ transition: 'scale-y' }}
-                openDelay={300}
-                withArrow
-              >
+                  <Menu.Divider />
+
+                  <Menu.Item
+                    leftSection={<IconTrash size={12} />}
+                    color="red"
+                    data-testid="mock-row/menu-delete"
+                    onClick={handleMenuDelete}
+                  >
+                    Delete
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            ) : (
+              <Group gap="0.4rem">
                 <ActionIcon
                   variant="subtle"
-                  color="red"
+                  color="gray"
                   size="sm"
                   radius="sm"
-                  data-testid="mock-row/delete"
-                  onClick={handleDelete}
+                  title="Clone mock"
+                  data-testid="mock-row/clone"
+                  onClick={handleCopy}
                 >
-                  <IconTrash size={iconSize} />
+                  <IconCopy size={iconSize} />
                 </ActionIcon>
-              </Tooltip>
-            </Group>
+
+                <ActionIcon
+                  variant="subtle"
+                  color="gray"
+                  size="sm"
+                  radius="sm"
+                  title="Edit mock"
+                  data-testid="mock-row/edit"
+                  onClick={handleEditClick}
+                >
+                  <IconEdit size={iconSize} />
+                </ActionIcon>
+
+                <Tooltip
+                  label="Double click to delete"
+                  position="bottom"
+                  transitionProps={{ transition: 'scale-y' }}
+                  openDelay={300}
+                  withArrow
+                >
+                  <ActionIcon
+                    variant="subtle"
+                    color="red"
+                    size="sm"
+                    radius="sm"
+                    data-testid="mock-row/delete"
+                    onClick={handleDelete}
+                  >
+                    <IconTrash size={iconSize} />
+                  </ActionIcon>
+                </Tooltip>
+              </Group>
+            )}
           </Group>
         </Group>
 

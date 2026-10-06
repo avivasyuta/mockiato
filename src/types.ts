@@ -125,7 +125,9 @@ export type TStoreSettings = {
   showMobileNavBar: boolean;
   commentDisplayMode: TCommentDisplayMode;
   displayHttpMethodInline: boolean;
+  displayResponseStatusCodeInline: boolean;
   expandableMockDetails: boolean;
+  collapseMockActions: boolean;
 };
 
 export type RatingPromptStatus = 'pending' | 'rated' | 'dismissed';
@@ -139,6 +141,11 @@ export type RatingPrompt = {
   nextShowAt?: number;
 };
 
+export type TMocksViewState = {
+  collapsedGroups: string[];
+  expandedMocks: string[];
+};
+
 export type TStore = {
   mocks: TMock[];
   mockGroups: TMockGroup[];
@@ -147,6 +154,7 @@ export type TStore = {
   network: TNetworkEvent[];
   settings: TStoreSettings;
   ratingPrompt: RatingPrompt;
+  mocksView: TMocksViewState;
 };
 
 export type TUpdateStore = Record<
