@@ -13,3 +13,9 @@
   align-items: center;
   justify-content: center;
 }
+
+@media (prefers-color-scheme: dark) {
+  .ungroupedDropZoneEmpty {
+    border-color: var(--mantine-color-dark-4);
+  }
+}
