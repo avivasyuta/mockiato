@@ -59,6 +59,7 @@ export const App = () => {
               collapsed: { mobile: !isNavbarVisible },
             }}
             padding="md"
+            offsetScrollbars={false}
             classNames={{
               root: classes.root,
               navbar: classes.navbar,
