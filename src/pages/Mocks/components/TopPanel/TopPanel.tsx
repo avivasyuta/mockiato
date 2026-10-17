@@ -4,9 +4,9 @@ import {
   IconChevronDown,
   IconChevronUp,
   IconDotsVertical,
+  IconDownload,
   IconPlus,
   IconSelectAll,
-  IconUpload,
 } from '@tabler/icons-react';
 
 import { Header } from '~/components/Header';
@@ -175,7 +175,7 @@ export const TopPanel: FC<TopPanelProps> = ({
             </Menu.Item>
 
             <Menu.Item
-              leftSection={<IconUpload size={iconSize} />}
+              leftSection={<IconDownload size={iconSize} />}
               onClick={() => {
                 setModalContentType('import');
                 setModalTitle('Import mocks');
