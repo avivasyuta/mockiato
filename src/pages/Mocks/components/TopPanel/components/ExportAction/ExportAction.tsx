@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Menu } from '@mantine/core';
-import { IconDownload } from '@tabler/icons-react';
+import { IconUpload } from '@tabler/icons-react';
 
 import { iconSize } from '~/constant';
 import { TMock, TMockGroup } from '~/types';
@@ -28,7 +28,7 @@ export const ExportAction: FC<ExportActionProps> = ({ mocks, groups }) => {
 
   return (
     <Menu.Item
-      leftSection={<IconDownload size={iconSize} />}
+      leftSection={<IconUpload size={iconSize} />}
       onClick={handleDownload}
     >
       Export mocks
