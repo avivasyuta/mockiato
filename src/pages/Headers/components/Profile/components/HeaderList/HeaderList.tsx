@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { ActionIcon, Group, Switch, Text, Tooltip } from '@mantine/core';
-import { IconEdit, IconTrash } from '@tabler/icons-react';
+import { IconEdit, IconRegex, IconTrash } from '@tabler/icons-react';
 
 import { Card } from '../../../../../../components/Card';
 import { HttpMethod } from '../../../../../../components/HttpMethod';
@@ -44,86 +44,110 @@ export const HeaderList: FC<HeaderListProps> = ({ headers, onDelete, onEdit, onC
       {headers.map((header) => (
         <Card
           key={header.id}
-          p="0.2rem 0.6rem"
+          p="0.35rem 0.7rem"
+          className={styles.row}
           data-testid="header-row"
         >
-          <Group
-            gap="xs"
-            align="center"
+          <Text
+            size="xs"
+            fw={600}
+            className={styles.key}
+            title={header.key}
           >
-            <Group
-              gap="xs"
-              flex={1}
-              miw={0}
-            >
+            {header.key}:
+          </Text>
+
+          <Text
+            size="xs"
+            className={styles.value}
+            title={header.value}
+          >
+            {header.value}
+          </Text>
+
+          <div className={styles.url}>
+            {header.httpMethod && <HttpMethod method={header?.httpMethod} />}
+            {header.url ? (
               <Text
                 size="xs"
-                fw={600}
+                c="gray.6"
+                className={styles.urlText}
+                title={header.url}
               >
-                {header.key}:
+                {header.url}
               </Text>
-              <Text size="xs">{header.value}</Text>
-            </Group>
-
-            <div className={styles.url}>
-              {header.httpMethod && <HttpMethod method={header?.httpMethod} />}
-              {header.url ? (
-                <Text size="xs">{header.url}</Text>
-              ) : (
-                <Text
-                  size="xs"
-                  c="orange.5"
-                >
-                  Works for all URL&apos;s
-                </Text>
-              )}
-            </div>
-
-            <Group gap="1.5rem">
-              <Switch
+            ) : (
+              <Text
                 size="xs"
-                radius="sm"
-                onLabel="ON"
-                offLabel="OFF"
-                color="green"
-                checked={header.isActive}
-                data-testid="header-row/status-switch"
-                onChange={(e) => handleChangeStatus(e, header)}
-              />
+                c="dimmed"
+                className={styles.urlText}
+              >
+                Works for all URL&apos;s
+              </Text>
+            )}
 
-              <Group gap="0.4rem">
+            {header.url && header.urlType === 'regexp' && (
+              <Tooltip
+                label="RegExp enabled"
+                position="bottom"
+                transitionProps={{ transition: 'scale' }}
+                openDelay={150}
+                withArrow
+              >
+                <IconRegex
+                  size={16}
+                  color="#9775fa"
+                  style={{ flexShrink: 0 }}
+                  data-testid="header-row/regexp"
+                />
+              </Tooltip>
+            )}
+          </div>
+
+          <div className={styles.actions}>
+            <Switch
+              size="xs"
+              radius="md"
+              color="green"
+              title="Enable/disable header"
+              checked={header.isActive}
+              data-testid="header-row/status-switch"
+              onChange={(e) => handleChangeStatus(e, header)}
+            />
+
+            <Group gap="0.4rem">
+              <ActionIcon
+                variant="subtle"
+                color="gray"
+                size="sm"
+                radius="sm"
+                title="Edit header"
+                data-testid="header-row/edit"
+                onClick={(): void => onEdit(header)}
+              >
+                <IconEdit size={iconSize} />
+              </ActionIcon>
+
+              <Tooltip
+                label="Double click to delete"
+                position="bottom"
+                transitionProps={{ transition: 'scale-y' }}
+                openDelay={300}
+                withArrow
+              >
                 <ActionIcon
                   variant="subtle"
-                  color="gray"
+                  color="red"
                   size="sm"
                   radius="sm"
-                  data-testid="header-row/edit"
-                  onClick={(): void => onEdit(header)}
+                  data-testid="header-row/delete"
+                  onClick={handleDelete(header.id)}
                 >
-                  <IconEdit size={iconSize} />
+                  <IconTrash size={iconSize} />
                 </ActionIcon>
-
-                <Tooltip
-                  label="Double click to delete"
-                  position="bottom"
-                  transitionProps={{ transition: 'scale-y' }}
-                  openDelay={300}
-                  withArrow
-                >
-                  <ActionIcon
-                    variant="subtle"
-                    color="red"
-                    size="sm"
-                    radius="sm"
-                    data-testid="header-row/delete"
-                    onClick={handleDelete(header.id)}
-                  >
-                    <IconTrash size={iconSize} />
-                  </ActionIcon>
-                </Tooltip>
-              </Group>
+              </Tooltip>
             </Group>
-          </Group>
+          </div>
         </Card>
       ))}
     </div>

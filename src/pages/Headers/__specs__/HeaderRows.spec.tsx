@@ -1,3 +1,4 @@
+import { within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, test } from 'vitest';
 
@@ -97,6 +98,7 @@ describe('Headers page [Header rows]', () => {
     const store = await getStore();
     const [header] = Object.values(store.headersProfiles)[0].headers;
     expect(header).toMatchObject({ url: '/path/[a-z]+', urlType: 'regexp' });
+    expect(within(getHeaderRow('X-Custom')).getByTestId('header-row/regexp')).toBeInTheDocument();
   });
 
   test('edits a header', async () => {
