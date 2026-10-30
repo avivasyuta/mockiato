@@ -1,13 +1,38 @@
+/* Rows share one grid via subgrid, so key/value/url columns align across cards */
 .list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: grid;
+  grid-template-columns: fit-content(30%) minmax(0, 1fr) fit-content(35%) auto;
+  row-gap: 0.5rem;
+}
+
+/* Higher specificity than Paper's own `display: block` */
+.list > .row {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: center;
+  column-gap: 1rem;
+  min-height: 2.25rem;
+}
+
+.key,
+.value,
+.urlText {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .url {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  flex: 2;
   min-width: 0;
-  gap: 8px;
+  gap: 0.5rem;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
 }
